@@ -1,0 +1,137 @@
+# Baseline reproduction (mHuBERT + BiLSTM + CTC, via S3PRL)
+
+Vendored, lightly-annotated copy of the organizers' own reproduction recipe
+from `github.com/Iqra-Eval/interspeech_IqraEval` (commit on `main`, fetched
+2026-09-20). Everything in this directory is exactly what the organizers
+used to produce the published F1 = 44.14% number on `QuranMB.v2` — kept
+here verbatim (not reimplemented) per the week 2 decision documented in
+[docs/weeks/week-02.md](../../docs/weeks/week-02.md): a from-scratch
+reimplementation risks an ambiguous gate result if it fails to reproduce,
+whereas running the organizers' own code removes that risk.
+
+**S3PRL requires Python 3.8 + conda and is not part of this project's own
+Python 3.12/`uv` stack.** Do not `uv add` anything from this directory.
+Run it in its own isolated conda environment, on your cluster (this
+sandbox has no GPU and no cluster access — this is why these are
+instructions for you to run, not a script I can run myself).
+
+## Contents
+
+```
+config/sws.yaml                  Official training config (verbatim)
+vocab/sws_arabic.txt             Official 68-phoneme vocab (verbatim)
+download_hugg_data.py            Pull IqraEval/Iqra_train -> wav + transcript files
+download_hugg_data_tts.py        Pull IqraEval/Iqra_TTS -> wav + transcript files
+generate_len_for_bucket_sdaia.py S3PRL bucketing metadata (audio length sorting)
+csv_to_tsv_with_transcripts.py   Bucketing CSV -> S3PRL-ready TSV (path, sentence)
+get_units.py                     Regenerate vocab from transcripts (sanity check only)
+s3prl_inference.py               Run a trained/pretrained checkpoint over a wav directory
+```
+
+## Step 1 — conda + S3PRL environment
+
+```bash
+conda create -n s3prl python=3.8
+conda activate s3prl
+git clone https://github.com/s3prl/s3prl.git
+cd s3prl
+pip install -e ".[all]"
+pip install datasets  # for the download_hugg_data*.py scripts below
+```
+
+## Step 2 — pull the training data
+
+Same HF dataset IDs this project's own `src/arabic_mdd/data/iqra_train.py`
+loaders use (`IqraEval/Iqra_train`, `IqraEval/Iqra_TTS`), but here
+materialized to wav+transcript files on disk, since S3PRL expects files,
+not an in-memory `datasets.Dataset`.
+
+```bash
+python download_hugg_data.py --path "IqraEval/Iqra_train" --split "train" --output_dir "./sws_data/CV-Ar"
+python download_hugg_data.py --path "IqraEval/Iqra_train" --split "dev"   --output_dir "./sws_data/CV-Ar"
+python download_hugg_data_tts.py --path "IqraEval/Iqra_TTS" --split "train" --output_dir "./data/TTS" --dev_name "Amer"
+```
+
+## Step 3 — bucketing + TSV prep (inside your `s3prl` checkout)
+
+```bash
+# a) copy generate_len_for_bucket_sdaia.py into s3prl/s3prl/preprocess/, then:
+python generate_len_for_bucket_sdaia.py -i path_to_downloaded_data/sws_data/CV-Ar -o ../data/CV-Ar/
+# -> s3prl/s3prl/data/CV-Ar/len_for_bucket/{train,dev}.csv
+
+# b) copy csv_to_tsv_with_transcripts.py into s3prl/s3prl/, then:
+python csv_to_tsv_with_transcripts.py \
+  --csv_path s3prl/s3prl/data/CV-Ar/len_for_bucket/train.csv \
+  --transcript_root "./sws_data/CV-Ar/" \
+  --output_path "./sws_data/CV-Ar/train/train.tsv"
+python csv_to_tsv_with_transcripts.py \
+  --csv_path s3prl/s3prl/data/CV-Ar/len_for_bucket/dev.csv \
+  --transcript_root "./sws_data/CV-Ar/" \
+  --output_path "./sws_data/CV-Ar/dev/dev.tsv"
+```
+
+## Step 4 — downstream task setup
+
+```bash
+cp vocab/sws_arabic.txt s3prl/s3prl/downstream/ctc/cv_vocab/sws_arabic.txt
+cp config/sws.yaml       s3prl/s3prl/downstream/ctc/cv_config/sws.yaml
+```
+
+Edit the copied `sws.yaml`'s `downstream_expert.corpus.path` and
+`.train`/`.dev`/`.test` to point at the `train.tsv`/`dev.tsv` produced in
+step 3 (paths in the vendored copy are placeholders,
+`path_to_tsv_file/...`).
+
+**Config vs. paper discrepancy, noted for the writeup:** the paper's prose
+describes training for 12.5k updates; the shipped config (vendored here
+unmodified) sets `runner.total_steps: 200000` and `runner.eval_step:
+5000`. We treat the config as source of truth for this reproduction, since
+it is what actually produced the published F1 = 44.14% number, not the
+prose. Flag this explicitly in the week 3 writeup regardless of gate
+outcome.
+
+## Step 5 — train and evaluate
+
+```bash
+exp_dir='hubert_base_per'
+python3 run_downstream.py -m train -c downstream/ctc/cv_config/sws.yaml -p ${exp_dir} -u hubert_base -d ctc
+python3 run_downstream.py -m evaluate -e ${exp_dir}/dev-best.ckpt
+```
+
+`-u hubert_base` is the organizers' stand-in for mHuBERT in this recipe;
+if a distinct mHuBERT upstream identifier is required, check the S3PRL
+upstream registry before running. This step is a multi-hour GPU job — run
+it on your cluster, not in this sandbox.
+
+### Alternative: skip training, run the organizers' pretrained checkpoint
+
+```bash
+python s3prl_inference.py \
+  --ckpt "https://huggingface.co/Trikaldarshi/sws_pretrained_models/resolve/main/mhubert.ckpt" \
+  --dict_path "https://huggingface.co/Trikaldarshi/sws_pretrained_models/resolve/main/sws_arabic.txt" \
+  --wav_dir ./sws_data/CV-Ar/dev/wav/ \
+  --output_csv results.csv
+```
+
+## Step 6 — score against the gate (back in this project, uv/Python 3.12)
+
+Once you have predictions (from either step 5's `evaluate` or the
+`s3prl_inference.py` CSV), get them into `{id: predicted_phoneme_string}`
+form and score them with this project's own metric implementation — no
+need to touch the organizers' `mdd_eval/` scripts, since
+`src/arabic_mdd/metrics/hierarchical.py` is a from-scratch, unit-tested
+port of the same TA/TR/FA/FR/CD/ED algorithm:
+
+```python
+from arabic_mdd.data.quranmb import load_ground_truth, score_predictions
+from arabic_mdd.metrics.hierarchical import compute_metrics
+
+ground_truth = load_ground_truth()
+predictions = {...}  # id -> predicted phoneme string, from your S3PRL run
+counts = score_predictions(predictions, ground_truth)
+metrics = compute_metrics(counts)
+print(metrics.f1)  # compare against the gate: 0.4414 +/- 0.02
+```
+
+See [docs/weeks/week-03.md](../../docs/weeks/week-03.md) for the full
+gate procedure and pass/fail handling.

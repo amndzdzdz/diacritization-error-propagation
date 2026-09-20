@@ -11,3 +11,5 @@ data/raw/
 data/processed/
 *.ckpt
 *.pt
+insights
+docs
