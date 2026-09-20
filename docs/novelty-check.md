@@ -1,0 +1,346 @@
+# Novelty Check — Reference Robustness in Arabic MDD
+
+Week 0 gate for [mdd-paper-project-plan.md](mdd-paper-project-plan.md) §8. Run 16 September 2026.
+
+**Scope:** Tiers 1 through 4 have now all been run, plus the two forward-citation seeds and verification of the papers the plan already cites. Tier 1 (direct hits) and Tier 2 (terminology variants, including the queries that omit the word *Arabic*) were run in the first pass; Tier 3 (cross-lingual analogues — Hebrew niqqud, Kashmiri, Chinese polyphone, Japanese kanji, Urdu) and Tier 4 (adjacent fields — forced-alignment error impact, ASR reference-transcript reliability, TTS front-end cascades) were run in a second pass on the same day and are marked as such in the tables below. Only the **Arabic-language queries** remain unrun, along with the manual re-run of the forward-citation traversal that failed for infrastructure reasons. See §5.
+
+**If you read one section:** §1 for the gate verdict, §4 for the quotes that become the introduction and for the two findings that constrain the design, §6 for what to actually read next.
+
+---
+
+## 1. Verdict
+
+**Not scooped. Proceed to week 1.**
+
+Across 36 distinct queries plus two citation-graph traversals, nothing was found that measures what diacritization errors cost an Arabic mispronunciation detection system. The literature divides cleanly into three groups, none of which is the paper:
+
+Work that *improves* Arabic diacritization and reports DER/WER on news text — CATT, Sadeed, Fine-Tashkeel, the KSAA-2026 shared task systems — stops at the diacritizer's own output and never follows the error downstream. Work that *builds* Arabic MDD systems — the IqraEval benchmark, IQRA 2026, AraS2P, the Fusion-Aware two-stage framework, Harf-Speech — consumes a vowelized reference as a given and does not perturb it. And work on MDD *robustness* attacks the audio (adversarial amplitude perturbation) or the canonical prior's *influence* (CROTTC-IF's "linguistic trap"), never the canonical prior's *correctness*.
+
+The gap is real and it is the one the plan describes. **Tier 3 and Tier 4 did not close it, but they changed its shape, and the change matters more than the verdict.** Three findings now constrain the design rather than the novelty, and each is discussed below:
+
+CROTTC-IF has already shown that canonical conditioning is harmful even when the canonical sequence is *correct*, which changes what RQ4 can claim (§4, first subsection). An existing Arabic ASR paper, 2302.14022, has already run the manual-versus-automatic-versus-no-diacritization comparison for a different task, which supplies a ready-made methodological precedent to cite. And — the most consequential result of the Tier 4 pass — **two Interspeech papers by the Berisha/Liss/Hustad group have already asked the structurally identical question about a different upstream component.** Mathad et al. (2021) and Kadambi et al. (2024) measure how forced-alignment error propagates into automated pronunciation scores for children's speech. They are simultaneously the strongest structural precedent for the whole project, its clearest reviewer risk, and a methodology gift; §4's second subsection works through all three. They also carry a prior that runs *against* a large headline effect: both find the upstream error's downstream impact minor to moderate, not dominant.
+
+Tier 3 produced no scoop and one strong confirmation from outside Arabic. The Koshur (Kashmiri) diacritizer paper states in print that DER "penalize[s] every mark mismatch equally, yet not all diacritic deviations are perceptually or linguistically significant" — the project's core intuition, independently reached for another abjad, and a mandatory citation. ReNikud reaches the case-ending argument independently in Hebrew, and then bypasses the diacritizer entirely with audio supervision, which is the rival approach a reviewer may raise. No cross-lingual work measures diacritization error into a pronunciation-assessment pipeline.
+
+**Confidence: moderate, and now for a different reason.** After Tiers 3 and 4 the keyword coverage is genuinely broad — thirty-six queries across four tiers and five languages — so the residual risk is no longer "an obvious query was not run". It is that the strong method never worked: full forward-citation traversal failed for infrastructure reasons rather than returning a clean negative. Semantic Scholar's API returned HTTP 429 on every attempt; OpenAlex's coverage of these preprints is visibly broken (it records 3 citations for CATT and 18 for Halabi & Wald, both certainly undercounts, and it does not link the IqraEval papers to Halabi at all despite their citing it). One new traversal target has been added by this pass: the forward citations of Kadambi et al. 2024 are now as important to check as CATT's, because anyone who has already ported that paper's method to a text-front-end problem would be citing it. The gate is passed on the evidence available, but it is passed provisionally and should be re-run with working citation-graph access before week 3.
+
+### Two secondary results
+
+**IQRA 2027 is not announced.** No trace of a third edition. IQRA 2026 (the second edition, arXiv 2603.29087) introduced `Iqra_Extra_IS26`, a dataset of authentic human mispronounced speech, and reports a jump of 0.28 in F1 over the first edition. Open item §7 in the plan stays open; re-check when the Interspeech 2027 call appears.
+
+**The plan's CATT numbers check out exactly, and they are the EO row.** Verified against Table 5 of arXiv 2407.03236v3: EO gives DER 5.425% with case endings versus 3.105% without, and WER 22.132% versus 12.679%. The ED variant differs — DER 5.963/3.631, WER 20.060/11.310 — so cite the variant explicitly in the paper. The full table also hands you the degradation curve the plan wants, and the case-ending ratio holds across every system in it:
+
+| Diacritizer | CE DER % | CE WER % | no-CE DER % | no-CE WER % |
+|---|---|---|---|---|
+| CATT EO | 5.425 | 22.132 | 3.105 | 12.679 |
+| CATT ED | 5.963 | 20.060 | 3.631 | 11.310 |
+| Sakhr | 7.843 | 38.413 | 5.628 | 29.921 |
+| CBHG | 8.276 | 36.032 | 5.448 | 21.528 |
+| D2 | 9.231 | 32.622 | 6.164 | 21.744 |
+| Shakkala | 9.978 | 37.241 | 6.593 | 24.988 |
+| Multilevel | 12.431 | 45.054 | 9.318 | 36.217 |
+| Alkhalil | 14.912 | 46.793 | 12.145 | 35.699 |
+| Mishkal | 15.246 | 54.187 | 8.558 | 27.337 |
+| Farasa | 19.584 | 69.536 | 17.752 | 66.601 |
+| Command R+ | 21.470 | 54.335 | 17.755 | 49.611 |
+
+CATT EO → Shakkala → Mishkal → Farasa spans 5.4% to 19.6% CE DER, which is a wide enough spread to plot degradation against diacritizer quality without adding a fourth tool. Note that Mishkal is anomalous: its CE/no-CE gap is much larger than anyone else's (15.2 → 8.6), meaning it is disproportionately bad at case endings specifically. That makes it a useful probe for RQ3 rather than just a weak baseline.
+
+---
+
+## 2. Table 1 — Search log
+
+All queries run 16 September 2026 — Tiers 1–2 and the citation seeds in the first pass, Tiers 3–4 in a second pass the same day. "Hits reviewed" counts returned results inspected at title/snippet level; papers read in more depth are named in Table 2.
+
+| Query | Engine | Date | Hits reviewed | Relevant? |
+|---|---|---|---|---|
+| **Tier 1 — direct hits** | | | | |
+| Arabic mispronunciation detection diacritization error | WebSearch | 2026-09-16 | 10 | No direct hit. Surfaced AraS2P, the abjadNLP diacritized-ASR paper |
+| Arabic pronunciation assessment automatic diacritization | WebSearch | 2026-09-16 | 9 | No. All results are diacritization-improvement work |
+| Arabic CAPT canonical phoneme sequence error | WebSearch | 2026-09-16 | 9 | No direct hit. Surfaced IQRA 2026, Fusion-Aware, 2506.07722 |
+| IqraEval diacritization | WebSearch | 2026-09-16 | 7 | No. Confirms IqraEval treats diacritization as a solved input |
+| Qur'anic pronunciation assessment reference transcription | WebSearch | 2026-09-16 | 7 | No direct hit. Surfaced CROTTC-IF, QPS |
+| **Tier 2 — terminology variants (Arabic omitted where marked \*)** | | | | |
+| \*"grapheme-to-phoneme" error propagation pronunciation assessment | WebSearch | 2026-09-16 | 9 | No. G2P-improvement literature only; nothing on downstream propagation |
+| \*"noisy reference" OR "reference errors" mispronunciation detection diagnosis | WebSearch | 2026-09-16 | 9 | No. "Noisy" in this literature means noisy *annotation*, not noisy canonical text |
+| \*"canonical prompt" robustness mispronunciation detection text-dependent | WebSearch | 2026-09-16 | 7 | **Partially.** Returned CROTTC-IF — see Table 2 |
+| \*"lexicon errors" computer-aided pronunciation training robustness | WebSearch | 2026-09-16 | 8 | No. Lexicon *expansion* for mispronunciation variants, not lexicon error cost |
+| \*text-dependent pronunciation scoring imperfect transcript upstream error | WebSearch | 2026-09-16 | 9 | Weakly. Azure Pronunciation Assessment docs acknowledge the dependency |
+| Arabic vowelization error propagation downstream speech cascading | WebSearch | 2026-09-16 | 8 | No. Cascade-error work is ASR→NER and ASR→QA, not diacritizer→MDD |
+| tashkeel automatic diacritization text-to-speech error cascade evaluation | WebSearch | 2026-09-16 | 8 | No. KSAA-2026 is speech→diacritics, the inverse direction |
+| \*effect of G2P errors on mispronunciation detection performance degradation | WebSearch | 2026-09-16 | 9 | No. G2P-supervision curriculum work only |
+| \*mispronunciation detection robustness noisy canonical text perturbation reference corruption | WebSearch | 2026-09-16 | 10 | **Methodologically relevant.** Phoneme-substitution perturbations in 2506.02080 |
+| "automatic diacritization" impact mispronunciation detection F1 gold reference ablation Arabic MDD | WebSearch | 2026-09-16 | 8 | No |
+| Arabic MDD gold diacritics assumption deployment realistic reference not available | WebSearch | 2026-09-16 | 10 | No direct hit. Surfaced Diacritics in the Wild, 2311.10771 |
+| case endings i'rab excluded pronunciation scoring Arabic mispronunciation evaluation | WebSearch | 2026-09-16 | 8 | No. **Nobody has proposed excluding case endings from MDD scoring** |
+| diacritization error rate Common Voice Arabic transcripts Quranic text DER | WebSearch | 2026-09-16 | 9 | No. **No published DER on Common Voice Arabic or Qur'anic text found — RQ1 stands** |
+| **Citation seeds and verification** | | | | |
+| CATT arXiv 2407.03236 cited by mispronunciation | WebSearch | 2026-09-16 | 9 | Seed proxy. Only 2506.07722 and Fusion-Aware appear |
+| Halabi & Wald 2016 phonetic inventory cited by speech pipeline | WebSearch | 2026-09-16 | 8 | Seed proxy. All TTS/ASR |
+| papers using CATT diacritizer before speech model pipeline 2026 | WebSearch | 2026-09-16 | 8 | No. All KSAA-2026, inverse direction |
+| IQRA 2027 Interspeech challenge Arabic pronunciation assessment | WebSearch | 2026-09-16 | 8 | Negative confirmed — no 2027 edition announced |
+| Harf-Speech Arabic pronunciation dataset | WebSearch | 2026-09-16 | 7 | Verified; see Table 2 |
+| "Towards stable AI systems for Evaluating Arabic Pronunciations" | WebSearch | 2026-09-16 | 8 | Verified; acoustic robustness only |
+| **Citation-graph traversal** | | | | |
+| Semantic Scholar API — citations of arXiv:2407.03236 | S2 Graph API | 2026-09-16 | 0 | **FAILED — HTTP 429 on three attempts** |
+| semanticscholar.org/arxiv/2407.03236 | WebFetch | 2026-09-16 | 0 | **FAILED — 404** |
+| Connected Papers graph for 2407.03236 | WebFetch | 2026-09-16 | 0 | **FAILED — requires JavaScript** |
+| OpenAlex `cites:W4402671409` (CATT) | OpenAlex API | 2026-09-16 | 3 | 3 hits, all diacritization-evaluation or MT corpora. None MDD. **Coverage clearly incomplete** |
+| OpenAlex `cites:W2473814316` (Halabi & Wald) | OpenAlex API | 2026-09-16 | 18 | 18 hits, all TTS/ASR/signal-processing. **Coverage clearly incomplete — does not include the IqraEval papers, which do cite Halabi** |
+| **Tier 3 — cross-lingual analogues** | | | | |
+| Hebrew niqqud grapheme-to-phoneme pronunciation assessment error propagation | WebSearch | 2026-09-16 | 9 | **Yes — the most productive Tier 3 query.** Surfaced ReNikud (2606.20179) and Phonikud (2506.12311) |
+| Hebrew niqqud diacritization automatic vowelization downstream speech task degradation | WebSearch | 2026-09-16 | 8 | Partially. Confirms Hebrew work is TTS-facing, not assessment-facing |
+| Chinese polyphone disambiguation error impact downstream pronunciation assessment CAPT | WebSearch | 2026-09-16 | 9 | No. All TTS front-end. BreezyVoice reports difficult-case failures but does not score learners |
+| Japanese kanji reading ambiguity error propagation speech pronunciation evaluation | WebSearch | 2026-09-16 | 8 | No CAPT analogue. Surfaced the Joyo Kanji Yomi Benchmark (2606.25369) and 2023.cawl-1.7 |
+| Urdu Persian diacritization vowel restoration downstream speech recognition pronunciation | WebSearch | 2026-09-16 | 8 | No downstream study. Urdu letter-level trigram diacritizer only (95.37% accuracy) |
+| Kashmiri Urdu abjad diacritic restoration perceptual significance DER limitation | WebSearch | 2026-09-16 | 7 | **Yes.** Koshur Diacritizer (2606.15883) — see Table 2 and Table 3 |
+| \*grapheme-to-phoneme robustness controlled noise injection downstream word error rate | WebSearch | 2026-09-16 | 9 | **Methodologically relevant.** r-G2P (2202.11194) is the closest existing corruption-sweep design |
+| **Tier 4 — adjacent fields** | | | | |
+| forced alignment error impact automatic pronunciation assessment scoring | WebSearch | 2026-09-16 | 10 | **Yes — the single most important hit of the whole check.** Mathad et al. 2021 and Kadambi et al. 2024 |
+| alignment error pronunciation scoring children speech mixed effects phoneme position | WebSearch | 2026-09-16 | 9 | **Yes.** Confirms Kadambi et al. 2024 and its ΔPLLR methodology; also Segmentation-free GOP (2507.16838) |
+| forced aligner lexicon quality robustness L2 speech phonetic category | WebSearch | 2026-09-16 | 8 | Partially. Speech Communication 2024 aligner-performance study, relevant to RQ3's category split |
+| ASR evaluation reference transcription errors WER reliability noisy ground truth | WebSearch | 2026-09-16 | 10 | **Weaker than the plan assumed.** Metric-design work (Beyond Levenshtein, SeMaScore) plus blogs, not propagation measurement. See §5 |
+| WER unequal error weighting deletions keywords stopwords downstream task impact | WebSearch | 2026-09-16 | 9 | Partially. "Not All Errors Are Equal" (2412.06332), "Deletions Are More Equal" (1904.01684), "Useful Blunders" (2401.05551) |
+| TTS front-end text normalization error cascade evaluation pipeline | WebSearch | 2026-09-16 | 8 | **Negative, and oddly so.** Results were almost entirely USPTO patents. No usable academic literature on TTS front-end cascades |
+
+---
+
+## 3. Table 2 — Prior-art ledger
+
+| Paper | Venue / year | What it does | Why it doesn't scoop us | Cite in |
+|---|---|---|---|---|
+| **Towards a Unified Benchmark for Arabic Pronunciation Assessment** (El Kheir et al., [arXiv 2506.07722](https://arxiv.org/abs/2506.07722)) | Interspeech 2025 | Builds Iqra_train from Common Voice Ar and QuranMB.v1; defines the 68-phoneme Halabi inventory; supplies the baseline | Applies an in-house vowelizer and treats its output as correct. States the assumption explicitly and never tests it. This is the paper we are extending | Intro, Related Work, Methods |
+| **IQRA 2026 Challenge overview** (El Kheir et al., [arXiv 2603.29087](https://arxiv.org/abs/2603.29087)) | Interspeech 2026 | Second challenge edition; adds `Iqra_Extra_IS26` authentic mispronounced speech; F1 up 0.28 on edition one | "Expert in-house vowelization was applied to all transcriptions." Its stated open problem is phoneme→character feedback mapping, not reference correctness | Intro, Related Work |
+| **Iqra'Eval: A Shared Task on Qur'anic Pronunciation Assessment** (El Kheir et al., [2025.arabicnlp-sharedtasks.61](https://aclanthology.org/2025.arabicnlp-sharedtasks.61/)) | ArabicNLP 2025 | Defines the hierarchical TA/TR/FA/FR and CD/ED metric | Metric definition only. Title and authorship independently verified | Methods |
+| **CROTTC-IF / Beyond Acoustic Sparsity and Linguistic Bias** (Geng et al., [arXiv 2604.22133](https://arxiv.org/abs/2604.22133)) | 2026 | Prompt-free MDD; identifies the "linguistic trap" of canonical information leakage; shows explicit canonical targets drop LLM F1 to 40.52% | **Closest to RQ4 and it reframes it.** Shows canonical conditioning hurts when the canonical sequence is *correct*; says outright that canonical sequences "are inherently available". Says nothing about corrupted canonical text. See §4 | Intro, Related Work, RQ4 discussion |
+| **Fusion-Aware Two-Stage Framework** ([arXiv 2606.24086](https://arxiv.org/abs/2606.24086)) | 2026 | IqraEval.2 top system; F1 0.7201 vs 0.4414 baseline; pretrained encoder + dilated TCN + domain adaptation | Pure system paper. No diacritization or reference-text analysis. Its 0.7201 is the number our degradation must be measured against | Related Work, Systems |
+| **AraS2P** ([arXiv 2509.23504](https://arxiv.org/abs/2509.23504)) | 2025 | Iqra'Eval 2025 winner; Wav2Vec2-BERT, two-stage task-adaptive pretraining | Generates references by "converting the Arabic text using the MSA Phonetiser" with no accuracy assessment of that step | Related Work, Systems |
+| **Harf-Speech** ([arXiv 2604.06191](https://arxiv.org/abs/2604.06191)) | 2026 | Clinical phoneme-level Arabic scoring; MSA phonetizer + phoneme ASR + Levenshtein; validated against 3 SLPs | Generates the canonical sequence from a reference sentence via phonetizer, unexamined. Notes "diacritic omission" as a challenge without quantifying it | Intro, Related Work |
+| **Towards stable AI systems for Evaluating Arabic Pronunciations** (Zaatiti et al., [arXiv 2508.19587](https://arxiv.org/abs/2508.19587)) | 2025 | Isolated-letter Arabic assessment; ε=0.05 amplitude perturbation cuts accuracy 65%→32%; adversarial training limits the drop to 9% | **Useful contrast, not a threat.** Robustness to *audio* perturbation. Nobody has done the equivalent for *reference* perturbation — which is our synthetic-corruption sweep | Intro (framing), Related Work |
+| **Diacritic Recognition Performance in Arabic ASR** ([arXiv 2302.14022](https://arxiv.org/abs/2302.14022)) | 2023 | Isolates diacritic recognition from overall ASR using coverage/precision; compares manual vs automatic vs no diacritization | **Closest methodological precedent found.** Runs our exact experimental contrast — but for ASR, measuring transcription quality, not for MDD, measuring corrupted error labels. Borrow the design and cite it prominently | Methods, Related Work |
+| **Automatic Restoration of Diacritics for Speech Data Sets** ([NAACL 2024](https://aclanthology.org/2024.naacl-long.233/), arXiv 2311.10771) | NAACL 2024 | Uses audio to improve diacritic restoration on speech corpora; beats text-only baselines | Improves restoration; explicitly does not evaluate any downstream task. Directly relevant to the MSA arm's annotation step | Methods (annotation), Related Work |
+| **CATT** (Alasmary et al., [arXiv 2407.03236](https://arxiv.org/abs/2407.03236)) | 2024 | Character-based Arabic diacritizer, EO and ED variants; WikiNews with/without case endings | Our primary diacritizer and the source of the case-ending motivation. Reports its own DER/WER and stops there | Methods, Intro |
+| **Arabic-Adapted One-Step Speech-to-Diacritized ASR** ([2026.abjadnlp-1.43](https://aclanthology.org/2026.abjadnlp-1.43/)) | AbjadNLP 2026 | Error analysis of diacritized ASR; Arabic-adapted wav2vec 2.0 beats Whisper on DER | Speech→diacritics. Inverse direction, and the task is transcription not assessment | Related Work |
+| **KSAA-2026 Task 2 systems** — Fine-Tashkeel ([2026.osact-1.31](https://aclanthology.org/2026.osact-1.31/)), TantaArabNLP ([2026.osact-1.30](https://aclanthology.org/2026.osact-1.30/)), Thaka ([arXiv 2605.25928](https://arxiv.org/abs/2605.25928)) | OSACT7 @ LREC 2026 | Diacritization of Arabic speech dictation; 18-model comparison; best DER 10.56% / WER 34.47% | Diacritics as *output* of a speech model. Confirms two things worth citing: speech-domain diacritization is much harder than news text (DER 10.56% vs CATT's 5.43%), and diacritization error propagation is acknowledged in multimodal failure analysis but not measured downstream | RQ1 (domain gap), Related Work |
+| **Arabic Diacritics in the Wild: Exploiting Opportunities for Improved Diacritization** (Elgamal et al., [ACL 2024 long](https://aclanthology.org/2024.acl-long.792/), arXiv 2406.05760) | ACL 2024 | Characterizes partial diacritization in naturally occurring Arabic | Establishes that real text has neither full nor zero diacritics. Supports the deployment premise; measures nothing downstream | Intro |
+| **Take the Hint** ([arXiv 2306.03557](https://arxiv.org/abs/2306.03557)) | 2023 | Diacritization from partially-diacritized input | Adjacent. Relevant if the paper later considers partially diacritized references | Related Work (optional) |
+| **Enhancing GOP in CTC-Based MDD with Phonological Knowledge** ([arXiv 2506.02080](https://arxiv.org/abs/2506.02080)) | 2025 | GOP variants evaluated under synthesised phoneme substitutions: UPS ("allows any phoneme to be replaced by another without constraints") vs RPS = **Restricted** Phoneme Substitutions, which "incorporates substitution mapping to restrict phoneme replacements" via a handcrafted Phoneme Confusion Map | **Read before designing the corruption sweep,** with a caveat. Its RPS/UPS contrast is about generating *realistic learner errors*, not about testing robustness to a corrupted reference — but it does report that "PP-AF GOP is more robust to RPS" than PA-AF GOP, so the machinery for comparing systems under controlled phoneme perturbation already exists. Borrow the confusion-map construction (phonetic proximity, common L2 errors, phonological rules); do not describe it as a reference-corruption precedent | Methods (corruption sweep), Related Work |
+| **Evaluating Arabic Diacritization Models: Self-hosted to Commercial** (OpenAlex W-record, 2026) | 2026 | Compares diacritizers including cost/deployment considerations | Diacritizer comparison only. *Venue and full text not retrieved this pass* — worth chasing for degradation-curve tool selection | Methods (diacritizer choice) |
+| **Halabi & Wald, Phonetic Inventory for an Arabic Speech Corpus** ([LREC 2016 L16-1116](https://aclanthology.org/L16-1116/)) | LREC 2016 | The MSA phonetic inventory and phonetizer the whole field uses | Infrastructure. Forward-citation seed | Methods |
+| **Azure Pronunciation Assessment — characteristics and limitations** ([MS Learn](https://learn.microsoft.com/en-us/azure/foundry/responsible-ai/speech-service/pronunciation-assessment/characteristics-and-limitations-pronunciation-assessment)) | Microsoft docs | Documents that assessment quality depends on transcription accuracy when a submitted transcription is used as reference | Not a paper, but evidence that industry deployments know the dependency exists while the research literature has not quantified it. Useful one-line framing | Intro (optional) |
+| **Tier 4 — the structural precedents** | | | | |
+| **The impact of forced-alignment errors on automatic pronunciation evaluation** (Mathad, Mahr, Scherer, Chapman, Hustad, Liss, Berisha, [Interspeech 2021](https://www.isca-archive.org/interspeech_2021/mathad21_interspeech.html)) | Interspeech 2021 | Decomposes an automatic pronunciation score into forced-alignment quality and acoustic deviation; bivariate linear regression over children with cleft lip/palate and typically-developing controls | **The structural precedent for the entire project, in a different pipeline stage.** Same two-stage logic: an upstream automatic component whose errors contaminate a downstream score. But the upstream component is the *aligner*, the language is English, and the task is clinical severity rating, not phoneme-level error labelling. Crucially it does **not** corrupt a reference *text* — the reference is correct and only the time boundaries move. Cite in the first paragraph of related work; do not let a reviewer find it before you do | Intro, Related Work, Methods |
+| **How Does Alignment Error Affect Automated Pronunciation Scoring in Children's Speech?** (Kadambi, Mahr, Annear, Nomeland, Liss, Hustad, Berisha, [Interspeech 2024](https://www.isca-archive.org/interspeech_2024/kadambi24_interspeech.html)) | Interspeech 2024 | Defines ΔPLLR = PLLR under manual alignment minus PLLR under automatic alignment; mixed-effects models with phoneme position and phoneme type as predictors; finds alignment error has a *moderate* effect on ΔPLLR | **Read first, cite hardest, and borrow the method.** ΔPLLR is exactly the shape of the project's primary metric with `C_gold`/`C_auto` substituted for manual/automatic alignment, and the mixed-effects specification with phoneme position and type is a ready-made template for RQ3's phonetic-category decomposition. Its reviewer risk is real — "this is the alignment-error paper with diacritics" — and §4 sets out the answer. Its forward citations are now a traversal target | Intro, Related Work, **Methods (primary metric, RQ3 model)** |
+| **Analysis of forced aligner performance on L2 English speech** ([Speech Communication 2024](https://doi.org/10.1016/j.specom.2023.103008)) | Speech Communication 2024 | Aligner accuracy on non-native speech broken out by phonetic category; stops and fricatives align robustly, nasals, approximants and vowels do not | Aligner quality, not reference quality. Useful because it establishes that **upstream error is phonetic-category-dependent** — the same premise RQ3 rests on, already evidenced for a neighbouring component. Supports the hypothesis that vowel-bearing positions are where diacritization error concentrates | RQ3 framing, Related Work |
+| **Not All Errors Are Equal: Investigation of Speech Recognition Errors in Alzheimer's Disease Detection** ([arXiv 2412.06332](https://arxiv.org/abs/2412.06332)), **Impact of ASR on Alzheimer's Disease Detection: All Errors are Equal, but Deletions are More Equal than Others** ([arXiv 1904.01684](https://arxiv.org/abs/1904.01684)), **Useful Blunders: Can ASR Errors Improve Downstream Performance?** ([arXiv 2401.05551](https://arxiv.org/abs/2401.05551)) | 2019–2024 | **Note the full titles — these are clinical-classification papers, not ASR-evaluation papers.** All three measure how ASR errors propagate into a *downstream task* (Alzheimer's detection, mostly): stopwords are ~60% of errors but carry little downstream signal while keywords are ~9% and pivotal; deletions cost more than substitutions; the WER-to-downstream-performance relationship is non-linear | **Better than first assessed — these are genuine upstream-error-propagation studies, just in a different downstream task.** They supply the citable frame RQ3 needs: aggregate upstream error rate is a poor predictor of downstream damage, and *which* errors occur matters more than how many. Cite them as the general form of the argument, with the Arabic case as the instance. Still worth only a sentence or two each — the downstream task is text classification, not phoneme-level assessment, so the mechanism does not transfer, only the principle | Intro (framing), **RQ3 discussion** |
+| **Tier 3 — cross-lingual analogues** | | | | |
+| **Koshur Diacritizer** ([arXiv 2606.15883](https://arxiv.org/abs/2606.15883)) | 2026 | Kashmiri diacritization; reports DERm 0.2012 against a 77.5% expert human rating and argues the two diverge | **Mandatory citation, and it is a gift.** States in print, for another abjad, that equal-weighted DER misrepresents what matters — the exact intuition behind excluding case endings and behind RQ3. Does not touch pronunciation assessment, so it does not scoop; it corroborates. Quote is in Table 3 | **Intro (strongest external corroboration), RQ3** |
+| **ReNikud: Audio-Supervised Hebrew Grapheme-to-Phoneme Conversion** ([arXiv 2606.20179](https://arxiv.org/abs/2606.20179)) | 2026 | Bypasses nikud-first G2P using weak audio supervision (phoneme-ASR pseudo-labelling, a pseudo-vocalization architecture, the MILIM benchmark) | **The closest cross-lingual analogue and the sharpest reviewer prompt.** Independently reaches the case-ending argument in Hebrew — nikud "reflects formal grammatical rules rather than everyday spoken pronunciation" — and then answers it by *removing the diacritizer from the pipeline*. That is the rival approach: "why measure the cost of a bad diacritizer instead of not using one?" The answer is that the Arabic MDD reference must be a diacritized *text* the learner reads, not a phoneme string, but have it ready | Intro, Related Work, **Discussion (rival approach)** |
+| **Phonikud** ([arXiv 2506.12311](https://arxiv.org/abs/2506.12311)) | 2025 | Hebrew G2P for real-time TTS; ILSpeech corpus; built "by augmenting a base diacritizer" | Hebrew pipeline paper. A search summary attributed to it the sentence that as a pipeline system "errors from the base diacritizer can propagate", which would have made it the nearest cross-lingual statement of the premise. **The abstract does not contain it** — the HTML fetch 404'd and the `/abs/` page, checked on verification, mentions only the augmented base diacritizer. Treat the quote as unavailable unless someone reads the full PDF; the paper is still citable as a Hebrew pipeline that stacks on a diacritizer | Related Work (paper yes, quote no) |
+| **r-G2P: Evaluating and Enhancing G2P Robustness** ([arXiv 2202.11194](https://arxiv.org/abs/2202.11194)) | 2022 | Injects controlled noise into G2P inputs and measures the resulting degradation (−2.73% WER dictionary-based, −9.09% real-world) | **The closest existing corruption-sweep design.** Confirms the synthetic-perturbation methodology is established and publishable — but it measures G2P output quality against itself, with no downstream task. The project's contribution is precisely the missing downstream leg | Methods (corruption sweep), Related Work |
+| **BreezyVoice** ([arXiv 2501.17790](https://arxiv.org/abs/2501.17790)), **Sarashina2.2-TTS** ([arXiv 2606.25369](https://arxiv.org/abs/2606.25369)) | 2025–2026 | Mandarin polyphone disambiguation and Japanese kanji-reading TTS; the latter introduces the Joyo Kanji Yomi Benchmark | **Recorded as negatives.** Both are TTS-side: they measure whether the front end picks the right reading, never what a wrong reading costs a downstream assessment system. Chinese and Japanese have the ambiguity but no CAPT analogue. Cite at most in a single sentence establishing that the analogue is absent, not present | Related Work (one sentence, optional) |
+
+---
+
+## 4. Table 3 — Quote bank
+
+Every quote below was retrieved verbatim from the paper's own text, and the Tier 3–4 additions were re-checked in a second verification pass. The second column gives the source — including the section, where the quote is not in the abstract; the third gives the claim in the plan it supports.
+
+| Quote | Source | Which claim it motivates |
+|---|---|---|
+| "We assume that the provided speech aligns with linguistically driven transcript vowelization; to ensure accuracy, we applied our in-house state-of-the-art vowelizer to the transcriptions." | Towards a Unified Benchmark, arXiv 2506.07722 | **The single best motivation quote.** The assumption stated in the field's own words, in the paper that built the benchmark. Open the introduction with it |
+| "To obtain correct phoneme sequences, we applied the phonetizer to the vowelized transcription of all these datasets." | arXiv 2506.07722 | "Correct" is doing unearned work. The word choice is the paper |
+| "For the TTS dataset and QuranMB.v1 test set, the transcription is fully vowelized by design." | arXiv 2506.07722 | "By design" — i.e. by convention, not by measurement. Supports §1's point that QuranMB gets gold diacritics for free |
+| "Expert in-house vowelization was applied to all transcriptions, followed by phonetization via the Halabi MSA phonetizer." | IQRA 2026, arXiv 2603.29087 | The assumption persists unexamined into the 2026 edition. Also: "expert in-house" is not reproducible, which is the limitation the plan flags in §3 |
+| "In reading-aloud scenarios, canonical phoneme sequences are inherently available." | CROTTC-IF, arXiv 2604.22133 | The assumption at its most explicit and most load-bearing. *Available* is conflated with *correct*. For Arabic, neither holds |
+| "Given a reference sentence, we generate its canonical phoneme sequence using an MSA-based phonetizer." | Harf-Speech, arXiv 2604.06191 | Same assumption in a clinically validated system — i.e. one already being pointed at real users |
+| "For fine-tuning our phoneme-level ASR models, we primarily used the IqraEval dataset, which contains fully vowelized Modern Standard Arabic speech." | Harf-Speech, arXiv 2604.06191 | "Fully vowelized" cited as a dataset virtue with no note that deployment data is not |
+| "challenges such as diacritic omission, rich phonemic contrasts, and limited standardized benchmarks restrict clinically aligned phoneme-level evaluation." | Harf-Speech, arXiv 2604.06191 | **A near miss that names the problem and walks past it.** Diacritic omission is listed as a challenge and then not addressed |
+| "There is no trivial or universal mapping from a predicted erroneous phoneme back to the corresponding Arabic character or diacritic, particularly given the many-to-one and context-dependent nature of Arabic grapheme-to-phoneme correspondences." | IQRA 2026, arXiv 2603.29087 | The organizers' own statement that the phoneme↔diacritic relationship is unresolved — which is why nobody has yet asked what a wrong diacritic costs |
+| "Until this mapping problem is solved… the practical utility of these systems for learner-facing applications remains limited." | IQRA 2026, arXiv 2603.29087 | The organizers concede a deployment-realism gap. Frame the paper as answering the call, per the plan's reviewer-pool strategy |
+| "error rates without CE reflect the performance specifically on the core word, while error rates with CE represent the overall performance of the model." | CATT, arXiv 2407.03236v3 | Establishes that the field already separates case endings when measuring diacritization — so doing the same in MDD scoring is a natural extension, not an invention |
+| "the presence or absence of the diacritic on the last letter mostly depends on grammatical rules" | CATT, arXiv 2407.03236v3 | **The case-ending argument in one line, from the diacritizer authors.** Grammatical, therefore not a pronunciation-teaching target |
+| "explicitly providing canonical targets is highly detrimental to MDD, resulting in a drastic drop in the F1 score to 40.52%." | CROTTC-IF, arXiv 2604.22133 | Sharpens RQ4. If correct canonical text already costs this much, corrupted canonical text is the obvious next question and nobody has asked it |
+| "canonical information can easily override the subtle acoustic information." | CROTTC-IF, arXiv 2604.22133 | The mechanism by which input-path corruption would do damage, already named in the literature |
+| **Tier 3 and Tier 4 quotes** | | |
+| "Automatic metrics such as DER and WER penalize every mark mismatch equally, yet not all diacritic deviations are perceptually or linguistically significant." | Koshur Diacritizer, arXiv 2606.15883, **§VII-B** (not the abstract) | **The best external corroboration in the document.** The case-ending and RQ3 argument stated in print for another abjad by authors with no stake in Arabic MDD. Pair it with the CATT grammatical-rules quote and the motivation stops looking like a convenience |
+| "reflects formal grammatical rules rather than everyday spoken pronunciation" | ReNikud, arXiv 2606.20179 | The same argument reached independently in Hebrew about nikud. Two languages, two research groups, one conclusion — that is a much stronger opening than one language and one assertion |
+| "if there is misalignment, the acoustic deviation will also be impacted" | Mathad et al., Interspeech 2021 | The two-stage contamination logic in the field's own words, five years before this paper. Cite it as the precedent and then say what is different |
+| "with the errors in forced alignment playing a relatively minor role" | Mathad et al., Interspeech 2021 | **The prior that runs against the project.** Quote it honestly in related work; the response is in the subsection below |
+| "a small but significant downstream impact" | Mathad et al., Interspeech 2021 | The finding for the clinical (cleft lip/palate) group — upstream error mattered more where the speech was more atypical, which predicts the effect will be larger in L2/learner Arabic than in read MSA |
+| "Care must be taken to distinguish between the impact of alignment error (a spurious signal) and true acoustic deviation on the automated score." | Kadambi et al., Interspeech 2024 | **The methodological warning that justifies the whole experimental design.** Substitute "diacritization error" for "alignment error" and it is the paper's thesis sentence. Also the cleanest available defence against "obvious ablation": distinguishing spurious from true signal is a recognised obligation, not a nicety |
+| "alignment error has a moderate effect on ∆PLLR" | Kadambi et al., Interspeech 2024 | The second half of the adverse prior — moderate, not dominant. Also the sentence that names ΔPLLR, the metric shape to borrow |
+
+### What the alignment-error papers mean for the design
+
+These two papers are the most consequential thing the Tier 3–4 pass found, and they cut three ways at once. Handle all three deliberately.
+
+**They are the precedent, so cite them first.** The related-work section should reach Mathad 2021 and Kadambi 2024 early and describe them accurately: an upstream automatic component, a downstream assessment score, and a careful attempt to separate contamination from signal. Discovering that a reviewer found them first, in a paper that does not cite them, is the worst available outcome for a novelty claim. Cited prominently they work in the paper's favour, because they establish the question type as legitimate and already published at the target venue.
+
+**They are the reviewer risk, and the answer needs writing down now.** The objection is one sentence — "this is the alignment-error paper with diacritics" — and it needs more than a one-sentence reply. The substantive difference is not the pipeline stage; it is what gets corrupted. Alignment error moves the *measurement window*: the reference phoneme sequence is still correct, and the score degrades because the acoustics are read over the wrong interval. A corrupted diacritic moves the *target label*: the system is asked to detect a deviation from a phoneme that was never the right phoneme, so both the model's input and the ground-truth error label shift together. That is the scoring-path corruption the plan identifies, and it has no analogue in the alignment literature. A misaligned boundary cannot make a correctly pronounced phoneme count as an error by definition, whereas a wrong diacritic can and does. The distinction is categorical rather than a matter of degree, and it should appear in the introduction rather than being held back for the rebuttal.
+
+**They are a prior against a large effect, and pretending otherwise is a mistake.** Both papers find the upstream component's downstream impact minor (typically-developing children) to moderate (ΔPLLR, clinical group). A reviewer who reads them will arrive at the project expecting a small effect and will read a large reported degradation as suspicious. Two implications for how the work is run. Pre-commit to reporting the effect whatever its size, and treat a small degradation as a publishable finding rather than a failed experiment — "the field's assumption is approximately safe, and here is the measurement that establishes it" is a real contribution, and the plan's framing should not quietly depend on the number being big. And use the categorical argument above to explain why the prior does not transfer: it predicts the magnitude for window-shifting error, not for label-shifting error, and the case-ending result is the empirical test of that claim, since case endings are precisely where the label moves without the pronunciation target moving.
+
+**Finally, borrow the method openly.** ΔPLLR is the shape of the primary metric the plan already wants, one component substituted. The mixed-effects specification with phoneme position and phoneme type as predictors is a better statistical frame for RQ3 than a bare per-category F1 breakdown, and it handles the utterance- and speaker-level clustering the project's data will have. Adopting a published Interspeech methodology from the same venue also makes the design much harder to characterise as ad hoc. Read Kadambi 2024 before finalising the week-6 pilot, not after.
+
+This needs deciding before week 10, not at the week-12 gate. CROTTC-IF has already established that conditioning on canonical text is harmful with a *correct* canonical sequence, which removes the version of RQ4 that reads "does conditioning on text hurt?" — that is answered, and not by us.
+
+What remains is narrower and more defensible: whether the *additional* damage from a corrupted canonical sequence is larger for text-dependent systems than the scoring-path damage both architectures suffer. That is a question about an interaction, not a main effect, and interactions need more statistical power than main effects do. Two consequences. The RQ4 comparison should be specified as a difference-in-differences — degradation under `C_auto` minus degradation under `C_gold`, compared across the two architectures — and the week-6 pilot should include a power estimate for that quantity specifically, not just for the RQ2 headline. If the pilot says the interaction is not detectable at 300–500 utterances, cut RQ4 in November rather than discovering it in December. The plan's week-12 gate is too late for this particular decision.
+
+The upside is that CROTTC-IF makes RQ4 *more* interesting to cite into rather than less: there is now a live disagreement to contribute to, which is exactly the "feeding an active architectural debate" framing the plan wants for contribution 4.
+
+---
+
+## 5. What this pass did not do
+
+Recorded honestly so the gate can be finished rather than assumed finished.
+
+**Forward-citation traversal did not work.** This was the plan's designated strong method and it is the main gap. Semantic Scholar's Graph API returned HTTP 429 on three attempts; its web paper page 404'd; Connected Papers requires JavaScript. OpenAlex responded but its coverage of these preprints is demonstrably broken — 3 recorded citations for CATT and 18 for Halabi & Wald, and it fails to link 2506.07722 or 2603.29087 to Halabi despite both citing it. The 21 titles OpenAlex did return were all TTS, ASR, signal processing, or diacritization evaluation, with nothing on MDD reference robustness, but that negative carries little weight given the coverage problem. **Re-run manually via Google Scholar "cited by" in a browser** — this is a 30-minute job for a human and it is the highest-value remaining item.
+
+**Arabic-language queries were not run.** This is now the only unrun item from the plan's §8. تشكيل + تقييم النطق and كشف أخطاء النطق + التشكيل الآلي are still outstanding, as are the Arabic university thesis repositories. The plan is right that an unpublished MSc chapter doing this exact ablation is plausible, and it is the one place a scoop could still be hiding that thirty-six English queries would not have found.
+
+**One plan assumption needs adjusting, though less than a first look suggested.** The plan states that "the ASR literature on *unreliable reference transcripts corrupting WER* is well developed and gives you a vocabulary — and a methodology — you can borrow openly." The literature that exists is not quite the literature described. Queries phrased around reference-transcript reliability return metric-*design* work — Beyond Levenshtein ([arXiv 2408.15616](https://arxiv.org/abs/2408.15616)), SeMaScore ([arXiv 2401.07506](https://arxiv.org/abs/2401.07506)) — arguing that WER weights errors badly, plus industry blog posts. That is framing, not a borrowable design.
+
+But the verification pass corrected a mistake of mine here, and in the project's favour. The three papers I initially filed as "WER critique" are, by their full titles, clinical-classification papers: *Not All Errors Are Equal: Investigation of Speech Recognition Errors in Alzheimer's Disease Detection* and *Impact of ASR on Alzheimer's Disease Detection: All Errors are Equal, but Deletions are More Equal than Others*. They do measure upstream error propagating into a downstream task — the task is just Alzheimer's detection rather than pronunciation assessment. So propagation studies do exist; they are filed under clinical NLP rather than under ASR evaluation, which is why the plan's expected search phrasing did not find them. Two practical consequences. The borrowable *experimental* methodology is still Kadambi 2024 from the forced-alignment literature, so budget the close reading there. But the citable *principle* — that which upstream errors occur matters more than how many, which is RQ3's premise — now has three independent precedents in a neighbouring field, and that is a stronger position than "nobody has framed this before."
+
+**One Tier 4 negative is genuinely surprising.** The TTS front-end error cascade query returned almost entirely USPTO patent filings and no usable academic literature. Either the search phrasing missed a field that exists under different terminology, or TTS front-end cascade error is treated as engineering rather than research and lives in patents and internal evaluation. Worth one more attempt with different terms before concluding the literature is absent, but it is not blocking anything.
+
+**Unverified items.** Three things in this document still rest on search snippets rather than retrieved primary text, and each is flagged where it appears. The "Evaluating Arabic Diacritization Models: Self-hosted to Commercial" 2026 paper (title from OpenAlex only, no venue or text retrieved). A search snippet reporting cross-domain diacritic accuracy drops "ranging between 4–45%", which a follow-up fetch of the candidate source (arXiv 2401.04848) did **not** confirm — that number should not be used until its actual source is found. And, new from this pass, the Phonikud sentence about pipeline diacritizer errors propagating: `arxiv.org/html/2506.12311v1` returned 404 and the claim rests on a search summary alone. It would be a valuable quote — the premise stated for Hebrew — which is exactly why it must not be used before the PDF is read directly.
+
+**Everything else quoted from Tier 3 and Tier 4 was retrieved verbatim, and a second verification pass re-checked all of it.** The ReNikud grammatical-rules phrase and all five Mathad and Kadambi quotes are verbatim from the papers' abstracts. The Koshur DER sentence is verbatim but comes from **§VII-B (Human Expert Evaluation) of the full text, not the abstract** — cite it with a section reference, and note that a reader who checks only the arXiv abstract page will not find it. The two Interspeech papers were reached via ISCA archive landing pages after the PDFs failed to parse; author lists were confirmed against those pages. All arXiv identifiers added by this pass resolve, and two title errors were caught and fixed — see the WER-critique entry in Table 2, whose papers turn out to be Alzheimer's-detection papers.
+
+**Verification pass.** All twelve arXiv and ACL Anthology identifiers cited above were independently re-resolved and their titles confirmed. One error was caught and corrected: RPS in arXiv 2506.02080 is *Restricted* Phoneme Substitutions, a method for synthesising realistic learner errors, not "Random" Phoneme Substitution as an initial search snippet implied. The Table 2 entry has been rewritten accordingly, and the distinction matters — that paper is a source of technique, not a precedent for perturbing the reference.
+
+**The Hebrew result held up under the full Tier 3 pass.** An opportunistic first-pass probe found niqqud restoration literature but nothing connecting automatic vowelization to a pronunciation-assessment pipeline; the complete Tier 3 pass confirms this and extends it to Kashmiri, Urdu, Chinese and Japanese. Hebrew has the closest analogue by a wide margin, and the analogue is TTS-facing (Phonikud) or diacritizer-bypassing (ReNikud), never assessment-facing. Both passes independently confirmed the two most important negatives: nothing measures automatic-diacritization degradation of Arabic MDD, and nobody has proposed excluding case endings from pronunciation scoring.
+
+**One trap avoided, noted for the record.** Searches surfaced pith.science pages presenting AI-generated critical reviews of arXiv papers, including sharp-sounding claims about QuranMB's external validity being unestablished and test errors being drawn from the same confusion matrix used to synthesize training data. These read like quotable critiques and are not; they are machine-generated commentary, not peer-reviewed text, and citing them would be embarrassing. The underlying point about synthetic-error external validity may well be correct and is worth verifying against the primary papers — it bears on the benchmark-validity critique the plan deliberately defers — but it needs an independent, citable source.
+
+---
+
+## 6. The reading list
+
+Table 2 now lists twenty-nine items. You do not need to read twenty-nine papers, and the difference between the ones you must read closely and the ones you can cite from the abstract is large enough to be worth writing down. Grouped by when they block something.
+
+The Tier 3–4 pass added exactly one paper to the must-read-this-week group, and it displaces nothing: **Kadambi et al. 2024**, promoted to the top group because it is both the reviewer risk and the source of the metric design, and those cannot be handled late.
+
+### Read this week — these five block week 1
+
+**How Does Alignment Error Affect Automated Pronunciation Scoring in Children's Speech?, [Interspeech 2024](https://www.isca-archive.org/interspeech_2024/kadambi24_interspeech.html).** Read in full, first. This is the paper your reviewers will compare yours to, and it is also the paper whose method you should adopt. Two things to extract: the exact construction of ΔPLLR, because your primary metric is its analogue and the details of how they held one component fixed while varying the other will save you a week of design; and the mixed-effects specification, because phoneme position and phoneme type are the right random and fixed effects for RQ3 and you would otherwise have reinvented a worse version. Read Mathad et al. 2021 immediately after, which is shorter and mostly context. Then write the two paragraphs distinguishing window-shifting from label-shifting error while it is fresh — that text goes in the introduction and in the eventual rebuttal, and §4 above is a draft of it.
+
+**Towards a Unified Benchmark, [arXiv 2506.07722](https://arxiv.org/abs/2506.07722).** Read in full, twice. This is the pipeline you are instrumenting, and everything downstream depends on understanding exactly how `C` gets built: which vowelizer, which phonetizer settings, how QuranMB was constructed, how the 68-phoneme inventory collapses the Halabi distinctions. It is also where the v1/v2 overlap question from the plan's §6 item 4 has to be resolved. Read its methods section with a pen, not a highlighter.
+
+**IQRA 2026 challenge overview, [arXiv 2603.29087](https://arxiv.org/abs/2603.29087).** The current state of the benchmark: `Iqra_Extra_IS26`, the baseline F1 = 0.4414 you must reproduce at the week-3 gate, and the phoneme→character mapping problem the organizers name as their open question. Read the limitations section first — it is the door you walk through, and two of your best quotes are in it.
+
+**Iqra'Eval 2025 shared task, [2025.arabicnlp-sharedtasks.61](https://aclanthology.org/2025.arabicnlp-sharedtasks.61/).** The hierarchical TA/TR/FA/FR and CD/ED definitions. You implement this metric in weeks 1–3 and you cannot implement it from a summary; the edge cases in how insertions and deletions are counted will decide whether your reproduction lands within ±0.02 of the baseline. Read it alongside the organizers' evaluation code, not instead of it.
+
+**CATT, [arXiv 2407.03236](https://arxiv.org/abs/2407.03236).** Your primary diacritizer and the source of the case-ending motivation. Read the CE/no-CE evaluation protocol closely — you will be mirroring that split in MDD scoring, and if your definition of "case ending" differs from theirs the comparison stops being clean. Table 5 is reproduced in §1 above, so you can skip re-deriving the numbers.
+
+### Read before the experiments are designed — weeks 1 to 4
+
+**Diacritic Recognition Performance in Arabic ASR, [arXiv 2302.14022](https://arxiv.org/abs/2302.14022).** The most useful methodological read on this list and the one most likely to be skipped because it is about ASR. It already ran your experimental contrast — manual versus automatic versus no diacritization — and its trick of isolating diacritic recognition from overall performance using coverage and precision may transfer directly to separating scoring-path from input-path corruption. Citing an established precedent is also the cheapest available defence against the "obvious ablation" objection: the design is not ad hoc, it is the ASR community's method imported.
+
+**CROTTC-IF, [arXiv 2604.22133](https://arxiv.org/abs/2604.22133).** Read in full because it constrains what RQ4 can claim, per §4 above. Pay attention to how they set up the LLM experiment that produced the 40.52% figure — you need to know whether your text-dependent arm is comparable to their canonical-conditioned condition or a different thing wearing the same name.
+
+**Automatic Restoration of Diacritics for Speech Data Sets, [NAACL 2024](https://aclanthology.org/2024.naacl-long.233/).** Uses audio to improve diacritic restoration on speech corpora. Directly relevant to the MSA arm's annotation protocol: if audio-informed restoration beats text-only CATT on Common Voice, then your correct-the-machine starting point should probably be their method rather than CATT, which would both speed up annotation and reduce the anchoring bias the plan worries about. Worth an hour before you annotate anything.
+
+**Enhancing GOP with Phonological Knowledge, [arXiv 2506.02080](https://arxiv.org/abs/2506.02080).** Read only §3-ish, for how the Phoneme Confusion Map is constructed — phonetic proximity, common L2 errors, phonological rules. Useful technique for the corruption sweep. Remember the caveat in Table 2: their substitutions synthesise *learner* errors, not reference errors, so do not cite this as precedent for the claim.
+
+**r-G2P, [arXiv 2202.11194](https://arxiv.org/abs/2202.11194).** Read the noise-injection section only, and read it next to 2506.02080 rather than separately — between them you get both halves of the corruption sweep: how to build phonetically plausible substitutions, and how to sweep injection rates and report a degradation curve. Skip their results; the numbers are about G2P accuracy and do not transfer.
+
+**Koshur Diacritizer, [arXiv 2606.15883](https://arxiv.org/abs/2606.15883).** Twenty minutes, high return, and read §VII-B specifically — that is where the quotable sentence lives, not in the abstract. You need the metric-versus-expert result precisely enough to state it in one sentence: DERm 0.2012 and WER 0.2159 on the held-out test set, against a native-expert mean accuracy of 77.5%. Both numbers are verified. That discrepancy is the strongest external support for RQ3 and for dropping case endings, and it comes from authors with no stake in your argument. Check how DERm is defined before putting it in the same sentence as CATT's DER — the *m* suffix is theirs and may not be the standard definition.
+
+### Read to place your systems — weeks 4 to 10
+
+These are system papers. Read the architecture and training details, skim the rest.
+
+**Fusion-Aware Two-Stage Framework, [arXiv 2606.24086](https://arxiv.org/abs/2606.24086)** — the current top system at F1 0.7201, and the class of system your XLS-R arm approximates. **AraS2P, [arXiv 2509.23504](https://arxiv.org/abs/2509.23504)** — the Iqra'Eval 2025 winner; its two-stage task-adaptive pretraining is a cheap idea to borrow if your XLS-R arm underperforms. **Harf-Speech, [arXiv 2604.06191](https://arxiv.org/abs/2604.06191)** — read for two reasons beyond the near-miss quotes: it is a deployment-facing system, which strengthens your "this matters in practice" framing, and its clinical validation design (three independent SLPs, Pearson plus ICC(2,1)) is a better model for reporting your double-annotated subset than bare Cohen's kappa would be.
+
+**Towards stable AI systems, [arXiv 2508.19587](https://arxiv.org/abs/2508.19587)** — short, read it in one sitting. Its value is rhetorical: it establishes that robustness to *audio* perturbation is a legitimate published question in Arabic pronunciation assessment, which makes robustness to *reference* perturbation obviously legitimate and not obviously done.
+
+### Read for the RQ1 domain-gap argument — cheap, high return
+
+**Fine-Tashkeel at KSAA-2026, [2026.osact-1.31](https://aclanthology.org/2026.osact-1.31/).** Best DER 10.56% and WER 34.47% on Arabic speech dictation, against CATT's 5.43% and 22.13% on WikiNews. That is most of your domain-gap evidence for almost no effort, and it comes from a shared task rather than a single paper, so it is harder to wave away. Check carefully whether the metric definitions match CATT's before putting the two numbers in the same sentence.
+
+**Arabic Diacritics in the Wild, [ACL 2024](https://aclanthology.org/2024.acl-long.792/)** and **Arabic-Adapted One-Step Speech-to-Diacritized ASR, [2026.abjadnlp-1.43](https://aclanthology.org/2026.abjadnlp-1.43/)** — one paragraph each in your related work. Read the abstracts and the results tables; that is enough.
+
+### Read for the cross-lingual framing — one sitting, weeks 4 to 10
+
+**ReNikud, [arXiv 2606.20179](https://arxiv.org/abs/2606.20179).** Read the abstract and the motivation section, and skim the architecture. You need two things from it: the nikud-as-grammar argument, which corroborates your case-ending framing from an independent language, and a clear enough grasp of the audio-supervision approach to answer "why not just skip the diacritizer?" in a discussion paragraph. The answer is that an Arabic MDD reference has to be a diacritized text a learner can read and be corrected against, not an internal phoneme string — but you should be able to say that having actually understood what they did.
+
+**Analysis of forced aligner performance on L2 English speech, [Speech Communication 2024](https://doi.org/10.1016/j.specom.2023.103008).** Results tables only. The stops-and-fricatives-robust, vowels-not pattern is a useful parallel for your RQ3 hypothesis about where diacritization error concentrates. One sentence in the paper.
+
+### Cite without reading
+
+Halabi & Wald is infrastructure — you need the phoneme inventory, not the paper's argument. Take the Hint is optional and only becomes relevant if you later consider partially diacritized references. The TantaArabNLP and Thaka KSAA-2026 system papers are interchangeable with Fine-Tashkeel for your purposes; read whichever one reports its metrics most clearly. The three ASR-error-propagation papers — Not All Errors Are Equal, Deletions Are More Equal, Useful Blunders — support a sentence or two between them; read whichever abstract states the unequal-weighting point most crisply. Cite them by their full titles, which name Alzheimer's detection, so that a reader can see the downstream task is a different one and you are borrowing the principle rather than the mechanism. BreezyVoice and Sarashina2.2-TTS are negatives you are recording rather than sources you are using. The OpenAlex-only diacritizer comparison should not be cited at all until its venue is established, and the Phonikud propagation sentence should not be quoted until the PDF is read.
+
+### One reading habit worth adopting now
+
+For the four papers in the first group, read the limitations and future-work sections *before* the methods. That is where the quote bank in §4 came from, and there are almost certainly more sentences of that kind in the full texts than the targeted fetches used here surfaced. Every one you find is a free sentence in your introduction, and reconstructing them in January will not happen.
+
+---
+
+## 7. Recommended next actions
+
+Ordered by value, all small.
+
+Read Kadambi et al. 2024 and Mathad et al. 2021 this week, and draft the window-shifting-versus-label-shifting distinction immediately afterwards, per §4. This is now the highest-value item on the list: it is simultaneously the reviewer defence, the primary-metric design and the RQ3 statistical model, and all three get worse if it is deferred.
+
+Run the Google Scholar "cited by" traversal by hand in a browser, since the APIs are unusable — on CATT, Halabi & Wald, and now **Kadambi et al. 2024**, whose citers are the most likely place to find someone who has already ported the method to a text-front-end problem. Read every title; the CATT list should be short. This closes the real remaining gap in the gate.
+
+Work through the first group in §6 — now five papers — and extend the quote bank while doing it.
+
+Re-specify RQ4 as a difference-in-differences and add its power estimate to the week-6 pilot, per §4. Consider specifying it as a mixed-effects model on the Kadambi template rather than a bare difference of F1 scores; the clustering structure is the same and the approach is pre-published at the target venue.
+
+Run the Arabic-language queries — the last unrun item in the plan's §8, and about an hour's work. تشكيل + تقييم النطق, كشف أخطاء النطق + التشكيل الآلي, plus the Arabic university thesis repositories.
+
+Treat the Phonikud propagation sentence as unavailable. Verification confirmed it is not in the abstract, and the HTML version 404s. If you want it — and it would be a nice one-line statement of your premise in another language — the only route left is the PDF, and it is worth ten minutes at most. Do not let it into a draft in the meantime.
+
+Pin the CATT variant in all future writing. The plan's numbers are the EO row; say so explicitly, because a reviewer who checks against ED will find a mismatch.
+
+Decide now, in writing, that a small measured degradation gets published as a small measured degradation. The alignment-error prior says the effect may be modest, and the paper's framing should not depend on the number being large. Writing this down in week 0 is much easier than deciding it in December with results in hand.
+
+---
+
+## Sources
+
+- [Towards a Unified Benchmark for Arabic Pronunciation Assessment: Qur'anic Recitation as Case Study](https://arxiv.org/abs/2506.07722) — El Kheir et al.
+- [IQRA 2026: Interspeech Challenge on Automatic Pronunciation Assessment for MSA](https://arxiv.org/abs/2603.29087) — El Kheir et al.
+- [Iqra'Eval: A Shared Task on Qur'anic Pronunciation Assessment](https://aclanthology.org/2025.arabicnlp-sharedtasks.61/)
+- [Beyond Acoustic Sparsity and Linguistic Bias: A Prompt-Free Paradigm for MDD (CROTTC-IF)](https://arxiv.org/abs/2604.22133) — Geng et al.
+- [A Fusion-Aware Two-Stage Framework for MDD in Low-Resource MSA](https://arxiv.org/abs/2606.24086)
+- [AraS2P: Arabic Speech-to-Phonemes System](https://arxiv.org/abs/2509.23504)
+- [Harf-Speech: A Clinically Aligned Framework for Arabic Phoneme-Level Speech Assessment](https://arxiv.org/abs/2604.06191)
+- [Towards stable AI systems for Evaluating Arabic Pronunciations](https://arxiv.org/abs/2508.19587) — Zaatiti et al.
+- [Diacritic Recognition Performance in Arabic ASR](https://arxiv.org/abs/2302.14022)
+- [Automatic Restoration of Diacritics for Speech Data Sets](https://aclanthology.org/2024.naacl-long.233/)
+- [CATT: Character-based Arabic Tashkeel Transformer](https://arxiv.org/abs/2407.03236) — Alasmary et al.
+- [Arabic-Adapted One-Step Speech-to-Diacritized ASR: Evaluation and Error Analysis](https://aclanthology.org/2026.abjadnlp-1.43/)
+- [Fine-Tashkeel at KSAA-2026](https://aclanthology.org/2026.osact-1.31/)
+- [TantaArabNLP at KSAA-2026 Task 2](https://aclanthology.org/2026.osact-1.30/)
+- [Thaka at KSAA-2026 Task 2](https://arxiv.org/abs/2605.25928)
+- [Arabic Diacritics in the Wild](https://aclanthology.org/2024.acl-long.792.pdf)
+- [Take the Hint: Improving Arabic Diacritization with Partially-Diacritized Text](https://arxiv.org/abs/2306.03557)
+- [Enhancing GOP in CTC-Based Mispronunciation Detection with Phonological Knowledge](https://arxiv.org/abs/2506.02080)
+- [Phonetic Inventory for an Arabic Speech Corpus](https://aclanthology.org/L16-1116/) — Halabi & Wald
+- [Azure Pronunciation Assessment: characteristics and limitations](https://learn.microsoft.com/en-us/azure/foundry/responsible-ai/speech-service/pronunciation-assessment/characteristics-and-limitations-pronunciation-assessment)
+- [IqraEval.2 Challenge Interspeech 2026 (HF Space)](https://huggingface.co/spaces/IqraEval/IqraEval_Interspeech_26)
+- [Iqra-Eval/interspeech_IqraEval (GitHub)](https://github.com/Iqra-Eval/interspeech_IqraEval)
+
+Added by the Tier 3 and Tier 4 pass:
+
+- [The impact of forced-alignment errors on automatic pronunciation evaluation](https://www.isca-archive.org/interspeech_2021/mathad21_interspeech.html) — Mathad, Mahr, Scherer, Chapman, Hustad, Liss, Berisha, Interspeech 2021
+- [How Does Alignment Error Affect Automated Pronunciation Scoring in Children's Speech?](https://www.isca-archive.org/interspeech_2024/kadambi24_interspeech.html) — Kadambi, Mahr, Annear, Nomeland, Liss, Hustad, Berisha, Interspeech 2024
+- [Koshur Diacritizer: A Byte-Level Sequence-to-Sequence Model for Kashmiri Diacritic Restoration](https://arxiv.org/abs/2606.15883) — Malik, Nissar, Iqbal, 2026. *Key quote is in §VII-B of the full text, not the abstract*
+- [ReNikud: Audio-Supervised Hebrew Grapheme-to-Phoneme Conversion](https://arxiv.org/abs/2606.20179)
+- [Phonikud: Hebrew Grapheme-to-Phoneme Conversion for Real-Time TTS](https://arxiv.org/abs/2506.12311) — *propagation quote NOT verified; the abstract says only that Phonikud is "designed by augmenting a base diacritizer" and does not mention propagation. Do not quote*
+- [r-G2P: Evaluating and Enhancing Robustness of Grapheme-to-Phoneme Conversion](https://arxiv.org/abs/2202.11194) — −2.73% / −9.09% WER figures confirmed
+- [Analysis of forced aligner performance on L2 English speech](https://doi.org/10.1016/j.specom.2023.103008) — Speech Communication 2024
+- [Not All Errors Are Equal: Investigation of Speech Recognition Errors in Alzheimer's Disease Detection](https://arxiv.org/abs/2412.06332)
+- [Impact of ASR on Alzheimer's Disease Detection: All Errors are Equal, but Deletions are More Equal than Others](https://arxiv.org/abs/1904.01684)
+- [Useful Blunders: Can Automated Speech Recognition Errors Improve Downstream Performance?](https://arxiv.org/abs/2401.05551)
+- [Beyond Levenshtein: Leveraging Multiple Algorithms for Robust Word Error Rate Computations](https://arxiv.org/abs/2408.15616)
+- [SeMaScore: A New Evaluation Metric for Automatic Speech Recognition Tasks](https://arxiv.org/abs/2401.07506)
+- [Segmentation-free Goodness of Pronunciation](https://arxiv.org/abs/2507.16838) — *surfaced, not fetched*
+- [BreezyVoice](https://arxiv.org/abs/2501.17790) — Mandarin polyphone TTS, recorded as a negative
+- [Sarashina2.2-TTS: Tackling Kanji Polyphony in Japanese Speech Generation](https://arxiv.org/abs/2606.25369) — introduces the Joyo Kanji Yomi Benchmark (2,136 kanji, 4,378 readings) and Kana-CER; recorded as a negative, but **its Kana-CER idea — comparing synthesised output against reference readings in a space that eliminates orthographic variation — is the same instinct as excluding case endings from MDD scoring.** Worth a glance
+- [Automatic Pronunciation Assessment — A Review](https://arxiv.org/abs/2310.13974) — *surfaced, not fetched*

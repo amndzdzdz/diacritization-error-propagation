@@ -1,0 +1,32 @@
+[project]
+name = "arabic-mdd"
+version = "0.1.0"
+description = "Reference-aware evaluation of diacritization error propagation in Arabic mispronunciation detection"
+readme = "README.md"
+authors = [
+    { name = "amndzdzdz", email = "zorrofx@gmx.net" }
+]
+requires-python = ">=3.12"
+dependencies = []
+
+[build-system]
+requires = ["uv_build>=0.12.6,<0.13.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "pre-commit>=4.0.0",
+    "pytest>=8.0.0",
+    "ruff>=0.8.0",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM", "N"]
+
+[tool.pytest.ini_options]
+addopts = "--strict-markers --strict-config"
+testpaths = ["tests"]
