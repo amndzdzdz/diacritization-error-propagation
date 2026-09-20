@@ -2,12 +2,40 @@
 
 Vendored, lightly-annotated copy of the organizers' own reproduction recipe
 from `github.com/Iqra-Eval/interspeech_IqraEval` (commit on `main`, fetched
-2026-09-20). Everything in this directory is exactly what the organizers
-used to produce the published F1 = 44.14% number on `QuranMB.v2` — kept
-here verbatim (not reimplemented) per the week 2 decision documented in
+2026-09-20). Everything in this directory is what the organizers used to
+produce the published F1 = 44.14% number on `QuranMB.v2` — kept here
+largely verbatim (not reimplemented) per the week 2 decision documented in
 [docs/weeks/week-02.md](../../docs/weeks/week-02.md): a from-scratch
 reimplementation risks an ambiguous gate result if it fails to reproduce,
 whereas running the organizers' own code removes that risk.
+
+**Not fully verbatim — two schema-drift fixes.** `download_hugg_data.py`
+and `download_hugg_data_tts.py`, as fetched from the upstream repo, read
+column names (`ID`/`phoneme`/`phoneme_aug`) and default `--path` values
+from different, older datasets than `IqraEval/Iqra_train`/`IqraEval/Iqra_TTS`
+— the ones the organizers' own README instructs running them against. As
+vendored, they would raise `KeyError` on the real, current dataset schemas
+(confirmed via `datasets-server.huggingface.co`: `id`/`phoneme_ref` for
+Iqra_train, `phoneme_mis` for Iqra_TTS — see the `NOTE` comment at the top
+of each file). Patched to match; the download/save logic itself is
+untouched. `generate_len_for_bucket_sdaia.py` also gained a `--splits`
+flag so it can run non-interactively (the original blocks on an
+`input()` prompt, which hangs forever inside a batch job) — the
+interactive path still works unchanged for manual use.
+
+## Fastest path: fully automated
+
+```bash
+sbatch run/train_baseline.slurm
+```
+
+See [run/train_baseline.slurm](../../run/train_baseline.slurm) and
+[run/prepare_baseline.sh](../../run/prepare_baseline.sh) — one `sbatch`
+call handles conda/S3PRL setup, dataset download, data prep, config
+wiring, training, and evaluation, and is safe to resubmit if it's
+interrupted partway through. The manual steps below are the same
+pipeline, kept for reference/debugging if something in the automated path
+needs inspecting.
 
 **S3PRL requires Python 3.8 + conda and is not part of this project's own
 Python 3.12/`uv` stack.** Do not `uv add` anything from this directory.

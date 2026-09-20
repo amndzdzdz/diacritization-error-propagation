@@ -1,3 +1,13 @@
+# NOTE (2026-09-20): patched from the upstream vendored script. The
+# original read `data["ID"]`/`data["phoneme"]` and defaulted --path to
+# `mostafaashahin/common_voice_Arabic_12.0_Augmented_SWS_lam_phoneme` --
+# a different, older dataset than `IqraEval/Iqra_train`, which the
+# organizers' own README instructs running this against. IqraEval/Iqra_train's
+# actual schema (confirmed via datasets-server.huggingface.co) is
+# id/phoneme_ref/phoneme_aug/audio/sentence/tashkeel_sentence, so the
+# unpatched script raises KeyError on the real dataset. Column names below
+# and the default --path are updated to match; the download/save logic
+# itself is untouched.
 import os
 import torchaudio
 import torch
@@ -20,11 +30,11 @@ def main(args):
     for idx, data in enumerate(dataset):
         audio_array = torch.tensor(data["audio"]["array"])
         sample_rate = data["audio"]["sampling_rate"]
-        ID = data["ID"]
+        ID = data["id"]
         audio_file_path = os.path.join(audio_dir, f"audio_{ID}.wav")
         torchaudio.save(audio_file_path, audio_array.unsqueeze(0), sample_rate)
 
-        transcript = data["phoneme"]
+        transcript = data["phoneme_ref"]
         transcript_file_path = os.path.join(transcript_dir, f"transcript_{ID}.txt")
         with open(transcript_file_path, "w", encoding="utf-8") as f:
             f.write(transcript)
@@ -39,7 +49,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--path",
         type=str,
-        default="mostafaashahin/common_voice_Arabic_12.0_Augmented_SWS_lam_phoneme",
+        default="IqraEval/Iqra_train",
         help="Path to the dataset",
     )
     parser.add_argument(

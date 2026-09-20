@@ -33,6 +33,11 @@ def get_preprocess_args():
     parser.add_argument('-a', '--audio_extension', default='.wav', type=str, help='audio file type (.wav / .flac / .mp3 / etc)', required=False)
     parser.add_argument('-n', '--name', default='len_for_bucket', type=str, help='Name of the output directory', required=False)
     parser.add_argument('--n_jobs', default=-1, type=int, help='Number of jobs used for feature extraction', required=False)
+    # NOTE (2026-09-20): added for non-interactive/batch use (e.g. inside a
+    # SLURM job, where the original interactive input() prompt below would
+    # hang forever). When --splits is given, it's used directly instead of
+    # prompting; the interactive path is left intact for manual use.
+    parser.add_argument('--splits', nargs='+', default=None, help='Split folder names to process, e.g. --splits train dev (skips the interactive prompt)', required=False)
 
     args = parser.parse_args()
     return args
@@ -85,15 +90,18 @@ def main():
     # get arguments
     args = get_preprocess_args()
 
-    # Dynamically detect split folders
-    SETS = [d for d in os.listdir(args.input_data) if os.path.isdir(os.path.join(args.input_data, d))]
-    if not SETS:
-        raise RuntimeError(f"No split folders found in {args.input_data}")
+    if args.splits:
+        tr_set = args.splits
+    else:
+        # Dynamically detect split folders
+        SETS = [d for d in os.listdir(args.input_data) if os.path.isdir(os.path.join(args.input_data, d))]
+        if not SETS:
+            raise RuntimeError(f"No split folders found in {args.input_data}")
 
-    for idx, s in enumerate(SETS):
-        print('\t', idx, ':', s)
-    tr_set = input('Please enter the index of splits you wish to use preprocess. (separate with space): ')
-    tr_set = [SETS[int(t)] for t in tr_set.split(' ')]
+        for idx, s in enumerate(SETS):
+            print('\t', idx, ':', s)
+        tr_set = input('Please enter the index of splits you wish to use preprocess. (separate with space): ')
+        tr_set = [SETS[int(t)] for t in tr_set.split(' ')]
 
     # Acoustic Feature Extraction & Make Data Table
     generate_length(args, tr_set, args.audio_extension)

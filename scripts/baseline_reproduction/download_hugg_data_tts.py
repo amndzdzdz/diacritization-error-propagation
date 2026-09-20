@@ -1,3 +1,12 @@
+# NOTE (2026-09-20): patched from the upstream vendored script. The
+# original read `data["phoneme_aug"]` and defaulted --path to `Yasel/SWS_TTS`
+# -- a different dataset than `IqraEval/Iqra_TTS`, which the organizers'
+# own README instructs running this against. IqraEval/Iqra_TTS's actual
+# schema (confirmed via datasets-server.huggingface.co) has no `phoneme_aug`
+# column; the closest equivalent (the actually-pronounced/mispronounced
+# phoneme string, which is what should be used as the CTC training target
+# here, not the canonical `phoneme_ref`) is `phoneme_mis`. Only the column
+# name and default --path are changed; the download/save logic is untouched.
 import os
 import torchaudio
 import torch
@@ -33,7 +42,7 @@ def main(args):
         if Spk_ID != dev_name:
             audio_file_path = os.path.join(audio_dir, f"audio_{Spk_ID}_{idx}.wav")
             torchaudio.save(audio_file_path, audio_array.unsqueeze(0), sample_rate)
-            transcript = data["phoneme_aug"]
+            transcript = data["phoneme_mis"]
 
             # remove "<sil>" from transcript using join
             transcript = " ".join(x for x in transcript.split() if x != "<sil>")
@@ -44,7 +53,7 @@ def main(args):
         else:
             audio_file_path = os.path.join(audio_dir_dev, f"audio_{Spk_ID}_{idx}.wav")
             torchaudio.save(audio_file_path, audio_array.unsqueeze(0), sample_rate)
-            transcript = data["phoneme_aug"]
+            transcript = data["phoneme_mis"]
 
             # remove "<sil>" from transcript using join
             transcript = " ".join(x for x in transcript.split() if x != "<sil>")
@@ -63,7 +72,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--path",
         type=str,
-        default="Yasel/SWS_TTS",
+        default="IqraEval/Iqra_TTS",
         help="Path to the dataset",
     )
     parser.add_argument(
