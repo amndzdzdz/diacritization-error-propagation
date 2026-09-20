@@ -12,13 +12,20 @@
 # `sbatch run/train_baseline.slurm` from the repo root -- nothing else needs
 # to be done first.
 #
-# Only two things you may need to change for your cluster:
+# Things you may need to change for your cluster:
 #   -p / --gres above (partition and GPU request naming vary by cluster --
 #   "NvidiaAll"/"gpu:1" are placeholders)
-#   The conda base path assumed below (~/miniconda3 or ~/anaconda3).
+#   Python 3.8: no conda and no uv are used (neither is assumed to be
+#   installed/installable) -- S3PRL runs in a plain stdlib `venv` built from
+#   whatever python3.8 interpreter is on the cluster. run/prepare_baseline.sh
+#   looks for `python3.8` on PATH, then a `python3` that reports 3.8.x, then
+#   a few common install paths. If your cluster only exposes Python 3.8 via
+#   an environment module, load it yourself before submitting and pass its
+#   path, e.g.:
+#     module load python/3.8 && PYTHON38_BIN=$(which python3.8) sbatch run/train_baseline.slurm
 #
-# Everything else (conda env creation, S3PRL install, dataset download,
-# data prep, config wiring) is handled by run/prepare_baseline.sh, which is
+# Everything else (venv creation, S3PRL install, dataset download, data
+# prep, config wiring) is handled by run/prepare_baseline.sh, which is
 # idempotent -- if the job dies partway through and you resubmit, already
 # finished steps (e.g. a completed download) are skipped rather than redone.
 # This does assume the compute node has internet access (to clone S3PRL and
@@ -31,8 +38,9 @@ cd "${SLURM_SUBMIT_DIR:-$(pwd)}"
 
 bash run/prepare_baseline.sh
 
-source "$(conda info --base)/etc/profile.d/conda.sh"
-conda activate s3prl
+S3PRL_VENV="${S3PRL_VENV:-$(pwd)/run/s3prl_venv}"
+# shellcheck source=/dev/null
+source "$S3PRL_VENV/bin/activate"
 
 S3PRL_DIR="${S3PRL_DIR:-$(pwd)/run/s3prl_checkout}"
 cd "$S3PRL_DIR/s3prl"

@@ -31,17 +31,22 @@ sbatch run/train_baseline.slurm
 
 See [run/train_baseline.slurm](../../run/train_baseline.slurm) and
 [run/prepare_baseline.sh](../../run/prepare_baseline.sh) — one `sbatch`
-call handles conda/S3PRL setup, dataset download, data prep, config
-wiring, training, and evaluation, and is safe to resubmit if it's
+call handles S3PRL environment/install, dataset download, data prep,
+config wiring, training, and evaluation, and is safe to resubmit if it's
 interrupted partway through. The manual steps below are the same
 pipeline, kept for reference/debugging if something in the automated path
 needs inspecting.
 
-**S3PRL requires Python 3.8 + conda and is not part of this project's own
-Python 3.12/`uv` stack.** Do not `uv add` anything from this directory.
-Run it in its own isolated conda environment, on your cluster (this
+**S3PRL requires Python 3.8, not this project's own Python 3.12/`uv`
+stack.** Do not `uv add` anything from this directory. It runs in its own
+plain `venv` (stdlib, no conda and no uv — neither is assumed to be
+installed or installable on the cluster), built from whatever `python3.8`
+interpreter is already available there. `run/prepare_baseline.sh` looks
+for `python3.8` on PATH, then a `python3` reporting version 3.8.x, then a
+few common install paths; if none of those find it, set `PYTHON38_BIN`
+yourself (e.g. after `module load python/3.8`) before submitting. This
 sandbox has no GPU and no cluster access — this is why these are
-instructions for you to run, not a script I can run myself).
+instructions for you to run, not a script I can run myself.
 
 ## Contents
 
@@ -56,11 +61,11 @@ get_units.py                     Regenerate vocab from transcripts (sanity check
 s3prl_inference.py               Run a trained/pretrained checkpoint over a wav directory
 ```
 
-## Step 1 — conda + S3PRL environment
+## Step 1 — Python 3.8 venv + S3PRL environment
 
 ```bash
-conda create -n s3prl python=3.8
-conda activate s3prl
+python3.8 -m venv s3prl_venv   # or whatever your cluster's python3.8 binary is called
+source s3prl_venv/bin/activate
 git clone https://github.com/s3prl/s3prl.git
 cd s3prl
 pip install -e ".[all]"
