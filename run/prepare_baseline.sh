@@ -16,12 +16,10 @@ S3PRL_DIR="${S3PRL_DIR:-$RUN_DIR/s3prl_checkout}"
 S3PRL_VENV="${S3PRL_VENV:-$RUN_DIR/s3prl_venv}"
 DATA_DIR="${BASELINE_DATA_DIR:-$RUN_DIR/data}"
 
-echo "== [1/6] Python 3.8 environment for S3PRL (stdlib venv, no conda/uv) =="
+echo "== [1/6] Python 3.8 environment for S3PRL (stdlib venv) =="
 # S3PRL needs Python 3.8, incompatible with this project's own Python-3.12
 # env -- kept as a fully separate venv here, never touching this project's
-# pyproject.toml/uv.lock. No conda and no uv install permissions needed:
-# this uses whatever python3.8 interpreter is already on the cluster, via
-# the stdlib `venv` module.
+# pyproject.toml/uv.lock.
 #
 # Interpreter resolution order (see also the comment block at the top of
 # run/train_baseline.slurm):
@@ -29,6 +27,9 @@ echo "== [1/6] Python 3.8 environment for S3PRL (stdlib venv, no conda/uv) =="
 #   2. `python3.8` already on PATH
 #   3. `python3` on PATH, if it reports version 3.8.x
 #   4. a handful of common install locations
+#   5. `uv python install 3.8` -- a standalone interpreter uv downloads and
+#      manages itself, used only to get a 3.8 binary; the resulting venv
+#      below is still a plain stdlib venv, not a uv-managed project env
 PYTHON38_BIN="${PYTHON38_BIN:-}"
 if [ -z "$PYTHON38_BIN" ] && command -v python3.8 >/dev/null 2>&1; then
     PYTHON38_BIN="$(command -v python3.8)"
@@ -46,10 +47,24 @@ if [ -z "$PYTHON38_BIN" ]; then
     done
 fi
 if [ -z "$PYTHON38_BIN" ]; then
+    UV_BIN="${UV_BIN:-}"
+    if [ -z "$UV_BIN" ] && command -v uv >/dev/null 2>&1; then
+        UV_BIN="$(command -v uv)"
+    elif [ -z "$UV_BIN" ] && [ -x "$HOME/.local/bin/uv" ]; then
+        UV_BIN="$HOME/.local/bin/uv"
+    fi
+    if [ -n "$UV_BIN" ]; then
+        "$UV_BIN" python install 3.8
+        PYTHON38_BIN="$("$UV_BIN" python find 3.8)"
+    fi
+fi
+if [ -z "$PYTHON38_BIN" ]; then
     echo "ERROR: could not find a Python 3.8 interpreter." >&2
     echo "S3PRL requires Python 3.8. If your cluster provides it via environment" >&2
     echo "modules, load it yourself and pass its path, e.g.:" >&2
     echo "  module load python/3.8 && PYTHON38_BIN=\$(which python3.8) sbatch run/train_baseline.slurm" >&2
+    echo "Otherwise install uv (curl -LsSf https://astral.sh/uv/install.sh | sh)" >&2
+    echo "so this script can fetch Python 3.8 itself via 'uv python install 3.8'." >&2
     exit 1
 fi
 echo "Using Python 3.8 interpreter: $PYTHON38_BIN ($("$PYTHON38_BIN" --version))"

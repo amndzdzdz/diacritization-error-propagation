@@ -15,13 +15,14 @@
 # Things you may need to change for your cluster:
 #   -p / --gres above (partition and GPU request naming vary by cluster --
 #   "NvidiaAll"/"gpu:1" are placeholders)
-#   Python 3.8: no conda and no uv are used (neither is assumed to be
-#   installed/installable) -- S3PRL runs in a plain stdlib `venv` built from
-#   whatever python3.8 interpreter is on the cluster. run/prepare_baseline.sh
-#   looks for `python3.8` on PATH, then a `python3` that reports 3.8.x, then
-#   a few common install paths. If your cluster only exposes Python 3.8 via
-#   an environment module, load it yourself before submitting and pass its
-#   path, e.g.:
+#   Python 3.8: S3PRL runs in a plain stdlib `venv`, never this project's own
+#   uv/Python-3.12 env. run/prepare_baseline.sh looks for `python3.8` on
+#   PATH, then a `python3` that reports 3.8.x, then a few common install
+#   paths, then falls back to `uv python install 3.8` (a standalone
+#   interpreter uv manages itself -- doesn't touch this project's
+#   pyproject.toml/uv.lock) if `uv` is available. If your cluster only
+#   exposes Python 3.8 via an environment module, load it yourself before
+#   submitting and pass its path, e.g.:
 #     module load python/3.8 && PYTHON38_BIN=$(which python3.8) sbatch run/train_baseline.slurm
 #
 # Everything else (venv creation, S3PRL install, dataset download, data
@@ -35,6 +36,12 @@
 
 set -euo pipefail
 cd "${SLURM_SUBMIT_DIR:-$(pwd)}"
+
+# Batch jobs don't source ~/.zshrc or ~/.bashrc, so make sure `uv` (installed
+# to ~/.local/bin via the standalone installer, not through a package
+# manager) is reachable here too -- needed both as this project's own
+# dependency manager and as the Python 3.8 fallback in prepare_baseline.sh.
+export PATH="$HOME/.local/bin:$PATH"
 
 bash run/prepare_baseline.sh
 
