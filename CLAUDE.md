@@ -4,7 +4,7 @@
 
 Reference-aware evaluation of how automatic diacritization corrupts Arabic
 mispronunciation detection and diagnosis (MDD). Target venue: Interspeech
-2027. Full plan: [docs/mdd-paper-project-plan-v2.md](docs/mdd-paper-project-plan-v2.md).
+2027. Full plan available in: [docs/mdd-paper-project-plan-v2.md](docs/mdd-paper-project-plan-v2.md).
 Literature/novelty review: [docs/novelty-check.md](docs/novelty-check.md).
 
 ## Tech stack
