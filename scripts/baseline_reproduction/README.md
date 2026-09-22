@@ -136,21 +136,17 @@ budgeting a reproduction from the paper alone will under-provision by ~16x.
 ## Step 5 — train and evaluate
 
 ```bash
-exp_dir='hubert_base_per'
-python3 run_downstream.py -m train -c downstream/ctc/cv_config/sws.yaml -p ${exp_dir} -u hubert_base -d ctc
+exp_dir='mhubert147_per'
+python3 run_downstream.py -m train -c downstream/ctc/cv_config/sws.yaml -p ${exp_dir} \
+    -u hf_hubert_custom -k utter-project/mHuBERT-147 -d ctc
 python3 run_downstream.py -m evaluate -e ${exp_dir}/dev-best.ckpt
 ```
 
-**⚠ The upstream above is `-u hubert_base` only in the organizers' own
-README.** That is English HuBERT Base (LibriSpeech); training with it scored
-F1 = 0.4058 against the published 0.4414. The real identifier, read out of
-the organizers' published checkpoint with `inspect_s3prl_ckpt.py`, is:
-
-```bash
--u hf_hubert_custom -k utter-project/mHuBERT-147
-```
-
-frozen (`upstream_trainable: False`) with SUPERB weighted layer-sum over
+**⚠ The organizers' own README says `-u hubert_base` here.** That is English
+HuBERT Base (LibriSpeech); training with it scored F1 = 0.4058 against the
+published 0.4414. The identifier above is the real one, read out of the
+organizers' published checkpoint with `inspect_s3prl_ckpt.py`: frozen
+(`upstream_trainable: False`) with SUPERB weighted layer-sum over
 `hidden_states` (13 layer weights → base-size, 12 transformer layers).
 `run/train_baseline.slurm` uses this. See
 [insights/week-03.md](../../insights/week-03.md).

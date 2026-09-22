@@ -20,7 +20,8 @@
 #
 # Override via environment variables if your run used non-default values:
 #   EXP_DIR   -- experiment dir name passed to `-p` during training
-#                (default: hubert_base_per, matching train_baseline.slurm)
+#                (default: mhubert147_per, matching train_baseline.slurm;
+#                use hubert_base_per for the superseded English-HuBERT run)
 #   CKPT      -- checkpoint path to evaluate, relative to $S3PRL_DIR/s3prl
 #                (default: $EXP_DIR/dev-best.ckpt)
 #   S3PRL_DIR, S3PRL_VENV -- same meaning as in train_baseline.slurm/
@@ -51,7 +52,7 @@ source "$S3PRL_VENV/bin/activate"
 S3PRL_DIR="${S3PRL_DIR:-$(pwd)/run/s3prl_checkout}"
 cd "$S3PRL_DIR/s3prl"
 
-EXP_DIR="${EXP_DIR:-hubert_base_per}"
+EXP_DIR="${EXP_DIR:-mhubert147_per}"
 CKPT="${CKPT:-${EXP_DIR}/dev-best.ckpt}"
 
 if [ ! -f "$CKPT" ]; then
