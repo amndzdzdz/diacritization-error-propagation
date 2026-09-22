@@ -59,6 +59,7 @@ generate_len_for_bucket_sdaia.py S3PRL bucketing metadata (audio length sorting)
 csv_to_tsv_with_transcripts.py   Bucketing CSV -> S3PRL-ready TSV (path, sentence)
 get_units.py                     Regenerate vocab from transcripts (sanity check only)
 s3prl_inference.py               Run a trained/pretrained checkpoint over a wav directory
+inspect_s3prl_ckpt.py            Print the Args/Config a checkpoint was trained with
 mdd_eval/                        Official TA/TR/FA/FR scorer (verbatim)
 ```
 
@@ -140,13 +141,14 @@ python3 run_downstream.py -m train -c downstream/ctc/cv_config/sws.yaml -p ${exp
 python3 run_downstream.py -m evaluate -e ${exp_dir}/dev-best.ckpt
 ```
 
-**⚠ `-u hubert_base` is the prime suspect for the week-3 gate failure.** It
-is English HuBERT Base (LibriSpeech), whereas the published baseline uses
-frozen **mHuBERT-147** (94M params, 147 languages). The run that scored
-F1 = 0.4058 instead of 0.4414 used this upstream, and the shortfall is
-entirely in precision — the signature of a weaker phoneme recogniser. See
-[insights/week-03.md](../../insights/week-03.md). Resolve the correct
-mHuBERT upstream identifier in the S3PRL registry before retraining.
+**⚠ `-u hubert_base` is the confirmed cause of the week-3 training run's
+shortfall.** It is English HuBERT Base (LibriSpeech), whereas the published
+baseline uses frozen **mHuBERT-147** (94M params, 147 languages). Training
+with it scored F1 = 0.4058 against the published 0.4414, the deficit
+entirely in precision; the organizers' own checkpoint scored 0.4415 through
+the identical pipeline. See [insights/week-03.md](../../insights/week-03.md).
+Resolve the correct mHuBERT upstream identifier in the S3PRL registry before
+any training run whose numbers are meant to be comparable.
 
 This step is a multi-hour GPU job — run it on your cluster, not in this
 sandbox.

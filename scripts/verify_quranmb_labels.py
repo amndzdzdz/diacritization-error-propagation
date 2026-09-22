@@ -23,6 +23,12 @@ diff.
 Requires access to the gated `IqraEval/IqraEval_Test_GT` and an HF token:
     export HF_TOKEN=hf_...
     uv run python scripts/verify_quranmb_labels.py
+
+The gated labels are streamed column-wise and never cached, but
+`load_ground_truth()` still materializes the public `safikhan` join, audio
+included (~4 GB). If `$HOME` is quota-limited, point the cache at a disk with
+room first:
+    export HF_HOME=/path/with/space/hf_cache
 """
 
 from __future__ import annotations
@@ -31,6 +37,7 @@ import argparse
 import json
 import os
 from collections import Counter
+from collections.abc import Sequence
 from pathlib import Path
 
 from arabic_mdd.data.phonemes import parse_phoneme_sequence
@@ -42,7 +49,7 @@ GATE_F1 = 0.4414
 GATE_TOLERANCE = 0.02
 
 
-def _pick(row: dict, *candidates: str) -> str:
+def _pick(columns: Sequence[str], *candidates: str) -> str:
     """Return the first present column name, so this survives schema drift.
 
     The gated dataset is documented as `ID`/`Reference_phn`/`Annotation_phn`,
@@ -50,10 +57,10 @@ def _pick(row: dict, *candidates: str) -> str:
     names the published dataset no longer used -- so don't assume here.
     """
     for name in candidates:
-        if name in row:
+        if name in columns:
             return name
     raise SystemExit(
-        f"None of {candidates} found in {OFFICIAL_GT_DATASET}. Columns present: {sorted(row)}"
+        f"None of {candidates} found in {OFFICIAL_GT_DATASET}. Columns present: {sorted(columns)}"
     )
 
 
@@ -64,16 +71,22 @@ def load_official_ground_truth(split: str) -> dict[str, tuple[list[str], list[st
     if not (os.environ.get("HF_TOKEN") or os.environ.get("HUGGING_FACE_HUB_TOKEN")):
         print("WARNING: no HF_TOKEN set; the gated dataset load will likely fail.\n")
 
-    ds = datasets.load_dataset(OFFICIAL_GT_DATASET, split=split)
-    if "audio" in ds.column_names:
-        ds = ds.remove_columns("audio")
+    # Streamed, and narrowed to the three label columns before any row is read.
+    # This dataset ships the test *audio* alongside the labels, which is all we
+    # would be paying for: a plain `load_dataset` writes the whole thing to the
+    # HF cache (this is what ran the disk out of space), and dropping the audio
+    # afterwards is too late. `select_columns` pushes the projection down to the
+    # parquet reader, so the audio is neither fetched nor decoded -- which also
+    # avoids needing `torchcodec` installed just to read two text columns.
+    ds = datasets.load_dataset(OFFICIAL_GT_DATASET, split=split, streaming=True)
 
-    first = ds[0]
-    id_col = _pick(first, "ID", "id")
-    ref_col = _pick(first, "Reference_phn", "reference_phn", "reference_phoneme_string")
-    ann_col = _pick(first, "Annotation_phn", "annotation_phn", "annotation_phoneme_string")
+    columns = list(ds.column_names or [])
+    id_col = _pick(columns, "ID", "id")
+    ref_col = _pick(columns, "Reference_phn", "reference_phn", "reference_phoneme_string")
+    ann_col = _pick(columns, "Annotation_phn", "annotation_phn", "annotation_phoneme_string")
     print(f"official columns -> id={id_col!r} canonical={ref_col!r} annotation={ann_col!r}")
 
+    ds = ds.select_columns([id_col, ref_col, ann_col])
     return {
         str(row[id_col]): (
             parse_phoneme_sequence(row[ref_col]),
