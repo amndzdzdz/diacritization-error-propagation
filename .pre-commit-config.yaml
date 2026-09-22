@@ -9,8 +9,15 @@ repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v5.0.0
     hooks:
+      # scripts/baseline_reproduction/ is vendored verbatim from upstream (see
+      # its README). These hooks would rewrite it and break the byte-for-byte
+      # guarantee that keeps a failed baseline reproduction unambiguous. ruff
+      # already skips that path via pyproject.toml's extend-exclude; these
+      # hooks come from a different repo and don't read it.
       - id: trailing-whitespace
+        exclude: ^scripts/baseline_reproduction/
       - id: end-of-file-fixer
+        exclude: ^scripts/baseline_reproduction/
       - id: check-yaml
       - id: check-toml
       - id: check-added-large-files

@@ -59,7 +59,16 @@ generate_len_for_bucket_sdaia.py S3PRL bucketing metadata (audio length sorting)
 csv_to_tsv_with_transcripts.py   Bucketing CSV -> S3PRL-ready TSV (path, sentence)
 get_units.py                     Regenerate vocab from transcripts (sanity check only)
 s3prl_inference.py               Run a trained/pretrained checkpoint over a wav directory
+mdd_eval/                        Official TA/TR/FA/FR scorer (verbatim)
 ```
+
+`mdd_eval/` was fetched from the live leaderboard HF Space
+(`huggingface.co/spaces/IqraEval/Leaderboard/raw/main/mdd_eval/`), which
+carries it even though `github.com/Iqra-Eval/interspeech_IqraEval` is the
+canonical citation. It needs only pandas/numpy/stdlib, so unlike everything
+else in this directory it runs in this project's own env — see
+`scripts/compare_metric_to_official.py`, which uses it to cross-check
+`src/arabic_mdd/metrics/hierarchical.py`.
 
 ## Step 1 — Python 3.8 venv + S3PRL environment
 
@@ -131,20 +140,31 @@ python3 run_downstream.py -m train -c downstream/ctc/cv_config/sws.yaml -p ${exp
 python3 run_downstream.py -m evaluate -e ${exp_dir}/dev-best.ckpt
 ```
 
-`-u hubert_base` is the organizers' stand-in for mHuBERT in this recipe;
-if a distinct mHuBERT upstream identifier is required, check the S3PRL
-upstream registry before running. This step is a multi-hour GPU job — run
-it on your cluster, not in this sandbox.
+**⚠ `-u hubert_base` is the prime suspect for the week-3 gate failure.** It
+is English HuBERT Base (LibriSpeech), whereas the published baseline uses
+frozen **mHuBERT-147** (94M params, 147 languages). The run that scored
+F1 = 0.4058 instead of 0.4414 used this upstream, and the shortfall is
+entirely in precision — the signature of a weaker phoneme recogniser. See
+[insights/week-03.md](../../insights/week-03.md). Resolve the correct
+mHuBERT upstream identifier in the S3PRL registry before retraining.
 
-### Alternative: skip training, run the organizers' pretrained checkpoint
+This step is a multi-hour GPU job — run it on your cluster, not in this
+sandbox.
+
+### Alternative: skip training, score the organizers' trained checkpoint
+
+The organizers publish their *trained* baseline checkpoint (public,
+ungated), so the gate can be checked with inference only — no training run,
+and no dependence on getting the upstream identifier right:
 
 ```bash
-python s3prl_inference.py \
-  --ckpt "https://huggingface.co/Trikaldarshi/sws_pretrained_models/resolve/main/mhubert.ckpt" \
-  --dict_path "https://huggingface.co/Trikaldarshi/sws_pretrained_models/resolve/main/sws_arabic.txt" \
-  --wav_dir ./sws_data/CV-Ar/dev/wav/ \
-  --output_csv results.csv
+CKPT=https://huggingface.co/IqraEval/Iqra_mhubert_base/resolve/main/mhubert.ckpt \
+OUTPUT_JSON=run/quranmb_predictions_official_ckpt.json \
+sbatch run/quranmb_gate_check.slurm
 ```
+
+`run/quranmb_gate_check.slurm` passes an `http(s)` `CKPT` straight through to
+`S3PRLModel`, which downloads it via `download_if_needed`.
 
 ## Step 6 — score against the gate (back in this project, uv/Python 3.12)
 

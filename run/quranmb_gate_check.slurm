@@ -65,12 +65,26 @@ echo "== Stage A: inference over QuranMB.v2 (S3PRL venv) =="
 source "$S3PRL_VENV/bin/activate"
 cd "$S3PRL_DIR/s3prl"
 
-if [ ! -f "$CKPT" ]; then
-    echo "ERROR: checkpoint not found: $S3PRL_DIR/s3prl/$CKPT" >&2
-    echo "Set EXP_DIR/CKPT to point at an existing checkpoint, or run" >&2
-    echo "'sbatch run/train_baseline.slurm' first to produce one." >&2
-    exit 1
-fi
+# CKPT may be an http(s) URL -- S3PRLModel downloads it via
+# s3prl_inference.download_if_needed -- so only check local paths for
+# existence. This is what lets the organizers' own trained checkpoint
+# (IqraEval/Iqra_mhubert_base/mhubert.ckpt) be scored without training:
+#   CKPT=https://huggingface.co/IqraEval/Iqra_mhubert_base/resolve/main/mhubert.ckpt \
+#   OUTPUT_JSON=run/quranmb_predictions_official_ckpt.json \
+#   sbatch run/quranmb_gate_check.slurm
+case "$CKPT" in
+    http://*|https://*)
+        echo "Using remote checkpoint: $CKPT"
+        ;;
+    *)
+        if [ ! -f "$CKPT" ]; then
+            echo "ERROR: checkpoint not found: $S3PRL_DIR/s3prl/$CKPT" >&2
+            echo "Set EXP_DIR/CKPT to point at an existing checkpoint, or run" >&2
+            echo "'sbatch run/train_baseline.slurm' first to produce one." >&2
+            exit 1
+        fi
+        ;;
+esac
 
 python3 "$BASELINE_SRC/quranmb_gate_inference.py" \
     --ckpt "$CKPT" \
