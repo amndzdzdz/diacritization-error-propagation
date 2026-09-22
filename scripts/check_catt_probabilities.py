@@ -1,13 +1,13 @@
 """Week 1 feasibility check: does CATT expose token-level diacritic confidence?
 
-Ad hoc verification script for docs/weeks/week-01.md task 4 / plan §7 item 4.
+Ad hoc verification script for docs/weeks/week-01-03.md task 4 / plan §7 item 4.
 RQ4 (selective scoring by diacritizer abstention) depends entirely on CATT
 exposing per-position confidence for its predicted diacritics. The public
 `catt_tashkeel` package (CATTEncoderOnly / CATTEncoderDecoder) only exposes
 `do_tashkeel(_batch)`, which returns decoded text with the softmax/argmax
 step already applied and discarded.
 
-Finding (see insights/week-01.md for the full write-up): the ONNX decoder
+Finding (see insights/week-01-03.md for the full write-up): the ONNX decoder
 session inside the package *does* return raw per-class logits before argmax
 -- `BaseONNXTashkeel._process_batch` computes `preds = self._run_decoder(...)`
 and only then applies `np.argmax(preds, axis=-1)`. Calling the same
