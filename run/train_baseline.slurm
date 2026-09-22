@@ -42,6 +42,18 @@ cd "${SLURM_SUBMIT_DIR:-$(pwd)}"
 # dependency manager and as the Python 3.8 fallback in prepare_baseline.sh.
 export PATH="$HOME/.local/bin:$PATH"
 
+# The hf_hubert_custom upstream pulls mHuBERT-147 from the Hub (~2.4 GB) on
+# top of the Iqra_train/Iqra_TTS dataset downloads. The default cache is
+# under $HOME, which is NFS-mounted and quota-limited on this cluster, so
+# point it at node-local scratch instead. Not trapped for cleanup, unlike
+# run/quranmb_gate_check.slurm: this job is long enough and resubmitted often
+# enough that re-downloading everything each time is the worse trade. Set
+# HF_HOME yourself if you have persistent scratch that survives the node.
+export TMPDIR="${TMPDIR:-/tmp/${USER}_${SLURM_JOB_ID:-$$}}"
+mkdir -p "$TMPDIR"
+export HF_HOME="${HF_HOME:-$TMPDIR/hf_cache}"
+mkdir -p "$HF_HOME"
+
 bash run/prepare_baseline.sh
 
 S3PRL_VENV="${S3PRL_VENV:-$(pwd)/run/s3prl_venv}"
@@ -51,8 +63,15 @@ source "$S3PRL_VENV/bin/activate"
 S3PRL_DIR="${S3PRL_DIR:-$(pwd)/run/s3prl_checkout}"
 cd "$S3PRL_DIR/s3prl"
 
-exp_dir=hubert_base_per
-python3 run_downstream.py -m train -c downstream/ctc/cv_config/sws.yaml -p "${exp_dir}" -u hubert_base -d ctc
+# Upstream read straight out of the organizers' own published checkpoint
+# (scripts/baseline_reproduction/inspect_s3prl_ckpt.py): Args.upstream =
+# 'hf_hubert_custom', Args.upstream_ckpt = 'utter-project/mHuBERT-147',
+# upstream_trainable = False. This replaces the earlier `-u hubert_base`
+# stand-in (English HuBERT Base, LibriSpeech), which cost 0.036 F1 and 1,282
+# excess false rejections -- see insights/week-03.md.
+exp_dir=mhubert147_per
+python3 run_downstream.py -m train -c downstream/ctc/cv_config/sws.yaml -p "${exp_dir}" \
+    -u hf_hubert_custom -k utter-project/mHuBERT-147 -d ctc
 python3 run_downstream.py -m evaluate -e "${exp_dir}/dev-best.ckpt"
 
 # Predictions/checkpoint now live under run/s3prl_checkout/s3prl/${exp_dir}/.

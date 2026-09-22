@@ -83,6 +83,12 @@ fi
 python -c "import s3prl" 2>/dev/null || pip install -e "${S3PRL_DIR}[all]"
 python -c "import datasets" 2>/dev/null || pip install datasets
 python -c "import joblib, tqdm, pandas, numpy" 2>/dev/null || pip install joblib tqdm pandas numpy
+# The `hf_hubert_custom` upstream (s3prl/upstream/hf_hubert/expert.py) imports
+# HubertModel/Wav2Vec2FeatureExtractor at module load, so `transformers` must
+# be present or training dies the moment the upstream is constructed. s3prl's
+# [all] extra normally pulls it in; make that explicit rather than assumed,
+# since discovering it is missing costs a queue slot.
+python -c "import transformers" 2>/dev/null || pip install transformers
 
 echo "== [3/6] Download Iqra_train + Iqra_TTS =="
 mkdir -p "$DATA_DIR"

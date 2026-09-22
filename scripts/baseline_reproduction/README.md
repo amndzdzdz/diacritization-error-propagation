@@ -125,13 +125,13 @@ Edit the copied `sws.yaml`'s `downstream_expert.corpus.path` and
 step 3 (paths in the vendored copy are placeholders,
 `path_to_tsv_file/...`).
 
-**Config vs. paper discrepancy, noted for the writeup:** the paper's prose
-describes training for 12.5k updates; the shipped config (vendored here
-unmodified) sets `runner.total_steps: 200000` and `runner.eval_step:
-5000`. We treat the config as source of truth for this reproduction, since
-it is what actually produced the published F1 = 44.14% number, not the
-prose. Flag this explicitly in the week 3 writeup regardless of gate
-outcome.
+**Config vs. paper discrepancy — resolved.** The paper's prose describes
+training for 12.5k updates; the shipped config sets `runner.total_steps:
+200000`. Week 2 chose to treat the config as source of truth, and reading
+the organizers' published checkpoint confirms that was right: it records
+`Step = 200000` with `total_steps: 200000`. The prose's 12.5k does not
+describe this baseline. Still worth flagging in the writeup, since anyone
+budgeting a reproduction from the paper alone will under-provision by ~16x.
 
 ## Step 5 — train and evaluate
 
@@ -141,14 +141,19 @@ python3 run_downstream.py -m train -c downstream/ctc/cv_config/sws.yaml -p ${exp
 python3 run_downstream.py -m evaluate -e ${exp_dir}/dev-best.ckpt
 ```
 
-**⚠ `-u hubert_base` is the confirmed cause of the week-3 training run's
-shortfall.** It is English HuBERT Base (LibriSpeech), whereas the published
-baseline uses frozen **mHuBERT-147** (94M params, 147 languages). Training
-with it scored F1 = 0.4058 against the published 0.4414, the deficit
-entirely in precision; the organizers' own checkpoint scored 0.4415 through
-the identical pipeline. See [insights/week-03.md](../../insights/week-03.md).
-Resolve the correct mHuBERT upstream identifier in the S3PRL registry before
-any training run whose numbers are meant to be comparable.
+**⚠ The upstream above is `-u hubert_base` only in the organizers' own
+README.** That is English HuBERT Base (LibriSpeech); training with it scored
+F1 = 0.4058 against the published 0.4414. The real identifier, read out of
+the organizers' published checkpoint with `inspect_s3prl_ckpt.py`, is:
+
+```bash
+-u hf_hubert_custom -k utter-project/mHuBERT-147
+```
+
+frozen (`upstream_trainable: False`) with SUPERB weighted layer-sum over
+`hidden_states` (13 layer weights → base-size, 12 transformer layers).
+`run/train_baseline.slurm` uses this. See
+[insights/week-03.md](../../insights/week-03.md).
 
 This step is a multi-hour GPU job — run it on your cluster, not in this
 sandbox.
