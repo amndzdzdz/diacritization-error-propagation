@@ -19,6 +19,7 @@ docs
 # run/train_baseline.slurm, not checked in.
 run/s3prl_checkout/
 run/s3prl_venv/
+run/hf_cache
 run/tmp/
 run/data/
 run/logs/output_logs/*.log

@@ -4,7 +4,6 @@
 #SBATCH --error=run/logs/error_logs/error_iqra_mhubert_quranmb_gate_%j.log
 #SBATCH -J iqra_mhubert_quranmb_gate
 #SBATCH -p NvidiaAll
-#SBATCH --gres=gpu:1
 #SBATCH -t 02:00:00
 
 # Week-3 gate check: runs a trained checkpoint over QuranMB.v2 audio and
@@ -32,6 +31,20 @@ REPO_ROOT="$(pwd)"
 # Batch jobs don't source ~/.zshrc or ~/.bashrc, so make sure `uv` is
 # reachable here (needed for Stage B).
 export PATH="$HOME/.local/bin:$PATH"
+
+# This cluster's per-job TMPDIR ([/tmp/user/$UID]) isn't creatable
+# (permission denied), so Slurm falls back to the node's local /tmp --
+# which is fine, that's node-local disk with real room (unlike $HOME,
+# which is NFS-mounted and quota-limited -- do NOT point TMPDIR/HF_HOME
+# there, that was tried and just redirects into the same full quota).
+# Force both explicitly at a job-scoped subdir of the node's local /tmp,
+# so this doesn't depend on Slurm's fallback behavior and doesn't collide
+# with other users'/jobs' files.
+export TMPDIR="/tmp/${USER}_${SLURM_JOB_ID:-$$}"
+mkdir -p "$TMPDIR"
+trap 'rm -rf "$TMPDIR"' EXIT
+export HF_HOME="$TMPDIR/hf_cache"
+mkdir -p "$HF_HOME"
 
 S3PRL_VENV="${S3PRL_VENV:-$REPO_ROOT/run/s3prl_venv}"
 if [ ! -f "$S3PRL_VENV/bin/activate" ]; then

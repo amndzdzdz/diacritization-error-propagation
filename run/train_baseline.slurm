@@ -4,7 +4,6 @@
 #SBATCH --error=run/logs/error_logs/error_iqra_mhubert_baseline_%j.log
 #SBATCH -J iqra_mhubert_baseline
 #SBATCH -p NvidiaAll
-#SBATCH --gres=gpu:1
 #SBATCH -t 48:00:00
 
 # Reproduces the mHuBERT + BiLSTM + CTC organizer baseline end to end:

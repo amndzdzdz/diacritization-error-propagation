@@ -61,6 +61,10 @@ def load_ground_truth() -> dict[str, MDDGroundTruth]:
     import datasets
 
     ds = datasets.load_dataset(QURANMB_DATASET, split="train")
+    # Ground truth only needs the phoneme/text columns below -- drop `audio`
+    # before iterating so this doesn't require an audio-decoding backend
+    # (e.g. torchcodec) that scoring itself never uses.
+    ds = ds.remove_columns("audio")
     return parse_ground_truth_rows(ds)  # type: ignore
 
 
