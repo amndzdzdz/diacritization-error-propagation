@@ -158,13 +158,15 @@ ungated), so the gate can be checked with inference only — no training run,
 and no dependence on getting the upstream identifier right:
 
 ```bash
-CKPT=https://huggingface.co/IqraEval/Iqra_mhubert_base/resolve/main/mhubert.ckpt \
-OUTPUT_JSON=run/quranmb_predictions_official_ckpt.json \
 sbatch run/quranmb_gate_check.slurm
 ```
 
-`run/quranmb_gate_check.slurm` passes an `http(s)` `CKPT` straight through to
-`S3PRLModel`, which downloads it via `download_if_needed`.
+This is `run/quranmb_gate_check.slurm`'s **default** — it passes the
+checkpoint URL straight through to `S3PRLModel`, which downloads it via
+`download_if_needed`, and writes to
+`run/quranmb_predictions_official_ckpt.json`. To score a locally trained
+checkpoint instead, set `EXP_DIR` or `CKPT`; the output then defaults to
+`run/quranmb_predictions.json`, so the two never overwrite each other.
 
 ## Step 6 — score against the gate (back in this project, uv/Python 3.12)
 
