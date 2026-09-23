@@ -44,6 +44,16 @@ S3PRL_VENV="${S3PRL_VENV:-$REPO_ROOT/run/s3prl_venv}"
 # shellcheck source=/dev/null
 source "$S3PRL_VENV/bin/activate"
 
+# Same sha-pinned upstream the real training run uses -- the smoke test is
+# worthless if it validates a different set of weights.
+UPSTREAM_DIR="${UPSTREAM_DIR:-$(cat "$REPO_ROOT/run/.upstream_dir" 2>/dev/null || true)}"
+if [ -z "$UPSTREAM_DIR" ] || [ ! -d "$UPSTREAM_DIR" ]; then
+    echo "ERROR: no pinned upstream at '${UPSTREAM_DIR:-<unset>}'." >&2
+    echo "Run 'bash run/prepare_baseline.sh' first." >&2
+    exit 1
+fi
+echo "pinned upstream: $UPSTREAM_DIR"
+
 S3PRL_DIR="${S3PRL_DIR:-$REPO_ROOT/run/s3prl_checkout}"
 cd "$S3PRL_DIR/s3prl"
 
@@ -56,7 +66,7 @@ exp_dir="smoke_mhubert_${SLURM_JOB_ID:-$$}"
 echo "== smoke train: $STEPS steps into $exp_dir =="
 # `,,` is S3PRL's override separator, not a typo.
 python3 run_downstream.py -m train -c downstream/ctc/cv_config/sws.yaml -p "${exp_dir}" \
-    -u hf_hubert_custom -k utter-project/mHuBERT-147 -d ctc \
+    -u hf_hubert_custom -k "$UPSTREAM_DIR" -d ctc \
     -o "config.runner.total_steps=${STEPS},,config.runner.eval_step=${STEPS},,config.runner.save_step=${STEPS},,config.runner.log_step=1"
 
 echo "== smoke evaluate: reading the checkpoint back =="

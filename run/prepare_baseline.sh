@@ -144,4 +144,18 @@ sed \
     -e "s#path_to_tsv_file/dev/dev.tsv#$DATA_DIR/CV-Ar/dev/dev.tsv#" \
     "$BASELINE_SRC/config/sws.yaml" > "$S3PRL_DIR/s3prl/downstream/ctc/cv_config/sws.yaml"
 
+echo "== [7/7] Pin the frozen upstream to a commit sha =="
+# s3prl's `--upstream_revision` does NOT apply to `-u hf_hubert_custom`
+# (it is read only on the `--upstream`-is-an-HF-repo path, runner.py:125),
+# so the upstream is pinned by materializing it at a fixed sha and passing
+# the resulting directory to `-k`. See the module docstring of
+# pin_upstream.py for the full argument.
+UPSTREAM_PARENT="${UPSTREAM_PARENT:-$RUN_DIR/upstreams}"
+UPSTREAM_DIR="$(python "$BASELINE_SRC/pin_upstream.py" --output-dir "$UPSTREAM_PARENT" | tail -1)"
+export UPSTREAM_DIR
+echo "UPSTREAM_DIR=$UPSTREAM_DIR"
+# Written to disk as well, so the training scripts can read it back without
+# re-running the download (they source this file's output, not this shell).
+echo "$UPSTREAM_DIR" > "$RUN_DIR/.upstream_dir"
+
 echo "Baseline reproduction data/environment ready. S3PRL_DIR=$S3PRL_DIR"

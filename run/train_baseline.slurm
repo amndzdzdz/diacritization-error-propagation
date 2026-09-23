@@ -60,6 +60,18 @@ S3PRL_VENV="${S3PRL_VENV:-$(pwd)/run/s3prl_venv}"
 # shellcheck source=/dev/null
 source "$S3PRL_VENV/bin/activate"
 
+# The sha-pinned upstream directory, materialized by prepare_baseline.sh
+# step 7. Read from the file it writes, since prepare runs in a child shell.
+UPSTREAM_DIR="${UPSTREAM_DIR:-$(cat "$(pwd)/run/.upstream_dir" 2>/dev/null || true)}"
+if [ -z "$UPSTREAM_DIR" ] || [ ! -d "$UPSTREAM_DIR" ]; then
+    echo "ERROR: no pinned upstream at '${UPSTREAM_DIR:-<unset>}'." >&2
+    echo "Expected run/prepare_baseline.sh step 7 to create it." >&2
+    echo "Do NOT work around this by passing -k utter-project/mHuBERT-147:" >&2
+    echo "that silently un-pins the upstream (see pin_upstream.py)." >&2
+    exit 1
+fi
+echo "pinned upstream: $UPSTREAM_DIR"
+
 S3PRL_DIR="${S3PRL_DIR:-$(pwd)/run/s3prl_checkout}"
 cd "$S3PRL_DIR/s3prl"
 
@@ -69,9 +81,16 @@ cd "$S3PRL_DIR/s3prl"
 # upstream_trainable = False. This replaces the earlier `-u hubert_base`
 # stand-in (English HuBERT Base, LibriSpeech), which cost 0.036 F1 and 1,282
 # excess false rejections -- see insights/week-03.md.
+#
+# `-k` is a sha-pinned LOCAL DIRECTORY rather than the bare repo id. Same
+# weights (nothing but README has changed in that repo since 2024-06-12),
+# but now fixed. `--upstream_revision` would NOT achieve this -- it does not
+# reach the hf_hubert_custom code path at all; see pin_upstream.py. The sha
+# is in the directory name, so it lands in the trained checkpoint's own
+# Args.upstream_ckpt and inspect_s3prl_ckpt.py can read it back.
 exp_dir=mhubert147_per
 python3 run_downstream.py -m train -c downstream/ctc/cv_config/sws.yaml -p "${exp_dir}" \
-    -u hf_hubert_custom -k utter-project/mHuBERT-147 -d ctc
+    -u hf_hubert_custom -k "$UPSTREAM_DIR" -d ctc
 python3 run_downstream.py -m evaluate -e "${exp_dir}/dev-best.ckpt"
 
 # Predictions/checkpoint now live under run/s3prl_checkout/s3prl/${exp_dir}/.
