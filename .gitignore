@@ -24,6 +24,12 @@ run/s3prl_venv/
 run/hf_cache
 run/tmp/
 run/data/
+# MSA-arm base-rate probe (run/cv_dev_baserate.slurm): Stage A dumps every
+# dev utterance's wav (~77 MB) and Stage B selects the 50 pilot ones. Both
+# are regenerable from the job; the manifest that references them
+# (run/msa_pilot_sample.json) is small and IS tracked.
+run/cv_dev_audio/
+run/pilot_audio/
 run/logs/output_logs/*.log
 run/logs/error_logs/*.log
 !run/logs/output_logs/.gitkeep
