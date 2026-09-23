@@ -247,7 +247,7 @@ Twenty-one weeks with deliberate slack. Weeks run Monday to Sunday. One structur
 
 | Weeks | Dates | Work | Gate |
 |---|---|---|---|
-| 0 | 15 – 20 Sep | **Complete.** Novelty check across all four tiers; verdict not scooped. Remaining: Arabic-language queries, manual citation traversal. Write the pre-committed effect-size position | **Passed** |
+| 0 | 15 – 20 Sep | **Complete.** Novelty check across all five tiers (Tier 5 — Arabic-language queries and citation traversal — closed 20 Sep); verdict not scooped. Pre-committed effect-size position drafted, sign-off pending | **Passed** |
 | 1–3 | 21 Sep – 11 Oct | Cluster setup; pull Iqra_train, Iqra_TTS, QuranMB.v2; implement the official hierarchical metric; reproduce the mHuBERT baseline. Read Kadambi and Mathad; draft the differentiation text | **F1 ≈ 0.4414 ± 0.02 or stop and debug** |
 | 4–6 | 12 Oct – 1 Nov | Diacritizer pipeline, all tools; RQ1 measurements on both domains; confirm CATT exposes token probabilities; begin annotation; **run the full label-path column on the Qur'anic arm** | **Label-path effect measurable, and interaction power estimated** |
 | 7–9 | 2 – 22 Nov | Finish annotation including the double-annotated subset; train XLS-R prompt-free; **build the text-dependent arm**; MSA-arm label path | Both arms trained, annotation closed |
@@ -314,7 +314,7 @@ Every figure used above is verified in [novelty-check.md](novelty-check.md), whi
 
 The specific figures used above:
 
-- Baseline F1 = 0.4414 on QuranMB.v2, and the 68-phoneme Halabi inventory — [IQRA 2026](https://arxiv.org/abs/2603.29087), El Kheir et al. Also the source of the phoneme-to-diacritic mapping quote in §4.2.
+- Baseline F1 = 0.4414 on QuranMB.v2 — [Iqra'Eval 2025](https://aclanthology.org/2025.arabicnlp-sharedtasks.61/), El Kheir et al. (the shared task's own organizer baseline; **not** an IQRA 2026 result — IQRA 2026 carries this same 2025 number forward unchanged onto its leaderboard rather than re-measuring it, see novelty-check.md's third secondary result, resolved week 1). The 68-phoneme Halabi inventory and the phoneme-to-diacritic mapping quote in §4.2 are from [IQRA 2026](https://arxiv.org/abs/2603.29087), El Kheir et al.
 - Hierarchical TA/TR/FA/FR and CD/ED metric definitions — [Iqra'Eval 2025](https://aclanthology.org/2025.arabicnlp-sharedtasks.61/), El Kheir et al.
 - In-house vowelizer applied to Common Voice transcripts; QuranMB "fully vowelized by design" — [Towards a Unified Benchmark](https://arxiv.org/abs/2506.07722), El Kheir et al.
 - CATT DER/WER with and without case endings (**EO variant**), the full 11-system Table 5 spread, and the grammatical-rules quote — [CATT](https://arxiv.org/abs/2407.03236), Alasmary et al.

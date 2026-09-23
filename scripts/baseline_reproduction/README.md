@@ -148,7 +148,8 @@ published 0.4414. The identifier above is the real one, read out of the
 organizers' published checkpoint with `inspect_s3prl_ckpt.py`: frozen
 (`upstream_trainable: False`) with SUPERB weighted layer-sum over
 `hidden_states` (13 layer weights → base-size, 12 transformer layers).
-`run/train_baseline.slurm` uses this. See
+Training this recipe on stock S3PRL reproduces the published number at
+F1 = 0.4406. `run/train_baseline.slurm` uses it. See
 [insights/week-03.md](../../insights/week-03.md).
 
 This step is a multi-hour GPU job — run it on your cluster, not in this

@@ -24,6 +24,9 @@ Literature/novelty review: [docs/novelty-check.md](docs/novelty-check.md).
 ```
 docs/                  Project plan, novelty check, per-week implementation plans (docs/weeks/week-NN.md)
 insights/              One file per week (week-NN.md): experiment log, filled in as work happens
+scripts/               Ad hoc, one-off verification scripts — not covered by CI/tests, not
+                       imported by src/. Promote a script's logic into src/arabic_mdd/ (with
+                       tests) once it becomes a real pipeline component a later week needs.
 src/arabic_mdd/
   data/                Dataset loading (QuranMB.v2, Iqra_train, Common Voice Arabic)
   diacritizers/         Wrappers around diacritization tools under test (CATT, Shakkala, Mishkal, Farasa)
