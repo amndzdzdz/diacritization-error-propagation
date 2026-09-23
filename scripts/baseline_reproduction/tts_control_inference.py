@@ -138,6 +138,13 @@ def run(
             "prediction": _extract_prediction(model(str(tmp_wav))),
             # Stored cleaned, so Stage B scores exactly what was scored here.
             "phoneme_ref": clean_reference(row.get("phoneme_ref")),
+            # Always stored, for BOTH labels. On `original` rows this equals
+            # `phoneme_ref` and is redundant; on `augmented` rows it is `A`,
+            # the sequence actually synthesized, which completes the
+            # (C, A, P) triple the hierarchical metric needs. Capturing it
+            # unconditionally means an `--label augmented` run needs no
+            # second pass over this 6 GB dataset.
+            "phoneme_mis": clean_reference(row.get("phoneme_mis")),
             "speaker": str(row.get("speaker") or ""),
         }
 
