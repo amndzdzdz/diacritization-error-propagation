@@ -1,0 +1,956 @@
+[
+  {
+    "id": "65037",
+    "verdict": "clean",
+    "errors": [],
+    "error_words": [],
+    "tags": [],
+    "note": "",
+    "n_words": 4,
+    "n_canonical_phonemes": 22,
+    "n_deferrals": 0
+  },
+  {
+    "id": "63584",
+    "verdict": "error",
+    "errors": [
+      {
+        "words": [
+          2
+        ],
+        "tags": [
+          "case"
+        ]
+      }
+    ],
+    "error_words": [
+      2
+    ],
+    "tags": [
+      "case"
+    ],
+    "note": "",
+    "n_words": 6,
+    "n_canonical_phonemes": 29,
+    "n_deferrals": 0
+  },
+  {
+    "id": "73796",
+    "verdict": "error",
+    "errors": [
+      {
+        "words": [
+          3,
+          5
+        ],
+        "tags": [
+          "refbad"
+        ]
+      }
+    ],
+    "error_words": [
+      3,
+      5
+    ],
+    "tags": [
+      "refbad"
+    ],
+    "note": "",
+    "n_words": 5,
+    "n_canonical_phonemes": 30,
+    "n_deferrals": 0
+  },
+  {
+    "id": "70301",
+    "verdict": "clean",
+    "errors": [],
+    "error_words": [],
+    "tags": [],
+    "note": "",
+    "n_words": 1,
+    "n_canonical_phonemes": 10,
+    "n_deferrals": 0
+  },
+  {
+    "id": "71278",
+    "verdict": "clean",
+    "errors": [],
+    "error_words": [],
+    "tags": [],
+    "note": "",
+    "n_words": 6,
+    "n_canonical_phonemes": 28,
+    "n_deferrals": 0
+  },
+  {
+    "id": "69724",
+    "verdict": "error",
+    "errors": [
+      {
+        "words": [
+          3
+        ],
+        "tags": [
+          "refbad"
+        ]
+      }
+    ],
+    "error_words": [
+      3
+    ],
+    "tags": [
+      "refbad"
+    ],
+    "note": "",
+    "n_words": 6,
+    "n_canonical_phonemes": 26,
+    "n_deferrals": 0
+  },
+  {
+    "id": "65120",
+    "verdict": "error",
+    "errors": [
+      {
+        "words": [
+          1
+        ],
+        "tags": [
+          "refbad"
+        ]
+      }
+    ],
+    "error_words": [
+      1
+    ],
+    "tags": [
+      "refbad"
+    ],
+    "note": "",
+    "n_words": 2,
+    "n_canonical_phonemes": 11,
+    "n_deferrals": 0
+  },
+  {
+    "id": "72328",
+    "verdict": "error",
+    "errors": [
+      {
+        "words": [
+          4
+        ],
+        "tags": [
+          "refbad"
+        ]
+      }
+    ],
+    "error_words": [
+      4
+    ],
+    "tags": [
+      "refbad"
+    ],
+    "note": "",
+    "n_words": 5,
+    "n_canonical_phonemes": 25,
+    "n_deferrals": 0
+  },
+  {
+    "id": "68583",
+    "verdict": "error",
+    "errors": [
+      {
+        "words": [
+          2
+        ],
+        "tags": [
+          "case"
+        ]
+      }
+    ],
+    "error_words": [
+      2
+    ],
+    "tags": [
+      "case"
+    ],
+    "note": "",
+    "n_words": 3,
+    "n_canonical_phonemes": 16,
+    "n_deferrals": 0
+  },
+  {
+    "id": "63853",
+    "verdict": "error",
+    "errors": [
+      {
+        "words": [
+          1
+        ],
+        "tags": [
+          "case"
+        ]
+      }
+    ],
+    "error_words": [
+      1
+    ],
+    "tags": [
+      "case"
+    ],
+    "note": "",
+    "n_words": 2,
+    "n_canonical_phonemes": 15,
+    "n_deferrals": 0
+  },
+  {
+    "id": "71747",
+    "verdict": "unusable",
+    "errors": [],
+    "error_words": [],
+    "tags": [],
+    "note": "screaming at the end of the utterance",
+    "n_words": 9,
+    "n_canonical_phonemes": 43,
+    "n_deferrals": 0
+  },
+  {
+    "id": "69711",
+    "verdict": "unusable",
+    "errors": [],
+    "error_words": [],
+    "tags": [],
+    "note": "Sentence the speaker said is already vowelized to begin with (and wrongly)",
+    "n_words": 6,
+    "n_canonical_phonemes": 35,
+    "n_deferrals": 0
+  },
+  {
+    "id": "66606",
+    "verdict": "clean",
+    "errors": [],
+    "error_words": [],
+    "tags": [],
+    "note": "",
+    "n_words": 5,
+    "n_canonical_phonemes": 15,
+    "n_deferrals": 0
+  },
+  {
+    "id": "69706",
+    "verdict": "error",
+    "errors": [
+      {
+        "words": [
+          1
+        ],
+        "tags": [
+          "case"
+        ]
+      },
+      {
+        "words": [
+          2,
+          5
+        ],
+        "tags": [
+          "refbad"
+        ]
+      }
+    ],
+    "error_words": [
+      1,
+      2,
+      5
+    ],
+    "tags": [
+      "case",
+      "refbad"
+    ],
+    "note": "",
+    "n_words": 5,
+    "n_canonical_phonemes": 37,
+    "n_deferrals": 0
+  },
+  {
+    "id": "72426",
+    "verdict": "clean",
+    "errors": [],
+    "error_words": [],
+    "tags": [],
+    "note": "",
+    "n_words": 2,
+    "n_canonical_phonemes": 12,
+    "n_deferrals": 0
+  },
+  {
+    "id": "71266",
+    "verdict": "unusable",
+    "errors": [],
+    "error_words": [],
+    "tags": [],
+    "note": "already vowelized, quranic verse",
+    "n_words": 9,
+    "n_canonical_phonemes": 47,
+    "n_deferrals": 0
+  },
+  {
+    "id": "72281",
+    "verdict": "clean",
+    "errors": [],
+    "error_words": [],
+    "tags": [],
+    "note": "",
+    "n_words": 2,
+    "n_canonical_phonemes": 20,
+    "n_deferrals": 0
+  },
+  {
+    "id": "69473",
+    "verdict": "error",
+    "errors": [
+      {
+        "words": [
+          4
+        ],
+        "tags": [
+          "dialect"
+        ]
+      },
+      {
+        "words": [
+          5
+        ],
+        "tags": [
+          "refbad"
+        ]
+      }
+    ],
+    "error_words": [
+      4,
+      5
+    ],
+    "tags": [
+      "dialect",
+      "refbad"
+    ],
+    "note": "",
+    "n_words": 5,
+    "n_canonical_phonemes": 18,
+    "n_deferrals": 0
+  },
+  {
+    "id": "73088",
+    "verdict": "error",
+    "errors": [
+      {
+        "words": [
+          3
+        ],
+        "tags": [
+          "refbad"
+        ]
+      }
+    ],
+    "error_words": [
+      3
+    ],
+    "tags": [
+      "refbad"
+    ],
+    "note": "",
+    "n_words": 4,
+    "n_canonical_phonemes": 25,
+    "n_deferrals": 0
+  },
+  {
+    "id": "63609",
+    "verdict": "clean",
+    "errors": [],
+    "error_words": [],
+    "tags": [],
+    "note": "",
+    "n_words": 2,
+    "n_canonical_phonemes": 10,
+    "n_deferrals": 0
+  },
+  {
+    "id": "66665",
+    "verdict": "unusable",
+    "errors": [],
+    "error_words": [],
+    "tags": [],
+    "note": "already vowelized, quranic verse",
+    "n_words": 7,
+    "n_canonical_phonemes": 37,
+    "n_deferrals": 0
+  },
+  {
+    "id": "64473",
+    "verdict": "clean",
+    "errors": [],
+    "error_words": [],
+    "tags": [],
+    "note": "",
+    "n_words": 4,
+    "n_canonical_phonemes": 27,
+    "n_deferrals": 0
+  },
+  {
+    "id": "70803",
+    "verdict": "error",
+    "errors": [
+      {
+        "words": [
+          1
+        ],
+        "tags": [
+          "refbad"
+        ]
+      }
+    ],
+    "error_words": [
+      1
+    ],
+    "tags": [
+      "refbad"
+    ],
+    "note": "",
+    "n_words": 4,
+    "n_canonical_phonemes": 24,
+    "n_deferrals": 0
+  },
+  {
+    "id": "71196",
+    "verdict": "clean",
+    "errors": [],
+    "error_words": [],
+    "tags": [],
+    "note": "",
+    "n_words": 4,
+    "n_canonical_phonemes": 28,
+    "n_deferrals": 0
+  },
+  {
+    "id": "64375",
+    "verdict": "error",
+    "errors": [
+      {
+        "words": [
+          1
+        ],
+        "tags": [
+          "refbad",
+          "word"
+        ]
+      },
+      {
+        "words": [
+          2
+        ],
+        "tags": [
+          "del",
+          "refbad"
+        ]
+      },
+      {
+        "words": [
+          3
+        ],
+        "tags": [
+          "case",
+          "refbad"
+        ]
+      }
+    ],
+    "error_words": [
+      1,
+      2,
+      3
+    ],
+    "tags": [
+      "case",
+      "del",
+      "refbad",
+      "word"
+    ],
+    "note": "",
+    "n_words": 5,
+    "n_canonical_phonemes": 32,
+    "n_deferrals": 0
+  },
+  {
+    "id": "68253",
+    "verdict": "error",
+    "errors": [
+      {
+        "words": [
+          4
+        ],
+        "tags": [
+          "case"
+        ]
+      },
+      {
+        "words": [
+          6
+        ],
+        "tags": [
+          "case",
+          "refbad"
+        ]
+      }
+    ],
+    "error_words": [
+      4,
+      6
+    ],
+    "tags": [
+      "case",
+      "refbad"
+    ],
+    "note": "",
+    "n_words": 9,
+    "n_canonical_phonemes": 59,
+    "n_deferrals": 0
+  },
+  {
+    "id": "69287",
+    "verdict": "error",
+    "errors": [
+      {
+        "words": [
+          3
+        ],
+        "tags": [
+          "refbad"
+        ]
+      }
+    ],
+    "error_words": [
+      3
+    ],
+    "tags": [
+      "refbad"
+    ],
+    "note": "",
+    "n_words": 4,
+    "n_canonical_phonemes": 22,
+    "n_deferrals": 0
+  },
+  {
+    "id": "72442",
+    "verdict": "clean",
+    "errors": [],
+    "error_words": [],
+    "tags": [],
+    "note": "",
+    "n_words": 8,
+    "n_canonical_phonemes": 30,
+    "n_deferrals": 0
+  },
+  {
+    "id": "63566",
+    "verdict": "unusable",
+    "errors": [],
+    "error_words": [],
+    "tags": [],
+    "note": "audio quality is really bad",
+    "n_words": 6,
+    "n_canonical_phonemes": 30,
+    "n_deferrals": 0
+  },
+  {
+    "id": "64870",
+    "verdict": "clean",
+    "errors": [],
+    "error_words": [],
+    "tags": [],
+    "note": "",
+    "n_words": 3,
+    "n_canonical_phonemes": 16,
+    "n_deferrals": 0
+  },
+  {
+    "id": "70683",
+    "verdict": "error",
+    "errors": [
+      {
+        "words": [
+          2
+        ],
+        "tags": [
+          "case"
+        ]
+      }
+    ],
+    "error_words": [
+      2
+    ],
+    "tags": [
+      "case"
+    ],
+    "note": "",
+    "n_words": 4,
+    "n_canonical_phonemes": 26,
+    "n_deferrals": 0
+  },
+  {
+    "id": "67965",
+    "verdict": "error",
+    "errors": [
+      {
+        "words": [
+          3
+        ],
+        "tags": [
+          "refbad"
+        ]
+      }
+    ],
+    "error_words": [
+      3
+    ],
+    "tags": [
+      "refbad"
+    ],
+    "note": "",
+    "n_words": 5,
+    "n_canonical_phonemes": 24,
+    "n_deferrals": 0
+  },
+  {
+    "id": "70992",
+    "verdict": "error",
+    "errors": [
+      {
+        "words": [
+          2
+        ],
+        "tags": [
+          "dialect",
+          "refbad"
+        ]
+      },
+      {
+        "words": [
+          4
+        ],
+        "tags": [
+          "sub"
+        ]
+      }
+    ],
+    "error_words": [
+      2,
+      4
+    ],
+    "tags": [
+      "dialect",
+      "refbad",
+      "sub"
+    ],
+    "note": "",
+    "n_words": 6,
+    "n_canonical_phonemes": 31,
+    "n_deferrals": 0
+  },
+  {
+    "id": "71116",
+    "verdict": "unusable",
+    "errors": [],
+    "error_words": [],
+    "tags": [],
+    "note": "audio quality too bad",
+    "n_words": 3,
+    "n_canonical_phonemes": 22,
+    "n_deferrals": 0
+  },
+  {
+    "id": "70621",
+    "verdict": "error",
+    "errors": [
+      {
+        "words": [
+          2
+        ],
+        "tags": [
+          "case"
+        ]
+      }
+    ],
+    "error_words": [
+      2
+    ],
+    "tags": [
+      "case"
+    ],
+    "note": "",
+    "n_words": 5,
+    "n_canonical_phonemes": 22,
+    "n_deferrals": 0
+  },
+  {
+    "id": "64076",
+    "verdict": "unusable",
+    "errors": [],
+    "error_words": [],
+    "tags": [],
+    "note": "fully vowelized, quranic verse",
+    "n_words": 8,
+    "n_canonical_phonemes": 64,
+    "n_deferrals": 0
+  },
+  {
+    "id": "73610",
+    "verdict": "clean",
+    "errors": [],
+    "error_words": [],
+    "tags": [],
+    "note": "",
+    "n_words": 4,
+    "n_canonical_phonemes": 20,
+    "n_deferrals": 0
+  },
+  {
+    "id": "65094",
+    "verdict": "clean",
+    "errors": [],
+    "error_words": [],
+    "tags": [],
+    "note": "",
+    "n_words": 4,
+    "n_canonical_phonemes": 18,
+    "n_deferrals": 0
+  },
+  {
+    "id": "73417",
+    "verdict": "unusable",
+    "errors": [],
+    "error_words": [],
+    "tags": [],
+    "note": "quranic verse",
+    "n_words": 10,
+    "n_canonical_phonemes": 70,
+    "n_deferrals": 0
+  },
+  {
+    "id": "73480",
+    "verdict": "clean",
+    "errors": [],
+    "error_words": [],
+    "tags": [],
+    "note": "",
+    "n_words": 7,
+    "n_canonical_phonemes": 30,
+    "n_deferrals": 0
+  },
+  {
+    "id": "67058",
+    "verdict": "clean",
+    "errors": [],
+    "error_words": [],
+    "tags": [],
+    "note": "",
+    "n_words": 1,
+    "n_canonical_phonemes": 4,
+    "n_deferrals": 0
+  },
+  {
+    "id": "63842",
+    "verdict": "unusable",
+    "errors": [],
+    "error_words": [],
+    "tags": [],
+    "note": "audio not working for this one",
+    "n_words": 9,
+    "n_canonical_phonemes": 45,
+    "n_deferrals": 0
+  },
+  {
+    "id": "66052",
+    "verdict": "unusable",
+    "errors": [],
+    "error_words": [],
+    "tags": [],
+    "note": "The script is wrong, it should be saqa no saqi",
+    "n_words": 5,
+    "n_canonical_phonemes": 31,
+    "n_deferrals": 2
+  },
+  {
+    "id": "73793",
+    "verdict": "unusable",
+    "errors": [],
+    "error_words": [],
+    "tags": [],
+    "note": "quranic verse",
+    "n_words": 7,
+    "n_canonical_phonemes": 37,
+    "n_deferrals": 0
+  },
+  {
+    "id": "71993",
+    "verdict": "clean",
+    "errors": [],
+    "error_words": [],
+    "tags": [],
+    "note": "",
+    "n_words": 4,
+    "n_canonical_phonemes": 26,
+    "n_deferrals": 0
+  },
+  {
+    "id": "64182",
+    "verdict": "error",
+    "errors": [
+      {
+        "words": [
+          1
+        ],
+        "tags": [
+          "refbad"
+        ]
+      },
+      {
+        "words": [
+          2
+        ],
+        "tags": [
+          "case"
+        ]
+      }
+    ],
+    "error_words": [
+      1,
+      2
+    ],
+    "tags": [
+      "case",
+      "refbad"
+    ],
+    "note": "",
+    "n_words": 4,
+    "n_canonical_phonemes": 28,
+    "n_deferrals": 0
+  },
+  {
+    "id": "68856",
+    "verdict": "error",
+    "errors": [
+      {
+        "words": [
+          1,
+          2,
+          4
+        ],
+        "tags": [
+          "refbad"
+        ]
+      },
+      {
+        "words": [
+          7
+        ],
+        "tags": [
+          "sub"
+        ]
+      }
+    ],
+    "error_words": [
+      1,
+      2,
+      4,
+      7
+    ],
+    "tags": [
+      "refbad",
+      "sub"
+    ],
+    "note": "",
+    "n_words": 8,
+    "n_canonical_phonemes": 52,
+    "n_deferrals": 1
+  },
+  {
+    "id": "69223",
+    "verdict": "error",
+    "errors": [
+      {
+        "words": [
+          1
+        ],
+        "tags": [
+          "refbad"
+        ]
+      }
+    ],
+    "error_words": [
+      1
+    ],
+    "tags": [
+      "refbad"
+    ],
+    "note": "",
+    "n_words": 1,
+    "n_canonical_phonemes": 6,
+    "n_deferrals": 1
+  },
+  {
+    "id": "66560",
+    "verdict": "clean",
+    "errors": [],
+    "error_words": [],
+    "tags": [],
+    "note": "",
+    "n_words": 12,
+    "n_canonical_phonemes": 72,
+    "n_deferrals": 2
+  },
+  {
+    "id": "64374",
+    "verdict": "error",
+    "errors": [
+      {
+        "words": [
+          1
+        ],
+        "tags": [
+          "case",
+          "refbad"
+        ]
+      },
+      {
+        "words": [
+          2,
+          3
+        ],
+        "tags": [
+          "case"
+        ]
+      },
+      {
+        "words": [
+          7
+        ],
+        "tags": [
+          "unclear"
+        ]
+      }
+    ],
+    "error_words": [
+      1,
+      2,
+      3,
+      7
+    ],
+    "tags": [
+      "case",
+      "refbad",
+      "unclear"
+    ],
+    "note": "",
+    "n_words": 8,
+    "n_canonical_phonemes": 48,
+    "n_deferrals": 3
+  }
+]

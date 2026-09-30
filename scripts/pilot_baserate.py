@@ -22,7 +22,8 @@ Strict vs lenient is the protocol's central distinction: `dialect`, `case`
 and `hesit` words are excluded from the lenient rate, because counting
 regional accent as mispronunciation would push the rate toward 100% and
 make it meaningless. Both are reported; the pre-committed decision bands in
-the protocol are read against the **lenient word-level** rate.
+the protocol are read against the **lenient word-level** rate. The exclusion
+is applied **per word group**, not per utterance -- see `_error_groups`.
 
     uv run python scripts/pilot_baserate.py
 """
@@ -39,9 +40,31 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 
 # Tags that do not count as mispronunciation under the lenient definition.
 # See docs/annotation-protocol-pilot.md §4.
-LENIENT_EXCLUDED = {"dialect", "case", "hesit"}
+#
+# `refbad` is in here for a different reason than the others: it marks the
+# automatic VOWELIZER being wrong, not the speaker. Counting it as a
+# mispronunciation would fold label-path error into the base rate -- the
+# two quantities this paper exists to separate.
+LENIENT_EXCLUDED = {"dialect", "case", "hesit", "refbad"}
 
 QURANMB_FR_RATE = 0.1241
+
+
+def _error_groups(rec: dict) -> list[tuple[list[int], set[str]]]:
+    """Per-word (words, tags) groups for one annotated utterance.
+
+    `pilot_annotate.py` records errors as groups precisely so the lenient
+    rate can be computed exactly. An earlier format kept one tag set per
+    utterance, which forced the all-or-nothing rule below and overcounted
+    whenever an utterance mixed a genuine substitution with dropped i'rab --
+    common in read MSA, and biased toward the >=3% band. Records in the old
+    shape are still read, but they can only get the old approximation.
+    """
+    groups = rec.get("errors")
+    if groups is not None:
+        return [(list(g.get("words") or []), set(g.get("tags") or [])) for g in groups]
+    words = list(rec.get("error_words") or [])
+    return [(words, set(rec.get("tags") or []))] if words else []
 
 
 def _binom_cdf(k: int, n: int, p: float) -> float:
@@ -124,6 +147,17 @@ def main() -> None:
     if all_tags:
         print(f"  tag counts: {dict(all_tags.most_common())}")
 
+    # A free by-product: how often the organizers' in-house vowelizer got the
+    # diacritics wrong on MSA text a human could adjudicate. That is a direct
+    # observation about the label path -- RQ1's subject -- obtained at no
+    # extra annotation cost. Small n, so indicative only.
+    n_refbad = sum(1 for r in annotations if "refbad" in (r.get("tags") or []))
+    if n_refbad:
+        scored = len(annotations) - len(unusable)
+        print(f"\n  BY-PRODUCT: vowelizer marked wrong on {n_refbad}/{scored} utterances")
+        print("  (automatic diacritization error on MSA -- label-path evidence,")
+        print("  excluded from the base rate below. Indicative at this n.)")
+
     for stratum in ("uniform_random", "high_disagreement"):
         recs = by_stratum.get(stratum) or []
         if not recs:
@@ -140,23 +174,25 @@ def main() -> None:
         n_words = sum(r.get("n_words") or 0 for r in recs)
 
         strict_utt = sum(1 for r in recs if r["verdict"] == "error")
-        strict_words = sum(len(r.get("error_words") or []) for r in recs)
+        strict_words = sum(len(set(r.get("error_words") or [])) for r in recs)
 
-        # Lenient: a word is excluded if the utterance's tags are entirely
-        # within the excluded set. Tags are recorded per utterance, not per
-        # word, so this is exact when an utterance has one error type and
-        # conservative (counts the word) when it mixes types -- which is the
-        # safe direction for a base-rate claim.
+        # Lenient: drop each GROUP whose tags lie entirely inside the excluded
+        # set, then count the words that survive. Per-group rather than
+        # per-utterance, so an utterance carrying one real substitution plus
+        # five dropped case endings contributes 1 word here, not 6.
         lenient_utt = 0
         lenient_words = 0
         for r in recs:
             if r["verdict"] != "error":
                 continue
-            tags = set(r.get("tags") or [])
-            if tags and tags <= LENIENT_EXCLUDED:
-                continue
-            lenient_utt += 1
-            lenient_words += len(r.get("error_words") or [])
+            kept: set[int] = set()
+            for words, tags in _error_groups(r):
+                if tags and tags <= LENIENT_EXCLUDED:
+                    continue
+                kept.update(words)
+            if kept:
+                lenient_utt += 1
+                lenient_words += len(kept)
 
         print(f"\n  utterances: {n_utt}    words: {n_words}")
         print("\n  STRICT (every marked word counts)")
