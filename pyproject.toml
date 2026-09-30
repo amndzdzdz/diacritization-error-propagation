@@ -8,8 +8,11 @@ authors = [
 ]
 requires-python = ">=3.12"
 dependencies = [
-    "catt-tashkeel>=1.0.2",
+    # Pinned, not floored: the RQ4 confidence path in
+    # `arabic_mdd.diacritizers.catt` reads this release's private internals.
+    "catt-tashkeel==1.0.2",
     "datasets>=5.0.1",
+    "mishkal>=0.4.1",
     "torch>=2.14.0",
 ]
 
@@ -27,7 +30,12 @@ dev = [
 [tool.ruff]
 line-length = 100
 target-version = "py312"
-extend-exclude = ["scripts/baseline_reproduction"]
+# Vendored third-party code, kept diffable against upstream rather than
+# restyled. See `docs/third-party-licences.md`.
+extend-exclude = [
+    "scripts/baseline_reproduction",
+    "src/arabic_mdd/data/_halabi_phonetiser.py",
+]
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP", "B", "SIM", "N"]

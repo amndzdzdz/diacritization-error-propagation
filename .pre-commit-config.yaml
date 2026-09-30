@@ -9,15 +9,18 @@ repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v5.0.0
     hooks:
-      # scripts/baseline_reproduction/ is vendored verbatim from upstream (see
-      # its README). These hooks would rewrite it and break the byte-for-byte
-      # guarantee that keeps a failed baseline reproduction unambiguous. ruff
-      # already skips that path via pyproject.toml's extend-exclude; these
-      # hooks come from a different repo and don't read it.
+      # Two paths are vendored verbatim from upstream and must stay
+      # byte-for-byte identical to the commit they were taken from:
+      # scripts/baseline_reproduction/ (see its README -- rewriting it makes a
+      # failed baseline reproduction ambiguous) and the Halabi phonetiser,
+      # whose pinned commit is asserted by arabic_mdd.data.phonetizer's
+      # _PROVENANCE and its test. ruff already skips both via pyproject.toml's
+      # extend-exclude; these hooks come from a different repo and don't read
+      # it, so the exclusion has to be repeated here.
       - id: trailing-whitespace
-        exclude: ^scripts/baseline_reproduction/
+        exclude: &vendored ^(scripts/baseline_reproduction/|src/arabic_mdd/data/_halabi_phonetiser\.py$)
       - id: end-of-file-fixer
-        exclude: ^scripts/baseline_reproduction/
+        exclude: *vendored
       - id: check-yaml
       - id: check-toml
       - id: check-added-large-files
