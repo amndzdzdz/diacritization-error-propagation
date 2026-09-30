@@ -441,3 +441,11 @@ shift from reference corruption, which the plan's 2×2 handles only if truth
 is genuinely held fixed in the bottom-left cell; and the fact that the MSA
 arm's `C_gold` must be created by annotation, already flagged in the plan as
 the schedule's main risk.
+
+**These now live in a standing reference**, not only here:
+[docs/msa-arm.md](../docs/msa-arm.md), written 2026-09-23. It carries all
+five items above and adds three the review missed — the mispronunciation
+**base-rate** problem on read Common Voice speech (§3.3), the
+prescriptive-vs-pausal convention that decides what `C_gold` even means
+(§3.4), and dev-split contamination in the obvious choice of evaluation set
+(§5.2) — plus the week 4–12 build order.

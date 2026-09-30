@@ -30,6 +30,12 @@ run/data/
 # (run/msa_pilot_sample.json) is small and IS tracked.
 run/cv_dev_audio/
 run/pilot_audio/
+# Sha-pinned mHuBERT-147 snapshot (run/prepare_baseline.sh step 7) and the
+# pointer file the training scripts read it back from. ~360 MB of weights,
+# fully regenerable -- the sha itself lives in
+# scripts/baseline_reproduction/pin_upstream.py, which IS tracked.
+run/upstreams/
+run/.upstream_dir
 run/logs/output_logs/*.log
 run/logs/error_logs/*.log
 !run/logs/output_logs/.gitkeep
