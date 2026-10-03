@@ -180,10 +180,59 @@ correct-the-machine choice itself:
   runs on: the first 50 utterances of the drawn 500, in draw order
   (`run/msa_annotation_block.json`, `crossover: true`).
 
-Week 4 task 5 decides what to anchor on: if the NAACL 2024 audio-informed
+~~Week 4 task 5 decides what to anchor on: if the NAACL 2024 audio-informed
 restoration method beats text-only CATT on Common Voice, it is the better
 starting point *and* the anchoring bias then points away from the system
-under test rather than toward it.
+under test rather than toward it.~~
+
+#### DECIDED (3 Oct 2026): anchor on text-only CATT. **[MEASURED — from the paper's own tables]**
+
+Three independent grounds, any one sufficient.
+
+**1. It does not work on MSA.** Shatnawi et al.'s 45% relative DER reduction
+is on ClArTTS — 12 hours, one male speaker, read Classical Arabic audiobook.
+On the only MSA set they try (QASR TTS broadcast news) the method is a wash:
+19.82 vs 20.20 DER on the male speaker, 34.06 vs 35.09 on the female,
+Text+ASR against its own Text-Only twin. Their words: "not consistent or
+substantial enough". The mechanism is their Table 6 — the Whisper fine-tune
+that supplies the audio evidence scores 14.43% WER on ClArTTS but **72.4%**
+and **87.3%** on QASR male/female. Common Voice Arabic is crowdsourced,
+many-speaker and accented, i.e. further from ClArTTS than QASR TTS is, so the
+expected gain here is zero or negative. No MSA checkpoint exists either; the
+released one is the Classical Arabic fine-tune.
+
+**2. The comparison this section asked for is circular.** The paper never
+uses Common Voice and never compares against CATT. Settling "does
+audio-informed beat text-only CATT on Common Voice" requires diacritized
+Common Voice gold — which is `C_gold`, the artifact this annotation exists to
+produce. The question is downstream of its own answer.
+
+**3. The reason that does not expire: it is the wrong *kind* of anchor.**
+`C_gold` must be the **canonical** diacritization — what the prompt text calls
+for — because the arm rests on `C` being independent of what the speaker did.
+An audio-informed restorer predicts diacritics partly from the audio, so
+precisely where a speaker mispronounced a vowel it is more likely to write
+that mispronunciation into the anchor. An anchored annotator who accepts it
+turns a real mispronunciation into a correct reference: a missed detection,
+induced exactly at the positions the arm measures. The bias is **correlated
+with the dependent variable**. And under D1 the annotation is text-only —
+annotators never open the audio — so this would smuggle the audio back in
+through a channel they cannot inspect or override.
+
+The original argument above is sound and is why this was worth an hour: CATT
+anchoring does bias toward a system under test. But that bias is
+**self-penalizing** — it shrinks the measured `C_auto` vs `C_gold` gap and so
+understates our own headline — and D4's 50-utterance blind crossover measures
+it. Audio anchoring would trade a measurable, self-penalizing bias for an
+unmeasured one that corrupts the reference itself.
+
+**Two things to keep from the paper.** Its Table 3 gives external DER on MSA
+*speech* for text-only diacritizers — roughly **19–36%** with case endings
+across Mishkal, Farasa, Shakkala and Camelira — which is the sanity range for
+D5: a result near 2% or near 60% indicts the measurement, not the field. And
+its Table 1 ranks Mishkal (21.79) far below Shakkala (6.85) on Classical
+Arabic, the same ordering §4's length-conservation tail produced from an
+unrelated instrument. Full write-up in `insights/week-04.md`.
 
 **Pre-register the protocol in writing before a single utterance is
 annotated.** This is not a formality — the anchoring measurement is only
@@ -654,6 +703,14 @@ blocked on the same work, not forgotten.
   a detection number and its weakness has to be accepted.
 - A source of MSA learner speech with a materially higher base rate appears
   (§3.3 option 4). Out of scope on this timeline, recorded as deliberate.
+
+If D1 is reversed, note that §3.2's rejected audio-informed restoration
+method becomes the natural **automatic estimator of `A`** rather than of
+`C_gold`. Conditioning on the audio is the defect that disqualifies it as a
+canonical anchor and exactly the property wanted for "what did the speaker
+produce". Speculative — it would have to be validated against the pilot's 50
+`A` annotations first, and the QASR numbers say to expect it to be weak on
+MSA — but it is the cheapest route to a detection number that exists.
 
 ### 3.4 Pausal form — the constraint that decides what `C_gold` even means **[MEASURED]**
 
@@ -1322,7 +1379,7 @@ silently corrupt everything after them if skipped.
 | ✅ | ~~Quantify vowelizer content loss on the train split~~ — 0.8% | §4.1 |
 | ✅ | ~~▲ Phoneme-inventory diff against the 68-token vocab; record the decision~~ — **zero OOV for all four tools; extend/map/drop never arises.** The diff that mattered was the character-level one (also clean) | §4 |
 | ✅ | ~~▲ Pin mHuBERT-147 to a commit sha~~ — `7ad3fc0bc510`, via a local snapshot; `--upstream_revision` is a no-op here | §5.1 |
-| Wk 4 | Audio-informed vs text-only diacritization on CV-Ar — decides the annotation anchor | §3.2 |
+| ✅ | ~~Audio-informed vs text-only diacritization on CV-Ar — decides the annotation anchor~~ — **rejected; anchor is text-only CATT.** No MSA gain, no MSA model, and audio conditioning is the wrong kind of anchor for a canonical reference | §3.2 |
 | ✅ | ~~Base-rate probe on CV-Ar dev (step 3)~~ — 0.0708, inconclusive | §3.3 |
 | ✅ | ~~Zero-base-rate control on `Iqra_TTS` original rows~~ — 0.0066, non-binding | §3.3 |
 | **now** | ▲▲ 50-utterance listening pilot from `run/msa_pilot_sample.json` (step 4) — **the only remaining way to settle the base rate.** Originally scheduled Wk 5; pulled forward to *now* because both cheap proxies came back non-binding, and because its outcome decides what the MSA arm can claim (§9). Not a week-4 dependency, but the longest pole in the project — start it in parallel with week 4's text work. | §3.3 |

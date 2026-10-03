@@ -272,10 +272,60 @@ finding rather than a week-6 surprise.
    away from the system under test rather than toward it. This decides the
    annotation starting point and must happen before week 5's annotation
    begins.
+
+   **DONE** (3 Oct 2026). **Rejected — the anchor stays text-only CATT.**
+   Decision in `docs/msa-arm.md` §3.2, write-up in `insights/week-04.md`.
+   Three independent grounds:
+   - **No MSA gain.** The 45% relative DER reduction is on ClArTTS (12 h, one
+     male speaker, read Classical Arabic). On the only MSA set the authors
+     try, QASR TTS, Text+ASR scores 19.82 against its Text-Only twin's 20.20
+     (male) and 34.06 against 35.09 (female) — their own words, "not
+     consistent or substantial enough". The Whisper fine-tune behind it goes
+     from 14.43% WER on ClArTTS to **72.4% / 87.3%** on QASR. Common Voice is
+     further from ClArTTS still, and no MSA checkpoint exists.
+   - **The asked-for comparison is circular.** The paper never uses Common
+     Voice and never compares against CATT. Running it needs diacritized
+     Common Voice gold — which is `C_gold`, the artifact the annotation
+     produces.
+   - **It is the wrong kind of anchor, and this one does not expire.**
+     `C_gold` must be canonical; an audio-informed restorer writes the
+     speaker's own mispronunciations into the anchor, biasing in a direction
+     **correlated with the dependent variable**. Post-D1 the annotation is
+     text-only, so it would also smuggle the audio back in through a channel
+     the annotator cannot inspect or override.
+
+   Carry forward: the paper's Table 3 gives 19–36% DER for text-only
+   diacritizers on MSA *speech*, which is the external sanity range for D5;
+   and its Table 1 ordering (Mishkal 21.79 against Shakkala 6.85)
+   independently corroborates task 4's length-conservation ranking.
 6. **Chase the 2026 diacritizer survey** ("Evaluating Arabic Diacritization
    Models: Self-hosted to Commercial"), currently an OpenAlex record with no
    venue or text retrieved. Plan §Open questions wants this resolved before
    the diacritizer set is finalised — which is this week.
+
+   **DONE** (3 Oct 2026). Resolves to Senjab, Lataifeh & Elnagar (2026),
+   *Evaluating Arabic Diacritization Models: From Self-hosted Neural Networks
+   to Cost-Effective Commercial Solutions*, Lecture Notes in Networks and
+   Systems, DOI `10.1007/978-3-032-23883-2_11` — **closed access, no preprint,
+   0 citations**. Cited and closed; it is not load-bearing.
+
+   The question underneath it is live, and three other works answer it:
+   **Sadeed** (2025) beats CATT on WikiNews (5.25 against 5.96 DER with case
+   endings, 3.11 against 3.63 without) but has no located weight release;
+   **LREC 2026** finds off-the-shelf LLMs beating specialized diacritizers;
+   and Sadeed's own table puts Claude-3-7-Sonnet at 1.39 DER against its 7.29.
+
+   **Diacritizer set unchanged for week 5** — CATT stays primary because it is
+   what the IqraEval ecosystem uses, it is pinned, and it exposes per-position
+   confidence that RQ4 needs. **Open decision handed to week 5:** whether to
+   add one frontier system as a fifth condition, so the 2×2 brackets the
+   frontier and not just the deployed range. That answers the obvious reviewer
+   objection — "frontier diacritizers are at 1.4% DER, is the premise
+   obsolete?" — with a measurement rather than an argument.
+
+   Incidental: Sadeed reports **34.6%** of the Fadel test set fully present in
+   the Abbad training set (68.12% above 0.5 similarity) — a citable precedent
+   for §5.2's split-pinning discipline.
 7. ~~**Pin `utter-project/mHuBERT-147` to a commit sha.**~~ **DONE** —
    pinned to `7ad3fc0bc5106c58c9c13526abccad527150d135` by
    `scripts/baseline_reproduction/pin_upstream.py`, wired into

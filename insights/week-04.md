@@ -106,8 +106,27 @@ Track non-experimental tasks here as they close. One line each, dated.
       wrapped and both expose confidence, so nothing is blocked. Confidence
       spread looks usable for a risk–coverage curve either way (EO mean 0.957,
       min 0.477 on the long sentence).
-- [ ] `utter-project/mHuBERT-147` pinned to a commit sha.
-- [ ] 2026 diacritizer survey chased; diacritizer set finalised.
+- [x] `utter-project/mHuBERT-147` pinned to a commit sha, 2026-09-30 —
+      `7ad3fc0bc5106c58c9c13526abccad527150d135`, via a local snapshot because
+      s3prl's `--upstream_revision` never reaches the `hf_hubert_custom`
+      upstream and would have written *false* provenance into every
+      checkpoint's `Args`. Retroactively safe: no weight or config file in
+      that repo has changed since 2024-06-12, so the validated 0.4406 run
+      consumed exactly these bytes. Detail in `docs/weeks/week-04.md` task 7.
+- [x] 2026 diacritizer survey chased; diacritizer set finalised, 2026-10-03.
+      The survey is a closed-access, uncited Springer LNNS chapter and does
+      not move anything. **Set stays `catt-eo` / `catt-ed` / `shakkala` /
+      `mishkal` for week 5.** CATT remains primary not because it is SOTA —
+      it is not, Sadeed and off-the-shelf LLMs now beat it on text benchmarks
+      — but because it is what the IqraEval ecosystem uses, it is pinned, and
+      it exposes the per-position confidence RQ4 depends on. Whether to add a
+      fifth *frontier* condition is handed to week 5 as an open decision.
+      Full write-up in the task-6 experiment entry below.
+- [x] Normalization contract pinned, 2026-10-01 — `arabic_mdd.data.normalize`,
+      the §4.1.1 decision that week 4's build order marked ▲. Noted here
+      because it is the dependency the wrappers were deliberately left
+      without: they still do not normalize their own input, so the contract
+      stays one visible stage instead of four tool-specific ones.
 - [ ] Licence-terms confirmation for `QuranMB.v2`/`Iqra_Extra_IS26` —
       carried from week 2.
 - [ ] Wall-clock cost of one XLS-R-300m fine-tune, and the week-7 work-split
@@ -1367,11 +1386,214 @@ Carried forward:
 
 ---
 
+### Experiment: Audio-informed restoration as the annotation anchor (week-4 task 5)
+
+#### Hypothesis
+
+Plan §Data: if the NAACL 2024 audio-informed restoration method beats
+text-only CATT on Common Voice, it is the better correct-the-machine anchor
+*and* the residual anchoring bias then points away from the systems under
+test rather than toward them. Expected outcome: a straight accuracy
+comparison decides the anchor.
+
+#### Methodology
+
+Read the paper in full (not the abstract) for three things the plan's framing
+assumes: that the gain holds on **MSA**, that a **Common Voice** comparison
+against CATT exists or can be run, and that the resulting anchor is the right
+*kind* of anchor for `C_gold` under the post-D1 design. Then checked model
+availability, since an anchor we cannot run is not an anchor.
+
+#### Configuration
+
+- Shatnawi, Alqahtani & Aldarmaki, "Automatic Restoration of Diacritics for
+  Speech Data Sets", NAACL 2024 (`2024.naacl-long.233`, arXiv 2311.10771 v2).
+- Repos: `SaraShatnawi/Diacritization` (archived, no weights, redirects to
+  `rufaelfekadu/Diac`).
+- Cross-checked against this project's own §4.1.1 conservation measurements.
+
+#### Results
+
+**1. The gain is Classical Arabic, single speaker, read audiobook — and it
+does not survive the move to MSA.** The headline 45% relative DER reduction
+(Text+ASR LSTM 2.70 vs best Text-Only 4.93, including case endings) is on
+ClArTTS: 12 hours, one male speaker, read Classical Arabic. On the only MSA
+set they try — QASR TTS, one hour male + one hour female broadcast news —
+the method is a wash:
+
+| QASR TTS, DER % (incl. case ending) | Text-Only LSTM | Text+ASR LSTM |
+|---|---|---|
+| Male speaker | 20.20 | 19.82 |
+| Female speaker | 35.09 | 34.06 |
+
+Their own verdict: the improvements are "not consistent or substantial
+enough", and performance is "sometimes better and sometimes worse" than
+Text-Only.
+
+**2. The mechanism is the ASR, and it is worse for us than for them.** Their
+Table 6, for the Whisper fine-tune that supplies the audio evidence:
+
+| Test set | WER with diacritics |
+|---|---|
+| ClArTTS test | 14.43% |
+| QASR male | 72.4% |
+| QASR female | 87.3% |
+
+The fine-tune is trained on 12 h of one speaker reading Classical Arabic.
+Common Voice Arabic is crowdsourced, many-speaker, accented, and read by
+non-professionals — strictly further from ClArTTS than QASR TTS, which was at
+least studio TTS material. The expected gain on our corpus is zero or
+negative.
+
+**3. The comparison the plan asked for cannot be run, and is circular.** The
+paper never touches Common Voice, and never compares against CATT (concurrent
+work, 2024). To settle "does audio-informed beat text-only CATT on Common
+Voice" we would need diacritized Common Voice gold — which *is* `C_gold`, the
+artifact the annotation exists to produce. The question is downstream of its
+own answer, and could only be settled after the anchor has already been used.
+
+**4. There is no MSA model to run.** The released checkpoint is the ClArTTS
+Classical Arabic fine-tune. Producing an MSA one needs manually diacritized
+MSA speech at scale, which the authors' own limitations section says does not
+exist ("could not develop similar models for other variants of Arabic due to
+limited resources"). That is a research project, not a week-5 anchor.
+
+#### Observations
+
+- **The decisive objection is not accuracy, and it survives any future
+  version of the method.** `C_gold` must be the **canonical** diacritization —
+  what the prompt text calls for — because the entire arm rests on `C` being
+  independent of what the speaker did. An audio-informed restorer predicts
+  diacritics partly *from the audio*, so exactly where a speaker mispronounced
+  a vowel it is more likely to write the mispronunciation into the anchor. An
+  anchored annotator who accepts that suggestion converts a real
+  mispronunciation into a correct reference — a missed detection, induced
+  precisely at the positions the arm exists to measure. The bias is
+  **correlated with the dependent variable**, which is the kind that cannot be
+  waved away as noise.
+- **D1 sharpens this into a design violation.** The annotation is now
+  text-only; annotators never open the audio. An audio-informed anchor would
+  smuggle the audio back in through a channel the annotator cannot inspect or
+  override — they would have no way to distinguish "the model heard this" from
+  "the text implies this". Correcting a text-only machine is a judgment an
+  annotator can actually make; correcting an acoustic hypothesis they cannot
+  hear is not.
+- **The plan's argument was right, and still loses.** Anchoring on CATT does
+  bias toward a system under test. But that bias is *self-penalizing* — it
+  shrinks the measured gap between `C_auto` and `C_gold`, understating our own
+  headline — and D4's 50-utterance blind crossover measures it. Audio
+  anchoring trades a measurable, self-penalizing bias for an unmeasured one
+  that corrupts the reference itself. Worth the hour to establish; not worth
+  adopting.
+- **Two things from the paper are directly useful anyway.** Its Table 3 gives
+  external DER on *MSA speech* for text-only diacritizers — roughly 19–36%
+  with case endings, across Mishkal, Farasa, Shakkala and Camelira. That is a
+  sanity range for D5 (`tashkeel_sentence` vs `C_gold`): a result near 2% or
+  near 60% means something is wrong with the measurement, not with the field.
+  And its Table 1 ranks Mishkal (21.79 DER) far below Shakkala (6.85) on
+  Classical Arabic — the same ordering this week's length-conservation tail
+  produced from an unrelated instrument (`mishkal` 5.14% of utterances >10%
+  short, against 0.08% for `catt-eo`). Two independent methods agreeing is
+  worth more than either alone.
+
+#### Conclusion
+
+**Anchor on text-only CATT, as originally planned.** The audio-informed
+method is rejected on three independent grounds, any one sufficient: it does
+not help on MSA by its authors' own measurement, no MSA model exists to run,
+and — the reason that does not expire — audio conditioning makes it the wrong
+*kind* of anchor for a canonical reference, in a direction correlated with
+the thing being detected.
+
+This unblocks week 5: the correct-the-machine anchor is fixed, so the
+protocol can be pre-registered. Carried forward: cite the paper's Table 3
+range (19–36% DER on MSA speech) as the external sanity check for D5, and
+note that an audio-informed restorer is the natural automatic estimator of
+`A` — what the speaker actually produced — should D1 ever be reversed. That
+is the one use where conditioning on the audio is a feature rather than the
+defect it is here.
+
+### Experiment: Chasing the 2026 diacritizer survey (week-4 task 6)
+
+#### Hypothesis
+
+Plan §Open questions: a 2026 record — "Evaluating Arabic Diacritization
+Models: Self-hosted to Commercial" — surfaced in the novelty check with no
+venue and no retrievable text, and might show that a newer diacritizer has
+superseded CATT. Resolve it before finalising the diacritizer set, which is
+this week's job.
+
+#### Methodology
+
+Resolved the OpenAlex record to a full citation, then checked whether the
+text is obtainable. Treated the survey as the *occasion* rather than the
+object: the question that matters is "has CATT been superseded", so the
+search was widened to 2025–2026 diacritization work generally.
+
+#### Configuration
+
+OpenAlex search API, Springer, ACL Anthology, arXiv, HuggingFace model API.
+
+#### Results
+
+**The record resolves, and then dead-ends.** Senjab, Lataifeh & Elnagar
+(2026), *Evaluating Arabic Diacritization Models: From Self-hosted Neural
+Networks to Cost-Effective Commercial Solutions*, **Lecture Notes in Networks
+and Systems** (Springer), DOI `10.1007/978-3-032-23883-2_11`. Closed access,
+no preprint, **0 citations**, not indexed outside OpenAlex and Springer. It
+is a book-series chapter, not a venue finding that can move a tool set.
+
+**The chase surfaced three things that do bear on the question**, none of
+which the survey would have told us:
+
+| Work | Finding | Relevance |
+|---|---|---|
+| **Sadeed** (arXiv 2504.21635, 2025) | Beats CATT on WikiNews: **5.25 vs 5.96** DER with case endings, **3.11 vs 3.63** without | A genuine successor on text benchmarks. No weights located on HuggingFace (the Misraj org publishes only `Baseer`), so release status is unconfirmed |
+| **Are LLMs Good Text Diacritizers?** (LREC 2026, Toyin, Magdy & Aldarmaki) | 12 LLMs vs 4 specialized models; many off-the-shelf LLMs win | The frontier is no longer a specialized diacritizer |
+| **Advancing Arabic Diacritization** (EMNLP 2025, Mohamed & Mubarak) | BiLSTM at 3.12% / 2.70% WER on WikiNews-2024 / refined WikiNews-2014, plus a multi-reference benchmark | Shows the benchmark itself was part of the problem |
+
+Sadeed's own Table 8 is the sharpest version: Claude-3-7-Sonnet scores
+**1.39** DER on SadeedDiac-25 against Sadeed's 7.29.
+
+#### Observations
+
+- **The survey does not get to block anything, but the question underneath it
+  is live.** "Has CATT been superseded?" is now answerable: yes on text
+  benchmarks, by Sadeed and by general-purpose LLMs. The full citation is
+  recorded so the chase is not repeated.
+- **This creates a reviewer threat the paper should answer with data, not
+  rhetoric**: *frontier diacritizers are near 1.4% DER, so is the premise
+  obsolete?* The honest answer needs a frontier system measured in the same
+  2×2, not an argument about deployment realism. That is a scope decision for
+  week 5, flagged rather than taken here.
+- **CATT stays primary for reasons that never depended on being SOTA**: it is
+  what the MDD/IqraEval ecosystem actually uses, it is pinned and
+  reproducible (`catt-tashkeel` 1.0.2), and it exposes per-position
+  confidence, which RQ4's abstention work needs. The paper measures
+  propagation from *deployed* diacritizers; the frontier is a second
+  condition, not a replacement.
+- **Two incidental corroborations.** Sadeed criticises CATT for stripping
+  punctuation entirely — the same behaviour §4.1.1 measured in the
+  organizers' vowelizer, and the reason punctuation maps to a space rather
+  than to deletion. And Sadeed reports benchmark contamination at a scale that
+  makes §5.2's dev-split discipline look understated: **34.6%** of the Fadel
+  test set is fully present in the Abbad training set, and **68.12%** exceeds
+  0.5 similarity. That is a citable precedent for pinning splits.
+
+#### Conclusion
+
+**The survey is closed: cited, inaccessible, and not load-bearing.** The
+diacritizer set stays `catt-eo` / `catt-ed` / `shakkala` / `mishkal` for
+week 5, now with external DER corroboration for the ordering (§task 5's
+Table 1 note). One open decision is handed to week 5 rather than settled
+here: **whether to add one frontier system (Sadeed or an LLM) as a fifth
+condition**, so the 2×2 brackets the frontier as well as the deployed range.
+The cost is one more arm of every experiment; the benefit is pre-empting the
+obvious reviewer objection with a measurement.
+
+---
+
 ## Planned experiments
 
-Placeholders — fill in with the standard Hypothesis → Methodology →
-Configuration → Results → Observations → Conclusion structure as each runs.
-
-### Experiment: Audio-informed vs text-only diacritization on Common Voice
-
-Decides the annotation starting point for week 5. One hour, per plan §Data.
+**None left for week 4** — every placeholder in this section has been run and
+moved above. Week 5's go in `insights/week-05.md`.
