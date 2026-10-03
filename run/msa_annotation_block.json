@@ -1,0 +1,4738 @@
+{
+  "source": "IqraEval/Iqra_train",
+  "split": "dev",
+  "decision": "docs/msa-arm.md 3.3b D4",
+  "seed": 20261001,
+  "block_size": 500,
+  "crossover_size": 50,
+  "pool_total": 2588,
+  "pool_eligible": 2092,
+  "exclusion_counts": {
+    "duplicate": 46,
+    "no_arabic": 0,
+    "no_tashkeel": 0,
+    "pre_vowelized": 489
+  },
+  "flag_counts": {
+    "partially_vowelized": 252,
+    "word_count_mismatch": 3,
+    "short": 195,
+    "latin": 3,
+    "digits": 0
+  },
+  "quranic_filter_applied": false,
+  "block": [
+    {
+      "id": "68494",
+      "rank": 0,
+      "crossover": true,
+      "sentence": "هل تقبلين بي زوجا؟",
+      "tashkeel_sentence": "هَلْ تَقْبَلِينَ بِي زَوْجًا",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "70146",
+      "rank": 1,
+      "crossover": true,
+      "sentence": "وقف لديه وقفة المؤدب والتزم الجلوس فوق الرُكب",
+      "tashkeel_sentence": "وَقَفَ لَدَيْهِ وَقْفَةُ الْمُؤَدِّبِ وَالْتَزَمَ الْجُلُوسَ فَوْقَ الرَّكْبِ",
+      "diacritization_rate": 0.02702702702702703,
+      "flags": []
+    },
+    {
+      "id": "70938",
+      "rank": 2,
+      "crossover": true,
+      "sentence": "اِختارت الفستان الأحمر.",
+      "tashkeel_sentence": "اخْتَارَتْ الْفُسْتَانَ الْأَحْمَرَ",
+      "diacritization_rate": 0.05263157894736842,
+      "flags": [
+        "partially_vowelized"
+      ]
+    },
+    {
+      "id": "71629",
+      "rank": 3,
+      "crossover": true,
+      "sentence": "دمك أحمر.",
+      "tashkeel_sentence": "دَمُك أَحْمَر",
+      "diacritization_rate": 0.0,
+      "flags": [
+        "short"
+      ]
+    },
+    {
+      "id": "66062",
+      "rank": 4,
+      "crossover": true,
+      "sentence": "لست مختبئا.",
+      "tashkeel_sentence": "لَسْتَ مُخْتَبِئًا",
+      "diacritization_rate": 0.0,
+      "flags": [
+        "short"
+      ]
+    },
+    {
+      "id": "66632",
+      "rank": 5,
+      "crossover": true,
+      "sentence": "استجابت الشرطة و أتت إلى المكان.",
+      "tashkeel_sentence": "اسْتَجَابَتِ الشُّرْطَةَ وَ أَتَتْ إِلَى الْمَكَانِ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "67454",
+      "rank": 6,
+      "crossover": true,
+      "sentence": "استمرت المحاضرة ساعتين.",
+      "tashkeel_sentence": "اسْتَمَرَّتْ الْمُحَاضَرَةُ سَاعَتَيْنِ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "65113",
+      "rank": 7,
+      "crossover": true,
+      "sentence": "صعقته الكهرباء بينما كان يعزف على آلة القانون الكهربائية.",
+      "tashkeel_sentence": "صَعَقَتْهُ الْكَهْرَبَاءُ بَيْنَمَا كَانَ يَعْزِفُ عَلَى آلَةِ الْقَانُونِ الْكَهْرَبَائِيَّةِ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "66329",
+      "rank": 8,
+      "crossover": true,
+      "sentence": "تمنّيت لو فاز توم.",
+      "tashkeel_sentence": "تَمَنَّيْت لَوْ فَازَ تَوم",
+      "diacritization_rate": 0.07692307692307693,
+      "flags": [
+        "partially_vowelized"
+      ]
+    },
+    {
+      "id": "64330",
+      "rank": 9,
+      "crossover": true,
+      "sentence": "إنتهت من عملها قبل الساعة الخامسة.",
+      "tashkeel_sentence": "إنْتَهَتْ مِنْ عَمَلِهَا قَبْلَ السَّاعَةِ الْخَامِسَةِ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "67422",
+      "rank": 10,
+      "crossover": true,
+      "sentence": "حتى إذا فتحت يأجوج ومأجوج وهم من كل حدب ينسلون",
+      "tashkeel_sentence": "حَتَّىٰ إِذَا فُتِحَتْ يَأْجُوجُ وَمَأْجُوجُ وَهُمْ مِنْ كُلِّ حَدَبٍ يَنْسِلُونَ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "73092",
+      "rank": 11,
+      "crossover": true,
+      "sentence": "أتأسف.",
+      "tashkeel_sentence": "أَتَأَسَّف",
+      "diacritization_rate": 0.0,
+      "flags": [
+        "short"
+      ]
+    },
+    {
+      "id": "71392",
+      "rank": 12,
+      "crossover": true,
+      "sentence": "العقل السليم في الجسم السليم.",
+      "tashkeel_sentence": "الْعَقْلُ السَّلِيمُ فِي الْجِسْمِ السَّلِيمِ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "67995",
+      "rank": 13,
+      "crossover": true,
+      "sentence": "وقد مكروا مكرهم وعند الله مكرهم وإن كان مكرهم لتزول منه الجبال",
+      "tashkeel_sentence": "وَقَدْ مَكَرُوا مَكْرَهُمْ وَعِنْدَ اللَّهِ مَكْرُهُمْ وَإِنْ كَانَ مَكْرُهُمْ لِتَزُولَ مِنْهُ الْجِبَالُ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "70575",
+      "rank": 14,
+      "crossover": true,
+      "sentence": "عليّ أن أنام.",
+      "tashkeel_sentence": "عَلَيَّ أَنْ أَنَام",
+      "diacritization_rate": 0.1111111111111111,
+      "flags": [
+        "partially_vowelized"
+      ]
+    },
+    {
+      "id": "67570",
+      "rank": 15,
+      "crossover": true,
+      "sentence": "لم يسبق لي أن شاهدت منظرا أجمل من ذلك.",
+      "tashkeel_sentence": "لَمْ يُسْبَقْ لِي أَنْ شَاهَدْت مَنْظَرًا أَجْمَلَ مِنْ ذَلِكَ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "69023",
+      "rank": 16,
+      "crossover": true,
+      "sentence": "المصعد لا يعمل اليوم.",
+      "tashkeel_sentence": "الْمُصْعِدُ لَا يَعْمَلُ الْيَوْمَ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "68781",
+      "rank": 17,
+      "crossover": true,
+      "sentence": "واخفض جناحك لمن اتبعك من المؤمنين",
+      "tashkeel_sentence": "وَاخْفِضْ جَنَاحَكَ لِمَنِ اتَّبَعَكَ مِنَ الْمُؤْمِنِينَ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "71600",
+      "rank": 18,
+      "crossover": true,
+      "sentence": "لم تخبرني بعد لماذا قررت ألا تذهب.",
+      "tashkeel_sentence": "لَمْ تُخْبِرْنِي بَعْدُ لِمَاذَا قَرَرْتُ أَلاَ تَذْهَبَ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "67838",
+      "rank": 19,
+      "crossover": true,
+      "sentence": "متى سنأكل اني اشعر بالجوع.",
+      "tashkeel_sentence": "مَتَى سَنَأْكُلُ اني اُشْعُرْ بِالْجُوعِ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "69953",
+      "rank": 20,
+      "crossover": true,
+      "sentence": "فسوف تعلمون من يأتيه عذاب يخزيه ويحل عليه عذاب مقيم",
+      "tashkeel_sentence": "فَسَوْفَ تَعْلَمُونَ مَنْ يَأْتِيهِ عَذَابٌ يُخْزِيهِ وَيَحِلُّ عَلَيْهِ عَذَابٌ مُقِيمٌ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "64080",
+      "rank": 21,
+      "crossover": true,
+      "sentence": "عند دخولي إلى الغرفة كان مستغرقاً في قراءة كتاب.",
+      "tashkeel_sentence": "عِنْدَ دُخُولِي إِلَى الْغُرْفَةِ كَانَ مُسْتَغْرِقًا فِي قِرَاءَةِ كِتَابٍ",
+      "diacritization_rate": 0.02631578947368421,
+      "flags": []
+    },
+    {
+      "id": "68346",
+      "rank": 22,
+      "crossover": true,
+      "sentence": "لقد تلقّى فاضل تكوينا جامعيّا.",
+      "tashkeel_sentence": "لَقَدْ تَلَقَّى فَاضِلَ تَكْوِينًا جَامِعِيًّا",
+      "diacritization_rate": 0.08695652173913043,
+      "flags": [
+        "partially_vowelized"
+      ]
+    },
+    {
+      "id": "68679",
+      "rank": 23,
+      "crossover": true,
+      "sentence": "رنّ الجرس عندما كنت أتغدّى.",
+      "tashkeel_sentence": "رَنَّ الْجَرَسِ عِنْدَمَا كُنْتُ أَتَغَدَّى",
+      "diacritization_rate": 0.1,
+      "flags": [
+        "partially_vowelized"
+      ]
+    },
+    {
+      "id": "68930",
+      "rank": 24,
+      "crossover": true,
+      "sentence": ".لم تقصد أيّ أذى",
+      "tashkeel_sentence": "لَمْ تَقْصَد أَيْ أَذًى",
+      "diacritization_rate": 0.09090909090909091,
+      "flags": [
+        "partially_vowelized"
+      ]
+    },
+    {
+      "id": "73446",
+      "rank": 25,
+      "crossover": true,
+      "sentence": "أيمكنك أن تجاري سرعته في السباحة ؟",
+      "tashkeel_sentence": "أَيُمْكِنُكَ أَنْ تِجَارِيَ سُرْعَتَهُ فِي السِّبَاحَةِ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "72872",
+      "rank": 26,
+      "crossover": true,
+      "sentence": "أبا عثمان أنت عميد قومك",
+      "tashkeel_sentence": "أَبَا عُثْمَانَ أَنْتَ عَمِيدُ قَوْمِكَ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "67369",
+      "rank": 27,
+      "crossover": true,
+      "sentence": "هذا هو صديقي جمال.",
+      "tashkeel_sentence": "هَذَا هُوَ صَدِيقِي جَمَالٌ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "70944",
+      "rank": 28,
+      "crossover": true,
+      "sentence": "جيم ولد في العام الذي ولد فيه هو.",
+      "tashkeel_sentence": "جِيمٌ وُلِدَ فِي الْعَامِ الَّذِي وُلِدَ فِيهِ هُوَ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "71573",
+      "rank": 29,
+      "crossover": true,
+      "sentence": "ألم تر إلى الذين أوتوا نصيبا من الكتاب يشترون الضلالة ويريدون أن تضلوا السبيل",
+      "tashkeel_sentence": "أَلَمْ تَرَ إِلَى الَّذِينَ أُوتُوا نَصِيبًا مِنَ الْكِتَابِ يَشْتَرُونَ الضَّلَالَةَ وَيُرِيدُونَ أَنْ تَضِلُّوا السَّبِيلَ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "64699",
+      "rank": 30,
+      "crossover": true,
+      "sentence": "حسن لنطقك بادئا ومجاوبا",
+      "tashkeel_sentence": "حَسَنٌ لِنُطْقِكَ بَادِئًا وَمُجَاوِبًا",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "72773",
+      "rank": 31,
+      "crossover": true,
+      "sentence": "بِسمِ اللَّهِ الرَّحمنِ الرَّحيمِ قُل أَعوذُ بِرَبِّ النّاسِ",
+      "tashkeel_sentence": "بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ قُلْ أَعُوذُ بِرَبِّ النَّاسِ",
+      "diacritization_rate": 0.48484848484848486,
+      "flags": [
+        "partially_vowelized"
+      ]
+    },
+    {
+      "id": "71586",
+      "rank": 32,
+      "crossover": true,
+      "sentence": "بل جاء بالحق وصدق المرسلين",
+      "tashkeel_sentence": "بَلْ جَاءَ بِالْحَقِّ وَصَدَّقَ الْمُرْسَلِينَ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "73539",
+      "rank": 33,
+      "crossover": true,
+      "sentence": "يؤمن المسلمون أنّه هناك ربّ واحد فقط.",
+      "tashkeel_sentence": "يُؤْمِنُ الْمُسْلِمُونَ أَنَّهُ هُنَاكَ رَبٌّ وَاحِدٌ فَقَطْ",
+      "diacritization_rate": 0.07142857142857142,
+      "flags": [
+        "partially_vowelized"
+      ]
+    },
+    {
+      "id": "66017",
+      "rank": 34,
+      "crossover": true,
+      "sentence": "أعقب القرب من حبيبك شحط",
+      "tashkeel_sentence": "أَعْقِبْ الْقُرْبَ مِنْ حَبِيبِك شَحْطَ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "65766",
+      "rank": 35,
+      "crossover": true,
+      "sentence": "بقيت في المنزل اليلة الفائتة.",
+      "tashkeel_sentence": "بَقِيَتْ فِي الْمَنْزِلِ الْيَلَةُ الْفَائِتَةُ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "73662",
+      "rank": 36,
+      "crossover": true,
+      "sentence": ".البارحة كان يوم الخميس",
+      "tashkeel_sentence": "الْبَارِحَةَ كَانَ يَوْمَ الْخَمِيسِ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "71468",
+      "rank": 37,
+      "crossover": true,
+      "sentence": "كلما تقابلا تجادلا.",
+      "tashkeel_sentence": "كُلَّمَا تَقَابَلَا تَجَادَلَا",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "67152",
+      "rank": 38,
+      "crossover": true,
+      "sentence": "قالوا حكى بدر الدجا وجه الذي",
+      "tashkeel_sentence": "قَالُوا حَكَى بَدْرٌ الدَّجَا وَجْهَ الَّذِي",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "72221",
+      "rank": 39,
+      "crossover": true,
+      "sentence": "قعدنا في وسط الحجرة.",
+      "tashkeel_sentence": "قَعَدْنَا فِي وَسَطِ الْحُجْرَةِ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "67181",
+      "rank": 40,
+      "crossover": true,
+      "sentence": "الحب أعمى.",
+      "tashkeel_sentence": "الْحُبّ أَعْمَى",
+      "diacritization_rate": 0.0,
+      "flags": [
+        "short"
+      ]
+    },
+    {
+      "id": "69351",
+      "rank": 41,
+      "crossover": true,
+      "sentence": "ضحكت.",
+      "tashkeel_sentence": "ضَحِكَتْ",
+      "diacritization_rate": 0.0,
+      "flags": [
+        "short"
+      ]
+    },
+    {
+      "id": "64630",
+      "rank": 42,
+      "crossover": true,
+      "sentence": "ماذا تفعل بأوقات فراغك ؟",
+      "tashkeel_sentence": "مَاذَا تَفْعَلُ بِأَوْقَاتِ فَرَاغِكَ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "73507",
+      "rank": 43,
+      "crossover": true,
+      "sentence": "إنني على وشك أن أغادر.",
+      "tashkeel_sentence": "إنَّنِي عَلَى وَشَكٍ أَنْ أُغَادِرَ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "72638",
+      "rank": 44,
+      "crossover": true,
+      "sentence": "في صحف مكرمة",
+      "tashkeel_sentence": "فِي صُحُفٍ مُكْرَّمَةٍ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "63724",
+      "rank": 45,
+      "crossover": true,
+      "sentence": "ما يفيق الكتاب من ظلم إبراهيم",
+      "tashkeel_sentence": "مَا يُفِيقُ الْكِتَابَ مِنْ ظُلْمِ إِبْرَاهِيمَ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "73442",
+      "rank": 46,
+      "crossover": true,
+      "sentence": "هل تتحدث الكتالونية ؟",
+      "tashkeel_sentence": "هَلْ تَتَحَدَّثُ الْكَتَالُونِيَّةُ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "72733",
+      "rank": 47,
+      "crossover": true,
+      "sentence": "فَأَغوَيناكُم إِنّا كُنّا غاوينَ",
+      "tashkeel_sentence": "فَأَغْوَيْنَاكُمْ إِنَّا كُنَّا غَاوِينَ",
+      "diacritization_rate": 0.45,
+      "flags": [
+        "partially_vowelized"
+      ]
+    },
+    {
+      "id": "70911",
+      "rank": 48,
+      "crossover": true,
+      "sentence": "لا أريد أن تحرق جثتي.",
+      "tashkeel_sentence": "لَاَ أُرِيدُ أَنْ تُحَرِّقَ جُثَّتِي",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "69318",
+      "rank": 49,
+      "crossover": true,
+      "sentence": "انني آسفة.",
+      "tashkeel_sentence": "انْنِي آسِفَةُ",
+      "diacritization_rate": 0.0,
+      "flags": [
+        "short"
+      ]
+    },
+    {
+      "id": "65980",
+      "rank": 50,
+      "crossover": false,
+      "sentence": "ما تركت اللقاء يوم الفراق",
+      "tashkeel_sentence": "مَا تَرَكْت اللّقَاءَ يَوْمَ الْفِرَاقِ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "68109",
+      "rank": 51,
+      "crossover": false,
+      "sentence": "يستمع ابني لموسيقى الهيب هوب والراب.",
+      "tashkeel_sentence": "يَسْتَمِعُ ابْنِي لِمُوسِيقَى الْهَيْبُ هَوْبٌ وَالرَّابُّ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "73276",
+      "rank": 52,
+      "crossover": false,
+      "sentence": "المستشفى مزدحم.",
+      "tashkeel_sentence": "الْمُسْتَشْفَى مُزْدَحَمٌ",
+      "diacritization_rate": 0.0,
+      "flags": [
+        "short"
+      ]
+    },
+    {
+      "id": "70435",
+      "rank": 53,
+      "crossover": false,
+      "sentence": "وبثوا الجياد السابحات ليلحقوا",
+      "tashkeel_sentence": "وَبَثُّوا الْجِيَادَ السَّابِحَاتِ لِيَلْحَقُوا",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "69465",
+      "rank": 54,
+      "crossover": false,
+      "sentence": "إني ظننت أني ملاق حسابيه",
+      "tashkeel_sentence": "إِنِّي ظَنَنْتُ أَنِّي مُلَاقٍ حِسَابِيَهْ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "72443",
+      "rank": 55,
+      "crossover": false,
+      "sentence": "! تسقط الحكومة",
+      "tashkeel_sentence": "تَسْقُطُ الْحُكُومَةُ",
+      "diacritization_rate": 0.0,
+      "flags": [
+        "short"
+      ]
+    },
+    {
+      "id": "73866",
+      "rank": 56,
+      "crossover": false,
+      "sentence": "بالطبع.",
+      "tashkeel_sentence": "بِالطَّبْعِ",
+      "diacritization_rate": 0.0,
+      "flags": [
+        "short"
+      ]
+    },
+    {
+      "id": "68225",
+      "rank": 57,
+      "crossover": false,
+      "sentence": "صاح المحامي قائلًا \"الآن سيدتي\" وألقى بمفتاحه على عجلٍ فوق رف المدخنة.",
+      "tashkeel_sentence": "صَاحَ الْمُحَامِي قَائِلًا الْآنَ سَيِّدَتِي وَأَلْقَى بِمِفْتَاحِهِ عَلَى عِجْلْ فَوْقَ رَفِّ الْمُدْخَنَةِ",
+      "diacritization_rate": 0.037037037037037035,
+      "flags": []
+    },
+    {
+      "id": "64871",
+      "rank": 58,
+      "crossover": false,
+      "sentence": "أعطيت أختي قاموساً.",
+      "tashkeel_sentence": "أُعْطَيْتُ أُخْتِي قَامُوسًا",
+      "diacritization_rate": 0.06666666666666667,
+      "flags": [
+        "partially_vowelized"
+      ]
+    },
+    {
+      "id": "68491",
+      "rank": 59,
+      "crossover": false,
+      "sentence": "أأبقى كذا أبدا مستقلا",
+      "tashkeel_sentence": "أَأَبْقَى كَذَا أَبَدًا مُسْتَقِلًّا",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "71130",
+      "rank": 60,
+      "crossover": false,
+      "sentence": "أتعرف كم الساعة ؟",
+      "tashkeel_sentence": "أَتَعْرِفُ كَمْ السَّاعَةُ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "73592",
+      "rank": 61,
+      "crossover": false,
+      "sentence": "هَل جَزاءُ الإِحسانِ إِلَّا الإِحسانُ",
+      "tashkeel_sentence": "هَلْ جَزَاءُ الْإِحْسَانِ إِلَّا الْإِحْسَانُ",
+      "diacritization_rate": 0.391304347826087,
+      "flags": [
+        "partially_vowelized"
+      ]
+    },
+    {
+      "id": "66294",
+      "rank": 62,
+      "crossover": false,
+      "sentence": "إذ أبق إلى الفلك المشحون",
+      "tashkeel_sentence": "إِذْ أَبَقَ إِلَى الْفُلْكِ الْمَشْحُونِ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "69473",
+      "rank": 63,
+      "crossover": false,
+      "sentence": "هو ذئب في ثوب حمل.",
+      "tashkeel_sentence": "هُوَ ذِئْبٌ فِي ثَوْبٍ حِمْلٍ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "65811",
+      "rank": 64,
+      "crossover": false,
+      "sentence": "ولقد أكتم همي جازما",
+      "tashkeel_sentence": "وَلَقَدْ أَكْتُمَ هَمِّي جَازِمًا",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "66048",
+      "rank": 65,
+      "crossover": false,
+      "sentence": "كذا بقية العبادات التي أثبتها في الشرع خير مُثْبتِ",
+      "tashkeel_sentence": "كَذَا بَقِيَّةُ الْعِبَادَاتِ الَّتِي أَثْبَتَهَا فِي الشَّرْعِ خَيْرٌ مُثْبَتٌ",
+      "diacritization_rate": 0.07692307692307693,
+      "flags": [
+        "partially_vowelized"
+      ]
+    },
+    {
+      "id": "64500",
+      "rank": 66,
+      "crossover": false,
+      "sentence": "لن يكون بوسعه القدوم بسبب مرضه.",
+      "tashkeel_sentence": "لَنْ يَكُونَ بِوُسْعِهِ الْقُدُومُ بِسَبَبِ مَرَضِهِ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "65548",
+      "rank": 67,
+      "crossover": false,
+      "sentence": "لمن الدار أقفرت بالمصلى",
+      "tashkeel_sentence": "لِمَنْ الدَّارُ أَقْفَرَتْ بِالْمُصَلَّى",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "65638",
+      "rank": 68,
+      "crossover": false,
+      "sentence": ".بإمكانك القدوم معي",
+      "tashkeel_sentence": "بِإِمْكَانِك الْقُدُومَ مَعْي",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "65731",
+      "rank": 69,
+      "crossover": false,
+      "sentence": "من آل صباغ الكرام كريمة",
+      "tashkeel_sentence": "مِنْ آلِ صَبَّاغِ الْكِرَامِ كَرِيمَةٌ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "73874",
+      "rank": 70,
+      "crossover": false,
+      "sentence": "وقالوا يا ويلنا هذا يوم الدين",
+      "tashkeel_sentence": "وَقَالُوا يَا وَيْلَنَا هَٰذَا يَوْمُ الدِّينِ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "69343",
+      "rank": 71,
+      "crossover": false,
+      "sentence": ".من الأفضل لك الذهاب",
+      "tashkeel_sentence": "مِنْ الْأَفْضَلِ لَك الذَّهَابُ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "66947",
+      "rank": 72,
+      "crossover": false,
+      "sentence": "هذا الولد طيب.",
+      "tashkeel_sentence": "هَذَا الْوَلَدُ طَيِّبٌ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "71410",
+      "rank": 73,
+      "crossover": false,
+      "sentence": "هل لديك واحدة ؟",
+      "tashkeel_sentence": "هَلْ لَدَيْكَ وَاحِدَةٌ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "65717",
+      "rank": 74,
+      "crossover": false,
+      "sentence": "صعدت إلى الحافلة الخطأ.",
+      "tashkeel_sentence": "صَعِدَتْ إلَى الْحَافِلَةِ الْخَطَأَ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "73747",
+      "rank": 75,
+      "crossover": false,
+      "sentence": "للسائل والمحروم",
+      "tashkeel_sentence": "لِلسَّائِلِ وَالْمَحْرُومِ",
+      "diacritization_rate": 0.0,
+      "flags": [
+        "short"
+      ]
+    },
+    {
+      "id": "64713",
+      "rank": 76,
+      "crossover": false,
+      "sentence": "هل سنلتقي في الكونكورس إذن؟",
+      "tashkeel_sentence": "هَلْ سَنَلْتَقِي فِي الْكُونْكُورْسِ إِذْنْ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "73849",
+      "rank": 77,
+      "crossover": false,
+      "sentence": "هذه النار التي كنتم بها تكذبون",
+      "tashkeel_sentence": "هَٰذِهِ النَّارُ الَّتِي كُنْتُمْ بِهَا تُكَذِّبُونَ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "66804",
+      "rank": 78,
+      "crossover": false,
+      "sentence": "مالي هي واحدة من أفقر بلدان جنوب الصحراء الإفريقية.",
+      "tashkeel_sentence": "مَالِي هِيَ وَاحِدَةٌ مِنْ أَفْقَرِ بُلْدَانِ جَنُوبَ الصَّحْرَاءِ الْإِفْرِيقِيَّةِ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "69330",
+      "rank": 79,
+      "crossover": false,
+      "sentence": "ثم اجتباه ربه فتاب عليه وهدى",
+      "tashkeel_sentence": "ثُمَّ اجْتَبَاهُ رَبُّهُ فَتَابَ عَلَيْهِ وَهَدَىٰ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "71517",
+      "rank": 80,
+      "crossover": false,
+      "sentence": "أنا ذاهب إلى البنك.",
+      "tashkeel_sentence": "أَنَا ذَاهِبٌ إِلَى الْبَنْكِ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "70256",
+      "rank": 81,
+      "crossover": false,
+      "sentence": "إن جاع في شدة قوم شركتهم",
+      "tashkeel_sentence": "إنْ جَاعَ فِي شِدَّةِ قَوْمٍ شَرِكَتُهُمْ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "64386",
+      "rank": 82,
+      "crossover": false,
+      "sentence": "عد إلى البيت في الحين.",
+      "tashkeel_sentence": "عُدْ إِلَى الْبَيْتِ فِي الْحِينِ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "65005",
+      "rank": 83,
+      "crossover": false,
+      "sentence": "كبرت فغيرك الغر الغلام",
+      "tashkeel_sentence": "كَبُرْت فَغَيَّرُك الْغُرُّ الْغُلَامُ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "73209",
+      "rank": 84,
+      "crossover": false,
+      "sentence": "ما هو ارتفاع ذلك البرج ؟",
+      "tashkeel_sentence": "مَا هُوَ ارْتِفَاعُ ذَلِكَ الْبُرْجِ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "68193",
+      "rank": 85,
+      "crossover": false,
+      "sentence": ".خذ الكرسي الآخر",
+      "tashkeel_sentence": "خِذُ الْكُرْسِيِّ الْآخَرَ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "72003",
+      "rank": 86,
+      "crossover": false,
+      "sentence": "الفتنة الكبرى تطل قرونها",
+      "tashkeel_sentence": "الْفِتْنَةُ الْكُبْرَى تُطَلُّ قُرُونُهَا",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "70248",
+      "rank": 87,
+      "crossover": false,
+      "sentence": "وكأن نكهتها إذا نبهتها",
+      "tashkeel_sentence": "وَكَأَنَّ نَكَّهْتهَا إذَا نَبَّهْتهَا",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "68389",
+      "rank": 88,
+      "crossover": false,
+      "sentence": "أنا أبداً لم أُرِد أن تذهب.",
+      "tashkeel_sentence": "أَنَا أَبَدًا لَمْ أُرِدْ أَنْ تَذْهَبَ",
+      "diacritization_rate": 0.16666666666666666,
+      "flags": [
+        "partially_vowelized"
+      ]
+    },
+    {
+      "id": "68596",
+      "rank": 89,
+      "crossover": false,
+      "sentence": "أنا أحاول أن أساعدك.",
+      "tashkeel_sentence": "أَنَا أُحَاوِلُ أَنْ أُسَاعِدَكَ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "68879",
+      "rank": 90,
+      "crossover": false,
+      "sentence": "وإني لغفار لمن تاب وآمن وعمل صالحا ثم اهتدى",
+      "tashkeel_sentence": "وَإِنِّي لَغَفَّارٌ لِمَنْ تَابَ وَآمَنَ وَعَمِلَ صَالِحًا ثُمَّ اهْتَدَىٰ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "67397",
+      "rank": 91,
+      "crossover": false,
+      "sentence": ".أحضرها لي",
+      "tashkeel_sentence": "أَحْضِرْهَا لِي",
+      "diacritization_rate": 0.0,
+      "flags": [
+        "short"
+      ]
+    },
+    {
+      "id": "68696",
+      "rank": 92,
+      "crossover": false,
+      "sentence": "سأذهب إلى هناك حتى و لو أمطرت.",
+      "tashkeel_sentence": "سَأَذْهَبُ إِلَى هُنَاكَ حَتَّى وَ لَوْ أمْطَرْتُ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "66228",
+      "rank": 93,
+      "crossover": false,
+      "sentence": "الغيم بين مزرر ومحلل",
+      "tashkeel_sentence": "الْغَيْمُ بَيْنَ مُزَرِّرٍ وَمُحَلِّلٍ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "69055",
+      "rank": 94,
+      "crossover": false,
+      "sentence": "يا قبور الأحباب هل من مجيب",
+      "tashkeel_sentence": "يَا قُبُورَ الْأَحْبَابِ هَلْ مِنْ مُجِيبٍ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "70288",
+      "rank": 95,
+      "crossover": false,
+      "sentence": "أيهما أسرع ، السفينة أم القطار ؟",
+      "tashkeel_sentence": "أَيُّهُمَا أَسْرَعَ السَّفِينَةُ أَمْ الْقَطَارُ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "69165",
+      "rank": 96,
+      "crossover": false,
+      "sentence": "كيف حالك يا آنسة جون ؟",
+      "tashkeel_sentence": "كَيْفَ حَالُكَ يَا آنِسَةَ جَونٍ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "64984",
+      "rank": 97,
+      "crossover": false,
+      "sentence": "ضمنت مجدك العلا والمساعي",
+      "tashkeel_sentence": "ضَمَّنْت مَجْدَك الْعُلَا وَالْمَسَاعِيَ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "73666",
+      "rank": 98,
+      "crossover": false,
+      "sentence": "أقلعت عن التدخين.",
+      "tashkeel_sentence": "أَقْلَعْتُ عَنْ التَّدْخِينِ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "70462",
+      "rank": 99,
+      "crossover": false,
+      "sentence": "بدأ فاضل يحوّل ملكيّة منزل ليلى إلى إسمه.",
+      "tashkeel_sentence": "بَدَأَ فَاضِلٌ يُحَوِّلُ مَلْكِيَّةَ مَنْزِلَ لَيْلَى إِلَى إِسْمِهِ",
+      "diacritization_rate": 0.06451612903225806,
+      "flags": [
+        "partially_vowelized"
+      ]
+    },
+    {
+      "id": "70576",
+      "rank": 100,
+      "crossover": false,
+      "sentence": "أيمكنني الدفع عن طريق بطاقة الإئتمان ؟",
+      "tashkeel_sentence": "أَيُمْكِنُنِي الدَّفْعُ عَنْ طَرِيقِ بِطَاقَةِ الْإِئْتِمَانِ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "72627",
+      "rank": 101,
+      "crossover": false,
+      "sentence": "بسم الله الرحمن الرحيم الر تلك آيات الكتاب المبين",
+      "tashkeel_sentence": "بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ الرَّ تِلْكَ آيَاتُ الْكِتَابِ الْمُبِينِ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "67271",
+      "rank": 102,
+      "crossover": false,
+      "sentence": ".سآخذ هذا",
+      "tashkeel_sentence": "سَآخُذُ هَذَا",
+      "diacritization_rate": 0.0,
+      "flags": [
+        "short"
+      ]
+    },
+    {
+      "id": "68168",
+      "rank": 103,
+      "crossover": false,
+      "sentence": ".أهم شيء ، إهتم بنظامك الغذائي",
+      "tashkeel_sentence": "أهَمُّ شَيْءٍ إِهْتَمُّ بِنِظَامِكَ الْغِذَائِيِّ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "73271",
+      "rank": 104,
+      "crossover": false,
+      "sentence": "وأصحاب المشأمة ما أصحاب المشأمة",
+      "tashkeel_sentence": "وَأَصْحَابُ الْمَشْأَمَةِ مَا أَصْحَابُ الْمَشْأَمَةِ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "64028",
+      "rank": 105,
+      "crossover": false,
+      "sentence": "هل تمزحُ معي ؟",
+      "tashkeel_sentence": "هَلْ تَمْزَحُ مَعِي",
+      "diacritization_rate": 0.1111111111111111,
+      "flags": [
+        "partially_vowelized"
+      ]
+    },
+    {
+      "id": "68414",
+      "rank": 106,
+      "crossover": false,
+      "sentence": "أفلا يتوبون إلى الله ويستغفرونه والله غفور رحيم",
+      "tashkeel_sentence": "أَفَلَا يَتُوبُونَ إِلَى اللَّهِ وَيَسْتَغْفِرُونَهُ وَاللَّهُ غَفُورٌ رَحِيمٌ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "71494",
+      "rank": 107,
+      "crossover": false,
+      "sentence": ".بوب صديقي",
+      "tashkeel_sentence": "بَوَّبَ صَدِيقِي",
+      "diacritization_rate": 0.0,
+      "flags": [
+        "short"
+      ]
+    },
+    {
+      "id": "65858",
+      "rank": 108,
+      "crossover": false,
+      "sentence": ".أعد الكتاب إلى صاحبه",
+      "tashkeel_sentence": "أَعِدْ الْكِتَابَ إلَى صَاحِبِهِ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "65870",
+      "rank": 109,
+      "crossover": false,
+      "sentence": "هل أستطيع البقاء في منزلك ؟ ليس لي مكان أذهب إليه.",
+      "tashkeel_sentence": "هَلْ أَسْتَطِيعُ الْبَقَاءَ فِي مَنْزِلِكَ لَيْسَ لِي مَكَانٌ أَذْهَبُ إِلَيْهِ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "69120",
+      "rank": 110,
+      "crossover": false,
+      "sentence": "أذكر أنني أرسلت الرسالة.",
+      "tashkeel_sentence": "أَذْكُرُ أَنَّنِي أَرْسَلْتُ الرِّسَالَةَ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "64111",
+      "rank": 111,
+      "crossover": false,
+      "sentence": ".بيتك أكبر من بيتي ثلاث مرات",
+      "tashkeel_sentence": "بَيْتُكَ أَكْبَرَ مِنْ بَيْتِي ثَلَاثَ مَرَّاتٍ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "68797",
+      "rank": 112,
+      "crossover": false,
+      "sentence": "انهض بأمرك فالهدى مقصود",
+      "tashkeel_sentence": "انْهَضْ بِأَمْرِك فَالْهُدَى مَقْصُودٌ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "73632",
+      "rank": 113,
+      "crossover": false,
+      "sentence": "الصديق وقت الضيق",
+      "tashkeel_sentence": "الصَّدِيقُ وَقْتَ الضِّيقِ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "71712",
+      "rank": 114,
+      "crossover": false,
+      "sentence": "أتريد فنجانا من الشاي؟",
+      "tashkeel_sentence": "أَتُرِيدُ فَنْجَانًا مِنَ الشَّايِ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "67450",
+      "rank": 115,
+      "crossover": false,
+      "sentence": "ما هذا المبنى ؟",
+      "tashkeel_sentence": "مَا هَذَا الْمَبْنَى",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "68201",
+      "rank": 116,
+      "crossover": false,
+      "sentence": "كرهته.",
+      "tashkeel_sentence": "كَرِهْتُهُ",
+      "diacritization_rate": 0.0,
+      "flags": [
+        "short"
+      ]
+    },
+    {
+      "id": "64868",
+      "rank": 117,
+      "crossover": false,
+      "sentence": ".من فضلك أرني إياها مرة أخرى",
+      "tashkeel_sentence": "مِنْ فَضْلِكَ أَرِنِي إِيَّاهَا مَرَّةً أُخْرَى",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "64262",
+      "rank": 118,
+      "crossover": false,
+      "sentence": "عجبا أيودي بالشعوب بلوغ",
+      "tashkeel_sentence": "عَجَبًا أَيُودِي بِالشُّعُوبِ بُلُوغُ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "65909",
+      "rank": 119,
+      "crossover": false,
+      "sentence": "علي أن أساعد أمي.",
+      "tashkeel_sentence": "عَلَيَّ أَنْ أُسَاعِدَ أُمِّي",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "72058",
+      "rank": 120,
+      "crossover": false,
+      "sentence": "هل بإمكانك مساعدتي في المطبخ؟",
+      "tashkeel_sentence": "هَلْ بِإِمْكَانِكَ مُسَاعَدَتِي فِي الْمَطْبَخِ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "65438",
+      "rank": 121,
+      "crossover": false,
+      "sentence": "ما حاجة أولى بنجح عاجل",
+      "tashkeel_sentence": "مَا حَاجَةٌ أُوْلَى بِنُجْحٍ عَاجِلٍ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "68452",
+      "rank": 122,
+      "crossover": false,
+      "sentence": "إن تأمل محاسن الأصبهاني",
+      "tashkeel_sentence": "إنْ تَأَمَّلَ مَحَاسِنَ الْأَصْبَهَانِيّ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "71767",
+      "rank": 123,
+      "crossover": false,
+      "sentence": "متى قابلتها ؟",
+      "tashkeel_sentence": "مَتَى قَابَلْتَهَا",
+      "diacritization_rate": 0.0,
+      "flags": [
+        "short"
+      ]
+    },
+    {
+      "id": "70636",
+      "rank": 124,
+      "crossover": false,
+      "sentence": "أدرس لمدة ثلاث ساعات كل يوم.",
+      "tashkeel_sentence": "أَدْرُسُ لِمُدَّةِ ثَلَاثِ سَاعَاتٍ كُلَّ يَوْمٍ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "69203",
+      "rank": 125,
+      "crossover": false,
+      "sentence": "وتمت كلمت ربك صدقا وعدلا لا مبدل لكلماته وهو السميع العليم",
+      "tashkeel_sentence": "وَتَمَّتْ كَلِمَتُ رَبَّكَ صِدْقًا وَعَدْلًا لَا مُبَدِّلَ لِكَلِمَاتِهِ وَهُوَ السَّمِيعُ الْعَلِيمُ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "70886",
+      "rank": 126,
+      "crossover": false,
+      "sentence": "تمادى الصبا بي في غيه",
+      "tashkeel_sentence": "تَمَادَى الصَّبَا بِي فِي غَيْهِ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "66727",
+      "rank": 127,
+      "crossover": false,
+      "sentence": "سيصلى نارا ذات لهب",
+      "tashkeel_sentence": "سَيَصْلَىٰ نَارًا ذَاتَ لَهَبٍ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "65784",
+      "rank": 128,
+      "crossover": false,
+      "sentence": "بني الثغر لستم في الوغى من بني أمي",
+      "tashkeel_sentence": "بَنِي الثّغْرِ لَسْتُمْ فِي الْوَغَى مِنْ بَنِي أُمَيّ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "65511",
+      "rank": 129,
+      "crossover": false,
+      "sentence": "موريل تشتمني!",
+      "tashkeel_sentence": "مُورِيلُ تَشْتُمُنِي",
+      "diacritization_rate": 0.0,
+      "flags": [
+        "short"
+      ]
+    },
+    {
+      "id": "65601",
+      "rank": 130,
+      "crossover": false,
+      "sentence": "أحضر توم للطابق العلوي.",
+      "tashkeel_sentence": "أَحْضِرْ تُومَ لِلطَّابَقِ الْعَلَوِيِّ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "68846",
+      "rank": 131,
+      "crossover": false,
+      "sentence": "قد تغنينا بالشجي من الشعر",
+      "tashkeel_sentence": "قَدْ تَغَنَّيْنَا بِالشَّجِيّ مِنْ الشّعْرِ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "73801",
+      "rank": 132,
+      "crossover": false,
+      "sentence": "تحسن الوضع.",
+      "tashkeel_sentence": "تَحَسُّن الْوَضْعِ",
+      "diacritization_rate": 0.0,
+      "flags": [
+        "short"
+      ]
+    },
+    {
+      "id": "73369",
+      "rank": 133,
+      "crossover": false,
+      "sentence": "الكلمة الفرنسية \" شا \" تعني قطة.",
+      "tashkeel_sentence": "الْكَلِمَةُ الْفَرَنْسِيَّةُ شَا تَعْنِي قُطَّةً",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "73256",
+      "rank": 134,
+      "crossover": false,
+      "sentence": "ما رأيت أحدا أطيب عيشا منه ، مع ما كان فيه من ضيق العيش.",
+      "tashkeel_sentence": "مَا رَأَيْتُ أَحَدًا أَطْيَبَ عَيْشًا مِنْهُ مَعَ مَا كَانَ فِيهِ مِنْ ضِيقِ الْعَيْشَ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "72275",
+      "rank": 135,
+      "crossover": false,
+      "sentence": "يقول أإنك لمن المصدقين",
+      "tashkeel_sentence": "يَقُولُ أَإِنَّكَ لَمِنَ الْمُصَدِّقِينَ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "67279",
+      "rank": 136,
+      "crossover": false,
+      "sentence": "أعطاني توم قلماً.",
+      "tashkeel_sentence": "أَعْطَانِي تُوم قَلَمَا",
+      "diacritization_rate": 0.07692307692307693,
+      "flags": [
+        "partially_vowelized"
+      ]
+    },
+    {
+      "id": "69669",
+      "rank": 137,
+      "crossover": false,
+      "sentence": "فنادوا صاحبهم فتعاطى فعقر",
+      "tashkeel_sentence": "فَنَادَوْا صَاحِبَهُمْ فَتَعَاطَىٰ فَعَقَرَ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "70060",
+      "rank": 138,
+      "crossover": false,
+      "sentence": ".يلعب الأولاد باللعب",
+      "tashkeel_sentence": "يَلْعَبُ الْأَوْلَادَ بِاللَّعِبِ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "69132",
+      "rank": 139,
+      "crossover": false,
+      "sentence": ".أسرع و لن تتأخر على المدرسة",
+      "tashkeel_sentence": "أَسْرَعَ وَ لَنْ تَتَأَخَّرَ عَلَى الْمَدْرَسَةِ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "71887",
+      "rank": 140,
+      "crossover": false,
+      "sentence": "فأتوا بآبائنا إن كنتم صادقين",
+      "tashkeel_sentence": "فَأْتُوا بِآبَائِنَا إِنْ كُنْتُمْ صَادِقِينَ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "69285",
+      "rank": 141,
+      "crossover": false,
+      "sentence": "متى وصلت إلى هناك ؟",
+      "tashkeel_sentence": "مَتَى وَصَلْتْ إلَى هُنَاكَ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "73631",
+      "rank": 142,
+      "crossover": false,
+      "sentence": ".أنظر إلى تلك الغيوم السوداء",
+      "tashkeel_sentence": "أَنْظُرُ إِلَى تِلْكَ الْغُيُومِ السَّوْدَاءِ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "69084",
+      "rank": 143,
+      "crossover": false,
+      "sentence": "من فضلك أعرني كتابك.",
+      "tashkeel_sentence": "مِنْ فَضْلِك أَعِرْنِي كِتَابَك",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "73940",
+      "rank": 144,
+      "crossover": false,
+      "sentence": "لا تستطيع الحكومة اليابانية تسيير هذه الأزمة.",
+      "tashkeel_sentence": "لَا تَسْتَطِيعُ الْحُكُومَةُ الْيَابَانِيَّةُ تَسْيِيرَ هَذِهِ الْأَزْمَةِ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "70673",
+      "rank": 145,
+      "crossover": false,
+      "sentence": "عملت في المزرعة طوال اليوم.",
+      "tashkeel_sentence": "عَمِلْتُ فِي الْمَزْرَعَةِ طِوَالَ الْيَوْمِ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "66374",
+      "rank": 146,
+      "crossover": false,
+      "sentence": "دائماً ما تبقي غرفتها نظيفة.",
+      "tashkeel_sentence": "دَائِمًا مَا تُبْقِي غُرْفَتُهَا نَظِيفَةً",
+      "diacritization_rate": 0.045454545454545456,
+      "flags": []
+    },
+    {
+      "id": "65162",
+      "rank": 147,
+      "crossover": false,
+      "sentence": "وقال الله لا تتخذوا إلهين اثنين إنما هو إله واحد فإياي فارهبون",
+      "tashkeel_sentence": "وَقَالَ اللَّهُ لا تَتَّخِذُوا إِلَهَيْنِ اثْنَيْنِ إِنَّمَا هُوَ إِلَهٌ وَاحِدٌ فَإِيَّايَ فَارْهَبُونِ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "64566",
+      "rank": 148,
+      "crossover": false,
+      "sentence": "أنا ممثل مشهور.",
+      "tashkeel_sentence": "أَنَا مُمَثِّلٌ مَشْهُورٌ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "72470",
+      "rank": 149,
+      "crossover": false,
+      "sentence": "تنافس عشر فرق على الجائزة.",
+      "tashkeel_sentence": "تَنَافَسَ عَشْرِ فِرَقٍ عَلَى الْجَائِزَةِ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "68287",
+      "rank": 150,
+      "crossover": false,
+      "sentence": "أكرم بمولود لقد زار الحمى",
+      "tashkeel_sentence": "أَكْرِمْ بِمَوْلُودِ لَقَدْ زَارَ الْحِمَى",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "68493",
+      "rank": 151,
+      "crossover": false,
+      "sentence": "يا ديار الأحباب كيف تحولت",
+      "tashkeel_sentence": "يَا دِيَارَ الْأَحْبَابِ كَيْفَ تَحَوَّلْتَ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "65409",
+      "rank": 152,
+      "crossover": false,
+      "sentence": "ستبدأ الدراسة بعد غد.",
+      "tashkeel_sentence": "سَتَبْدَأُ الدِّرَاسَةُ بَعْدَ غَدٍ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "71371",
+      "rank": 153,
+      "crossover": false,
+      "sentence": "يا أمير الغناء يفديك روحي",
+      "tashkeel_sentence": "يَا أَمِيرَ الْغِنَاءِ يَفْدِيكَ رُوحِي",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "73459",
+      "rank": 154,
+      "crossover": false,
+      "sentence": "ويضيق صدري ولا ينطلق لساني فأرسل إلى هارون",
+      "tashkeel_sentence": "وَيَضِيقُ صَدْرِي وَلَا يَنْطَلِقُ لِسَانِي فَأَرْسِلْ إِلَىٰ هَارُونَ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "70368",
+      "rank": 155,
+      "crossover": false,
+      "sentence": "لا يسمعون فيها لغوا ولا تأثيما",
+      "tashkeel_sentence": "لَا يَسْمَعُونَ فِيهَا لَغْوًا وَلَا تَأْثِيمًا",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "65365",
+      "rank": 156,
+      "crossover": false,
+      "sentence": "أخذت تكلم الكلب.",
+      "tashkeel_sentence": "أَخَذْتُ تُكَلُّمَ الْكَلْبِ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "70678",
+      "rank": 157,
+      "crossover": false,
+      "sentence": "المواطن الجيد يحترم القانون.",
+      "tashkeel_sentence": "الْمُوَاطِنُ الْجَيِّدُ يَحْتَرِمُ الْقَانُونُ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "73515",
+      "rank": 158,
+      "crossover": false,
+      "sentence": "ونجينا الذين آمنوا وكانوا يتقون",
+      "tashkeel_sentence": "وَنَجَّيْنَا الَّذِينَ آمَنُوا وَكَانُوا يَتَّقُونَ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "72036",
+      "rank": 159,
+      "crossover": false,
+      "sentence": "يا أخا الحارث بن كعب بن عمر",
+      "tashkeel_sentence": "يَا أَخَا الْحَارِثِ بْنِ كَعْبِ بْنِ عُمَرَ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "69700",
+      "rank": 160,
+      "crossover": false,
+      "sentence": "أنا معتاد على الضجة.",
+      "tashkeel_sentence": "أَنَا مُعْتَادٌ عَلَى الضَّجَّةِ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "64923",
+      "rank": 161,
+      "crossover": false,
+      "sentence": "إنه يركلني!!",
+      "tashkeel_sentence": "إِنَّهُ يُرْكِّلنِي",
+      "diacritization_rate": 0.0,
+      "flags": [
+        "short"
+      ]
+    },
+    {
+      "id": "68979",
+      "rank": 162,
+      "crossover": false,
+      "sentence": "كنت هناك لثلاثة أيام فقط.",
+      "tashkeel_sentence": "كُنْتُ هُنَاكَ لِثَلَاَثَةِ أَيَّامٍ فَقَطْ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "73135",
+      "rank": 163,
+      "crossover": false,
+      "sentence": "قال رب لم حشرتني أعمى وقد كنت بصيرا",
+      "tashkeel_sentence": "قَالَ رَبِّ لِمَ حَشَرْتَنِي أَعْمَىٰ وَقَدْ كُنْتُ بَصِيرًا",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "66867",
+      "rank": 164,
+      "crossover": false,
+      "sentence": "هل تعيش مع والدَيك ؟",
+      "tashkeel_sentence": "هَلْ تَعِيشُ مَعَ وَالِدِيْكَ",
+      "diacritization_rate": 0.07142857142857142,
+      "flags": [
+        "partially_vowelized"
+      ]
+    },
+    {
+      "id": "73175",
+      "rank": 165,
+      "crossover": false,
+      "sentence": "فألقي السحرة سجدا قالوا آمنا برب هارون وموسى",
+      "tashkeel_sentence": "فَأُلْقِيَ السَّحَرَةُ سُجَّدًا قَالُوا آمَنَّا بِرَبِّ هَارُونَ وَمُوسَىٰ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "71902",
+      "rank": 166,
+      "crossover": false,
+      "sentence": "كلتا الجنتين آتت أكلها ولم تظلم منه شيئا وفجرنا خلالهما نهرا",
+      "tashkeel_sentence": "كِلَّتَا الْجَنَّتَيْنِ آتَتْ أُكُلَهَا وَلَمْ تَظْلِمْ مِنْهُ شَيْئًا وَفَجَّرْنَا خِلَالَهُمَا نَهْرًا",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "67768",
+      "rank": 167,
+      "crossover": false,
+      "sentence": ".انطفأت الأضواء",
+      "tashkeel_sentence": "انْطَفَأَتْ الْأَضْوَاءُ",
+      "diacritization_rate": 0.0,
+      "flags": [
+        "short"
+      ]
+    },
+    {
+      "id": "66083",
+      "rank": 168,
+      "crossover": false,
+      "sentence": "كانت ذهنية فاضل كذهنية دانية آنذاك.",
+      "tashkeel_sentence": "كَانَتْ ذِهْنِيَّةَ فَاضِلٍ كَذِهْنِيَّةٍ دَانِيَةٍ آنَذَاكَ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "71671",
+      "rank": 169,
+      "crossover": false,
+      "sentence": "سررت بلقائك.",
+      "tashkeel_sentence": "سَرِرْت بِلِقَائِك",
+      "diacritization_rate": 0.0,
+      "flags": [
+        "short"
+      ]
+    },
+    {
+      "id": "63905",
+      "rank": 170,
+      "crossover": false,
+      "sentence": "والله ما طلعت شمس ولا غربت",
+      "tashkeel_sentence": "وَاللَّهِ مَا طَلَعَتْ شَمْسٌ وَلَا غَرَبَتْ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "73397",
+      "rank": 171,
+      "crossover": false,
+      "sentence": "قالوا أإذا متنا وكنا ترابا وعظاما أإنا لمبعوثون",
+      "tashkeel_sentence": "قَالُوا أَإِذَا مِتْنَا وَكُنَّا تُرَابًا وَعِظَامًا أَإِنَّا لَمَبْعُوثُونَ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "69682",
+      "rank": 172,
+      "crossover": false,
+      "sentence": "وقال الذين في النار لخزنة جهنم ادعوا ربكم يخفف عنا يوما من العذاب",
+      "tashkeel_sentence": "وَقَالَ الَّذِينَ فِي النَّارِ لِخَزَنَةِ جَهَنَّمَ ادْعُوا رَبَّكُمْ يُخَفِّفْ عَنَّا يَوْمًا مِنَ الْعَذَابِ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "65806",
+      "rank": 173,
+      "crossover": false,
+      "sentence": "يا أيها القمر الذي بذلت له",
+      "tashkeel_sentence": "يَا أَيُّهَا الْقَمَرُ الَّذِي بُذِلَتْ لَهُ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "65780",
+      "rank": 174,
+      "crossover": false,
+      "sentence": "المرأة اليابانية تبدو صغيرة ورقيقة.",
+      "tashkeel_sentence": "الْمَرْأَةُ الْيَابَانِيَّةُ تَبْدُو صَغِيرَةً وَرَقِيقَةً",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "73772",
+      "rank": 175,
+      "crossover": false,
+      "sentence": "وما أدراك ما الحطمة",
+      "tashkeel_sentence": "وَمَا أَدْرَاكَ مَا الْحُطَمَةُ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "72539",
+      "rank": 176,
+      "crossover": false,
+      "sentence": "ظل الفأر عند الغسق أطول من ظل القط عند الظهر.",
+      "tashkeel_sentence": "ظِلُّ الْفَأْرِ عِنْدَ الْغَسَقِ أَطْوَلُ مِنْ ظِلِّ الْقَطِّ عِنْدَ الظُّهْرِ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "69861",
+      "rank": 177,
+      "crossover": false,
+      "sentence": "وتزعم للواشين أني فاسد",
+      "tashkeel_sentence": "وَتَزْعُمُ لِلْوَاشِينَ أَنِّي فَاسِدٌ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "67780",
+      "rank": 178,
+      "crossover": false,
+      "sentence": "هل أنت متأكد أنك لم تنسَ شيئاً ؟",
+      "tashkeel_sentence": "هَلْ أَنْتَ مُتَأَكِّدٌ أَنَّكَ لَمْ تَنْسَ شَيْئًا",
+      "diacritization_rate": 0.09090909090909091,
+      "flags": [
+        "partially_vowelized"
+      ]
+    },
+    {
+      "id": "63985",
+      "rank": 179,
+      "crossover": false,
+      "sentence": "أعطت ليلى لسامي رقم هاتفها.",
+      "tashkeel_sentence": "أَعْطَتْ لَيْلَى لِسَامِي رَقْمَ هَاتِفِهَا",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "70088",
+      "rank": 180,
+      "crossover": false,
+      "sentence": "من أين من أين يا ابتدائي",
+      "tashkeel_sentence": "مِنْ أَيْنَ مِنْ أَيْنَ يَا ابْتِدَائِي",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "65771",
+      "rank": 181,
+      "crossover": false,
+      "sentence": "و ماذا لو حصل ذلك ؟",
+      "tashkeel_sentence": "وَ مَاذَا لَوْ حَصَلَ ذَلِكَ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "70790",
+      "rank": 182,
+      "crossover": false,
+      "sentence": ".وصلوا واحداً خلف الآخر",
+      "tashkeel_sentence": "وَصَلَّوْا وَاحِدًا خَلْفَ الْآخَرِ",
+      "diacritization_rate": 0.05555555555555555,
+      "flags": [
+        "partially_vowelized"
+      ]
+    },
+    {
+      "id": "73602",
+      "rank": 183,
+      "crossover": false,
+      "sentence": "طلب سامي من الله أن يسامحه.",
+      "tashkeel_sentence": "طَلَبَ سَامِي مِنْ اللَّهِ أَنْ يُسَامِحَهُ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "73736",
+      "rank": 184,
+      "crossover": false,
+      "sentence": "اصفرّ وجه سامي.",
+      "tashkeel_sentence": "اصْفَرَّ وَجْهٌ سَامِيٌّ",
+      "diacritization_rate": 0.09090909090909091,
+      "flags": [
+        "partially_vowelized"
+      ]
+    },
+    {
+      "id": "69231",
+      "rank": 185,
+      "crossover": false,
+      "sentence": "يا سوءتا من طلابي يا أبا الحسن",
+      "tashkeel_sentence": "يَا سُوْءَتَا مِنْ طُلَابِي يَا أَبَا الْحَسَنِ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "65033",
+      "rank": 186,
+      "crossover": false,
+      "sentence": "يا بني طود المعالي طاهر",
+      "tashkeel_sentence": "يَا بَنِي طَوْدٍ الْمَعَالِي طَاهِرٌ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "72442",
+      "rank": 187,
+      "crossover": false,
+      "sentence": "هل لي أن آتي و أقابلك غداً ؟",
+      "tashkeel_sentence": "هَلْ لِي أَنْ آتِيَ وَ أُقَابِلَكَ غَدًاً",
+      "diacritization_rate": 0.05263157894736842,
+      "flags": [
+        "partially_vowelized"
+      ]
+    },
+    {
+      "id": "70660",
+      "rank": 188,
+      "crossover": false,
+      "sentence": "عاشر ديما خمسة و عشرين رجلاً في ليلة واحدة و من ثم قام بقتلهم.",
+      "tashkeel_sentence": "عَاشِرٌ دِيمًاً خَمْسَةً وَ عِشْرِينَ رَجُلًا فِي لَيْلَةٍ وَاحِدَةٍ وَ مِنْ ثَمَّ قَامَ بِقَتْلِهِمْ",
+      "diacritization_rate": 0.02127659574468085,
+      "flags": []
+    },
+    {
+      "id": "68535",
+      "rank": 189,
+      "crossover": false,
+      "sentence": "كذلك نفعل بالمجرمين",
+      "tashkeel_sentence": "كَذَلِكَ نَفْعَلُ بِالْمُجْرِمِينَ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "65037",
+      "rank": 190,
+      "crossover": false,
+      "sentence": "أريد الذهاب إلى اليابان.",
+      "tashkeel_sentence": "أُرِيدَ الذَّهَابُ إلَى الْيَابَانِ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "72077",
+      "rank": 191,
+      "crossover": false,
+      "sentence": "كانت مغامرة جدّ رائعة.",
+      "tashkeel_sentence": "كَانَتْ مُغَامَرَةُ جَدِّ رَائِعَةٍ",
+      "diacritization_rate": 0.058823529411764705,
+      "flags": [
+        "partially_vowelized"
+      ]
+    },
+    {
+      "id": "69109",
+      "rank": 192,
+      "crossover": false,
+      "sentence": "لا تستخف بمقدرتي.",
+      "tashkeel_sentence": "لَا تَسْتَخِفْ بِمَقْدِرَتِي",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "72392",
+      "rank": 193,
+      "crossover": false,
+      "sentence": "قلتَ لي أنّك لن تتركني لوحدي أبدا.",
+      "tashkeel_sentence": "قُلْتَ لِي أَنَّكَ لَنْ تَتْرُكَنِي لِوَحْدِي أَبَدًا",
+      "diacritization_rate": 0.08,
+      "flags": [
+        "partially_vowelized"
+      ]
+    },
+    {
+      "id": "73787",
+      "rank": 194,
+      "crossover": false,
+      "sentence": "كانت جدتي تقول دائماً: \"لا تتنفس وتشرب في نفس الوقت.\"",
+      "tashkeel_sentence": "كَانَتْ جَدَّتِي تَقُولُ دَائِمًا لَاَ تَتَنَفَّسُ وَتَشْرَبُ فِي نَفْسِ الْوَقْتِ",
+      "diacritization_rate": 0.02564102564102564,
+      "flags": []
+    },
+    {
+      "id": "68356",
+      "rank": 195,
+      "crossover": false,
+      "sentence": "هل هناك ما لم أضع في الإعتبار ؟",
+      "tashkeel_sentence": "هَلْ هُنَاكَ مَا لَمْ أَضَعْ فِي الْإِعْتِبَارِ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "64623",
+      "rank": 196,
+      "crossover": false,
+      "sentence": "أنتم طلبة جدد.",
+      "tashkeel_sentence": "أَنْتُمْ طَلْبَةٌ جُدَدٌ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "68767",
+      "rank": 197,
+      "crossover": false,
+      "sentence": "هذا هو المكان الذي تسكن فيه.",
+      "tashkeel_sentence": "هَذَا هُوَ الْمَكَانُ الَّذِي تُسْكَنُ فِيهِ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "73895",
+      "rank": 198,
+      "crossover": false,
+      "sentence": "ألا إنهم هم المفسدون ولكن لا يشعرون",
+      "tashkeel_sentence": "أَلَا إِنَّهُمْ هُمُ الْمُفْسِدُونَ وَلَٰكِنْ لَا يَشْعُرُونَ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "67019",
+      "rank": 199,
+      "crossover": false,
+      "sentence": "يا لقومي أما لقتلي ثار",
+      "tashkeel_sentence": "يَا لِقَوْمِي أَمَا لِقَتْلِي ثَارَ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "66762",
+      "rank": 200,
+      "crossover": false,
+      "sentence": "أيها السائر بالركبان حي",
+      "tashkeel_sentence": "أَيُّهَا السَّائِرُ بِالرُّكْبَانِ حَيّ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "68324",
+      "rank": 201,
+      "crossover": false,
+      "sentence": "أسأت الاختيار.",
+      "tashkeel_sentence": "أَسَأْتُ الِاخْتِيَارَ",
+      "diacritization_rate": 0.0,
+      "flags": [
+        "short"
+      ]
+    },
+    {
+      "id": "66460",
+      "rank": 202,
+      "crossover": false,
+      "sentence": "أشعر بالحكة.",
+      "tashkeel_sentence": "أَشْعُرُ بِالْحِكَّةِ",
+      "diacritization_rate": 0.0,
+      "flags": [
+        "short"
+      ]
+    },
+    {
+      "id": "66560",
+      "rank": 203,
+      "crossover": false,
+      "sentence": "تدور مؤامرة \"جون هازارد\" حول جندي من جيش بيرغن يدعى ألبرت جرابنر.",
+      "tashkeel_sentence": "تَدُورُ مُؤَامَرَةُ جُونِ هَازَارْدَ حَوْلَ جُنْدِيٍّ مِنْ جَيْشِ بِيرْغَن يُدْعَى أَلْبَرْتْ جِرَابَنْرْ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "69125",
+      "rank": 204,
+      "crossover": false,
+      "sentence": "ماذا فعلت بتلك الكاميرا ؟",
+      "tashkeel_sentence": "مَاذَا فَعَلْتَ بِتِلْكَ الْكَامِيرَا",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "70031",
+      "rank": 205,
+      "crossover": false,
+      "sentence": ".يمكنها ان تعد من واحد إلى عشرة",
+      "tashkeel_sentence": "يُمْكِنُهَا انْ تُعَدُّ مِنْ وَاحِدٍ إِلَى عَشَرَةٍ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "67703",
+      "rank": 206,
+      "crossover": false,
+      "sentence": "أظنه يختلف حين تفكر فيه على المدى البعيد.",
+      "tashkeel_sentence": "أَظُنُّهُ يَخْتَلِفُ حِينَ تَفَكَّرَ فِيهِ عَلَى الْمَدَى الْبَعِيدِ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "65650",
+      "rank": 207,
+      "crossover": false,
+      "sentence": "أنت دائماً ما تشتكي.",
+      "tashkeel_sentence": "أَنْتَ دَائِمًا مَا تَشْتَكِي",
+      "diacritization_rate": 0.06666666666666667,
+      "flags": [
+        "partially_vowelized"
+      ]
+    },
+    {
+      "id": "67320",
+      "rank": 208,
+      "crossover": false,
+      "sentence": "ما أطول عودك!",
+      "tashkeel_sentence": "مَا أَطْوَلَ عَودك",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "70118",
+      "rank": 209,
+      "crossover": false,
+      "sentence": "أنا صنعت قراري.",
+      "tashkeel_sentence": "أَنَا صَنَعْتُ قَرَارِي",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "71766",
+      "rank": 210,
+      "crossover": false,
+      "sentence": "ما سمعنا بهذا في الملة الآخرة إن هذا إلا اختلاق",
+      "tashkeel_sentence": "مَا سَمِعْنَا بِهَٰذَا فِي الْمِلَّةِ الْآخِرَةِ إِنْ هَٰذَا إِلَّا اخْتِلَاقٌ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "66008",
+      "rank": 211,
+      "crossover": false,
+      "sentence": "انا طباخ.",
+      "tashkeel_sentence": "انَا طَبَّاخٌ",
+      "diacritization_rate": 0.0,
+      "flags": [
+        "short"
+      ]
+    },
+    {
+      "id": "67023",
+      "rank": 212,
+      "crossover": false,
+      "sentence": "ألا أيها البيت الذي أنا هاجره",
+      "tashkeel_sentence": "أَلَا أَيُّهَا الْبَيْتُ الَّذِي أَنَا هَاجِرُهُ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "63606",
+      "rank": 213,
+      "crossover": false,
+      "sentence": ".أعرف تلك الفتاة",
+      "tashkeel_sentence": "أَعْرِفُ تِلْكَ الْفَتَاةَ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "71075",
+      "rank": 214,
+      "crossover": false,
+      "sentence": ".لم تدم صداقتنا",
+      "tashkeel_sentence": "لَمْ تَدُمْ صَدَاقَتُنَا",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "66892",
+      "rank": 215,
+      "crossover": false,
+      "sentence": "الجزائر بلد المليون ونصف شهيد",
+      "tashkeel_sentence": "الْجَزَائِرُ بَلَدُ الْمِلْيُونِ وَنِصْفُ شَهِيدِ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "72756",
+      "rank": 216,
+      "crossover": false,
+      "sentence": "أَم تَأمُرُهُم أَحلامُهُم بِهذا أَم هُم قَومٌ طاغونَ",
+      "tashkeel_sentence": "أَمْ تَأْمُرُهُمْ أَحْلَامُهُمْ بِهَذَا أَمْ هُمْ قَوْمٌ طَاغُونُ",
+      "diacritization_rate": 0.45161290322580644,
+      "flags": [
+        "partially_vowelized"
+      ]
+    },
+    {
+      "id": "65616",
+      "rank": 217,
+      "crossover": false,
+      "sentence": "لا يمكن لتوم أن ينسى الماضي.",
+      "tashkeel_sentence": "لَا يُمْكِنُ لِتَوْمِ أَنْ يَنْسَى الْمَاضِيَ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "71788",
+      "rank": 218,
+      "crossover": false,
+      "sentence": "هيا لنبدأ اللعب الآن.",
+      "tashkeel_sentence": "هَيًّا لِنَبْدَأَ اللَّعِبَ الْآنَ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "72190",
+      "rank": 219,
+      "crossover": false,
+      "sentence": "أصبت عصفورين بحجر واحد.",
+      "tashkeel_sentence": "أَصَبْت عُصْفُورَيْنِ بِحَجَرٍ وَاحِدٍ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "68218",
+      "rank": 220,
+      "crossover": false,
+      "sentence": "إلا من هو صال الجحيم",
+      "tashkeel_sentence": "إِلَّا مَنْ هُوَ صَالِ الْجَحِيمِ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "71285",
+      "rank": 221,
+      "crossover": false,
+      "sentence": "من فضلك, إنصت إلي!",
+      "tashkeel_sentence": "مِنْ فَضْلِكَ إِنْصَتْ إِلَيَّ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "72439",
+      "rank": 222,
+      "crossover": false,
+      "sentence": "ما الذي كنت تفعله ؟",
+      "tashkeel_sentence": "مَا الَّذِي كُنْتَ تَفْعَلُهُ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "72806",
+      "rank": 223,
+      "crossover": false,
+      "sentence": "ربما لا.",
+      "tashkeel_sentence": "رُبَّمَا لَا",
+      "diacritization_rate": 0.0,
+      "flags": [
+        "short"
+      ]
+    },
+    {
+      "id": "70039",
+      "rank": 224,
+      "crossover": false,
+      "sentence": "التعليم في هذا العالم يُخيِّبُ آماليْ.",
+      "tashkeel_sentence": "التَّعْلِيمُ فِي هَذَا الْعَالَمِ يَخِيِّبُ آمَالِي",
+      "diacritization_rate": 0.14814814814814814,
+      "flags": [
+        "partially_vowelized"
+      ]
+    },
+    {
+      "id": "64721",
+      "rank": 225,
+      "crossover": false,
+      "sentence": "ولما تداعى القوم واشتبك القنا",
+      "tashkeel_sentence": "وَلَمَّا تَدَاعَى الْقَوْمُ وَاشْتَبَكَ الْقَنَا",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "70006",
+      "rank": 226,
+      "crossover": false,
+      "sentence": ".جفّ هذا القلم",
+      "tashkeel_sentence": "جَفَّ هَذَا الْقَلَمُ",
+      "diacritization_rate": 0.1,
+      "flags": [
+        "partially_vowelized"
+      ]
+    },
+    {
+      "id": "71528",
+      "rank": 227,
+      "crossover": false,
+      "sentence": "سيكون شيئًا عليّ بَرْمَجَتُهُ.",
+      "tashkeel_sentence": "سَيَكُونُ شَيْئًا عَلَيَّ بَرْمَجْتُهُ",
+      "diacritization_rate": 0.4444444444444444,
+      "flags": [
+        "partially_vowelized"
+      ]
+    },
+    {
+      "id": "67897",
+      "rank": 228,
+      "crossover": false,
+      "sentence": "امرأة تبتسم في وجود رجل يرتدي قميصًا مخططًا بالحديقة.",
+      "tashkeel_sentence": "امْرَأَةٌ تَبْتَسِمُ فِي وُجُودِ رَجُلٍ يَرْتَدِي قَمِيصًا مُخَطَّطًا بِالْحَدِيقَةِ",
+      "diacritization_rate": 0.047619047619047616,
+      "flags": []
+    },
+    {
+      "id": "69526",
+      "rank": 229,
+      "crossover": false,
+      "sentence": "عمّ تتكلّمون يا رفاق؟",
+      "tashkeel_sentence": "عَمَّ تَتَكَلَّمُونَ يَا رِفَاقُ",
+      "diacritization_rate": 0.13333333333333333,
+      "flags": [
+        "partially_vowelized"
+      ]
+    },
+    {
+      "id": "68664",
+      "rank": 230,
+      "crossover": false,
+      "sentence": "هل أنت قريبه ؟",
+      "tashkeel_sentence": "هَلْ أَنْتَ قَرِيبُهُ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "64954",
+      "rank": 231,
+      "crossover": false,
+      "sentence": "أنا واش بسوء حالي إليكا",
+      "tashkeel_sentence": "أَنَا وَاشٍ بِسُوءٍ حَالِي إِلَيْكَا",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "72896",
+      "rank": 232,
+      "crossover": false,
+      "sentence": "إن شر الدواب عند الله الذين كفروا فهم لا يؤمنون",
+      "tashkeel_sentence": "إِنَّ شَرَّ الدَّوَابِّ عِنْدَ اللَّهِ الَّذِينَ كَفَرُوا فَهُمْ لَا يُؤْمِنُونَ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "68967",
+      "rank": 233,
+      "crossover": false,
+      "sentence": "قد يستغرق بعض الوقت",
+      "tashkeel_sentence": "قَدْ يَسْتَغْرِقُ بَعْضُ الوَقْتِ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "73480",
+      "rank": 234,
+      "crossover": false,
+      "sentence": "صحيح قلت هذا ، لكني لم أقصده.",
+      "tashkeel_sentence": "صَحِيحٌ قُلْتُ هَذَا لَكِنِّي لَمْ أَقْصِدْهُ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "73634",
+      "rank": 235,
+      "crossover": false,
+      "sentence": "جامعة تفت هي جامعة مشهورة في بوسطن.",
+      "tashkeel_sentence": "جَامِعَةٌ تَفُتْ هِيَ جَامِعَةٌ مَشْهُورَةٌ فِي بُوسْطَنِ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "67414",
+      "rank": 236,
+      "crossover": false,
+      "sentence": "هل أنت صينية أم يابانية ؟",
+      "tashkeel_sentence": "هَلْ أَنْتِ صِينِيَّةٌ أَمْ يَابَانِيَّةٌ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "69386",
+      "rank": 237,
+      "crossover": false,
+      "sentence": "كن مستعدا",
+      "tashkeel_sentence": "كُنْ مُسْتَعِدًّا",
+      "diacritization_rate": 0.0,
+      "flags": [
+        "short"
+      ]
+    },
+    {
+      "id": "64852",
+      "rank": 238,
+      "crossover": false,
+      "sentence": ".أصل هذه الكلمة يوناني",
+      "tashkeel_sentence": "أَصْلُ هَذِهِ الْكَلِمَةِ يُونَانِيٌّ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "72372",
+      "rank": 239,
+      "crossover": false,
+      "sentence": "هذه قصّة عن توم.",
+      "tashkeel_sentence": "هَذِهِ قِصَّةٌ عَنْ تُوْمٍ",
+      "diacritization_rate": 0.09090909090909091,
+      "flags": [
+        "partially_vowelized"
+      ]
+    },
+    {
+      "id": "64944",
+      "rank": 240,
+      "crossover": false,
+      "sentence": ".أبقِ غرفتك نظيفةً بقدر الإمكان",
+      "tashkeel_sentence": "أَبْقِ غُرْفَتَكَ نَظِيفَةٌ بِقَدْرِ الْإِمْكَانِ",
+      "diacritization_rate": 0.08333333333333333,
+      "flags": [
+        "partially_vowelized"
+      ]
+    },
+    {
+      "id": "67171",
+      "rank": 241,
+      "crossover": false,
+      "sentence": "تظلّم شِعري إلى القاسمِ",
+      "tashkeel_sentence": "تَظَلَّمَ شِعْرِي إلَى الْقَاسِمِ",
+      "diacritization_rate": 0.17647058823529413,
+      "flags": [
+        "partially_vowelized"
+      ]
+    },
+    {
+      "id": "66231",
+      "rank": 242,
+      "crossover": false,
+      "sentence": "لا تُغالط فقد سألتَ البقاءَ",
+      "tashkeel_sentence": "لَا تُغَالِطْ فَقَدْ سَأَلْت الْبَقَاءَ",
+      "diacritization_rate": 0.15,
+      "flags": [
+        "partially_vowelized"
+      ]
+    },
+    {
+      "id": "69577",
+      "rank": 243,
+      "crossover": false,
+      "sentence": "تستخدم سيارتي الكثير من الوقود.",
+      "tashkeel_sentence": "تَسْتَخْدِمُ سَيَّارَتَي الْكَثِيرِ مِنَ الْوَقُودِ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "65149",
+      "rank": 244,
+      "crossover": false,
+      "sentence": "انفجر غضباً.",
+      "tashkeel_sentence": "اِنْفَجَرَ غَضَبًا",
+      "diacritization_rate": 0.1111111111111111,
+      "flags": [
+        "partially_vowelized",
+        "short"
+      ]
+    },
+    {
+      "id": "71585",
+      "rank": 245,
+      "crossover": false,
+      "sentence": "صراط الذين أنعمت عليهم غير المغضوب عليهم ولا الضالين",
+      "tashkeel_sentence": "صِرَاطَ الَّذِينَ أَنْعَمْتَ عَلَيْهِمْ غَيْرِ الْمَغْضُوبِ عَلَيْهِمْ وَلَا الضَّالِّينَ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "63791",
+      "rank": 246,
+      "crossover": false,
+      "sentence": "تتكاثر الفئران بسرعة.",
+      "tashkeel_sentence": "تَتَكَاثَرُ الْفِئْرَانُ بِسُرْعَةٍ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "67463",
+      "rank": 247,
+      "crossover": false,
+      "sentence": "جلسنا وسط الغرفة.",
+      "tashkeel_sentence": "جَلَسْنَا وَسْطَ الْغُرْفَةِ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "69874",
+      "rank": 248,
+      "crossover": false,
+      "sentence": "راح صحبي وبت للموعود",
+      "tashkeel_sentence": "رَاحَ صَحْبِي وَبَتَّ لِلْمَوْعُودِ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "69708",
+      "rank": 249,
+      "crossover": false,
+      "sentence": "هل تعلم أين يعيش طوم ؟",
+      "tashkeel_sentence": "هَلْ تَعْلَمُ أَيْنَ يَعِيشُ طُومَ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "65075",
+      "rank": 250,
+      "crossover": false,
+      "sentence": "ذُلَّـنَـا المُـؤَبَّـدا وعَيشَـنَا المُنَكَّـدا لا نُريــــــدْ بـلْ نُعيــــدْ",
+      "tashkeel_sentence": "ذُلّنَا الْمُؤَبَّدَا وَعَيْشُنَا الْمُنَكَّدَا لَا نُرِيدُ بَلْ نُعِيدُ",
+      "diacritization_rate": 0.4722222222222222,
+      "flags": [
+        "partially_vowelized"
+      ]
+    },
+    {
+      "id": "72936",
+      "rank": 251,
+      "crossover": false,
+      "sentence": "قد سألها قوم من قبلكم ثم أصبحوا بها كافرين",
+      "tashkeel_sentence": "قَدْ سَأَلَهَا قَوْمٌ مِنْ قَبْلِكُمْ ثُمَّ أَصْبَحُوا بِهَا كَافِرِينَ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "69417",
+      "rank": 252,
+      "crossover": false,
+      "sentence": "من وضع هذه الخطة ؟",
+      "tashkeel_sentence": "مِنْ وَضْعِ هَذِهِ الْخُطَّة",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "65137",
+      "rank": 253,
+      "crossover": false,
+      "sentence": "من يحب الورود يتحمل شوكها.",
+      "tashkeel_sentence": "مَنْ يُحِبُّ الْوُرُودَ يَتَحَمَّلُ شَوْكَهَا",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "67315",
+      "rank": 254,
+      "crossover": false,
+      "sentence": "من يقف هناك هو توم.",
+      "tashkeel_sentence": "مَنْ يَقِفْ هُنَاكَ هُوَ تُومٌ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "66103",
+      "rank": 255,
+      "crossover": false,
+      "sentence": "وقد كنت في ذاك الزمان الذي مضى",
+      "tashkeel_sentence": "وَقَدْ كُنْتُ فِي ذَاكَ الزَّمَانِ الَّذِي مَضَى",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "68138",
+      "rank": 256,
+      "crossover": false,
+      "sentence": "رب صفراء عللتني بصفرا",
+      "tashkeel_sentence": "رَبَّ صَفْرَاءَ عَلَّلْتَنِي بِصَفْرَا",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "65769",
+      "rank": 257,
+      "crossover": false,
+      "sentence": "وكان يؤذي ذراعي",
+      "tashkeel_sentence": "وَكَانَ يُؤْذِي ذِرَاعِي",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "65150",
+      "rank": 258,
+      "crossover": false,
+      "sentence": "أخبرتني ذلك بنفسك.",
+      "tashkeel_sentence": "أَخْبَرْتنِي ذَلِكَ بِنَفْسِك",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "64458",
+      "rank": 259,
+      "crossover": false,
+      "sentence": "أهلاً ، هل تعمل هنا ؟",
+      "tashkeel_sentence": "أَهْلًا هَلْ تَعْمَلُ هُنَا",
+      "diacritization_rate": 0.07692307692307693,
+      "flags": [
+        "partially_vowelized"
+      ]
+    },
+    {
+      "id": "73402",
+      "rank": 260,
+      "crossover": false,
+      "sentence": "هل هذا الموز ناضج ؟",
+      "tashkeel_sentence": "هَلْ هَذَا الْمَوْزُ نَاضِجٌ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "71188",
+      "rank": 261,
+      "crossover": false,
+      "sentence": "إن الكؤوس بها يطيب المجلس",
+      "tashkeel_sentence": "إِنَّ الْكُؤُوسَ بِهَا يُطَيِّبُ الْمَجْلِسَ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "72156",
+      "rank": 262,
+      "crossover": false,
+      "sentence": "خذلتني.",
+      "tashkeel_sentence": "خَذَلَتْنِي",
+      "diacritization_rate": 0.0,
+      "flags": [
+        "short"
+      ]
+    },
+    {
+      "id": "68507",
+      "rank": 263,
+      "crossover": false,
+      "sentence": "لماذا أخبرتهم بأنه كان خطئي؟",
+      "tashkeel_sentence": "لِمَاذَا أَخْبَرْتُهُمْ بِأَنَّهُ كَانَ خَطَئِيٌّ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "70238",
+      "rank": 264,
+      "crossover": false,
+      "sentence": "زار والركب حرام",
+      "tashkeel_sentence": "زَارٌ وَالرَّكْبُ حَرَامٌ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "64593",
+      "rank": 265,
+      "crossover": false,
+      "sentence": "كذلك تم تحسين المكونات نفسها لتتفوق على التصميمات السابقة.",
+      "tashkeel_sentence": "كَذَلِكَ تَمَّ تَحْسِينُ الْمُكَوِّنَاتِ نَفْسِهَا لِتَتَفَوَّقَ عَلَى التَّصْمِيمَاتِ السَّابِقَةِ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "72246",
+      "rank": 266,
+      "crossover": false,
+      "sentence": "لديهم لحم.",
+      "tashkeel_sentence": "لَدَيْهِمْ لَحْم",
+      "diacritization_rate": 0.0,
+      "flags": [
+        "short"
+      ]
+    },
+    {
+      "id": "73310",
+      "rank": 267,
+      "crossover": false,
+      "sentence": "لا تنس التذكرة.",
+      "tashkeel_sentence": "لَا تَنْسَ التَّذْكِرَةَ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "73717",
+      "rank": 268,
+      "crossover": false,
+      "sentence": "والذين تدعون من دونه لا يستطيعون نصركم ولا أنفسهم ينصرون",
+      "tashkeel_sentence": "وَالَّذِينَ تَدْعُونَ مِنْ دُونِهِ لَا يَسْتَطِيعُونَ نَصْرَكُمْ وَلَا أَنْفُسَهُمْ يَنْصُرُونَ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "72834",
+      "rank": 269,
+      "crossover": false,
+      "sentence": "لا يسعني إلا أن أؤدي أفضل ما لدي",
+      "tashkeel_sentence": "لَا يَسَعُنِي إِلَّا أَنْ أُؤَدِّيَ أَفْضَلَ مَا لَدَيَّ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "70430",
+      "rank": 270,
+      "crossover": false,
+      "sentence": "مرثية",
+      "tashkeel_sentence": "مَرْثِيَّة",
+      "diacritization_rate": 0.0,
+      "flags": [
+        "short"
+      ]
+    },
+    {
+      "id": "67067",
+      "rank": 271,
+      "crossover": false,
+      "sentence": "اليوم أصعد دون قبرك منبرا",
+      "tashkeel_sentence": "الْيَوْمَ أَصْعَدْ دُونَ قَبْرِك مِنْبَرًا",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "70093",
+      "rank": 272,
+      "crossover": false,
+      "sentence": "ماذا ترون؟",
+      "tashkeel_sentence": "مَاذَا تَرَوْنَ",
+      "diacritization_rate": 0.0,
+      "flags": [
+        "short"
+      ]
+    },
+    {
+      "id": "66108",
+      "rank": 273,
+      "crossover": false,
+      "sentence": "وصفعان يجود بمصفعيه",
+      "tashkeel_sentence": "وَصَفْعَانُ يَجُودُ بِمِصْفَعَيْهِ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "67957",
+      "rank": 274,
+      "crossover": false,
+      "sentence": "خذ راحتك.",
+      "tashkeel_sentence": "خُذْ رَاحَتَك",
+      "diacritization_rate": 0.0,
+      "flags": [
+        "short"
+      ]
+    },
+    {
+      "id": "63581",
+      "rank": 275,
+      "crossover": false,
+      "sentence": "أتى عدة مرات.",
+      "tashkeel_sentence": "أَتَى عِدَّةَ مَرَّاتٍ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "68776",
+      "rank": 276,
+      "crossover": false,
+      "sentence": "عادة الرجال يكونون أطول من النساء.",
+      "tashkeel_sentence": "عَادَةُ الرِّجَالِ يَكُونُونَ أَطْوَلَ مِنْ النِّسَاءِ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "66761",
+      "rank": 277,
+      "crossover": false,
+      "sentence": "لا أريد أن ننفصل.",
+      "tashkeel_sentence": "لَا أُرِيدُ أَنْ نَنْفَصِلَ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "64947",
+      "rank": 278,
+      "crossover": false,
+      "sentence": "أختي تشبه جدتي.",
+      "tashkeel_sentence": "أُخْتِي تُشْبِهُ جَدَّتِي",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "71255",
+      "rank": 279,
+      "crossover": false,
+      "sentence": "قد خلت من قبلكم سنن فسيروا في الأرض فانظروا كيف كان عاقبة المكذبين",
+      "tashkeel_sentence": "قَدْ خَلَتْ مِنْ قَبْلِكُمْ سُنَنٌ فَسِيرُوا فِي الْأَرْضِ فَانْظُرُوا كَيْفَ كَانَ عَاقِبَةُ الْمُكَذِّبِينَ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "72506",
+      "rank": 280,
+      "crossover": false,
+      "sentence": "كان جالسا، يحتسي النبيذ.",
+      "tashkeel_sentence": "كَانَ جَالِسًا يَحْتَسِي النَّبِيذَ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "72005",
+      "rank": 281,
+      "crossover": false,
+      "sentence": "ألا ناشدا ذاك الجناب الممنعا",
+      "tashkeel_sentence": "أَلَا نَاشِدًا ذَاكَ الْجَنَابَ الْمُمَنَّعَا",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "71372",
+      "rank": 282,
+      "crossover": false,
+      "sentence": "أخذتَ مفتاحًا خطأً.",
+      "tashkeel_sentence": "أَخَذْت مِفْتَاحًا خَطَأً",
+      "diacritization_rate": 0.23076923076923078,
+      "flags": [
+        "partially_vowelized"
+      ]
+    },
+    {
+      "id": "66392",
+      "rank": 283,
+      "crossover": false,
+      "sentence": ".أعطني فرصةً أخرى",
+      "tashkeel_sentence": "أَعْطِنِي فُرْصَةً أُخْرَى",
+      "diacritization_rate": 0.07692307692307693,
+      "flags": [
+        "partially_vowelized"
+      ]
+    },
+    {
+      "id": "71770",
+      "rank": 284,
+      "crossover": false,
+      "sentence": ".نزل الولد من على الشجرة",
+      "tashkeel_sentence": "نَزَلَ الْوَلَدُ مِنْ عَلَى الشَّجَرَةِ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "67766",
+      "rank": 285,
+      "crossover": false,
+      "sentence": "أرغمته أن يفتح الباب.",
+      "tashkeel_sentence": "أَرْغَمَتُهُ أَنْ يَفْتَحَ الْبَابَ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "72519",
+      "rank": 286,
+      "crossover": false,
+      "sentence": "قل إنما يوحى إلي أنما إلهكم إله واحد فهل أنتم مسلمون",
+      "tashkeel_sentence": "قُلْ إِنَّمَا يُوحَى إِلَيَّ أَنَّمَا إِلَهُكُمْ إِلَهٌ وَاحِدٌ فَهَلْ أَنْتُمْ مُسْلِمُونَ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "73463",
+      "rank": 287,
+      "crossover": false,
+      "sentence": "هيا لنشرب.",
+      "tashkeel_sentence": "هَيًّا لِنَشْرَبَ",
+      "diacritization_rate": 0.0,
+      "flags": [
+        "short"
+      ]
+    },
+    {
+      "id": "70806",
+      "rank": 288,
+      "crossover": false,
+      "sentence": "ها قد وصل القطار.",
+      "tashkeel_sentence": "هَا قَدْ وَصَلَ الْقِطَارُ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "63731",
+      "rank": 289,
+      "crossover": false,
+      "sentence": "عاشا سويّا في السّعادة و إلى الأبد.",
+      "tashkeel_sentence": "عَاشَاً سَوِيّا فِي السَّعَادَةِ وَ إِلَى الْأَبَدِ",
+      "diacritization_rate": 0.07692307692307693,
+      "flags": [
+        "partially_vowelized"
+      ]
+    },
+    {
+      "id": "70539",
+      "rank": 290,
+      "crossover": false,
+      "sentence": "حي شربا تفردوا بالرحيق",
+      "tashkeel_sentence": "حَيٌّ شُرْبًا تَفَرَّدُوا بِالرَّحَيْقِ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "72123",
+      "rank": 291,
+      "crossover": false,
+      "sentence": "لقد سألت أبا ليلى بما حملت",
+      "tashkeel_sentence": "لَقَدْ سَأَلْتُ أَبَا لَيْلَى بِمَا حَمَلْت",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "65521",
+      "rank": 292,
+      "crossover": false,
+      "sentence": "اشتقت إليك.",
+      "tashkeel_sentence": "اِشْتَقَّتْ إِلَيْك",
+      "diacritization_rate": 0.0,
+      "flags": [
+        "short"
+      ]
+    },
+    {
+      "id": "72664",
+      "rank": 293,
+      "crossover": false,
+      "sentence": "وإذا لآتيناهم من لدنا أجرا عظيما",
+      "tashkeel_sentence": "وَإِذًا لَآتَيْنَاهُمْ مِنْ لَدُنَّا أَجْرًا عَظِيمًا",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "65027",
+      "rank": 294,
+      "crossover": false,
+      "sentence": "تغيّب توم بلا إذن.",
+      "tashkeel_sentence": "تَغَيُّبُ تُوْمٍ بِلَا إذْنِ",
+      "diacritization_rate": 0.07692307692307693,
+      "flags": [
+        "partially_vowelized"
+      ]
+    },
+    {
+      "id": "66317",
+      "rank": 295,
+      "crossover": false,
+      "sentence": "إن الكريم وأنت أعلم أن يعد",
+      "tashkeel_sentence": "إنَّ الْكَرِيمَ وَأَنْتَ أَعْلَمُ أَنْ يَعَدَّ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "71928",
+      "rank": 296,
+      "crossover": false,
+      "sentence": "إنهُ يجلس على المَقعد.",
+      "tashkeel_sentence": "إنَّهُ يَجْلِسُ عَلَى الْمُقْعَدِ",
+      "diacritization_rate": 0.125,
+      "flags": [
+        "partially_vowelized"
+      ]
+    },
+    {
+      "id": "66605",
+      "rank": 297,
+      "crossover": false,
+      "sentence": ".كان من الغباء مني أن أقترف خطأً كهذا",
+      "tashkeel_sentence": "كَانَ مِنْ الْغَبَاءِ مِنِّي أَنْ أَقْتَرِفَ خَطَأً كَهَذَا",
+      "diacritization_rate": 0.03571428571428571,
+      "flags": []
+    },
+    {
+      "id": "73288",
+      "rank": 298,
+      "crossover": false,
+      "sentence": "قل إن الذين يفترون على الله الكذب لا يفلحون",
+      "tashkeel_sentence": "قُلْ إِنَّ الَّذِينَ يَفْتَرُونَ عَلَى اللَّهِ الْكَذِبَ لَا يُفْلِحُونَ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "68150",
+      "rank": 299,
+      "crossover": false,
+      "sentence": "لا يجوز لك خرق القواعد.",
+      "tashkeel_sentence": "لَا يَجُوزُ لَك خَرْقُ الْقَوَاعِدِ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "65187",
+      "rank": 300,
+      "crossover": false,
+      "sentence": "سيقبل الناس فكرتك أسرع إن أخبرتهم أن بنجامين فرانكلن قالها أولا.",
+      "tashkeel_sentence": "سَيَقْبَلُ النَّاسُ فِكَّرْتُكَ أَسْرَعَ إِنْ أَخْبَرْتُهُمْ أَنْ بِنَجَّامِيْنِ فَرَانْكُلْنَ قَالَهَا أَوَّلًا",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "63633",
+      "rank": 301,
+      "crossover": false,
+      "sentence": "كانت ليلى تسرق البنوك.",
+      "tashkeel_sentence": "كَانَتْ لَيْلَى تَسْرِقُ الْبَنُوكَ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "68145",
+      "rank": 302,
+      "crossover": false,
+      "sentence": ".إخترقت الرصاصة جسده",
+      "tashkeel_sentence": "إخْتَرَقَتِ الرَّصَاصَةُ جَسَدَهُ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "69803",
+      "rank": 303,
+      "crossover": false,
+      "sentence": "كانت توم في منزل ماري طوال الظهيرة.",
+      "tashkeel_sentence": "كَانَتْ تُومُ فِي مَنْزِلِ مَارِي طِوَالَ الظَّهِيرَةِ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "65408",
+      "rank": 304,
+      "crossover": false,
+      "sentence": "كاد أن يُغمى عليها.",
+      "tashkeel_sentence": "كَادَ أَنْ يُغْمَى عَلَيْهَا",
+      "diacritization_rate": 0.07142857142857142,
+      "flags": [
+        "partially_vowelized"
+      ]
+    },
+    {
+      "id": "64539",
+      "rank": 305,
+      "crossover": false,
+      "sentence": "قابلتها في الشارع.",
+      "tashkeel_sentence": "قَابَلَتُهَا فِي الشَّارِعِ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "69496",
+      "rank": 306,
+      "crossover": false,
+      "sentence": "بشر المنافقين بأن لهم عذابا أليما",
+      "tashkeel_sentence": "بَشِّرِ الْمُنَافِقِينَ بِأَنَّ لَهُمْ عَذَابًا أَلِيمًا",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "73142",
+      "rank": 307,
+      "crossover": false,
+      "sentence": "الله الذي جعل لكم الأنعام لتركبوا منها ومنها تأكلون",
+      "tashkeel_sentence": "اللَّهُ الَّذِي جَعَلَ لَكُمُ الْأَنْعَامَ لِتَرْكَبُوا مِنْهَا وَمِنْهَا تَأْكُلُونَ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "64648",
+      "rank": 308,
+      "crossover": false,
+      "sentence": "حاولت أن أحذرك.",
+      "tashkeel_sentence": "حَاوَلْتُ أَنْ أُحَذِّركَ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "69833",
+      "rank": 309,
+      "crossover": false,
+      "sentence": "لقد أوقفنا حركة المرور.",
+      "tashkeel_sentence": "لَقَدْ أَوْقَفْنَا حَرَكَةَ الْمُرُورِ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "63736",
+      "rank": 310,
+      "crossover": false,
+      "sentence": "من هذان الولدان ؟",
+      "tashkeel_sentence": "مِنْ هَذَانِ الْوِلْدَانِ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "65387",
+      "rank": 311,
+      "crossover": false,
+      "sentence": "هل احضر معي بدلة السباحة؟",
+      "tashkeel_sentence": "هَلْ اُحْضُرْ مَعِي بَدَلَةُ السِّبَّاحَةِ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "64107",
+      "rank": 312,
+      "crossover": false,
+      "sentence": "قالوا وَهُم فيها يَختَصِمونَ",
+      "tashkeel_sentence": "قَالُوا وَهُمْ فِيهَا يَخْتَصِمُونَ",
+      "diacritization_rate": 0.3157894736842105,
+      "flags": [
+        "partially_vowelized"
+      ]
+    },
+    {
+      "id": "68139",
+      "rank": 313,
+      "crossover": false,
+      "sentence": "انه حقاً صحيح",
+      "tashkeel_sentence": "انْهَ حَقًّا صَحِيحٌ",
+      "diacritization_rate": 0.1,
+      "flags": [
+        "partially_vowelized"
+      ]
+    },
+    {
+      "id": "67840",
+      "rank": 314,
+      "crossover": false,
+      "sentence": "ألغيت المباراة بسبب المطر.",
+      "tashkeel_sentence": "أُلْغِيَتْ الْمُبَارَاةَ بِسَبَبِ الْمَطَرِ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "69717",
+      "rank": 315,
+      "crossover": false,
+      "sentence": "ذكريني يا نجمتي ذكريني",
+      "tashkeel_sentence": "ذِكِّرِينِي يَا نَجْمَتِي ذَكِّرِينِي",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "70140",
+      "rank": 316,
+      "crossover": false,
+      "sentence": "هذا بالضبط ما أردته.",
+      "tashkeel_sentence": "هَذَا بِالضَّبْطِ مَا أَرَدْتُهُ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "70075",
+      "rank": 317,
+      "crossover": false,
+      "sentence": "قد كان عبس باسما",
+      "tashkeel_sentence": "قَدْ كَانَ عَبَسَ بِاسِمًا",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "73955",
+      "rank": 318,
+      "crossover": false,
+      "sentence": "إن كانت إلا صيحة واحدة فإذا هم جميع لدينا محضرون",
+      "tashkeel_sentence": "إِنْ كَانَتْ إِلَّا صَيْحَةً وَاحِدَةً فَإِذَا هُمْ جَمِيعٌ لَدَيْنَا مُحْضَرُونَ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "71641",
+      "rank": 319,
+      "crossover": false,
+      "sentence": "لا تحمل هماً.",
+      "tashkeel_sentence": "لَا تَحْمِل هُمَا",
+      "diacritization_rate": 0.1111111111111111,
+      "flags": [
+        "partially_vowelized"
+      ]
+    },
+    {
+      "id": "71549",
+      "rank": 320,
+      "crossover": false,
+      "sentence": "تلك الإشاعة ليست صحيحة.",
+      "tashkeel_sentence": "تِلْكَ الْإِشَاعَةُ لَيْسَتْ صَحِيحَةً",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "71611",
+      "rank": 321,
+      "crossover": false,
+      "sentence": "أنتَ ربحتها.",
+      "tashkeel_sentence": "أَنْتَ رَبِحْتهَا",
+      "diacritization_rate": 0.1111111111111111,
+      "flags": [
+        "partially_vowelized",
+        "short"
+      ]
+    },
+    {
+      "id": "72935",
+      "rank": 322,
+      "crossover": false,
+      "sentence": "شعبنا الجبار زهو وانطلاق",
+      "tashkeel_sentence": "شَعْبُنَا الْجَبَّارُ زَهْوٌ وَانْطِلَاقٌ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "69515",
+      "rank": 323,
+      "crossover": false,
+      "sentence": "بسم الله الرحمن الرحيم الحاقة",
+      "tashkeel_sentence": "بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ الْحَاقَّةُ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "66776",
+      "rank": 324,
+      "crossover": false,
+      "sentence": "وفى بمواعيد الخليط وأخلفوا",
+      "tashkeel_sentence": "وَفِى بِمَوَاعِيدِ الْخَلِيطِ وَأَخْلِفُوا",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "70595",
+      "rank": 325,
+      "crossover": false,
+      "sentence": "من الأحسن لك أن تصدق.",
+      "tashkeel_sentence": "مِنْ الْأَحْسَنِ لَك أَنْ تُصَدِّقَ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "68809",
+      "rank": 326,
+      "crossover": false,
+      "sentence": "إن لم تمش اليوم فستضطر إلى الرّكض غداً.",
+      "tashkeel_sentence": "إنْ لَمْ تَمْشِ الْيَوْمَ فَسَتُضْطَرُّ إلَى الرَّكْضِ غَدًا",
+      "diacritization_rate": 0.06896551724137931,
+      "flags": [
+        "partially_vowelized"
+      ]
+    },
+    {
+      "id": "68866",
+      "rank": 327,
+      "crossover": false,
+      "sentence": "على قلبك لتكون من المنذرين",
+      "tashkeel_sentence": "عَلَىٰ قَلْبِكَ لِتَكُونَ مِنَ الْمُنْذِرِينَ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "71196",
+      "rank": 328,
+      "crossover": false,
+      "sentence": "وهذي ثماني جارحات عددتها",
+      "tashkeel_sentence": "وَهَذِي ثَمَانِي جَارِحَاتٍ عَدَدْتُهَا",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "65797",
+      "rank": 329,
+      "crossover": false,
+      "sentence": "حمل الفؤاد على الهوى وتحملا",
+      "tashkeel_sentence": "حَمْلَ الْفُؤَادِ عَلَى الْهَوَى وَتَحَمُّلًا",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "73813",
+      "rank": 330,
+      "crossover": false,
+      "sentence": "وقالوا إن هذا إلا سحر مبين",
+      "tashkeel_sentence": "وَقَالُوا إِنْ هَٰذَا إِلَّا سِحْرٌ مُبِينٌ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "72046",
+      "rank": 331,
+      "crossover": false,
+      "sentence": "يا أبا الطيب الذي طاب عيشي",
+      "tashkeel_sentence": "يَا أَبَا الطَّيِّبِ الَّذِي طَابَ عَيْشِيْ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "71935",
+      "rank": 332,
+      "crossover": false,
+      "sentence": "قل ادعوا الذين زعمتم من دونه فلا يملكون كشف الضر عنكم ولا تحويلا",
+      "tashkeel_sentence": "قُلِ ادْعُوا الَّذِينَ زَعَمْتُمْ مِنْ دُونِهِ فَلَا يَمْلِكُونَ كَشْفَ الضُّرِّ عَنْكُمْ وَلَا تَحْوِيلًا",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "73642",
+      "rank": 333,
+      "crossover": false,
+      "sentence": "علينا الذهاب إلى هناك شئنا أم أبينا.",
+      "tashkeel_sentence": "عَلَيْنَا الذَّهَابُ إلَى هُنَاكَ شِئْنَا أَمْ أَبِيْنَا",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "70781",
+      "rank": 334,
+      "crossover": false,
+      "sentence": "سيكون لدينا اختبار اليوم.",
+      "tashkeel_sentence": "سَيَكُونُ لَدَيْنَا اخْتِبَارُ الْيَوْمِ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "73617",
+      "rank": 335,
+      "crossover": false,
+      "sentence": "ألم يأتِ بوب إلى هنا ؟",
+      "tashkeel_sentence": "أَلَمْ يَأْتِ بَوبَ إلَى هُنَا",
+      "diacritization_rate": 0.06666666666666667,
+      "flags": [
+        "partially_vowelized"
+      ]
+    },
+    {
+      "id": "70615",
+      "rank": 336,
+      "crossover": false,
+      "sentence": "هناك كلب ينبح.",
+      "tashkeel_sentence": "هُنَاكَ كَلْبٌ يَنْبَحُ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "64616",
+      "rank": 337,
+      "crossover": false,
+      "sentence": "أخى أحمق.",
+      "tashkeel_sentence": "أَخِى أَحْمَق",
+      "diacritization_rate": 0.0,
+      "flags": [
+        "short"
+      ]
+    },
+    {
+      "id": "73868",
+      "rank": 338,
+      "crossover": false,
+      "sentence": "بل عجبوا أن جاءهم منذر منهم فقال الكافرون هذا شيء عجيب",
+      "tashkeel_sentence": "بَلْ عَجِبُوا أَنْ جَاءَهُمْ مُنْذِرٌ مِنْهُمْ فَقَالَ الْكَافِرُونَ هَٰذَا شَيْءٌ عَجِيبٌ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "73286",
+      "rank": 339,
+      "crossover": false,
+      "sentence": "فهو في عيشة راضية",
+      "tashkeel_sentence": "فَهُوَ فِي عِيشَةٍ رَاضِيَةٍ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "64040",
+      "rank": 340,
+      "crossover": false,
+      "sentence": ".إنها تتناول العشاء",
+      "tashkeel_sentence": "إِنَّهَا تَتَنَاوَلُ الْعِشَاء",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "64999",
+      "rank": 341,
+      "crossover": false,
+      "sentence": "أن اغدوا على حرثكم إن كنتم صارمين",
+      "tashkeel_sentence": "أَنِ اغْدُوا عَلَىٰ حَرْثِكُمْ إِنْ كُنْتُمْ صَارِمِينَ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "69096",
+      "rank": 342,
+      "crossover": false,
+      "sentence": "لا يمكنك العيش من دون أكسجين.",
+      "tashkeel_sentence": "لَا يُمَكِّنُكَ الْعَيْشُ مِنْ دُونِ أُكْسِجِينِ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "63786",
+      "rank": 343,
+      "crossover": false,
+      "sentence": "الحرص عون للزمان على الفتى",
+      "tashkeel_sentence": "الْحِرْصُ عَوْنٌ لِلزَّمَانِ عَلَى الْفَتَى",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "71007",
+      "rank": 344,
+      "crossover": false,
+      "sentence": "سحر عينيك سال في تشبيبي",
+      "tashkeel_sentence": "سِحْرُ عَيْنَيْكَ سَالَ فِي تَشْبِيبِي",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "73297",
+      "rank": 345,
+      "crossover": false,
+      "sentence": "وقالوا لا تذرن آلهتكم ولا تذرن ودا ولا سواعا ولا يغوث ويعوق ونسرا",
+      "tashkeel_sentence": "وَقَالُوا لَا تَذَرُنَّ آلِهَتَكُمْ وَلَا تَذَرُنَّ وَدًّا وَلَا سُوَاعًا وَلَا يَغُوثَ وَيَعُوقَ وَنَسْرًا",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "67161",
+      "rank": 346,
+      "crossover": false,
+      "sentence": "أغلق فاضل الهاتف.",
+      "tashkeel_sentence": "أَغْلَقَ فَاضِلَ الْهَاتِفِ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "65418",
+      "rank": 347,
+      "crossover": false,
+      "sentence": "فإنهم عدو لي إلا رب العالمين",
+      "tashkeel_sentence": "فَإِنَّهُمْ عَدُوٌّ لِي إِلَّا رَبَّ الْعَالَمِينَ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "70787",
+      "rank": 348,
+      "crossover": false,
+      "sentence": "أتعتقد أن هناك أشباح ؟",
+      "tashkeel_sentence": "أَتَعْتَقِدُ أَنَّ هُنَاكَ أَشْبَاحَ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "73236",
+      "rank": 349,
+      "crossover": false,
+      "sentence": "والسماء بنيناها بأيد وإنا لموسعون",
+      "tashkeel_sentence": "وَالسَّمَاءَ بَنَيْنَاهَا بِأَيْدٍ وَإِنَّا لَمُوسِعُونَ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "73919",
+      "rank": 350,
+      "crossover": false,
+      "sentence": "فلما آتاهم من فضله بخلوا به وتولوا وهم معرضون",
+      "tashkeel_sentence": "فَلَمَّا آتَاهُمْ مِنْ فَضْلِهِ بَخِلُوا بِهِ وَتَوَلَّوْا وَهُمْ مُعْرِضُونَ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "71367",
+      "rank": 351,
+      "crossover": false,
+      "sentence": "ونهار أرق صبحا من الراح",
+      "tashkeel_sentence": "وَنَهَارٌ أَرَقَّ صُبْحًا مِنْ الرَّاحِ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "72103",
+      "rank": 352,
+      "crossover": false,
+      "sentence": "آب ليلي ليت ليلي لم يأب",
+      "tashkeel_sentence": "آبَ لَيْلِي لَيْتَ لَيْلِي لَمْ يَأْبَ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "67869",
+      "rank": 353,
+      "crossover": false,
+      "sentence": ".لا يستطيع أحد أن ينكر هذا",
+      "tashkeel_sentence": "لَا يَسْتَطِيعُ أَحَدٌ أَنْ يُنْكِرَ هَذَا",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "68179",
+      "rank": 354,
+      "crossover": false,
+      "sentence": "هذا اجتماع مهم.",
+      "tashkeel_sentence": "هَذَا اجْتِمَاعٌ مُهِمٌّ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "73202",
+      "rank": 355,
+      "crossover": false,
+      "sentence": "وأما بنعمة ربك فحدث",
+      "tashkeel_sentence": "وَأَمَّا بِنِعْمَةِ رَبِّكَ فَحَدِّثْ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "70208",
+      "rank": 356,
+      "crossover": false,
+      "sentence": "ألقت الشرطة القبض على المشتبه به امس.",
+      "tashkeel_sentence": "أَلْقَتْ الشُّرْطَةُ الْقَبْضَ عَلَى الْمُشْتَبَهِ بِهِ امْسِ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "65719",
+      "rank": 357,
+      "crossover": false,
+      "sentence": "لنذهب إلى الشاطئ.",
+      "tashkeel_sentence": "لِنَذْهَبَ إِلَى الشَّاطِئِ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "72571",
+      "rank": 358,
+      "crossover": false,
+      "sentence": "تبارك الذي جعل في السماء بروجا وجعل فيها سراجا وقمرا منيرا",
+      "tashkeel_sentence": "تَبَارَكَ الَّذِي جَعَلَ فِي السَّمَاءِ بُرُوجًا وَجَعَلَ فِيهَا سِرَاجًا وَقَمَرًا مُنِيرًا",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "66666",
+      "rank": 359,
+      "crossover": false,
+      "sentence": "الحياة غير ممكنة بدون ماء.",
+      "tashkeel_sentence": "الْحَيَاةُ غَيْرُ مُمْكِنَةٍ بِدُونِ مَاءٍ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "67134",
+      "rank": 360,
+      "crossover": false,
+      "sentence": "هل كانت قصتها حقيقية ؟",
+      "tashkeel_sentence": "هَلْ كَانَتْ قِصَّتُهَا حَقِيقِيَّةً",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "72915",
+      "rank": 361,
+      "crossover": false,
+      "sentence": "فاصدع بما تؤمر وأعرض عن المشركين",
+      "tashkeel_sentence": "فَاصْدَعْ بِمَا تُؤْمَرُ وَأَعْرِضْ عَنِ الْمُشْرِكِينَ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "68188",
+      "rank": 362,
+      "crossover": false,
+      "sentence": "هل بإمكانك أن ترى الفرق ؟",
+      "tashkeel_sentence": "هَلْ بِإِمْكَانِكَ أَنْ تَرَى الْفَرْقَ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "73948",
+      "rank": 363,
+      "crossover": false,
+      "sentence": "هذا يكفيني.",
+      "tashkeel_sentence": "هَذَا يَكْفِينِي",
+      "diacritization_rate": 0.0,
+      "flags": [
+        "short"
+      ]
+    },
+    {
+      "id": "70043",
+      "rank": 364,
+      "crossover": false,
+      "sentence": "! أنظر إلى الولد و هو يقفز",
+      "tashkeel_sentence": "أَنْظُرُ إِلَى الْوَلَدِ وَ هُوَ يَقْفِزُ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "70961",
+      "rank": 365,
+      "crossover": false,
+      "sentence": "اليوم تخفق دون أرباب الهدى",
+      "tashkeel_sentence": "الْيَوْمَ تَخْفِقُ دُونَ أَرْبَابِ الْهُدَى",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "64237",
+      "rank": 366,
+      "crossover": false,
+      "sentence": "لاح شيبي فرحت أمرح فيه",
+      "tashkeel_sentence": "لَاحَ شَيْبِي فَرُحْتُ أَمْرَحُ فِيهِ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "64738",
+      "rank": 367,
+      "crossover": false,
+      "sentence": "عليك أن تجيب على السؤال.",
+      "tashkeel_sentence": "عَلَيْكَ أَنْ تُجِيبَ عَلَى السُّؤَالِ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "69281",
+      "rank": 368,
+      "crossover": false,
+      "sentence": "من أنت ؟",
+      "tashkeel_sentence": "مَنْ أَنْتَ",
+      "diacritization_rate": 0.0,
+      "flags": [
+        "short"
+      ]
+    },
+    {
+      "id": "66774",
+      "rank": 369,
+      "crossover": false,
+      "sentence": "يا ليالينا بوادي السلط قد",
+      "tashkeel_sentence": "يَا لَيَالِيَنَا بِوَادِي السَّلْطِ قَدْ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "71267",
+      "rank": 370,
+      "crossover": false,
+      "sentence": "فالذين آمنوا وعملوا الصالحات لهم مغفرة ورزق كريم",
+      "tashkeel_sentence": "فَالَّذِينَ آمَنُوا وَعَمِلُوا الصَّالِحَاتِ لَهُمْ مَغْفِرَةٌ وَرِزْقٌ كَرِيمٌ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "73238",
+      "rank": 371,
+      "crossover": false,
+      "sentence": "ويقول الإنسان أإذا ما مت لسوف أخرج حيا",
+      "tashkeel_sentence": "وَيَقُولُ الْإِنْسَانُ أَإِذَا مَا مِتُّ لَسَوْفَ أُخْرَجُ حَيًّا",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "71457",
+      "rank": 372,
+      "crossover": false,
+      "sentence": "أوافقه الرأي.",
+      "tashkeel_sentence": "أُوَافَقَهُ الرَّأْيُ",
+      "diacritization_rate": 0.0,
+      "flags": [
+        "short"
+      ]
+    },
+    {
+      "id": "64693",
+      "rank": 373,
+      "crossover": false,
+      "sentence": "ادخلوا أبواب جهنم خالدين فيها فبئس مثوى المتكبرين",
+      "tashkeel_sentence": "ادْخُلُوا أَبْوَابَ جَهَنَّمَ خَالِدِينَ فِيهَا فَبِئْسَ مَثْوَى الْمُتَكَبِّرِينَ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "66900",
+      "rank": 374,
+      "crossover": false,
+      "sentence": "وَإِذا قيلَ لَهُمُ اركَعوا لا يَركَعونَ",
+      "tashkeel_sentence": "وَإِذَا قِيلَ لَهُمُ ارْكَعُوا لَا يَرْكَعُونَ",
+      "diacritization_rate": 0.4166666666666667,
+      "flags": [
+        "partially_vowelized"
+      ]
+    },
+    {
+      "id": "67571",
+      "rank": 375,
+      "crossover": false,
+      "sentence": "سُرقت سيارتي ليلة أمس.",
+      "tashkeel_sentence": "سَرَقْتُ سَيَّارَتِي لَيْلَةَ أَمْسِ",
+      "diacritization_rate": 0.058823529411764705,
+      "flags": [
+        "partially_vowelized"
+      ]
+    },
+    {
+      "id": "70413",
+      "rank": 376,
+      "crossover": false,
+      "sentence": "لنكن سوية.",
+      "tashkeel_sentence": "لِنْكُنْ سَوِيَّة",
+      "diacritization_rate": 0.0,
+      "flags": [
+        "short"
+      ]
+    },
+    {
+      "id": "71346",
+      "rank": 377,
+      "crossover": false,
+      "sentence": "من لصب تصاعدت حسراته",
+      "tashkeel_sentence": "مِنْ لَصَبٍّ تَصَاعَدَتْ حَسَرَاتُهُ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "64846",
+      "rank": 378,
+      "crossover": false,
+      "sentence": "الصبر صبران: صبر على ما تكره وصبر على ما تحب",
+      "tashkeel_sentence": "الصَّبْرُ صَبْرَانِ صَبْرٌ عَلَى مَا تَكْرَهُ وَصَبْرٌ عَلَى مَا تُحِبُّ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "70860",
+      "rank": 379,
+      "crossover": false,
+      "sentence": "صاحب المذهب الشافعي في الفقه الإسلامي،",
+      "tashkeel_sentence": "صَاحِبُ الْمَذْهَبِ الشَّافِعِيُّ فِي الْفِقْهِ الْإِسْلَامِيِّ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "64376",
+      "rank": 380,
+      "crossover": false,
+      "sentence": "أثبت استوديو Eddie عكس ذلك، حيث أصر Eddie على أن صنع الموسيقى هو أمر خاص لنفسه.",
+      "tashkeel_sentence": "أَثْبَتَ اسْتُودِيُو عَكْسَ ذَلِكَ حَيْثُ أَصَرَّ عَلَى أَنَّ صُنْعَ الْمُوسِيقَى هُوَ أَمْرٌ خَاصٌّ لِنَفْسِهِ",
+      "diacritization_rate": 0.0,
+      "flags": [
+        "latin"
+      ]
+    },
+    {
+      "id": "66369",
+      "rank": 381,
+      "crossover": false,
+      "sentence": "أيهما أسوأ، الشركات أم الحكومات؟",
+      "tashkeel_sentence": "أَيُّهُمَا أَسْوَأُ الشَّرِكَاتِ أَمْ الْحُكُومَاتِ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "73916",
+      "rank": 382,
+      "crossover": false,
+      "sentence": "ومن في الأرض جميعا ثم ينجيه",
+      "tashkeel_sentence": "وَمَنْ فِي الْأَرْضِ جَمِيعًا ثُمَّ يُنْجِيهِ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "66616",
+      "rank": 383,
+      "crossover": false,
+      "sentence": ".أخذ أخته معه",
+      "tashkeel_sentence": "أَخَذَ أُخْتَهُ مَعَهُ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "64590",
+      "rank": 384,
+      "crossover": false,
+      "sentence": "ولبيوتهم أبوابا وسررا عليها يتكئون",
+      "tashkeel_sentence": "وَلِبُيُوتِهِمْ أَبْوَابًا وَسُرُرًا عَلَيْهَا يَتَّكِئُونَ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "68639",
+      "rank": 385,
+      "crossover": false,
+      "sentence": "أطعم قطتي كل صباح وكل مساء.",
+      "tashkeel_sentence": "أَطْعِمْ قِطَّتِي كُلَّ صَبَاحٍ وَكُلَّ مَسَاءَ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "64568",
+      "rank": 386,
+      "crossover": false,
+      "sentence": "تكلم معه دون ان تقول له شيء.",
+      "tashkeel_sentence": "تَكَلَّمَ مَعَهُ دُونَ انْ تَقُولُ لَهُ شَيْءٌ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "63702",
+      "rank": 387,
+      "crossover": false,
+      "sentence": "وقالوا عليك وسيط الأمور",
+      "tashkeel_sentence": "وَقَالُوا عَلَيْكَ وَسِيطُ الْأُمُورِ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "69737",
+      "rank": 388,
+      "crossover": false,
+      "sentence": "أَكان الصبا إِلا خيالا مسلما",
+      "tashkeel_sentence": "أَكَانَ الصِّبَا إِلَّا خَيَالًا مُسْلِمًا",
+      "diacritization_rate": 0.09090909090909091,
+      "flags": [
+        "partially_vowelized"
+      ]
+    },
+    {
+      "id": "65756",
+      "rank": 389,
+      "crossover": false,
+      "sentence": "الكلب يحتضر.",
+      "tashkeel_sentence": "الْكَلْب يَحْتَضِرُ",
+      "diacritization_rate": 0.0,
+      "flags": [
+        "short"
+      ]
+    },
+    {
+      "id": "68543",
+      "rank": 390,
+      "crossover": false,
+      "sentence": "قالوا وأقبلوا عليهم ماذا تفقدون",
+      "tashkeel_sentence": "قَالُوا وَأَقْبَلُوا عَلَيْهِمْ مَاذَا تَفْقِدُونَ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "69459",
+      "rank": 391,
+      "crossover": false,
+      "sentence": "سوف اكون سعيد لمساعدتك",
+      "tashkeel_sentence": "سَوْفَ اكُونْ سَعِيدُ لِمُسَاعَدَتِكَ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "69494",
+      "rank": 392,
+      "crossover": false,
+      "sentence": "عن أبي عبدِ اللهِ النُّعمانِ بنِ بَشيرٍ رَضِي اللهُ عَنْهُما قالَ:",
+      "tashkeel_sentence": "عَنْ أَبِي عَبْدِ اللَّهِ النُّعْمَانِ بْنِ بَشِيرٍ رَضِيَ اللَّهُ عَنْهُمَا قَالَ",
+      "diacritization_rate": 0.35,
+      "flags": [
+        "partially_vowelized"
+      ]
+    },
+    {
+      "id": "68579",
+      "rank": 393,
+      "crossover": false,
+      "sentence": "أولا يذكر الإنسان أنا خلقناه من قبل ولم يك شيئا",
+      "tashkeel_sentence": "أَوَلَا يَذْكُرُ الْإِنْسَانُ أَنَّا خَلَقْنَاهُ مِنْ قَبْلُ وَلَمْ يَكُ شَيْئًا",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "64903",
+      "rank": 394,
+      "crossover": false,
+      "sentence": "يا بدر بادر إلي بالكاس",
+      "tashkeel_sentence": "يَا بَدْرُ بَادِرْ إِلَيَّ بِالْكَاسِ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "69262",
+      "rank": 395,
+      "crossover": false,
+      "sentence": "هل الشاطئ قريب من هذه المنطقة ؟",
+      "tashkeel_sentence": "هَلِ الشَّاطِئُ قَرِيبٌ مِنْ هَذِهِ الْمَنْطِقَةِ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "64444",
+      "rank": 396,
+      "crossover": false,
+      "sentence": "سأسافر خارج البلاد.",
+      "tashkeel_sentence": "سَأُسَافِرُ خَارِجَ الْبِلَادِ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "72452",
+      "rank": 397,
+      "crossover": false,
+      "sentence": "ولكني أحب هذا النوع من الموسيقى",
+      "tashkeel_sentence": "وَلَكِنِّي أُحِبُّ هَذَا النَّوْعَ مِنَ الْمُوسِيقَى",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "69477",
+      "rank": 398,
+      "crossover": false,
+      "sentence": "ولم يكن له كفوا أحد",
+      "tashkeel_sentence": "وَلَمْ يَكُنْ لَهُ كُفُوًا أَحَدٌ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "70607",
+      "rank": 399,
+      "crossover": false,
+      "sentence": "شكراً جزيلاً لك يا دكتور.",
+      "tashkeel_sentence": "شُكْرًا جَزِيلًا لَكَ يَا دُكْتُورُ",
+      "diacritization_rate": 0.1111111111111111,
+      "flags": [
+        "partially_vowelized"
+      ]
+    },
+    {
+      "id": "73971",
+      "rank": 400,
+      "crossover": false,
+      "sentence": ".ها هو مفتاحك",
+      "tashkeel_sentence": "هَا هُوَ مِفْتَاحُك",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "72387",
+      "rank": 401,
+      "crossover": false,
+      "sentence": "قلبي من الطرفِ السقيم سقيم",
+      "tashkeel_sentence": "قَلْبِي مِنَ الطَّرَفِ السَّقِيمِ سَقِيمِ",
+      "diacritization_rate": 0.047619047619047616,
+      "flags": []
+    },
+    {
+      "id": "67049",
+      "rank": 402,
+      "crossover": false,
+      "sentence": "أكبر عدد من الناس لديهم حساسية من الحليب أكثر من أي طعام آخر.",
+      "tashkeel_sentence": "أَكْبَرُ عَدَدٍ مِنْ النَّاسِ لَدَيْهِمْ حَسَّاسِيَةٌ مِنْ الْحَلِيبِ أَكْثَرُ مِنْ أَيِّ طَعَامٍ آخَرَ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "66669",
+      "rank": 403,
+      "crossover": false,
+      "sentence": "غدا، سيكون في بيته.",
+      "tashkeel_sentence": "غَدًا سَيَكُونُ فِي بَيْتِهِ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "72907",
+      "rank": 404,
+      "crossover": false,
+      "sentence": "وإني عذت بربي وربكم أن ترجمون",
+      "tashkeel_sentence": "وَإِنِّي عُذْتُ بِرَبِّي وَرَبِّكُمْ أَنْ تَرْجُمُونِ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "68313",
+      "rank": 405,
+      "crossover": false,
+      "sentence": "يا من سكون النفس في تأميله",
+      "tashkeel_sentence": "يَا مَنْ سُكُونِ النَّفْسِ فِي تَأْمِيلِهِ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "64632",
+      "rank": 406,
+      "crossover": false,
+      "sentence": "يا عجبا للمرتجي فضله",
+      "tashkeel_sentence": "يَا عَجَبًا لِلْمُرْتَجِي فَضْلُهُ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "64322",
+      "rank": 407,
+      "crossover": false,
+      "sentence": "وأنطقت الدراهم بعد صمت",
+      "tashkeel_sentence": "وَأُنْطَقَتْ الدَّرَاهِمُ بَعْدَ صَمْتِ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "66578",
+      "rank": 408,
+      "crossover": false,
+      "sentence": "ألا تتفقون الله رهط مسلم",
+      "tashkeel_sentence": "أَلا تَتَّفِقُونَ اللَّهَ رَهْطٌ مُسْلِمٌ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "72524",
+      "rank": 409,
+      "crossover": false,
+      "sentence": "أحيانًا ، لا أستطيع الثقة به.",
+      "tashkeel_sentence": "أَحْيَانًا لَاَ أَسْتَطِيعُ الثِّقَةَ بِهِ",
+      "diacritization_rate": 0.047619047619047616,
+      "flags": []
+    },
+    {
+      "id": "70903",
+      "rank": 410,
+      "crossover": false,
+      "sentence": "يا بن عدلان يا أخس الرجال",
+      "tashkeel_sentence": "يَا بْنَ عَدْلَانَ يَا أَخَسَّ الرِّجَالِ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "64620",
+      "rank": 411,
+      "crossover": false,
+      "sentence": "أحب براين أن يتذكر الأيام الخوالي",
+      "tashkeel_sentence": "أُحِبُّ برَايِنُ أَنْ يَتَذَكَّرَ الْأَيَّامَ الْخَوَالِيَ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "66783",
+      "rank": 412,
+      "crossover": false,
+      "sentence": "قل لمن يفهم عني ما أقول",
+      "tashkeel_sentence": "قُلْ لِمَنْ يَفْهَمُ عَنِّي مَا أَقُولُ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "71223",
+      "rank": 413,
+      "crossover": false,
+      "sentence": "من دعاه إخوانه فتباطا",
+      "tashkeel_sentence": "مَنْ دَعَاهُ إخْوَانُهُ فَتَبَاطَا",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "65498",
+      "rank": 414,
+      "crossover": false,
+      "sentence": "قالوا صحوت فقلت تأبى لوعة",
+      "tashkeel_sentence": "قَالُوا صَحَوْتَ فَقُلْتُ تَأْبَى لَوْعَةً",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "71826",
+      "rank": 415,
+      "crossover": false,
+      "sentence": "كان شعره أبيضاً.",
+      "tashkeel_sentence": "كَانَ شِعْرُهُ أَبْيَضَا",
+      "diacritization_rate": 0.08333333333333333,
+      "flags": [
+        "partially_vowelized"
+      ]
+    },
+    {
+      "id": "64449",
+      "rank": 416,
+      "crossover": false,
+      "sentence": "وظل من يحموم",
+      "tashkeel_sentence": "وَظِلِّ مَنْ يَحْمُومُ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "67095",
+      "rank": 417,
+      "crossover": false,
+      "sentence": "طاب صفو الزمان والدهر رقا",
+      "tashkeel_sentence": "طَابَ صَفْوُ الزَّمَانِ وَالدَّهْرِ رِقًّا",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "67638",
+      "rank": 418,
+      "crossover": false,
+      "sentence": "لا يحق لك أن تكسر اللوائح المتبعة.",
+      "tashkeel_sentence": "لَا يَحِقُّ لَك أَنْ تَكْسِرَ اللَّوَائِحَ الْمُتَّبَعَةَ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "64337",
+      "rank": 419,
+      "crossover": false,
+      "sentence": "سأخبر جمال غدا.",
+      "tashkeel_sentence": "سَأُخْبِرُ جَمَّالَ غَدًا",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "66978",
+      "rank": 420,
+      "crossover": false,
+      "sentence": "هذه السيارة أكبر من تلك.",
+      "tashkeel_sentence": "هَذِهِ السَّيَّارَةُ أَكْبَرُ مِنْ تِلْكَ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "73443",
+      "rank": 421,
+      "crossover": false,
+      "sentence": "توم مطلق.",
+      "tashkeel_sentence": "تُوم مُطْلَقٌ",
+      "diacritization_rate": 0.0,
+      "flags": [
+        "short"
+      ]
+    },
+    {
+      "id": "70605",
+      "rank": 422,
+      "crossover": false,
+      "sentence": ".أطفئ الضوء. لا يمكنني النوم",
+      "tashkeel_sentence": "أُطْفِئُ الضَّوْءَ لَا يُمْكِنُنِي النَّوْمُ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "70549",
+      "rank": 423,
+      "crossover": false,
+      "sentence": "يهوى البقاء وإن مد البقاء له",
+      "tashkeel_sentence": "يَهْوَى الْبَقَاءَ وَإِنَّ مَدَّ الْبَقَاءِ لَهُ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "70480",
+      "rank": 424,
+      "crossover": false,
+      "sentence": "ياابن فراس أي شيء تنتظر",
+      "tashkeel_sentence": "يَاابْنَ فِرَاسٍ أَيُّ شَيْءٍ تَنْتَظِرُ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "71963",
+      "rank": 425,
+      "crossover": false,
+      "sentence": "ذلل وجودك لا تكن ذا عزة",
+      "tashkeel_sentence": "ذَلَلَ وُجُودَك لَا تَكُنْ ذَا عِزَّةٍ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "69323",
+      "rank": 426,
+      "crossover": false,
+      "sentence": "قال إن سألتك عن شيء بعدها فلا تصاحبني قد بلغت من لدني عذرا",
+      "tashkeel_sentence": "قَالَ إنْ سَأَلْتُكَ عَنْ شَيْءٍ بَعْدَهَا فَلَا تُصَاحِبْنِي قَدْ بَلَغْتُ مِنْ لَدُنِّي عُذْرًا",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "68332",
+      "rank": 427,
+      "crossover": false,
+      "sentence": "كَذلِكَ وَأَورَثناها بَني إِسرائيلَ",
+      "tashkeel_sentence": "كَذَٰلِكَ وَأَوْرَثْنَاهَا بَنِي إِسْرَائِيلَ",
+      "diacritization_rate": 0.391304347826087,
+      "flags": [
+        "partially_vowelized"
+      ]
+    },
+    {
+      "id": "68729",
+      "rank": 428,
+      "crossover": false,
+      "sentence": ".اندلع حريق قرب منزلي",
+      "tashkeel_sentence": "انْدَلَعَ حَرِيقٌ قَرْبَ مَنْزِلِي",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "65068",
+      "rank": 429,
+      "crossover": false,
+      "sentence": "تستخدم شاحنة التزجيج في رصف الطرق عندما يتوقع الصقيع بين عشية وضحاها",
+      "tashkeel_sentence": "تُسْتَخْدَمُ شَاحِنَةُ التَّزْجِيجِ فِي رِصْفِ الطُّرُقِ عِنْدَمَا يُتَوَقَّعُ الصَّقِيعُ بَيْنَ عَشِيَّةٍ وَضُحَاهَا",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "66407",
+      "rank": 430,
+      "crossover": false,
+      "sentence": "لمَ أنت متعبٌ اليوم ؟",
+      "tashkeel_sentence": "لَمْ أَنْتَ مُتْعِبٌ الْيَوْمَ",
+      "diacritization_rate": 0.14285714285714285,
+      "flags": [
+        "partially_vowelized"
+      ]
+    },
+    {
+      "id": "64842",
+      "rank": 431,
+      "crossover": false,
+      "sentence": "إن هتلير الضحايا",
+      "tashkeel_sentence": "إِنَّ هِتْلِيرَ الضَّحَايَا",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "64092",
+      "rank": 432,
+      "crossover": false,
+      "sentence": "يا فاضل. \"نعم، ماذا؟\"",
+      "tashkeel_sentence": "يَا فَاضِلُ نِعَمْ مَاذَا",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "67726",
+      "rank": 433,
+      "crossover": false,
+      "sentence": "ما أقدم هذا الكتاب!",
+      "tashkeel_sentence": "مَا أَقْدَمَ هَذَا الْكِتَابَ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "67290",
+      "rank": 434,
+      "crossover": false,
+      "sentence": "قدمتها حبا لأبناء الوطن تُسعد منهم من إلى الخير سكن",
+      "tashkeel_sentence": "قَدَّمْتُهَا حُبًّا لِأَبْنَاءِ الْوَطَنِ تَسْعَدُ مِنْهُمْ مَنْ إلَى الْخَيْرِ سَكَنٌ",
+      "diacritization_rate": 0.024390243902439025,
+      "flags": []
+    },
+    {
+      "id": "66021",
+      "rank": 435,
+      "crossover": false,
+      "sentence": "لما تعدى حفظه أعيانها",
+      "tashkeel_sentence": "لِمَا تَعَدَّى حِفْظُهُ أَعْيَانَهَا",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "72990",
+      "rank": 436,
+      "crossover": false,
+      "sentence": "و لكن أبي لن يعجبه ذلك.",
+      "tashkeel_sentence": "وَ لَكِنَّ أَبِي لَنْ يُعْجِبَهُ ذَلِكَ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "68475",
+      "rank": 437,
+      "crossover": false,
+      "sentence": "قصائد هجاء",
+      "tashkeel_sentence": "قَصَائِدُ هِجَاءٍ",
+      "diacritization_rate": 0.0,
+      "flags": [
+        "short"
+      ]
+    },
+    {
+      "id": "73345",
+      "rank": 438,
+      "crossover": false,
+      "sentence": "هل أنهيت واجبك بهذه السرعة ؟",
+      "tashkeel_sentence": "هَلْ أَنْهَيْتَ وَاجِبَك بِهَذِهِ السُّرْعَةِ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "65637",
+      "rank": 439,
+      "crossover": false,
+      "sentence": "وقعت نظارتك على الأرض.",
+      "tashkeel_sentence": "وَقَعَتْ نِظَارَتُكَ عَلَى الْأَرْضِ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "64461",
+      "rank": 440,
+      "crossover": false,
+      "sentence": ".ضحك الجميع عليّ",
+      "tashkeel_sentence": "ضَحِكُ الْجَمِيعِ عَلِيَّ",
+      "diacritization_rate": 0.08333333333333333,
+      "flags": [
+        "partially_vowelized"
+      ]
+    },
+    {
+      "id": "73018",
+      "rank": 441,
+      "crossover": false,
+      "sentence": "طلب منا أن نساعده.",
+      "tashkeel_sentence": "طَلَبَ مِنَّا أَنْ نُسَاعِدَهُ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "68771",
+      "rank": 442,
+      "crossover": false,
+      "sentence": "قل نزله روح القدس من ربك بالحق ليثبت الذين آمنوا وهدى وبشرى للمسلمين",
+      "tashkeel_sentence": "قُلْ نَزَّلَهُ رُوحُ الْقُدُسِ مِنْ رَبِّكَ بِالْحَقِّ لِيُثَبِّتَ الَّذِينَ آمَنُوا وَهُدًى وَبُشْرَىٰ لِلْمُسْلِمِينَ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "72104",
+      "rank": 443,
+      "crossover": false,
+      "sentence": "هاك عهدي فلا أخونك عهدا",
+      "tashkeel_sentence": "هَاكَ عَهْدِي فَلَا أَخُونُكَ عَهْدًا",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "72315",
+      "rank": 444,
+      "crossover": false,
+      "sentence": "ينتقي الشعراء أطيب الكلام.",
+      "tashkeel_sentence": "يَنْتَقِي الشُّعَرَاءَ أَطْيَبَ الْكَلَامِ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "73392",
+      "rank": 445,
+      "crossover": false,
+      "sentence": "اجمع أغراضك وغادر.",
+      "tashkeel_sentence": "اجْمَعْ أَغْرَاضَكَ وَغَادِرْ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "67145",
+      "rank": 446,
+      "crossover": false,
+      "sentence": "وتمثل كلماتها خطرات النفوس،",
+      "tashkeel_sentence": "وَتُمَثِّلُ كَلِمَاتِهَا خَطَرَاتِ النُّفُوسِ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "70588",
+      "rank": 447,
+      "crossover": false,
+      "sentence": "سأعطيك أي شيء إلا هذا.",
+      "tashkeel_sentence": "سَأُعْطِيكَ أَيَّ شَيْءٍ إِلَّاَّ هَذَا",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "69603",
+      "rank": 448,
+      "crossover": false,
+      "sentence": "الوقت شيء ثمين، لهذا علينا أن نستغله بأفضل طريقة",
+      "tashkeel_sentence": "الْوَقْتِ شَيْءٌ ثَمِينٌ لِهَذَا عَلَيْنَا أَنْ نَسْتَغِلَّهُ بِأَفْضَلِ طَرِيقَةٍ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "69757",
+      "rank": 449,
+      "crossover": false,
+      "sentence": "إنها تلعب عالم من العلب.",
+      "tashkeel_sentence": "إنَّهَا تَلْعَبُ عَالِمٌ مِنْ الْعَلَبِ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "71864",
+      "rank": 450,
+      "crossover": false,
+      "sentence": ".بالكاد أسمعك",
+      "tashkeel_sentence": "بِالْكَادِ أَسْمَعك",
+      "diacritization_rate": 0.0,
+      "flags": [
+        "short"
+      ]
+    },
+    {
+      "id": "63910",
+      "rank": 451,
+      "crossover": false,
+      "sentence": "آل مراكش لقد غشكم محتسب",
+      "tashkeel_sentence": "آلُ مَرَاكِشَ لَقَدْ غَشَّكُمْ مُحْتَسِبٌ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "72404",
+      "rank": 452,
+      "crossover": false,
+      "sentence": "ماذا قلت لصديقك؟",
+      "tashkeel_sentence": "مَاذَا قُلْتَ لِصَدِيقِكَ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "67029",
+      "rank": 453,
+      "crossover": false,
+      "sentence": "أإلى القاهرة ذهبت أم إلى الاسكندرية ؟",
+      "tashkeel_sentence": "أَإلَى الْقَاهِرَةِ ذَهَبَتْ أَمْ إلَى الِاسْكَنْدَرِيَّة",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "69774",
+      "rank": 454,
+      "crossover": false,
+      "sentence": "يوم يفر المرء من أخيه",
+      "tashkeel_sentence": "يَوْمَ يَفِرُّ الْمَرْءُ مِنْ أَخِيهِ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "72953",
+      "rank": 455,
+      "crossover": false,
+      "sentence": "لم أعلم بأنه كان على توم فعل ذلك بنفسه.",
+      "tashkeel_sentence": "لَمْ أَعْلَمْ بِأَنَّهُ كَانَ عَلَى تَوْمٍ فَعَلَ ذَلِكَ بِنَفْسِهِ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "73610",
+      "rank": 456,
+      "crossover": false,
+      "sentence": "أغلق الباب من فضلك.",
+      "tashkeel_sentence": "أَغْلِقْ الْبَابَ مِنْ فَضْلِك",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "69162",
+      "rank": 457,
+      "crossover": false,
+      "sentence": "أجبروها على الإعتراف.",
+      "tashkeel_sentence": "أَجْبَرُوهَا عَلَى الْإِعْتِرَافِ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "66691",
+      "rank": 458,
+      "crossover": false,
+      "sentence": ".سقطت الكثير من الأشجار",
+      "tashkeel_sentence": "سَقَطَتْ الْكَثِيرَ مِنْ الْأَشْجَارِ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "66115",
+      "rank": 459,
+      "crossover": false,
+      "sentence": "من آل جدعون الكرام مودع",
+      "tashkeel_sentence": "مِنْ آلِ جِدْعُونَ الْكِرَامِ مُوَدَّعُ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "73800",
+      "rank": 460,
+      "crossover": false,
+      "sentence": "اللحم بدأ يتعفن.",
+      "tashkeel_sentence": "اللَّحْمَ بَدَأَ يَتَعَفَّنُ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "68486",
+      "rank": 461,
+      "crossover": false,
+      "sentence": "يا من يقول الشعر غير مهذب",
+      "tashkeel_sentence": "يَا مَنْ يَقُولُ الشِّعْرَ غَيْرُ مُهَذَّبٍ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "67140",
+      "rank": 462,
+      "crossover": false,
+      "sentence": "كفي فأيسر من مرد عناني",
+      "tashkeel_sentence": "كَفِّي فَأَيْسَرَ مِنْ مَرَدٍّ عَنَانِيٍّ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "67219",
+      "rank": 463,
+      "crossover": false,
+      "sentence": "لقد شعرت لأول مرة أن كل شيء قد سينتهي.",
+      "tashkeel_sentence": "لَقَدْ شَعَرْتُ لِأَوَّلِ مَرَّةٍ أَنَّ كُلَّ شَيْءٍ قَدْ سَيَنْتَهِي",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "68015",
+      "rank": 464,
+      "crossover": false,
+      "sentence": "بل تؤثرون الحياة الدنيا",
+      "tashkeel_sentence": "بَلْ تُؤْثِرُونَ الْحَيَاةَ الدُّنْيَا",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "63832",
+      "rank": 465,
+      "crossover": false,
+      "sentence": "أظن أن توم لطيف.",
+      "tashkeel_sentence": "أَظُنُّ أَنْ تُوْمَ لَطِيفٌ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "65330",
+      "rank": 466,
+      "crossover": false,
+      "sentence": ".من المحتمل أن تندلع الحرب",
+      "tashkeel_sentence": "مِنْ الْمُحْتَمَلِ أَنْ تَنْدَلِعَ الْحَرْبُ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "73452",
+      "rank": 467,
+      "crossover": false,
+      "sentence": "هل تريديني حقاً أن أذهب إلى هناك الأن؟",
+      "tashkeel_sentence": "هَلْ تُرِيدِينِي حَقًّا أَنْ أَذْهَبَ إِلَى هُنَاكَ الْأَنْ",
+      "diacritization_rate": 0.034482758620689655,
+      "flags": []
+    },
+    {
+      "id": "66734",
+      "rank": 468,
+      "crossover": false,
+      "sentence": "قالوا لئن لم تنته يا نوح لتكونن من المرجومين",
+      "tashkeel_sentence": "قَالُوا لَئِنْ لَمْ تَنْتَهِ يَا نُوحُ لَتَكُونَنَّ مِنَ الْمَرْجُومِينَ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "68381",
+      "rank": 469,
+      "crossover": false,
+      "sentence": "لكم دينكم ولي دين",
+      "tashkeel_sentence": "لَكُمْ دِينُكُمْ وَلِيَ دِينِ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "70205",
+      "rank": 470,
+      "crossover": false,
+      "sentence": "الآن تذكرت.",
+      "tashkeel_sentence": "الْآنَ تَذَكَّرْتَ",
+      "diacritization_rate": 0.0,
+      "flags": [
+        "short"
+      ]
+    },
+    {
+      "id": "72658",
+      "rank": 471,
+      "crossover": false,
+      "sentence": "لندا تحب الشوكولاتة.",
+      "tashkeel_sentence": "لَنْدَا تُحِبُّ الشُّوْكُولَاتَةِ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "64223",
+      "rank": 472,
+      "crossover": false,
+      "sentence": "من فضلك تعال بأسرع ما يمكن.",
+      "tashkeel_sentence": "مِنْ فَضْلِك تَعَالَ بِأَسْرَعِ مَا يُمْكِنُ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "70890",
+      "rank": 473,
+      "crossover": false,
+      "sentence": "لمن النجوم رقصن فوق خميلة",
+      "tashkeel_sentence": "لِمَنْ النُّجُومُ رَقَصْنٌ فَوْقَ خَمِيلَةٍ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "66414",
+      "rank": 474,
+      "crossover": false,
+      "sentence": "مازال الرسم بعيدا عن الاكتمال.",
+      "tashkeel_sentence": "مَازَالَ الرَّسْمُ بَعِيدًا عَنْ الِاكْتِمَالِ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "73438",
+      "rank": 475,
+      "crossover": false,
+      "sentence": "قل لا يعلم من في السماوات والأرض الغيب إلا الله وما يشعرون أيان يبعثون",
+      "tashkeel_sentence": "قُلْ لَا يَعْلَمُ مَنْ فِي السَّمَاوَاتِ وَالْأَرْضِ الْغَيْبُ إِلاَّ اللَّهُ وَمَا يَشْعُرُونَ أَيَّانَ يُبْعَثُونَ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "68376",
+      "rank": 476,
+      "crossover": false,
+      "sentence": "هذا الكلب أبيض.",
+      "tashkeel_sentence": "هَذَا الْكَلْبُ أَبْيَضُ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "64741",
+      "rank": 477,
+      "crossover": false,
+      "sentence": ".أخي ساعدني في حل واجبي",
+      "tashkeel_sentence": "أَخِي سَاعَدَنِي فِي حِلِّ وَاجِبِي",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "66122",
+      "rank": 478,
+      "crossover": false,
+      "sentence": "وفي غيابات أطباق الخطوب شج",
+      "tashkeel_sentence": "وَفِي غِيَابَاتِ أَطْبَاقِ الْخُطُوبِ شَجَ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "64352",
+      "rank": 479,
+      "crossover": false,
+      "sentence": ".ستبدأ المسرحية في الساعة الثامنة",
+      "tashkeel_sentence": "سَتَبْدَأُ الْمَسْرَحِيَّةُ فِي السَّاعَةِ الثَّامِنَةِ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "69219",
+      "rank": 480,
+      "crossover": false,
+      "sentence": "ماذا يجب أن نقول ؟",
+      "tashkeel_sentence": "مَاذَا يَجِبُ أَنْ نَقُولَ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "67614",
+      "rank": 481,
+      "crossover": false,
+      "sentence": "الذين لا يعرفون التعاسة لن يدركوا قيمة السعادة.",
+      "tashkeel_sentence": "الَّذِينَ لَا يَعْرِفُونَ التِّعَاسَةَ لَنْ يُدْرِكُوا قِيمَةَ السَّعَادَةِ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "73421",
+      "rank": 482,
+      "crossover": false,
+      "sentence": "لهم ما يشاءون فيها ولدينا مزيد",
+      "tashkeel_sentence": "لَهُمْ مَا يَشَاءُونَ فِيهَا وَلَدَيْنَا مَزِيدٌ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "72281",
+      "rank": 483,
+      "crossover": false,
+      "sentence": "بعزيمتي بإرادتي",
+      "tashkeel_sentence": "بِعَزِيمَتِي بِإِرَادَتِي",
+      "diacritization_rate": 0.0,
+      "flags": [
+        "short"
+      ]
+    },
+    {
+      "id": "65912",
+      "rank": 484,
+      "crossover": false,
+      "sentence": "أنت تقف في طريقي.",
+      "tashkeel_sentence": "أَنْتَ تَقِفُ فِيِ طَرِيقِي",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "66494",
+      "rank": 485,
+      "crossover": false,
+      "sentence": "أنتَ إما معنا, أو ضدنا.",
+      "tashkeel_sentence": "أَنْتَ إمَّا مَعَنَا أَوْ ضِدَّنَا",
+      "diacritization_rate": 0.0625,
+      "flags": [
+        "partially_vowelized"
+      ]
+    },
+    {
+      "id": "73740",
+      "rank": 486,
+      "crossover": false,
+      "sentence": "أنا راضية تماما ببيتي الجديد.",
+      "tashkeel_sentence": "أَنَا رَاضِيَةٌ تَمَامًا بِبَيْتِي الْجَدِيدِ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "72518",
+      "rank": 487,
+      "crossover": false,
+      "sentence": "فإنما يسرناه بلسانك لعلهم يتذكرون",
+      "tashkeel_sentence": "فَإِنَّمَا يَسَّرْنَاهُ بِلِسَانِكَ لَعَلَّهُمْ يَتَذَكَّرُونَ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "73543",
+      "rank": 488,
+      "crossover": false,
+      "sentence": "بدأ سامي عامه الجامعي في سبتمبر.",
+      "tashkeel_sentence": "بَدَأَ سَامِي عَامِهِ الْجَامِعِيُّ فِي سِبْتَمْبَرَ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "71433",
+      "rank": 489,
+      "crossover": false,
+      "sentence": "من الأفضل أن تلازم البيت لأنك لديك حمى.",
+      "tashkeel_sentence": "مِنْ الْأَفْضَلِ أَنْ تُلَازِمَ الْبَيْتَ لِأَنَّك لَدَيْك حُمَّى",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "66333",
+      "rank": 490,
+      "crossover": false,
+      "sentence": "بإمكان الناس أن يروه.",
+      "tashkeel_sentence": "بِإِمْكَانِ النَّاسِ أَنْ يَرَوْهُ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "65834",
+      "rank": 491,
+      "crossover": false,
+      "sentence": "سأغادر المدرسة.",
+      "tashkeel_sentence": "سَأُغَادِرُ الْمَدْرَسَةَ",
+      "diacritization_rate": 0.0,
+      "flags": [
+        "short"
+      ]
+    },
+    {
+      "id": "71870",
+      "rank": 492,
+      "crossover": false,
+      "sentence": "عادة ما يعاني كبار السن من مرض الزهايمر",
+      "tashkeel_sentence": "عَادَةُ مَا يُعَانِي كِبَارَ السِّنِّ مِنْ مَرَضِ الزَّهَايْمَرْ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "69067",
+      "rank": 493,
+      "crossover": false,
+      "sentence": "ماذا! هل فعلت ذلك حقًا ؟",
+      "tashkeel_sentence": "مَاذَا هَلْ فَعَلْتَ ذَلِكَ حَقًّا",
+      "diacritization_rate": 0.0625,
+      "flags": [
+        "partially_vowelized"
+      ]
+    },
+    {
+      "id": "63637",
+      "rank": 494,
+      "crossover": false,
+      "sentence": "كل سنة و أنت بخير.",
+      "tashkeel_sentence": "كُلَّ سَنَةٍ وَ أَنْتَ بِخَيْرٍ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "67723",
+      "rank": 495,
+      "crossover": false,
+      "sentence": ".أنت أحمق",
+      "tashkeel_sentence": "أَنْتَ أَحْمَق",
+      "diacritization_rate": 0.0,
+      "flags": [
+        "short"
+      ]
+    },
+    {
+      "id": "70096",
+      "rank": 496,
+      "crossover": false,
+      "sentence": "إن لدينا أنكالا وجحيما",
+      "tashkeel_sentence": "إِنَّ لَدَيْنَا أَنْكَالًا وَجَحِيمًا",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "69949",
+      "rank": 497,
+      "crossover": false,
+      "sentence": "أنا لدي جار ليبرالي.",
+      "tashkeel_sentence": "أَنَا لَدَيَّ جَارٍ لِيَبْرَالِيَ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "69094",
+      "rank": 498,
+      "crossover": false,
+      "sentence": ".تحمي الثلاجة الأكل من التعفن",
+      "tashkeel_sentence": "تَحْمِي الثَّلَاجَةُ الْأَكْلَ مِنْ التَّعَفُّنِ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    },
+    {
+      "id": "66028",
+      "rank": 499,
+      "crossover": false,
+      "sentence": "نطالب بشرا بسقيا المدام",
+      "tashkeel_sentence": "نُطَالِبُ بَشْرًا بِسُقْيَا الْمُدَامِ",
+      "diacritization_rate": 0.0,
+      "flags": []
+    }
+  ]
+}

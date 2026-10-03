@@ -1,0 +1,85 @@
+{
+  "source": "IqraEval/Iqra_train",
+  "split": "dev",
+  "utterances": 2588,
+  "decision": "docs/msa-arm.md 4",
+  "normalization_contract": {
+    "punctuation": 1231,
+    "non_phonemic_mark": 10,
+    "latin": 3,
+    "unsupported_character": 3,
+    "UNFAIR(excluded)": 3,
+    "script_variant": 1
+  },
+  "characters_dropped": {
+    "U+0640": 46,
+    "U+0045": 2,
+    "U+0064": 6,
+    "U+0069": 4,
+    "U+0065": 4,
+    "U+06D6": 4,
+    "U+0054": 1,
+    "U+0072": 2,
+    "U+0061": 3,
+    "U+006E": 1,
+    "U+0073": 3,
+    "U+0052": 1,
+    "U+006F": 1,
+    "U+0050": 1,
+    "U+0044": 1,
+    "U+006D": 1
+  },
+  "tools": {
+    "catt-eo": {
+      "provenance": {
+        "tool": "catt",
+        "variant": "eo",
+        "package": "catt-tashkeel",
+        "version": "1.0.2"
+      },
+      "phoneme_types_used": 66,
+      "out_of_inventory": {},
+      "unsupported_characters": {},
+      "predicted_over_reference": 0.9997734021872652,
+      "utterances_more_than_10pct_short": 2
+    },
+    "catt-ed": {
+      "provenance": {
+        "tool": "catt",
+        "variant": "ed",
+        "package": "catt-tashkeel",
+        "version": "1.0.2"
+      },
+      "phoneme_types_used": 67,
+      "out_of_inventory": {},
+      "unsupported_characters": {},
+      "predicted_over_reference": 0.9955276747486553,
+      "utterances_more_than_10pct_short": 27
+    },
+    "shakkala": {
+      "provenance": {
+        "tool": "shakkala",
+        "package": "shakkala",
+        "version": "1.7",
+        "worker_python": "3.10"
+      },
+      "phoneme_types_used": 66,
+      "out_of_inventory": {},
+      "unsupported_characters": {},
+      "predicted_over_reference": 0.9984138153108564,
+      "utterances_more_than_10pct_short": 36
+    },
+    "mishkal": {
+      "provenance": {
+        "tool": "mishkal",
+        "package": "mishkal",
+        "version": "0.4.1"
+      },
+      "phoneme_types_used": 66,
+      "out_of_inventory": {},
+      "unsupported_characters": {},
+      "predicted_over_reference": 0.9900177700389987,
+      "utterances_more_than_10pct_short": 133
+    }
+  }
+}

@@ -27,6 +27,9 @@ rather than the original assumption.
 | 3b. Zero-base-rate control on `Iqra_TTS` | FR **0.0066**. Bound is 91% of the disagreement, i.e. vacuous. **The proxy strategy is retired**; the listening pilot is the only arbiter (§3.3) |
 | 3c. Case-ending impact on QuranMB | The pausal/prescriptive mismatch is **in the published benchmark**: `C` 72.0% vowel-final vs `P` 32.7%, on both checkpoints; worth 5–10% of its FR. **§3.4.1 decided: option 4** (§3.4.1) |
 | 4. 50-utterance listening pilot | Base rate **2.3%** lenient / **4.7%** counting case (CI spans the 3% boundary, **unresolved**). The dominant finding is elsewhere: the **vowelizer is wrong on 43.6% of usable utterances**, ~10:1 against speaker error. Corpus contamination found: 10% Qur'anic, 20% pre-vowelized, 22% unusable (§3.3a) |
+| 5. Phonetizer round-trip | **PASS at 99.85%** on `Iqra_train` dev (2584/2588, TER 0.000048, **0** out-of-inventory tokens) — the week-4 exit criterion, met on the MSA arm. The Qur'anic arm's is **unscoreable**: its Arabic text was recovered *from* its own phoneme string, so the metric returns the uploader's residual. Consequence for §3.3b D1 |
+| 6. Scope decision | **D1: the arm drops `A`** — label-path only, text-only annotation. **D3: two annotators, qualified against gold** rather than by credential. **D4: 500 utterances, seeded draw from a 2,092/2,588-row pool** (80.8%), three exclusion predicates and five flag-only ones. D2/D5/D6 open (§3.3b) |
+| 6b. Sampling frame | The 8.4% "vowelizer dropped a word" rate was **punctuation**, not loss — the real rate is **3 rows (0.1%)**. The split is **not** duplicate-free: 2,588 rows → 2,542 skeletons, and 33 of 44 duplicate groups are the same verse bare *and* pre-vowelized, which made filter order worth 16 rows (§3.3b D4) |
 
 Two things changed the plan rather than just the numbers. The
 pausal-convention defect (§3.4) had to be resolved before any MSA number
@@ -151,6 +154,31 @@ blind** — both annotators independently, without seeing any machine output
 — to measure inter-annotator agreement *and* the anchoring effect. Report
 both. Agreement on the clinical model (Pearson + ICC(2,1), the Harf-Speech
 template), not bare Cohen's kappa.
+
+**Revised 2026-10-01 by §3.3b.** Three changes, none of which touch the
+correct-the-machine choice itself:
+
+- `C_gold` is now the arm's **sole** annotation output (D1 dropped `A`), so
+  the task is text-only — annotators never open the audio. All of the arm's
+  quality risk is concentrated here, which is what motivates the next point.
+- Suitability is established by **measurement against gold**, not by
+  credential: [annotator-qualification.md](annotator-qualification.md),
+  scored separately on word-internal marks versus case endings, because a
+  combined score is dominated by the easy 78.6% of positions.
+- Agreement remains reported but is **demoted from the primary instrument**.
+  Under correct-the-machine, two annotators who both tend to accept the
+  machine's suggestion agree almost perfectly and are both wrong in the same
+  places — agreement is structurally blind to the exact anchoring failure it
+  was introduced to catch. Accuracy against gold is not. The clinical
+  reporting model (Pearson + ICC(2,1)) is unchanged for the agreement
+  number itself.
+- The anchoring measurement becomes a **crossover**: annotator 1 sees the
+  machine's suggestion while annotator 2 works blank-page on the same
+  utterances, then they swap on a second block. This yields anchoring and
+  agreement from one pass, and it **cannot be reconstructed after the fact**
+  — it is the remaining week-5 blocker here. D4 has since fixed the block it
+  runs on: the first 50 utterances of the drawn 500, in draw order
+  (`run/msa_annotation_block.json`, `crossover: true`).
 
 Week 4 task 5 decides what to anchor on: if the NAACL 2024 audio-informed
 restoration method beats text-only CATT on Common Voice, it is the better
@@ -373,7 +401,259 @@ it here was wrong on both counts:
 Single annotator, one pass, **no inter-annotator agreement**. Plan line 134
 already requires ~50 double-annotated blind utterances; the pilot makes that
 urgent rather than optional, and the 50 are already prepared. Every number
-in this section is provisional on it.
+in this section is provisional on it. **Resolved by §3.3b D3 below** — a
+second annotator is available, qualified by measurement rather than
+credential.
+
+### 3.3b Scope decision: the arm drops `A` **[DECIDED 1 Oct 2026]**
+
+§3.3's four options were left open pending the pilot. The pilot ran (§3.3a)
+and settled two of the six decisions the arm's scope depends on; D4 closed on
+1 Oct 2026 once the sampling frame was measured. The other three are listed at
+the end and remain open.
+
+#### D1 — DECIDED: option 2, label-path only. The arm does not annotate `A`.
+
+The MSA arm measures reference corruption and releases `C_gold`. It does
+**not** attempt mispronunciation detection. No listening pass; annotation is
+text-only.
+
+**Rationale.** Three independent reasons, in descending order of force.
+
+1. **The base rate is unresolvable by annotation, not just unresolved.** The
+   pilot's four definitions span 2.3%–19.8% and the intervals all cross the
+   3% threshold the pre-committed bands hang on (§3.3a). The `case` decision
+   alone moves the answer across it. That is a definitional choice, and
+   n=500 settles definitions no better than n=86.
+2. **The positives would be too few to carry a result.** At the pilot's
+   ~4.8 words/utterance, 500 utterances is ~2,400 words — **~55**
+   mispronounced words at the pre-registered 2.3% rate, ~475 at 19.8%. A
+   precision/recall decomposition resting somewhere in a 9× band whose
+   position is a modelling choice is not a reportable number.
+3. **Listening is the expensive half.** Dropping it turns the task into
+   text editing, which is what makes D4's volume and D3's two-annotator
+   design affordable at all.
+
+**What this costs.** The MSA instance of plan contribution 3 — the
+bias direction/magnitude figure for *real* MSA speech. That is a real loss
+and should be named as such in the limitations, not smoothed over.
+
+**What it preserves.** Contribution 4 (corruption-attributable false
+rejections) needs positions where the speaker was correct and the system
+flagged anyway, which are abundant at a near-zero base rate — the same
+logic as the `Iqra_TTS` zero-base-rate control. Contribution 5 (`C_gold`
+released) is untouched and is now the arm's sole deliverable. RQ1 on the
+deployment corpus is untouched and is strengthened by D5.
+
+**Where contribution 3 relocates — with a correction.** The argument for D1
+is partly that the bias figure can be measured on the Qur'anic arm instead,
+which plan line 265 says needs no annotation. That holds, but only after
+separating two columns that were previously conflated:
+
+| object | status |
+|---|---|
+| `reference_phoneme_string` (`C`) | available via the third-party join, **validated** — week 3 reproduced the published F1 to 4 dp with the organizers' checkpoint |
+| `annotation_phoneme_string` (`A`) | same |
+| `reference_arabic_string` | **circular** — reconstructed by phonemising the Qur'an and matching against `C`; 55% of rows round-trip (see `insights/week-04.md`) |
+
+So detection scoring on the Qur'anic arm is sound and contribution 3 does
+relocate there. But the **label path** on that arm needs diacritized Arabic
+text to strip and re-diacritize, and the only text column we have is the
+circular one. The fix is not more annotation: the Qur'an is public and
+authoritatively vowelized, so the dependency is **clip → verse recovery**
+(consonant-skeleton matching against an authoritative text), already parked
+for week 5/6. **D1 is therefore conditional on that recovery succeeding** —
+if it does not, both arms lose the label path and the paper has a much
+larger problem than the MSA arm's scope.
+
+**Hedge, cheap, recommended.** Annotate `A` on the ~50 reliability
+utterances only (D3's blind block). The base-rate estimate keeps
+accumulating at negligible cost and the main block stays text-only. This
+does not reopen D1; it preserves the option of a limitations-section
+sentence with n=136 instead of n=86.
+
+#### D3 — DECIDED: two annotators, qualified against gold, not by credential.
+
+A second annotator is available but is not a graduate-level Arabic
+specialist. Rather than treat that as disqualifying, both annotators sit a
+**qualification test** on text whose correct diacritization is already
+known, and the measured result decides what each is allowed to annotate.
+Protocol: [docs/annotator-qualification.md](annotator-qualification.md).
+
+This supersedes the test–retest workaround that was the fallback while no
+second annotator existed. Test–retest stays in the design as a secondary
+check, not as the primary one.
+
+**Why a gold test is the stronger instrument, not a substitute for a weaker
+one.** Inter-annotator agreement measures consistency, not correctness, and
+under correct-the-machine it is actively vulnerable: two annotators who
+both tend to accept the machine's suggestion agree almost perfectly and are
+both wrong in the same places. That is the anchoring failure mode plan
+line 134 exists to catch, and agreement cannot see it. Accuracy against
+gold can. Report both; the gold number is the one that licenses the
+release.
+
+**Qualification does not neutralize the credential gap — it localizes it.**
+The task has an easy majority and a hard minority, and the hard minority is
+where a non-specialist native speaker is expected to be weak: word-final
+case endings are grammatically determined (*i'rab*), which is a schooling
+skill rather than a speaking skill. The literature puts the error there
+too — CATT's WikiNews DER roughly doubles when case endings are counted
+(5.43% vs 3.11%).
+
+**[MEASURED 1 Oct 2026] The pausal convention relieves less of this than
+assumed.** §3.4.1 fixes `C_gold` as pausal, and the phonetizer applies that
+mechanically (`phonetizer.py` `normalize`), so errors in the stripped
+positions are harmless by construction. Over all 50,188 diacritic marks in
+`Iqra_train` dev's `tashkeel_sentence`:
+
+| position class | marks | share |
+|---|---|---|
+| word-internal — survives | 36,410 | 72.55% |
+| case ending (word-final, non-final word) — survives | 7,474 | 14.89% |
+| shadda — survives | 3,030 | 6.04% |
+| tanwin — **stripped** | 1,754 | 3.49% |
+| final word's final mark — **stripped** | 1,520 | 3.03% |
+
+**Only 6.52% of positions are stripped; 93.48% are scored, and case endings
+are 15.93% of those.** An earlier guess in conversation that the pausal
+choice removes "a good chunk" of the case-ending difficulty was wrong —
+tanwin is a much smaller share of marks than it is of *utterances* (it
+appears somewhere in 44.7% of them). The case-ending problem is not
+convention-relieved and has to be handled by the qualification test's
+flag-and-adjudicate fallback instead.
+
+Consequence: the test scores the three surviving classes **separately**. A
+single combined score would be dominated by the 72.55% easy class and would
+pass a candidate who is poor at exactly the positions the pilot showed
+dominate the arm's findings.
+
+#### D4 — DECIDED: 500 utterances, seeded draw from a 2,092-row pool, thin filter.
+
+Annotate **500** utterances from `Iqra_train` **dev**, drawn with a fixed seed
+from an explicitly filtered pool. Filter predicates and the draw live in
+`src/arabic_mdd/data/msa_pool.py` (tested); the runner and report are
+`scripts/draw_annotation_block.py`; the result is committed as
+`run/msa_annotation_block.json`. The block is a *function of* (seed, pool), so
+it can be regenerated and audited rather than described.
+
+**The filter is thin by design: three predicates exclude, five only flag.**
+
+| predicate | rows (of 2,588) | action |
+|---|---|---|
+| `pre_vowelized` — `sentence` diacritization rate ≥ 0.50 | 489 (18.9%) | **exclude** |
+| `duplicate` — same consonantal skeleton as a kept row | 46 (1.8%) | **exclude** |
+| `no_arabic` / `no_tashkeel` | 0 / 0 | **exclude** |
+| `partially_vowelized` — rate in [0.05, 0.50) | 252 (12.0% of pool) | keep + flag |
+| `short` — fewer than 3 Arabic words | 195 (9.3%) | keep + flag |
+| `word_count_mismatch` — vowelizer dropped/merged a word | 3 (0.1%) | keep + flag |
+| `latin` / `digits` | 3 / 0 | keep + flag |
+
+**Pool: 2,092/2,588 = 80.8%**, 61,683 phoneme positions, 11,018 words (29.5
+and 5.3 per utterance). The 0.50/0.05 thresholds are §4.1's, reused rather
+than reinvented, so the pool is comparable with the corpus-level figures.
+
+**Why exclusion and flagging are not symmetric.** A `word_count_mismatch`
+means the vowelizer dropped or merged a word — a genuine tool error, which is
+the arm's *subject*. Excluding those rows would delete real errors from D5's
+denominator and bias the headline **down**: the same class of mistake as
+§3.3a's declared deviation, pointing the other way. Flagged rows therefore
+appear as a results breakdown, never as a silent deletion. Only rows that
+cannot answer the question at all are excluded (nothing to diacritize, or
+already diacritized so the measurement would be of someone else's vowelizer).
+
+**[MEASURED 1 Oct 2026] Two figures quoted in conversation were wrong and are
+corrected here.**
+
+1. **Word-count mismatch is 3 rows (0.1%), not 218 (8.4%).** All 218 raw
+   whitespace-token mismatches contain a non-Arabic token: the 8.4% was
+   entirely the vowelizer's punctuation removal, which §4.1 had already
+   documented (99.5% skeleton agreement once depunctuated). Counting only
+   tokens that carry an Arabic letter leaves 3, and all 3 are §4.1's known
+   modes — two catastrophic truncations (6→2 and 9→2 words, leaving a
+   Qur'anic pause mark) and one word *split*, `تعذریننی` → `تَعَذَّرَ نَنْ`,
+   on a token containing Farsi yeh (U+06CC) from §4.1's non-MSA tail. The
+   keep-and-flag decision stands, but the reason is now "it costs 3 rows",
+   not "it would delete 8.4% of the data". Regression-tested, because
+   re-deriving 218 and acting on it is the trap.
+2. **The split is not duplicate-free.** The earlier claim — 2,588 rows,
+   2,588 distinct sentences, "unlike QuranMB's 1,642→96" — was true of the
+   *raw* strings only. On consonantal skeletons there are 2,542 distinct
+   sentences: 44 groups, 46 redundant rows. Small, but the groups are
+   structured, not random — 33 of 44 are the **same verse once bare and once
+   pre-vowelized** (e.g. `إياك نعبد وإياك نستعين` / `إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ`).
+   That made filter *order* load-bearing: deduplicating by lowest id
+   discarded the usable member of 16 of those 33 groups. Eligibility now
+   outranks id order, which recovered exactly those 16 rows (2,076 → 2,092).
+
+**Volume: 500 committed, ~1,592 declared as an extension.** Plan line 134's
+300–500 was costed for a *listening* task; D1 made it text editing and D3
+added a second annotator, so 500 is the conservative end. The block is 14,754
+phoneme positions and 2,638 words — ~105 flagged utterances (21.0%), of which
+59 partially vowelized and 47 short. Whether the remaining ~1,592 eligible
+rows are annotated is decided **after** the qualification test gives real
+per-utterance timings, and is declared now so a later extension is not
+mistaken for a post-hoc enlargement. The seeded draw makes the extension a
+superset of the block rather than a different sample.
+
+**Annotate dev, not fresh Common Voice.** `tashkeel_sentence` exists only in
+`Iqra_train`, and D5's whole measurement is `tashkeel_sentence` vs `C_gold`,
+so fresh Common Voice text would have no `C_auto` to compare against without
+first re-running the organizers' vowelizer, which we do not have. The cost is
+that dev was selected by the organizers and is not a random slice of MSA; it
+is mostly cancelled by the measurement being a delta (§3.3b D2), and is listed
+in §9 as a limitation rather than argued away.
+
+**The crossover sub-block is the first 50 in draw order**, taken from inside
+the 500 rather than drawn separately, so D3's reliability estimate describes
+the block that was actually annotated.
+
+**[1 Oct 2026] The `latin` flag and §4.1.1's `UNFAIR` are not in conflict,
+and the seam is the flag.** §4.1.1 decides that a Latin-script row cannot be
+scored at phoneme level — the vowelizer deleted the Latin words, and the
+phonetizer invents phonemes for them — yet D4 keeps such rows in the pool, and
+one landed in the block (rank 380, id 64376: `أثبت استوديو Eddie عكس ذلك، حيث
+أصر Eddie على ...`, whose `tashkeel_sentence` is missing both occurrences of
+`Eddie`). That is deliberate: the pool is the *sampling frame*, `UNFAIR` is
+the *evaluation denominator*, and the flag is what joins them. Dropping the row
+from the frame would also drop the annotation that demonstrates the vowelizer's
+100% Latin-deletion rate — a real `C_auto` error, which is D5's subject. So it
+is annotated, flagged, excluded from the phoneme-level number, and reported as
+its own line. 1 row of 500; no reseed.
+
+**What the filter deliberately does *not* do.** There is no Qur'anic/classical
+predicate, and the artifact records `quranic_filter_applied: false` so a later
+block cannot be mistaken for this one. Qur'anic pause marks (U+06D6–U+06ED)
+catch only 6 rows (2 still eligible) and the duplicate groups show plainly
+Qur'anic verses carrying none, so the predicate genuinely needs an
+authoritative full Qur'an text — the same artifact D1 is conditional on. It is
+blocked on the same work, not forgotten.
+
+#### Still open
+
+- **D2** — whether `A := C_gold` is stated as an assumption with the
+  2.3%/19.8% band as a sensitivity row, or whether the residual
+  interaction term is bounded explicitly. The measurement is a *delta*
+  (FR under `C_auto` − FR under `C_gold`, same `P`), so real
+  mispronunciations appear in both terms and cancel to first order; this is
+  about how much rigour to spend on the residual.
+- **D5** — whether the 43.6% vowelizer error rate is promoted from a
+  single-annotator listening judgment to an objective `tashkeel_sentence`
+  vs `C_gold` DER/WER over the whole annotated set. Recommended yes; the
+  pilot's figure is retained as the pilot's own, with its 39.5% sensitivity.
+- **D6** — whether `Iqra_TTS`'s augmented rows are reported as a
+  clearly-labelled synthetic detection sub-arm to partially recover what D1
+  gives up (§3.3 option 3; `run/tts_detection.slurm` exists, zero
+  annotation cost). If used, the synthetic fraction goes in
+  abstract-adjacent text, not a footnote.
+
+#### What would reverse D1
+
+- Clip → verse recovery fails on the Qur'anic arm, so contribution 3 has
+  nowhere to relocate to. Then `A` on the MSA arm becomes the only route to
+  a detection number and its weakness has to be accepted.
+- A source of MSA learner speech with a materially higher base rate appears
+  (§3.3 option 4). Out of scope on this timeline, recorded as deliberate.
 
 ### 3.4 Pausal form — the constraint that decides what `C_gold` even means **[MEASURED]**
 
@@ -573,7 +853,15 @@ and explicitly not across them.
 
 ---
 
-## 4. Risk (a): phoneme-inventory mismatch can manufacture the headline **[DOWNGRADED]**
+## 4. Risk (a): phoneme-inventory mismatch can manufacture the headline **[CLOSED 1 Oct 2026 — and it was the wrong risk]**
+
+> **Verdict.** The diacritizer path emits **zero** out-of-inventory phonemes
+> for all four tools over all 2,588 dev utterances, so the extend/map/drop
+> choice never arises. The real mechanism is the *opposite* of the one this
+> section was written against — the phonetiser cannot overflow, it silently
+> **deletes** — and that channel is now instrumented and also clean (zero
+> unhandled characters, length conserved to ≤1%). The decision block is
+> below; the normalization contract it depends on is §4.1.1.
 
 **[MEASURED, full corpus] The organizers' own MSA data stays inside the
 vocab.** Every one of the **2,336,971** `phoneme_ref` tokens across the
@@ -630,6 +918,74 @@ not its rebuttal:
 
 Record the decision with its justification and the affected phoneme counts.
 
+#### DECIDED (1 Oct 2026): none of the three. The choice does not arise — and the risk was pointing the wrong way.
+
+**[MEASURED, all 2,588 dev utterances, all four tools]** The diacritizer path
+(`sentence → normalize → strip → diacritizer → phonetizer`) emits **zero
+out-of-inventory phonemes**, for every tool:
+
+| Tool | Phoneme types | OOV tokens | Chars with no phonetiser rule | Predicted/reference length | Utterances >10% short |
+|---|---|---|---|---|---|
+| `catt-eo` | 66/68 | **none** | none | 83,830 / 83,849 = **0.9998** | 2 (0.08%) |
+| `catt-ed` | 67/68 | **none** | none | 83,474 / 83,849 = **0.9955** | 27 (1.04%) |
+| `shakkala` | 66/68 | **none** | none | 83,716 / 83,849 = **0.9984** | 36 (1.39%) |
+| `mishkal` | 66/68 | **none** | none | 83,012 / 83,849 = **0.9900** | 133 (5.14%) |
+
+Artifact: `run/phoneme_inventory_diff.json`; script
+`scripts/check_phoneme_inventory.py`. 66/68 is not a shortfall — the dev
+`phoneme_ref` **reference** also uses 66/68, missing the same `<<` and `gg`
+that §4's full-corpus count found only at train scale. Three tools match the
+reference's type coverage exactly; `catt-ed` reaches one more (necessarily
+`<<` or `gg`, both inside the inventory).
+
+So **no vocab is extended, nothing is mapped, no positions are dropped**, and
+the risk of the inventory manufacturing the headline is closed, not merely
+downgraded. Risk (a) is **retired as stated**.
+
+**But the inventory diff on its own would have returned a false all-clear,
+because it cannot fail.** The vendored Halabi phonetiser's
+`arabicToBuckwalter` passes an unknown character through unchanged (`else:
+res += letter`); it then matches no phoneme rule, and **nothing is emitted
+for it**. Read from the source and confirmed by probe. The consequence is
+that risk (a) was written backwards: an unhandled character does not
+announce itself as an out-of-vocabulary token, it **silently shortens the
+canonical sequence**, and at evaluation the speaker's audio for it becomes an
+insertion against the reference — the same mechanical false rejection risk
+(a) predicted, arriving through a channel no inventory diff can see. A
+phoneme-level diff is therefore necessary and worthless alone.
+
+**Hence three diffs, not one**, which is what the table above reports:
+
+1. **phoneme-level** — tokens outside the 68. Structurally cannot fire;
+   kept as the regression guard it is.
+2. **character-level** — characters in each tool's *output* that the
+   phonetiser has no rule for (`normalize.unsupported_characters`). This is
+   the diff that could have fired. **It did not: zero, for all four tools.**
+   No diacritizer invents a character the phonetizer then eats.
+3. **conservation** — phoneme count against the reference. A silent drop
+   looks like a short sequence, not a bad token. All four tools land within
+   1% in aggregate; the per-utterance tail is the real signal, and it
+   separates the tools by an order of magnitude (0.08% → 5.14%).
+
+**The conservation column is a result, not a check.** It is the first
+tool-ranking evidence the arm has produced, it is independent of any
+annotation, and it is ordered as expected on architecture: the two neural
+seq2seq tools and Shakkala conserve length to ≤0.2%, while `mishkal`'s rule
+base is 1% short in aggregate and >10% short on 5.14% of utterances. That
+tail is not an inventory problem — it is `mishkal` declining to diacritize,
+which is a *diacritization* error and squarely the paper's subject. Pinned
+here so RQ1's per-tool ordering can be checked against a number that
+predates it. The 0.9998 for `catt-eo` is also the strongest evidence yet that
+the pipeline is wired correctly end to end: an independently diacritized path
+reproducing the organizers' own reference length to 2 parts in 10,000 is not
+something a broken normalization step would permit.
+
+**What is *not* closed.** The audio was never consulted. Conservation
+compares our phonemes to the organizers' reference phonemes, both derived
+from text, so a tool can conserve length perfectly while being wrong about
+every vowel. Phoneme *accuracy* per tool is RQ1 and needs §3.3b D5's
+`C_gold`.
+
 ### 4.1 The normalization contract **[MEASURED — new item]**
 
 The week-4 phonetizer exit criterion is a round-trip on QuranMB's own
@@ -647,8 +1003,15 @@ phonetize(tashkeel_sentence) == phoneme_ref
 ```
 
 is a **73,979-utterance round-trip that covers MSA orthography**, against
-QuranMB's 1,642. This should be folded into the week-4 exit criterion; it
-is the direct answer to the gap this section was written to flag. On the
+QuranMB's 1,642. ~~This should be folded into the week-4 exit criterion~~ —
+**done, and it became the criterion outright** (2026-10-01): QuranMB's
+round-trip turned out to be circular and unscoreable, so this reference is
+the only one there is. **PASS at 99.85%** on the dev split (2584/2588, TER
+0.000048, 0 out-of-inventory tokens); the 71,391-row train split has not
+been run, so 73,979 is the reference that *exists*, not the number
+validated. The direction now untested is the reverse of the one this section
+was written to flag — Qur'anic orthography, where alef wasla U+0671 occurs
+in 0 MSA rows. On the
 train split `tashkeel_sentence` is non-empty in 71,391/71,391 rows (mean
 diacritization rate 0.785, p05 0.660) and `phoneme_ref` is empty in only
 **15**, so the usable reference is 71,376 rows from train plus the dev
@@ -661,6 +1024,14 @@ effectively undiacritized (rate < 0.05) but **32.3% is heavily diacritized**
 pre-vowelized. The MSA arm needs an explicit, pinned stripping step; "the
 transcripts are undiacritized" is not true as stated, and is least true
 exactly where the text is Qur'anic or classical.
+
+> **Partly closed by §3.3b D4** (2026-10-01). For the *annotation* block the
+> resolution is exclusion rather than stripping: rows at ≥ 0.50 are dropped
+> from the sampling frame (489/2,588 on dev), because stripping and
+> re-diacritizing them would measure whoever vowelized them, not our
+> diacritizers. These thresholds are now executable in
+> `arabic_mdd.data.msa_pool`. The pinned stripping step is still needed for
+> the *RQ1 deployment corpus*, which keeps every row.
 
 **The vowelizer's own normalization is punctuation removal.** Consonantal
 skeletons of `sentence` and `tashkeel_sentence` agree in only 49.7% of
@@ -699,16 +1070,103 @@ consequence for us is the reverse of what §4.1 first said: U+0670 is a
 a rarity to be stripped. Handle it in `tashkeel_sentence`, not in
 `sentence`.
 
-**Decide before annotation**, since annotators hit all of this on day one:
-the rule for Latin script and digits (transliterate / spell out / drop the
-utterance), the punctuation rule, and the U+0670 rule.
+#### 4.1.1 The contract, decided and executable **[DECIDED 1 Oct 2026]**
 
-Minor, but worth pinning in the normalization contract: the corpus also
-carries a thin tail of non-MSA Arabic-script characters — Farsi yeh (98
-rows), keheh (36), plus single instances of tcheh, qaf-with-three-dots,
-heh-doachashmee, isolated-form ligatures, and one HAMMER AND SICKLE
-(U+262D). A few hundred rows in total. Normalize the Persian-script
-look-alikes to their Arabic equivalents; the rest can be dropped.
+~~**Decide before annotation**, since annotators hit all of this on day
+one: the rule for Latin script and digits (transliterate / spell out / drop
+the utterance), the punctuation rule, and the U+0670 rule.~~ **Decided.** The
+contract is `arabic_mdd.data.normalize` (14 tests), run identically on the
+reference path and on every diacritizer path — which is what makes `C_auto`
+and `C_gold` comparable at all. It deliberately does **not** strip
+diacritics; that is the separate `strip` step and applies to one path only.
+`base.Diacritizer` still refuses to normalize its own input, so this stays a
+single visible stage rather than four tool-specific ones.
+
+Rates are over the whole `Iqra_train` train split (71,391 rows):
+
+| Input class | Rule | Rows | Row usable? |
+|---|---|---|---|
+| Punctuation | → **space**, not deleted | 35,687 (49.99%) | yes |
+| Non-phonemic marks (tatweel, U+06D6/U+06DA Qur'anic annotation) | dropped | 222 (0.31%) | yes |
+| Persian-script look-alikes (farsi yeh, keheh, heh doachashmee) | mapped to the Arabic letter | 108 (0.15%) | yes |
+| Presentation forms (`ﻻ` → `لا`) | NFKC-folded | 4 (0.01%) | yes |
+| Latin script | characters dropped, row flagged | 21 (0.03%) | **no** |
+| Letters with no MSA phoneme (`چ`, `ڨ`) | dropped, row flagged | 4 (0.01%) | **no** |
+| Digits | spell out — **vacuous rule** | **0** | — |
+| Genuinely unexpected characters | dropped, row flagged | 22 (0.03%) — but 21 are the Latin rows above; the 22nd is one U+262D HAMMER AND SICKLE | yes |
+| U+0670 dagger alef | **kept** here; handled in `phonetizer.normalize` | 2,738 (3.8%) | yes |
+
+**Total exclusion cost: 25 rows (0.035%).** `UNFAIR = {latin, digits,
+no_msa_equivalent}` — the classes where the audio contains speech the
+reference has no phonemes for, so cleaning the text does not fix the row,
+only dropping it does. Everything else is cleaned and kept. After
+normalization, residual characters the phonetiser has no rule for: **none**,
+over all 71,391 rows.
+
+Four of these need their reasoning on the record, because the obvious rule
+is wrong in each case:
+
+1. **Punctuation maps to a space, not to deletion.** Deleting it merges the
+   neighbouring words, and the phonetizer applies vowel-length and glide
+   rules across the join: `فِي الشَّمْسِ` is 6 tokens spaced and 8 merged
+   (`f i y aa ...` — a spurious glide and a lengthened vowel). At 50.0% of
+   rows this is the single highest-traffic rule in the contract.
+2. **Digits: the rule is vacuous and that is worth recording.** Zero rows
+   contain a digit, ASCII or Arabic-Indic, in all 71,391. The flag exists so
+   that a future corpus cannot slip them in silently, but no transliteration
+   policy had to be invented, and the annotation guidelines do not need an
+   entry for it.
+3. **Latin excludes the row rather than merely cleaning it.** Latin letters
+   are *valid Buckwalter symbols*, so `Memorial` is transliterated as though
+   it were Arabic and yields `m r i a l` — five invented phonemes. The
+   vowelizer's own answer was to delete it (21/21 rows, §4.1 above), so
+   `phoneme_ref` is short by exactly those words. Neither side can be right
+   here: cleaning gives a reference with a hole, keeping gives one with
+   fiction.
+4. **Qur'anic annotation marks are dropped on evidence, not by assumption.**
+   82 of them sit in `tashkeel_sentence`, which round-tripped at 99.85% with
+   the phonetizer discarding them, so dropping them is the validated
+   behaviour. Classified by Unicode category (`Mn`) rather than by a
+   hardcoded range, so the whole annotation block is covered. They are
+   reported as `non_phonemic_mark`, not as unexpected characters — an
+   earlier version flagged 136 dev rows as "unsupported" on this account.
+
+**Two false alarms the contract had to be built around.** `PRESENTATION_FORM`
+was first detected as "NFKC changed something", which reported 6% of rows as
+containing presentation forms when the whole corpus holds four such
+characters: NFKC *also* canonically reorders `<shadda><harakah>`, on ~24.5%
+of rows. It is now an explicit codepoint-range test. And the `SUPPORTED` set
+is **derived** from the vendored phonetiser's own Buckwalter map (44
+characters: 36 letters + 8 combining marks) rather than hand-listed, so it
+cannot drift away from what the phonetizer really handles if the vendored
+module is re-pinned.
+
+**Ordering constraint, now written into both modules.** Unicode
+normalization must run *here*, before phonetization, and never after it.
+Canonical order for a shadda'd, voweled consonant is `<harakah><shadda>`
+(combining classes 30 then 33); Halabi's rules want the non-canonical
+`<shadda><harakah>`, which `phonetizer.normalize` produces. An NFC pass
+afterwards would reorder it back and silently degeminate every geminate in
+the corpus. The comment in `phonetizer.py` previously had this backwards and
+called Halabi's order "canonical"; corrected, and pinned by a test that
+phonetizes both spellings of `إِنَّ` and asserts they agree.
+
+**[MEASURED] Alef wasla closes week 4's "asserted, never measured" gap, in
+the direction nobody was watching.** U+0671 is absent from the 44-character
+Buckwalter map, so it is dropped — and with it the phonemes it carries:
+`ٱلْحَمْدُ` loses the leading `< a` that `الْحَمْدُ` produces. It occurs in **0**
+MSA dev rows, which is why the MSA round-trip could not see it, but it is
+ordinary Qur'anic orthography and therefore sits on the *Qur'anic* arm's
+label path — the one D1 is conditional on. Carried to §9 as a live gap, not
+closed.
+
+**What the annotator is told** (feeds D3's guidelines): the normalizer runs
+*before* the text reaches them, so they never see punctuation, tatweel,
+Qur'anic annotation marks or Persian look-alikes. They do see Latin tokens,
+because dropping those silently would present them a mutilated sentence. The
+instruction is to leave Latin tokens untouched rather than transliterate
+them — the row is excluded from phoneme-level scoring anyway, so inventing a
+transliteration would be unpaid work on a row that cannot be scored.
 
 ---
 
@@ -860,9 +1318,9 @@ silently corrupt everything after them if skipped.
 | ✅ | ~~CV-Ar transcript inspection: non-Arabic tokens, digits, normalization rules~~ | §4.1, step 1 |
 | ✅ | ~~Cross-arm word-final convention check~~ | §3.4, step 2 |
 | Wk 4 | Diacritizer wrappers; phonetizer; round-trip on QuranMB **and on `tashkeel_sentence`** | [week-04](weeks/week-04.md) t1–3, §4.1 |
-| Wk 4 | ▲ Pin the normalization contract: punctuation, Latin script, digits, U+0670 | §4.1 |
+| ✅ | ~~▲ Pin the normalization contract: punctuation, Latin script, digits, U+0670~~ — **decided**, executable in `arabic_mdd.data.normalize`; exclusion cost 25/71,391 rows | §4.1.1 |
 | ✅ | ~~Quantify vowelizer content loss on the train split~~ — 0.8% | §4.1 |
-| Wk 4 | ▲ Phoneme-inventory diff against the 68-token vocab; record the decision | §4 |
+| ✅ | ~~▲ Phoneme-inventory diff against the 68-token vocab; record the decision~~ — **zero OOV for all four tools; extend/map/drop never arises.** The diff that mattered was the character-level one (also clean) | §4 |
 | ✅ | ~~▲ Pin mHuBERT-147 to a commit sha~~ — `7ad3fc0bc510`, via a local snapshot; `--upstream_revision` is a no-op here | §5.1 |
 | Wk 4 | Audio-informed vs text-only diacritization on CV-Ar — decides the annotation anchor | §3.2 |
 | ✅ | ~~Base-rate probe on CV-Ar dev (step 3)~~ — 0.0708, inconclusive | §3.3 |
@@ -870,12 +1328,16 @@ silently corrupt everything after them if skipped.
 | **now** | ▲▲ 50-utterance listening pilot from `run/msa_pilot_sample.json` (step 4) — **the only remaining way to settle the base rate.** Originally scheduled Wk 5; pulled forward to *now* because both cheap proxies came back non-binding, and because its outcome decides what the MSA arm can claim (§9). Not a week-4 dependency, but the longest pole in the project — start it in parallel with week 4's text work. | §3.3 |
 | **now** | MSA detection metric on real positives — `run/tts_detection.slurm` (option 3, existing data) | §3.3 |
 | ✅ | ~~▲ Resolve the cross-arm case-ending convention~~ — **option 4 decided**; MSA `C_gold` stays pausal | §3.4.1 |
-| Wk 5 | ▲ Select the MSA evaluation pool: CV-Ar rows disjoint from Iqra_train, deduped **by sentence** | §5.2 |
+| Wk 5 | ▲ Select the MSA evaluation pool: CV-Ar rows disjoint from Iqra_train, deduped **by consonantal skeleton, not raw string** — raw-string dedup reports `Iqra_train` dev as duplicate-free and misses 46 rows (§3.3b D4) | §5.2 |
+| ✅ | ~~▲ Fix the annotation sampling frame and draw the block~~ — **D4 decided**: 500 from a 2,092-row pool, seed 20261001, in `run/msa_annotation_block.json` | §3.3b D4 |
 | Wk 5 | ▲ Pre-register the annotation protocol in writing — pausal-form convention included | §3.2, §3.4 |
 | ~~Wk 5~~ | ~~▲ 50-utterance pilot: measure the real mispronunciation base rate~~ — **duplicate of the "now" row above**, kept struck rather than deleted so the schedule change is visible: this moved from Wk 5 to now. | §3.3 |
-| Wk 5 | Decide the §3.3 option in light of the pilot; RQ1 measurements on both domains | §3.3 |
-| Wk 5–8 | Annotation proper: 300–500 utts, ~50 double-annotated blind | §3.2 |
-| Wk 6 | Label-path column on the Qur'anic arm (block gate); RQ5 interaction power estimate | plan §6 |
+| ✅ | ~~Decide the §3.3 option in light of the pilot~~ — **D1 decided: option 2, label-path only, `A` dropped** | §3.3b |
+| Wk 5 | RQ1 measurements on both domains | §3.3 |
+| **now** | ▲ Qualification test for both annotators — blocks the annotation block, and the WikiNews gold set's availability/licence is unconfirmed | [annotator-qualification.md](annotator-qualification.md) |
+| **now** | ▲▲ **Clip → verse recovery feasibility probe** on the Qur'anic arm. Promoted from chore to **precondition** by D1: the label path needs trustworthy diacritized text and the only text column we have is circular. Cheap to probe — 1,642 rows collapse to 96 distinct sentences. If it fails, *both* arms lose the label path | §3.3b D1 |
+| Wk 5–8 | Annotation proper: the drawn **500** (D4 fixed the block; plan line 134's 300–500 was costed for a listening task and is conservative now that it is text-only with two annotators), crossover on the first 50 in draw order. ~1,592 further eligible rows declared as an extension, decided on qualification-test timings | §3.2, §3.3b D4 |
+| Wk 6 | Label-path column on the Qur'anic arm (block gate) — **now gated on the clip → verse recovery above**; RQ5 interaction power estimate | plan §6 |
 | Wk 7–9 | MSA-arm label path; text-dependent arm; XLS-R prompt-free | plan §6 |
 | Wk 10–12 | Full 2×2; RQ3 weights; RQ4 abstention; feedback-validity number | plan §6 |
 
@@ -898,10 +1360,24 @@ So that a bad outcome is a finding rather than a scramble.
   Budget for it accordingly — it is on the critical path, not optional.
   If it does fire, `Iqra_TTS`'s augmented rows keep option 3 open on data
   that already exists.
-- **The phoneme inventories are incompatible and no mapping is defensible.**
-  Then the two arms cannot share a model and the cross-arm comparison is
-  cut. RQ2 survives within-arm; the natural-experiment framing weakens to a
-  discussion point.
+- ~~**The phoneme inventories are incompatible and no mapping is
+  defensible.** Then the two arms cannot share a model and the cross-arm
+  comparison is cut. RQ2 survives within-arm; the natural-experiment framing
+  weakens to a discussion point.~~ **[DID NOT FIRE — 1 Oct 2026]** All four
+  diacritizers stay inside the 68 tokens on all 2,588 dev utterances, and
+  emit no character the phonetiser silently eats (§4). The arms can share a
+  model.
+- **[LIVE, replaces the above] A character the phonetiser cannot transliterate
+  reaches the *Qur'anic* arm's label path.** The failure mode is deletion,
+  not overflow, so it is invisible to an inventory diff (§4). One instance is
+  already known: **alef wasla U+0671** is absent from the vendored Buckwalter
+  map, so `ٱلْحَمْدُ` silently loses the `< a` that `الْحَمْدُ` produces. It occurs
+  in **0** MSA dev rows — which is why the 99.85% MSA round-trip says nothing
+  about it — and is ordinary Qur'anic orthography. If the Qur'anic text
+  recovered by the clip → verse probe carries it, every affected position is
+  a mechanical false rejection on the arm that supplies the headline number.
+  The instrument exists (`normalize.unsupported_characters`); run it on that
+  text the day it exists, before any label-path number.
 - **Inter-annotator agreement is poor on diacritization.** Then `C_gold`
   itself is noisy and the "gold" label is not earned. Report the agreement
   figure regardless and treat `C_gold` as a high-quality reference rather

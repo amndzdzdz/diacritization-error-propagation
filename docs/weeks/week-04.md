@@ -41,38 +41,98 @@ Provisional split of the block, to keep this week bounded:
 
 ## Week 4 exit criterion
 
-**The phonetizer round-trips QuranMB.v2.** The dataset ships both
-`reference_arabic_string` (gold-diacritized Arabic) and
-`reference_phoneme_string` (the canonical phoneme sequence the baseline was
-scored against). So the phonetizer has an exact, free, 1,642-utterance
-reference:
+> **REWRITTEN 2026-10-01, after the criterion was run.** The original
+> criterion below named QuranMB.v2 as the primary reference. That reference
+> turned out to be **circular and unscoreable**, so the criterion now rests
+> on the MSA arm alone. The original wording is kept struck-through rather
+> than deleted, because the reason it failed is a week-4 finding in its own
+> right. Result: **PASS, 99.85% on `Iqra_train` dev.** Full write-up:
+> `insights/week-04.md` § "Phonetizer round-trip".
 
-```
-phonetize(reference_arabic_string) == reference_phoneme_string
-```
+### The criterion, as it now stands
 
-Target ≥99% exact sequence match, with every mismatch inspected and
-explained rather than tolerated. This is the cheapest possible validation of
-the single riskiest new component.
-
-**Second reference, added 2026-09-23 — and it covers MSA orthography.**
-This criterion originally noted that the round-trip "exists only on the
-Qur'anic arm". That turned out to be wrong. `IqraEval/Iqra_train` ships a
-`tashkeel_sentence` column (the organizers' in-house vowelizer's output,
-fully diacritized in every row) alongside `phoneme_ref`, so
+**The phonetizer round-trips `Iqra_train`.** `tashkeel_sentence` is the
+organizers' vowelizer's output and is the string `phoneme_ref` was derived
+from, so
 
 ```
 phonetize(tashkeel_sentence) == phoneme_ref
 ```
 
-is a second round-trip over **73,979 utterances** — 45× larger, and
-crucially it exercises the digits, Latin script, punctuation and loanwords
-that Qur'anic text never contains. See `insights/week-04.md` and
-[docs/msa-arm.md](../msa-arm.md) §4.1.
+Target ≥99% exact sequence match, every mismatch inspected and explained
+rather than tolerated, and zero phonemes emitted outside the 68-token
+`sws_arabic.txt` inventory.
 
-Hold both to ≥99%, and report them separately: a phonetizer that passes on
+**Met: 2584/2588 = 99.85% on the dev split, TER 0.000048, 0 out-of-inventory
+tokens.** All four failures are one orthographic case (a shadda written on
+the alef of `إِلاَّ`), where the reference itself is malformed; neither side
+is correct and there is nothing to fix. The train split (71,391 rows) has
+**not** been run — the 73,979-utterance figure below is the reference that
+*exists*, not the number validated.
+
+### ~~The criterion as originally written~~ — void
+
+> ~~**The phonetizer round-trips QuranMB.v2.** The dataset ships both
+> `reference_arabic_string` (gold-diacritized Arabic) and
+> `reference_phoneme_string` (the canonical phoneme sequence the baseline was
+> scored against). So the phonetizer has an exact, free, 1,642-utterance
+> reference:~~ `phonetize(reference_arabic_string) == reference_phoneme_string`
+
+`reference_arabic_string` is **not** gold-diacritized Arabic shipped with
+the benchmark. The third-party uploader did not have the text; he
+reconstructed it by phonemising the Qur'an and matching the result against
+`reference_phoneme_string`, and shipped the residual as `match_distance`
+(with `match_type` ∈ {exact, fuzzy}). The text is therefore a function of
+the phonemes, and our independently computed edit distances reproduce
+`match_distance` row for row — mean 2.47, max 10 on fuzzy rows, 0 on exact
+ones.
+
+Consequence: the round-trip score on that arm is **definitionally** the
+fraction of rows with `match_distance == 0`. We measured 904/1642 = 55.05%,
+and "100% on the exact subset" means only "rows already selected for
+round-tripping do round trip." The metric returns the uploader's recovery
+residual no matter what the phonetizer does. It can neither pass nor fail
+anything.
+
+Two further things it hides: the 1,642 rows collapse to **96 distinct
+sentences**, so any per-row percentage over that corpus is a weighted
+average over repeats; and the dagger-alef normalization rule was originally
+tuned on this circular metric (55.05% → 49.39%), a justification now void
+and re-grounded non-circularly at 177/177 on MSA dev rows containing U+0670.
+
+This does **not** affect the Qur'anic arm's *phoneme* columns.
+`reference_phoneme_string` and `annotation_phoneme_string` are validated —
+week 3 reproduced the published F1 to four decimal places with the
+organizers' own checkpoint. Only the Arabic **text** column is circular.
+The consequence lands on the label path, not on detection scoring, and the
+fix is clip → verse recovery against an authoritative Qur'an text
+(`docs/msa-arm.md` §3.3b D1, where it is now a precondition rather than a
+chore).
+
+### How the MSA reference was found — kept, because it became the criterion
+
+**Added 2026-09-23.** This criterion originally noted that the round-trip
+"exists only on the Qur'anic arm". That turned out to be wrong, and the
+correction is what saved the criterion when the Qur'anic arm collapsed.
+`IqraEval/Iqra_train` ships a `tashkeel_sentence` column (the organizers'
+in-house vowelizer's output, fully diacritized in every row) alongside
+`phoneme_ref`, giving a reference over **73,979 utterances** — 45× larger
+than QuranMB, and crucially it exercises the digits, Latin script,
+punctuation and loanwords that Qur'anic text never contains. See
+`insights/week-04.md` and [docs/msa-arm.md](../msa-arm.md) §4.1.
+
+~~Hold both to ≥99%, and report them separately: a phonetizer that passes on
 Qur'anic text and fails on MSA is precisely the failure this week exists to
-catch, and averaging the two would hide it. Expect the MSA side to need the
+catch, and averaging the two would hide it.~~ Only one is holdable, so the
+separate-reporting instruction is moot — but its *motivation* survives and
+now points the other way. Validation rests entirely on an MSA corpus, so
+the untested direction is Qur'anic orthography. Measured incidentally on
+MSA dev: dagger alef U+0670 177/177, alef madda 152/153, tanwin 1155/1158,
+shadda 1687/1691 — but **alef wasla U+0671 occurs in 0 rows** and its
+handling is asserted, never measured. That gap cannot be closed from the
+MSA side and the Qur'anic reference is circular, so it stays open.
+
+Expect the MSA side to need the
 normalization contract (§4.1) settled first — the vowelizer strips
 punctuation, drops Latin script, and **inserts** U+0670 (dagger alef) of its
 own accord in 3.8% of rows while stripping every one it is given, and the
@@ -129,9 +189,29 @@ finding rather than a week-6 surprise.
    the one long sentence tested ED was visibly worse than EO, against CATT's
    own claim, and three sentences cannot settle it. Full write-up:
    `insights/week-04.md`.
-3. **Phonetizer**, `src/arabic_mdd/data/phonemes.py` or a sibling: diacritized
+3. ~~**Phonetizer**, `src/arabic_mdd/data/phonemes.py` or a sibling: diacritized
    Arabic → phoneme sequence in the 68-token `sws_arabic.txt` inventory.
-   Validate by the round-trip above.
+   Validate by the round-trip above.~~ **DONE** 2026-10-01 —
+   `src/arabic_mdd/data/phonetizer.py`, wrapping the Halabi phonetiser
+   vendored verbatim at `_halabi_phonetiser.py` (commit `e75e06b`,
+   CC BY-NC 4.0, asserted by test). 30 offline tests. Validated at
+   **99.85%** on `Iqra_train` dev; the exit criterion was rewritten above
+   because the QuranMB reference it originally named is circular.
+
+   Four things worth carrying forward. **Every normalization rule is
+   justified by measurement, and two plausible ones were refuted** — mapping
+   the dagger alef to a full alef, and deleting the alef that carries
+   tanwin-fath (costs ~500 `aa` tokens, since that alef is a real long vowel
+   in `phoneme_ref`). **The convention switch is mechanical**, so annotators
+   never need to learn the pausal rules; `normalize` strips tanwin and the
+   utterance-final mark, which makes 6.52% of diacritic positions harmless
+   by construction (`docs/msa-arm.md` §3.3b D3 for the per-class table).
+   **Zero out-of-inventory tokens on the reference path** — risk (a) does
+   not arise here, but task 4's diacritizer path is a different input
+   distribution and is still unchecked. **Faulty vowelizer diacritics do not
+   contaminate the result**: both sides of the round-trip receive the same
+   string, so a wrong diacritic cannot create or hide disagreement between
+   two functions of it. Full write-up: `insights/week-04.md`.
 4. **Phoneme-inventory diff — the risk (a) mitigation.** Run the phonetizer
    over Common Voice Arabic transcripts diacritized by each tool, and diff
    the resulting phoneme inventory against the 68-token vocab. Any phoneme
@@ -148,6 +228,44 @@ finding rather than a week-6 surprise.
    the task-3 round-trip says nothing about them. Inspect the Common Voice
    transcripts and fix the normalization rules now — annotators hit them on
    day one.
+
+   **DONE** (1 Oct 2026). `scripts/check_phoneme_inventory.py`,
+   `src/arabic_mdd/data/normalize.py` (14 tests), artifact
+   `run/phoneme_inventory_diff.json`; decision in `docs/msa-arm.md` §4 and the
+   contract in §4.1.1.
+
+   **The diff was unfalsifiable as specified, and that is the finding.** The
+   vendored phonetiser passes an unknown character straight through its
+   Buckwalter stage, where it matches no phoneme rule, so **nothing is emitted
+   for it**. It therefore cannot produce an out-of-inventory token — the
+   failure mode is silent *deletion*, not overflow. Running only the specified
+   diff would have returned a confident all-clear for a structural reason.
+   Two further instruments were added: a character-level diff over each tool's
+   output, and phoneme-count conservation against `phoneme_ref`.
+
+   All three are clean, for all four tools over all 2,588 dev utterances: 0
+   out-of-inventory tokens, 0 characters with no phonetiser rule, and length
+   conserved to ≤1% (`catt-eo` 0.9998, `catt-ed` 0.9955, `shakkala` 0.9984,
+   `mishkal` 0.9900). So **none** of extend/map/drop is needed; risk (a) is
+   retired rather than mitigated. 66/68 phoneme types is not a shortfall —
+   the dev reference itself uses 66/68, missing the same `<<` and `gg`.
+
+   Carry forward, three things:
+   - **The per-utterance conservation tail is a result, not a check**:
+     utterances >10% short run 0.08% / 1.04% / 1.39% / **5.14%**, an
+     order-of-magnitude spread that ranks the tools before any annotation
+     exists. `mishkal`'s tail is it declining to diacritize — a
+     diacritization error, which is the paper's subject. Check RQ1's ordering
+     against this.
+   - **Alef wasla U+0671 is the live version of risk (a)**, now on the
+     *Qur'anic* arm. It is absent from the 44-character Buckwalter map, so it
+     is dropped along with the phonemes it carries (`ٱلْحَمْدُ` loses `< a`), and
+     it appears in 0 MSA dev rows, so week 4's round-trip could not see it.
+     Moved into `docs/msa-arm.md` §9 as a live falsifier, gated on the clip →
+     verse recovery probe.
+   - **The digit rule is vacuous**: 0 rows out of 71,391 contain a digit,
+     ASCII or Arabic-Indic. No transliteration policy was needed and the
+     annotation guidelines do not need an entry.
 5. **NAACL 2024 audio-informed diacritic restoration, one hour.** Plan §Data:
    if audio-informed restoration beats text-only CATT on Common Voice, it is
    the better correct-the-machine baseline *and* the anchoring bias points
@@ -219,18 +337,42 @@ Ordered by what blocks the 300–500 annotation block. See msa-arm.md §3.3a.
    as-is via `--output`; report on the clinical model (plan line 138), not
    bare kappa.
 
+   **[RESOLVED 2026-10-01 — `docs/msa-arm.md` §3.3b D3.]** A second
+   annotator is available but is not a graduate-level Arabic specialist.
+   Rather than accept or reject on credential, both annotators sit a
+   qualification test against known-gold diacritization
+   ([docs/annotator-qualification.md](../annotator-qualification.md)) and
+   the measured per-bucket result decides what each may annotate
+   unsupervised. Note the reason this is the *stronger* instrument, not a
+   consolation prize: under correct-the-machine, two annotators who both
+   tend to accept the machine's suggestion agree almost perfectly and are
+   both wrong in the same places, so agreement is structurally blind to the
+   anchoring failure it was meant to catch. Accuracy against gold is not.
+
 3. **Settle whether dropped mid-sentence case endings count as `A ≠ C`.**
-   This single definition moves the base rate 2.3% → 4.7%, across the 3%
-   threshold the pre-committed bands hang on. It is a modelling decision,
-   not a measurement — more annotation cannot resolve it. It interacts
-   directly with §3.4.1 option 4 and should be decided in the same place and
-   reported both ways.
+   ~~This single definition moves the base rate 2.3% → 4.7%, across the 3%
+   threshold the pre-committed bands hang on.~~ **MOOT as a blocker,
+   2026-10-01 — §3.3b D1 dropped `A` from the arm**, so there is no `A ≠ C`
+   judgment left to define. The underlying finding survives and is the
+   reason for the decision: the MSA "mispronunciation" rate is dominated by
+   case-ending convention rather than by mispronunciation, which makes the
+   quantity definitional rather than measurable. Retained as a limitations
+   paragraph and as support for §3.4.1 option 4.
 
 4. **Budget for a 44% correction rate.** Correct-the-machine annotation
    (plan line 134) assumed the machine is mostly right. On MSA it is wrong
-   on 43.6% of utterances, so nearly half of the 300–500 block needs real
-   editing. This is a schedule fact, and it also sharpens the anchoring risk
-   that the double-annotation in item 2 exists to measure.
+   on 43.6% of utterances, so nearly half of the block needs real editing.
+   This is a schedule fact, and it also sharpens the anchoring risk that
+   item 2's design exists to measure.
+
+   **Revised 2026-10-01.** Two changes pull in opposite directions and
+   roughly cancel, so the budget stands. Against it: §3.3b D1 removed the
+   listening pass, so the task is text-only and much faster per utterance,
+   and there are now two annotators. For it: the 43.6% is the *per-utterance*
+   rate, so the correction load is real, and D4's pre-annotation filter
+   shrinks the usable pool rather than the per-item cost. Plan line 134's
+   300–500 is now **conservative**, but set the target in D4 from the
+   qualification test's recorded timings rather than by guessing.
 
 ### Older
 

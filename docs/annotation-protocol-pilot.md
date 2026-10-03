@@ -5,8 +5,16 @@ after listening would let the base rate be chosen rather than measured, and
 this number decides what the MSA arm can claim (`docs/msa-arm.md` §9).
 
 Scope: the 50-utterance listening pilot only. The full annotation protocol
-(weeks 5–8, 300–500 utterances, ~50 double-annotated) inherits these rules
-and adds inter-annotator agreement; it is a separate document.
+(weeks 5–8) inherits these rules; it is a separate document.
+
+**Note added 2026-10-01.** The main block is no longer a listening task.
+`docs/msa-arm.md` §3.3b D1 dropped `A` from the MSA arm, so the main block
+annotates `C_gold` (diacritization) from text only, and the rules below that
+concern audio judgments do not carry over. Annotator quality is established
+by [docs/annotator-qualification.md](annotator-qualification.md) — a
+qualification test against known-gold diacritization — rather than by
+inter-annotator agreement alone (§3.3b D3 for why gold accuracy is the
+stronger instrument under correct-the-machine).
 
 ---
 
@@ -404,6 +412,23 @@ Two things §8 did not anticipate:
 **Not fixed:** single annotator, no inter-annotator agreement. Plan line 134
 requires ~50 double-annotated blind; until that exists every number above is
 provisional, including the 43.6%.
+
+> **Status 2026-10-01.** A second annotator is now available and
+> `docs/msa-arm.md` §3.3b D3 fixes the design, so this is on a path to
+> resolution — but it is **not yet resolved** and every number above is
+> still provisional. Two caveats on what resolution will and will not mean.
+> The second annotator is not a graduate-level specialist, so suitability is
+> established by [annotator-qualification.md](annotator-qualification.md)
+> rather than assumed. And the pilot was a *listening* task, which the main
+> block no longer is (§3.3b D1), so re-annotating these 50 does not fall out
+> of the main block for free — it is now separate work, justified only if the
+> base-rate sentence is worth keeping in the limitations. §3.3b D1's hedge
+> recommends it at n=136 for negligible cost.
+>
+> The 43.6% has a better fix available that does not depend on any of this:
+> once `C_gold` exists, `tashkeel_sentence` vs `C_gold` is an objective
+> DER/WER over the whole annotated set, with no listening and no annotator
+> judgment. That is §3.3b D5, still open.
 
 **Two deviations are declared: §6a (the procedure actually followed,
 LLM-assisted correct-the-machine) and §9a (exclusions beyond the §3
