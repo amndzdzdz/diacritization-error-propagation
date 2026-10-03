@@ -16,12 +16,17 @@ grapheme-to-phoneme rules verbatim and is never edited; everything that is a
   head is trained against has neither.
 
 Each of these is justified by measurement in `insights/week-04.md`, not by
-argument — several plausible-sounding rules (mapping the dagger alef to a full
+argument — two plausible-sounding rules (mapping the dagger alef to a full
 alef; deleting the alef that carries tanwin-fath) made the round-trip *worse*
 and were dropped.
 
-Validated by `scripts/check_phonetizer_roundtrip.py` against both arms'
-released references.
+Validated by `scripts/check_phonetizer_roundtrip.py` at **99.85%** (2584/2588,
+0 out-of-inventory tokens) against `Iqra_train` dev. The script also reports
+the Qur'anic arm, but that number is **not** a validation: QuranMB.v2's Arabic
+text was recovered by phonemising the Qur'an and matching against its own
+phoneme string, so the round-trip there returns the uploader's recovery
+residual rather than anything about this module. Known gap: alef wasla
+(U+0671) occurs in 0 MSA dev rows, so its handling is asserted, not measured.
 """
 
 from __future__ import annotations
@@ -66,10 +71,21 @@ ALEF_MAQSURA = "\u0649"
 TANWIN = FATHATAN + DAMMATAN + KASRATAN
 HARAKAT = TANWIN + FATHA + DAMMA + KASRA
 
-# The corpora spell a shadda'd, voweled consonant as <letter><harakah><shadda>;
-# Halabi's rules expect the canonical <letter><shadda><harakah>. Left unswapped,
-# every geminate silently degeminates (`$$` -> `$`), which is the single largest
-# source of round-trip failures.
+# A shadda'd, voweled consonant can be spelled either way round, and Halabi's
+# rules only accept <letter><shadda><harakah>. Left unswapped, every geminate
+# silently degeminates (`$$` -> `$`), which is the single largest source of
+# round-trip failures.
+#
+# Note which order is which, because an earlier version of this comment had it
+# backwards and called Halabi's order "canonical". It is the opposite: shadda
+# is combining class 33 and the harakat are 30, so Unicode canonical order is
+# <letter><harakah><shadda>, and this substitution deliberately produces the
+# *non*-canonical order Halabi wants. Consequence: NFC/NFKC must never run
+# after this point — it would reorder the pair back and degeminate the corpus.
+# `arabic_mdd.data.normalize` is therefore specified to run strictly before
+# phonetization. Both orders occur in `Iqra_train` (`sentence`: 17,484 rows
+# shadda-first, 296 harakah-first; `tashkeel_sentence`: uniformly shadda-first),
+# so this rule has to be tolerant rather than assume one spelling.
 _SHADDA_AFTER_HARAKAH = re.compile(f"([{HARAKAT}])({SHADDA})")
 
 # A shadda written on a long-vowel letter. `إِلاَّ` and `عَلَىٍّ` put the shadda on
@@ -152,8 +168,14 @@ class Phonetizer:
         text = " ".join(text.split())
         text = _SHADDA_AFTER_HARAKAH.sub(r"\2\1", text)
         text = _SHADDA_ON_LONG_VOWEL.sub(r"\1", text)
-        # The Qur'anic dagger alef has no Halabi rule. Dropping it scores better
-        # on QuranMB than mapping it to a full alef (55.05% -> 49.39%).
+        # The Qur'anic dagger alef has no Halabi rule. It sits on a letter that
+        # already carries its own harakah, so dropping it leaves the short vowel
+        # the reference expects; mapping it to a full alef would add a spurious
+        # `aa`. Validated at 177/177 on the MSA dev rows containing U+0670.
+        # (An earlier comment here justified the rule by a 55.05% -> 49.39%
+        # comparison on QuranMB. That metric is circular -- QuranMB's Arabic
+        # text was recovered *from* its phoneme string -- so it justified
+        # nothing. The rule survives on the MSA evidence instead.)
         text = text.replace(DAGGER_ALEF, "")
         if self.convention == "pausal":
             text = _ANY_TANWIN.sub("", text)

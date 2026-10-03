@@ -144,8 +144,17 @@ shared-task baseline specifically is unconfirmed.
 Two subsets worth recording, since the split is tempting to misread: the
 738 `match_type: fuzzy` rows score F1 0.3647 while the 904 `exact` rows
 score 0.4459 — i.e. the `exact` subset alone would clear the gate. That is a
-biased subset and must not be reported as a pass. See the label-provenance
-experiment below for whether the fuzzy rows are mislabelled or merely harder.
+biased subset and must not be reported as a pass.
+
+> **Updated 2026-10-01.** This paragraph originally pointed forward to the
+> label-provenance experiment "for whether the fuzzy rows are mislabelled or
+> merely harder." Neither — the question was malformed. `match_type` records
+> how cleanly the uploader *recovered the Arabic text* by phonemising the
+> Qur'an and matching against `reference_phoneme_string`. It is a property
+> of the text reconstruction and says nothing about the audio or the labels.
+> So the F1 gap above is real but has no provenance interpretation, and the
+> split remains biased for a reason unrelated to label quality. See
+> `insights/week-04.md` § "Phonetizer round-trip".
 
 ### Conclusion
 
@@ -264,10 +273,19 @@ acoustic phoneme recogniser.
 This also settles the data question without needing the gated labels.
 Our third-party `safikhan/quran_mbv2_formatted` join reproduces the
 published numbers to 4 decimal places when paired with the organizers' own
-model. Labels that had drifted from the audio could not do that. The 738
-`match_type: fuzzy` rows are therefore *harder audio*, not mislabelled —
-which is what the per-utterance edit distances already suggested, now
-confirmed independently.
+model. Labels that had drifted from the audio could not do that.
+
+> **Corrected in week 4.** This paragraph originally continued: "The 738
+> `match_type: fuzzy` rows are therefore *harder audio*, not mislabelled."
+> That inference does not hold. `match_type` is a property of the
+> uploader's *text recovery* — they reconstructed the Arabic by phonemising
+> the Qur'an and matching against `reference_phoneme_string`, and
+> `match_distance` is the residual — so it says nothing about the audio.
+> Measured directly, fuzzy rows contain slightly *fewer* speaker errors
+> than exact ones (canonical↔annotation edit distance 2.12 vs 2.22;
+> per-token 0.0606 vs 0.0737). The surviving claim is only the one above:
+> the join reproduces the published numbers, so the labels track the audio.
+> See `insights/week-04.md` § "Phonetizer round-trip".
 
 The `total_steps: 200000` vs "12.5k updates" discrepancy is likewise no
 longer load-bearing for the gate, since no training was involved here. It

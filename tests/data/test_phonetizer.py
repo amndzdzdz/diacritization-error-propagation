@@ -9,6 +9,7 @@ references; that is `scripts/check_phonetizer_roundtrip.py`, which needs the
 datasets.
 """
 
+import unicodedata
 from pathlib import Path
 
 import pytest
@@ -189,3 +190,20 @@ def test_provenance_records_the_pinned_commit_and_the_convention() -> None:
     assert provenance["commit"] == "e75e06bdb8069153251adc08fb81f5bdd31ab953"
     assert provenance["convention"] == "pausal"
     assert "NC" in provenance["licence"]
+
+
+def test_both_shadda_orders_phonetize_identically() -> None:
+    """Unicode-canonical order is <harakah><shadda>; Halabi wants the reverse.
+
+    `Iqra_train`'s `sentence` column carries both (17,484 rows shadda-first,
+    296 harakah-first), so the rule must accept either. The comment on
+    `_SHADDA_AFTER_HARAKAH` once called Halabi's order "canonical", which is
+    backwards and would invite an NFC pass that silently degeminates.
+    """
+    phonetizer = Phonetizer(convention="pausal")
+    shadda_first = "\u0625\u0650\u0646\u0651\u064e"  # إِنَّ, <shadda><harakah>
+    harakah_first = "\u0625\u0650\u0646\u064e\u0651"  # إِنَّ, <harakah><shadda>
+
+    assert unicodedata.normalize("NFC", harakah_first) == harakah_first
+    assert phonetizer.phonetize(shadda_first) == phonetizer.phonetize(harakah_first)
+    assert "nn" in phonetizer.phonetize(harakah_first)
