@@ -73,6 +73,27 @@ def test_dagger_alef_is_dropped_not_lengthened() -> None:
     assert "aa" not in with_dagger
 
 
+def test_shadda_on_a_long_vowel_letter_is_dropped() -> None:
+    """`إِلاَّ` / `عَلَىٍّ` put the shadda on the alef instead of the consonant.
+
+    Alef and alef maqsura are not geminable, so Halabi doubles the long vowel
+    and emits `aaaa` -- the only out-of-inventory token the MSA round-trip
+    produced (6/2588 dev rows). See `insights/week-04.md`.
+    """
+    for text in ("إِلاَّ", "عَلَىٍّ", "دُجَىٌّ"):
+        produced = Phonetizer("pausal").phonetize(text)
+        assert not set(produced) - SWS_ARABIC_INVENTORY, produced
+
+
+def test_gemination_on_a_consonant_vowel_carrier_survives() -> None:
+    """Waw and yeh carry vowels too, so the rule must not reach them.
+
+    `أَيَّ` is a real geminate; widening the rule to every vowel carrier would
+    silently degeminate it.
+    """
+    assert "yy" in Phonetizer("prescriptive").phonetize("أَيَّ")
+
+
 def test_embedded_newlines_do_not_split_the_utterance() -> None:
     """`phonetise` treats a newline as an utterance boundary.
 

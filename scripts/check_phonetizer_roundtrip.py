@@ -103,8 +103,10 @@ def _report(
 
 
 def _check_msa_arm() -> None:
+    # `tashkeel_sentence`, not `sentence`: the undiacritized column cannot be
+    # phonetized at all, and it is not what `phoneme_ref` was derived from.
     examples = load_iqra_train(split="dev")
-    pairs = [(e.id, e.sentence, e.canonical) for e in examples]
+    pairs = [(e.id, e.tashkeel_sentence, e.canonical) for e in examples]
     _report("MSA arm -- Iqra_train dev", "pausal", pairs)
 
 

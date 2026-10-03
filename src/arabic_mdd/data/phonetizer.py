@@ -72,6 +72,14 @@ HARAKAT = TANWIN + FATHA + DAMMA + KASRA
 # source of round-trip failures.
 _SHADDA_AFTER_HARAKAH = re.compile(f"([{HARAKAT}])({SHADDA})")
 
+# A shadda written on a long-vowel letter. `إِلاَّ` and `عَلَىٍّ` put the shadda on
+# the alef / alef maqsura rather than on the consonant it belongs to. Neither
+# letter is a geminable consonant, so Halabi doubles the long vowel and emits
+# `aaaa` -- the only out-of-inventory token the MSA round-trip produces.
+# Restricted to these two letters deliberately: waw and yeh are also vowel
+# carriers but are real consonants too, and `أَيَّ` must keep its gemination.
+_SHADDA_ON_LONG_VOWEL = re.compile(f"([{ALEF}{ALEF_MAQSURA}]){SHADDA}")
+
 # Pausal only: the utterance-final short vowel / sukun is not pronounced.
 _FINAL_DIACRITIC = re.compile(f"[{HARAKAT}{SUKUN}]+$")
 
@@ -143,6 +151,7 @@ class Phonetizer:
         # two pronunciations and desynchronize a whole batch.
         text = " ".join(text.split())
         text = _SHADDA_AFTER_HARAKAH.sub(r"\2\1", text)
+        text = _SHADDA_ON_LONG_VOWEL.sub(r"\1", text)
         # The Qur'anic dagger alef has no Halabi rule. Dropping it scores better
         # on QuranMB than mapping it to a full alef (55.05% -> 49.39%).
         text = text.replace(DAGGER_ALEF, "")

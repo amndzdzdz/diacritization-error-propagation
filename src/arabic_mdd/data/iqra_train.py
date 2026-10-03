@@ -22,11 +22,18 @@ IQRA_TTS_DATASET = "IqraEval/Iqra_TTS"
 
 @dataclass(frozen=True)
 class TrainingExample:
-    """One training utterance's id, canonical phoneme target, and sentence text."""
+    """One training utterance's id, canonical phoneme target, and sentence text.
+
+    `tashkeel_sentence` is the organizers' vowelizer's output and is the text
+    `canonical` was phonetized from, which makes the pair the phonetizer's only
+    *non-circular* round-trip reference (`scripts/check_phonetizer_roundtrip.py`).
+    `Iqra_TTS` does not ship the column, so it defaults to empty there.
+    """
 
     id: str
     canonical: list[str]
     sentence: str
+    tashkeel_sentence: str = ""
 
 
 def parse_iqra_train_rows(rows: Iterable[Mapping[str, str]]) -> list[TrainingExample]:
@@ -36,6 +43,7 @@ def parse_iqra_train_rows(rows: Iterable[Mapping[str, str]]) -> list[TrainingExa
             id=row["id"],
             canonical=parse_phoneme_sequence(row["phoneme_ref"]),
             sentence=row["sentence"],
+            tashkeel_sentence=row["tashkeel_sentence"],
         )
         for row in rows
     ]

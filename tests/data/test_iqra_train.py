@@ -3,16 +3,37 @@ from arabic_mdd.data.iqra_train import TrainingExample, parse_iqra_train_rows, p
 
 def test_parse_iqra_train_rows() -> None:
     rows = [
-        {"id": "u1", "phoneme_ref": "b a t", "sentence": "بات", "phoneme_aug": "b u t"},
-        {"id": "u2", "phoneme_ref": "q u l", "sentence": "قل", "phoneme_aug": "q u l"},
+        {
+            "id": "u1",
+            "phoneme_ref": "b a t",
+            "sentence": "بات",
+            "tashkeel_sentence": "بَاتَ",
+            "phoneme_aug": "b u t",
+        },
+        {
+            "id": "u2",
+            "phoneme_ref": "q u l",
+            "sentence": "قل",
+            "tashkeel_sentence": "قُلْ",
+            "phoneme_aug": "q u l",
+        },
     ]
 
     examples = parse_iqra_train_rows(rows)
 
     assert examples == [
-        TrainingExample(id="u1", canonical=["b", "a", "t"], sentence="بات"),
-        TrainingExample(id="u2", canonical=["q", "u", "l"], sentence="قل"),
+        TrainingExample(
+            id="u1", canonical=["b", "a", "t"], sentence="بات", tashkeel_sentence="بَاتَ"
+        ),
+        TrainingExample(id="u2", canonical=["q", "u", "l"], sentence="قل", tashkeel_sentence="قُلْ"),
     ]
+
+
+def test_parse_iqra_tts_rows_leaves_tashkeel_empty() -> None:
+    """`Iqra_TTS` ships no vowelized column, so it cannot serve the round-trip."""
+    rows = [{"sentence_ref": "بات", "phoneme_ref": "b a t"}]
+
+    assert parse_iqra_tts_rows(rows)[0].tashkeel_sentence == ""
 
 
 def test_parse_iqra_tts_rows_synthesizes_ids_from_position() -> None:
