@@ -29,6 +29,22 @@ SENTENCE_SEPARATOR = "\x01"
 class MishkalDiacritizer(Diacritizer):
     """Mishkal's `TashkeelClass`, one utterance at a time (it has no batch API)."""
 
+    #: Measured: no *character* ceiling — being rule-based it has no positional
+    #: embedding to overflow, and 8,192 characters go through without error.
+    #:
+    #: It does have a **word** ceiling, and that one is silent:
+    #: `TashkeelClass.limit = 1000` (mishkal/tashkeel.py:55) drops everything
+    #: past the thousandth word rather than raising. Measured: 1,000 words come
+    #: back whole, 1,200 come back as 1,000.
+    #:
+    #: Not modelled as a limit here, for two reasons. The longest input any
+    #: corpus in this project supplies is a WikiNews segment of 1,295
+    #: characters (~190 words), so the ceiling cannot fire; and if it ever did,
+    #: a truncated output no longer shares the reference's skeleton, so
+    #: `metrics.der` would refuse to align it and report it in
+    #: `skeleton_mismatch` instead of quietly scoring the surviving prefix.
+    max_input_chars = None
+
     def __init__(self, vocalizer: Any = None) -> None:
         self._vocalizer = vocalizer
 

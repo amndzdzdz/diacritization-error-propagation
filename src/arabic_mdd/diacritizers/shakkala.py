@@ -17,9 +17,10 @@ anyway).
 The model loads on every call, which costs seconds, so callers should pass
 whole batches rather than looping over `diacritize`.
 
-Shakkala asserts on inputs longer than 315 characters rather than truncating
-them. No utterance in QuranMB.v2 (max 118) or `Iqra_train` (max 191) comes
-close, so that assertion is left to fire rather than pre-empted by chunking.
+Shakkala asserts on long inputs rather than truncating them. No utterance in
+QuranMB.v2 (max 118) or `Iqra_train` (max 191) comes close, but WikiNews
+segments do — hence `max_input_chars`, which
+`diacritizers.chunking.diacritize_long` honours.
 """
 
 from __future__ import annotations
@@ -55,6 +56,14 @@ def default_command() -> tuple[str, ...]:
 
 class ShakkalaDiacritizer(Diacritizer):
     """Shakkala, driven through a subprocess running its own interpreter."""
+
+    #: Measured: 314 characters go through, 315 raises the `assert` in
+    #: `Shakkala.prepare_input`. `max_sentence` is 315 for model version 3 (the
+    #: one `_shakkala_worker.py` loads) and the comparison is strict `<`, so the
+    #: accepted maximum is one below the number the error message advertises.
+    #: Version-dependent — model 1 sets 495 — hence tied to the pinned version
+    #: rather than read from the package.
+    max_input_chars = 314
 
     def __init__(self, command: Sequence[str] | None = None, timeout: float = 3600) -> None:
         self.command = tuple(command) if command is not None else default_command()

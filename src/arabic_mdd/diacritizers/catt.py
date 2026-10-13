@@ -56,6 +56,21 @@ from arabic_mdd.diacritizers.base import Diacritizer
 
 VARIANTS = ("eo", "ed")
 
+#: Longest input each variant accepts, in characters. **Measured**, and the two
+#: numbers genuinely differ.
+#:
+#: Both ONNX exports carry a 1,024-position encoder embedding and fail on
+#: overflow (`/encoder/emb/Add`, "Attempting to broadcast an axis ... 1024 by
+#: N") rather than truncating. What differs is the width each variant hands the
+#: encoder: EO's `_process_batch` trims `input_ids[:, 1:-1]`, dropping <BOS> and
+#: <EOS>, while ED passes `input_ids` whole. Tokenization is at worst one token
+#: per character plus those two, so the safe character bounds are 1024 and 1022.
+#:
+#: Confirmed by binary search against the model for EO (1024 accepted, 1025
+#: fails) and by `_prepare_batch_input` widths for both, which reproduce the EO
+#: boundary exactly.
+MAX_INPUT_CHARS = {"eo": 1024, "ed": 1022}
+
 #: The confidence path uses `catt_tashkeel`'s private internals, so it is
 #: written against one exact release rather than a floor.
 SUPPORTED_CATT_VERSION = "1.0.2"
@@ -95,6 +110,7 @@ class CattDiacritizer(Diacritizer):
         self.variant = variant
         self.batch_size = batch_size
         self._model = model
+        self.max_input_chars = MAX_INPUT_CHARS[variant]
 
     @property
     def name(self) -> str:

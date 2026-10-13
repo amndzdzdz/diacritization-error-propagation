@@ -28,6 +28,17 @@ from collections.abc import Sequence
 class Diacritizer(ABC):
     """A diacritization tool, callable on a batch of undiacritized strings."""
 
+    max_input_chars: int | None = None
+    """Longest input this tool accepts, in characters, or None if unbounded.
+
+    Every value is **measured** by binary search, not read off a config: the
+    three bounded tools all fail hard at their ceiling (ONNX broadcast error,
+    or a bare `assert`) rather than truncating, so a guess that is too high
+    crashes a sweep mid-run and one that is too low chunks text needlessly.
+    `diacritizers.chunking.diacritize_long` is what honours it; the wrappers
+    deliberately do not, so that splitting stays visible to the caller.
+    """
+
     @property
     @abstractmethod
     def name(self) -> str:
