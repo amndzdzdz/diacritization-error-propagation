@@ -29,19 +29,16 @@ Run with:
 from __future__ import annotations
 
 import argparse
-import csv
-import hashlib
 import json
 import random
-import unicodedata
-from dataclasses import dataclass
 from pathlib import Path
 
-from arabic_mdd.data.normalize import strip_diacritics
-from arabic_mdd.metrics.der import marked_letters
+from arabic_mdd.data.wikinews import file_sha256, read_segments, skeleton_mismatches
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
-DEFAULT_TSV = Path("/tmp/WikiNewsMax.tsv")
+#: Gitignored (CC-BY-SA-4.0 share-alike) but kept inside the repo rather than
+#: in /tmp, so the committed packet stays regenerable across reboots.
+DEFAULT_TSV = REPO_ROOT / "run" / "WikiNewsMax.tsv.local"
 OUT_DIR = REPO_ROOT / "run" / "qualification"
 
 #: §6's eligibility band, in Arabic words. Also what keeps §5's "short
@@ -56,109 +53,6 @@ DEFAULT_SEED = 20261003
 TARGET_BUCKET_B = 202
 TARGET_BUCKET_A = 1067
 
-ARTICLE_MARKER = "#"
-
-
-@dataclass(frozen=True)
-class Word:
-    dediac: str
-    original_gold: str
-    max_gold: str
-    max_gold_alt: str
-
-    @property
-    def is_arabic(self) -> bool:
-        return any("\u0621" <= c <= "\u064a" for c in self.dediac)
-
-
-@dataclass(frozen=True)
-class Segment:
-    index: int
-    """Position in the source file, so a drawn segment can be found again."""
-
-    words: list[Word]
-
-    @property
-    def arabic_words(self) -> list[Word]:
-        return [w for w in self.words if w.is_arabic]
-
-    @property
-    def gold_text(self) -> str:
-        return " ".join(w.original_gold for w in self.words)
-
-    @property
-    def blank_text(self) -> str:
-        return " ".join(w.dediac for w in self.words)
-
-    def bucket_counts(self) -> tuple[int, int]:
-        """(bucket_A, bucket_B) *marked* positions in `original_gold`.
-
-        Bucket B is the mark on a word's final letter — the positional proxy
-        for i'rab, the same one `metrics.der` uses. Bucket A is every other
-        marked position. Counts are pre-pausal-filter; §8 applies that at
-        scoring time, which can only reduce bucket B.
-        """
-        a = b = 0
-        for word in self.arabic_words:
-            pairs = marked_letters(word.original_gold)
-            for i, (_letter, marks) in enumerate(pairs):
-                if not marks:
-                    continue
-                if i == len(pairs) - 1:
-                    b += 1
-                else:
-                    a += 1
-        return a, b
-
-
-def read_segments(tsv: Path) -> list[Segment]:
-    """Segment the word-per-row TSV on blank rows.
-
-    Article-marker rows (`#`) also break a segment: a headline and the body
-    that follows it are not one sentence.
-    """
-    with tsv.open(encoding="utf-8") as handle:
-        rows = list(csv.reader(handle, delimiter="\t"))[1:]
-
-    segments: list[Segment] = []
-    current: list[Word] = []
-
-    def flush() -> None:
-        if current and any(w.is_arabic for w in current):
-            segments.append(Segment(index=len(segments), words=list(current)))
-        current.clear()
-
-    for row in rows:
-        cells = (row + ["", "", "", ""])[:4]
-        if not cells[0].strip() or cells[0].strip() == ARTICLE_MARKER:
-            flush()
-            continue
-        current.append(
-            Word(
-                dediac=unicodedata.normalize("NFC", cells[0]),
-                original_gold=unicodedata.normalize("NFC", cells[1]),
-                max_gold=unicodedata.normalize("NFC", cells[2]),
-                max_gold_alt=unicodedata.normalize("NFC", cells[3]),
-            )
-        )
-    flush()
-    return segments
-
-
-def _verify_skeleton(segments: list[Segment]) -> int:
-    """`strip_diacritics(original_gold)` must reproduce the file's own `dediac`.
-
-    If it does not, the blank text we hand an annotator is not the text the
-    gold was written for, and §8 step 1's skeleton check would fire on our
-    own preprocessing rather than on the annotator.
-    """
-    return sum(
-        1
-        for segment in segments
-        for w in segment.words
-        if strip_diacritics(w.original_gold) != w.dediac
-    )
-
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
@@ -169,7 +63,7 @@ def main() -> None:
     args = parser.parse_args()
 
     segments = read_segments(args.tsv)
-    mismatches = _verify_skeleton(segments)
+    mismatches = skeleton_mismatches(segments)
     if mismatches:
         raise SystemExit(
             f"{mismatches} words where strip_diacritics(original_gold) != dediac; "
@@ -210,7 +104,7 @@ def main() -> None:
     print(f"alt readings: {alt_words} words carry a max_gold_alt (§8 step 3 allowance)")
 
     args.out_dir.mkdir(parents=True, exist_ok=True)
-    digest = hashlib.sha256(args.tsv.read_bytes()).hexdigest()
+    digest = file_sha256(args.tsv)
 
     blank = ["# Arabic diacritization — qualification test", ""]
     blank.append("Add the diacritics to each sentence below. Do not change the letters.")

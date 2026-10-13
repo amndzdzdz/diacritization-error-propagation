@@ -39,26 +39,26 @@ Run with:
 from __future__ import annotations
 
 import argparse
-import hashlib
 import json
 import unicodedata
-import xml.etree.ElementTree as ET
 from collections import Counter
 from dataclasses import asdict, dataclass, field
 from pathlib import Path
 
 from arabic_mdd.data.normalize import strip_diacritics, unsupported_characters
 from arabic_mdd.data.phonetizer import Phonetizer
+from arabic_mdd.data.tanzil import (
+    TANZIL_EDITION,
+    TANZIL_URL,
+    Verse,
+    file_sha256,
+    load_verses,
+)
+from arabic_mdd.data.tanzil import download as download_tanzil
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 DEFAULT_TANZIL = REPO_ROOT / "run" / "quran_simple.xml.local"
 OUT = REPO_ROOT / "run" / "quranmb_verse_map.json"
-
-#: The `simple` edition, NOT `uthmani`. See the module docstring: this choice
-#: is worth 82 of the 98 recoveries, and it is also what keeps §9's alef-wasla
-#: falsifier from firing. `imlaei-simple` is a 404 on this endpoint.
-TANZIL_URL = "https://tanzil.net/pub/download/index.php?quranType=simple&outType=xml&agree=true"
-TANZIL_EDITION = "tanzil-simple-xml"
 
 #: `reference_phoneme_string` is prescriptive (full case endings, tanwin as
 #: recited) — `docs/msa-arm.md` §3.4 and the Phonetizer's own docstring.
@@ -167,29 +167,6 @@ def _levenshtein(a: list[str], b: list[str]) -> int:
     return prev[-1]
 
 
-def download_tanzil(dest: Path) -> None:
-    import urllib.request
-
-    dest.parent.mkdir(parents=True, exist_ok=True)
-    print(f"downloading {TANZIL_EDITION} -> {dest}")
-    with urllib.request.urlopen(TANZIL_URL, timeout=120) as r:  # noqa: S310
-        dest.write_bytes(r.read())
-
-
-def load_verses(path: Path) -> list[tuple[int, int, str]]:
-    root = ET.parse(path).getroot()
-    out: list[tuple[int, int, str]] = []
-    for sura in root.iter("sura"):
-        s = int(sura.get("index"))  # type: ignore[arg-type]
-        for aya in sura.iter("aya"):
-            # `bismillah` is a separate attribute and is NOT part of the ayah
-            # text; including it would insert four words that no prompt reads.
-            out.append((s, int(aya.get("index")), aya.get("text", "")))  # type: ignore[arg-type]
-    if not out:
-        raise SystemExit(f"{path}: no <aya> elements — wrong file or a 404 page?")
-    return out
-
-
 def load_prompts() -> tuple[dict[str, tuple[str, str]], Counter[str]]:
     """prompt index -> (reference_arabic, reference_phonemes), plus clip counts.
 
@@ -211,8 +188,8 @@ def load_prompts() -> tuple[dict[str, tuple[str, str]], Counter[str]]:
     return prompts, clips
 
 
-def recover(verses: list[tuple[int, int, str]], prompts, clips) -> list[PromptEntry]:
-    words = [(s, a, w) for s, a, text in verses for w in text.split()]
+def recover(verses: list[Verse], prompts, clips) -> list[PromptEntry]:
+    words = [(v.surah, v.ayah, w) for v in verses for w in v.text.split()]
     skel = [strip_diacritics(w) for _s, _a, w in words]
     phonetizer = Phonetizer(CONVENTION)
 
@@ -311,10 +288,10 @@ def main() -> None:
     if args.download or not args.tanzil.exists():
         if not args.download:
             raise SystemExit(f"{args.tanzil} not found; pass --download to fetch it")
+        print(f"downloading {TANZIL_EDITION} -> {args.tanzil}")
         download_tanzil(args.tanzil)
 
-    raw = args.tanzil.read_bytes()
-    digest = hashlib.sha256(raw).hexdigest()
+    digest = file_sha256(args.tanzil)
     verses = load_verses(args.tanzil)
     prompts, clips = load_prompts()
     entries = recover(verses, prompts, clips)
@@ -322,7 +299,7 @@ def main() -> None:
     # §9's alef-wasla falsifier is tested on the text we actually chose, rather
     # than assumed from the edition's name. The week plan was explicit that
     # picking an edition to dodge the falsifier obliges us to measure the dodge.
-    corpus = " ".join(t for _s, _a, t in verses)
+    corpus = " ".join(v.text for v in verses)
     audit = {
         "characters": len(corpus),
         "alef_wasla_U+0671": corpus.count("\u0671"),
