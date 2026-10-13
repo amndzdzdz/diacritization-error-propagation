@@ -144,7 +144,8 @@ def main() -> None:
                 },
                 ensure_ascii=False,
                 indent=2,
-            ),
+            )
+            + "\n",
             encoding="utf-8",
         )
         print(f"wrote {OUT.relative_to(REPO_ROOT)}")

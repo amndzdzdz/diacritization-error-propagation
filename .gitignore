@@ -46,6 +46,15 @@ run/logs/error_logs/*.log
 # and in run/qualification/gold.json, which is what makes the draw auditable
 # without the file being in git.
 run/WikiNewsMax.tsv.local
+# Tanzil Qur'an text (scripts/recover_quran_verses.py). Tanzil ships a copyright
+# block asking that it not be removed, so the text stays local; the sha256 is
+# recorded in run/quranmb_verse_map.json, which IS tracked and is what makes the
+# recovery auditable without vendoring the source.
+run/quran_simple.xml.local
+run/quran_*.xml.local
+# Reading sheet for the verse-map verification pass: a pure rendering of
+# run/quranmb_verse_map.json (which IS tracked), regenerated on every run.
+run/quranmb_verse_map_sheet.html
 # Qualification test: the withheld gold must never reach a candidate, and raw
 # human submissions are personal data. The blank test and the instruction
 # sheet ARE tracked -- they are what §4 of the week plan commits in advance.

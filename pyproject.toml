@@ -22,8 +22,15 @@ build-backend = "uv_build"
 
 [dependency-groups]
 dev = [
+    # Terminal display only, for `scripts/verify_verse_map.py`: most terminals
+    # apply no bidi pass, so diacritized Arabic has to be shaped and reordered
+    # before printing. Nothing under `src/` imports these, and no result
+    # depends on them. python-bidi is LGPL-3.0, used as an unmodified
+    # dependency, not vendored.
+    "arabic-reshaper>=3.0.0",
     "pre-commit>=4.0.0",
     "pytest>=8.0.0",
+    "python-bidi>=0.6.0",
     "ruff>=0.8.0",
 ]
 

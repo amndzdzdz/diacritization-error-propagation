@@ -1,0 +1,543 @@
+{
+  "verifies": "run/quranmb_verse_map.json",
+  "edition_sha256": "d9b5bad94e4725191aa8da9a0404bd8e6447696ef05a71f9220ab546d7a8f47f",
+  "route": "c",
+  "instrument": "human listening — independent of the text columns",
+  "judged": "word identity, NOT pronunciation accuracy",
+  "n_prompts": 98,
+  "verdicts": {
+    "00097": {
+      "verdict": "confirmed",
+      "clip": "00000_00097",
+      "takes_heard": 1
+    },
+    "00096": {
+      "verdict": "confirmed",
+      "clip": "00000_00096",
+      "takes_heard": 1,
+      "chosen_candidate": 0
+    },
+    "00045": {
+      "verdict": "confirmed",
+      "clip": "00003_00045",
+      "takes_heard": 3
+    },
+    "00011": {
+      "verdict": "confirmed",
+      "clip": "00002_00011403",
+      "takes_heard": 4
+    },
+    "00037": {
+      "verdict": "confirmed",
+      "clip": "00002_00037",
+      "takes_heard": 3
+    },
+    "00074": {
+      "verdict": "confirmed",
+      "clip": "00004_00074",
+      "takes_heard": 3
+    },
+    "00039": {
+      "verdict": "confirmed",
+      "clip": "00007_00039",
+      "takes_heard": 5
+    },
+    "00044": {
+      "verdict": "confirmed",
+      "clip": "00001_0004446",
+      "takes_heard": 4
+    },
+    "00072": {
+      "verdict": "confirmed",
+      "clip": "00002_00072",
+      "takes_heard": 3
+    },
+    "00073": {
+      "verdict": "confirmed",
+      "clip": "00006_00073",
+      "takes_heard": 3
+    },
+    "00079": {
+      "verdict": "confirmed",
+      "clip": "00004_00079596",
+      "takes_heard": 3
+    },
+    "00083": {
+      "verdict": "confirmed",
+      "clip": "00001_00083269",
+      "takes_heard": 3
+    },
+    "00091": {
+      "verdict": "confirmed",
+      "clip": "00002_00091621",
+      "takes_heard": 2
+    },
+    "00095": {
+      "verdict": "confirmed",
+      "clip": "00001_00095",
+      "takes_heard": 2
+    },
+    "00054": {
+      "verdict": "confirmed",
+      "clip": "00008_00054",
+      "takes_heard": 4
+    },
+    "00061": {
+      "verdict": "confirmed",
+      "clip": "00000_00061267",
+      "takes_heard": 2
+    },
+    "00094": {
+      "verdict": "confirmed",
+      "clip": "00002_0009460",
+      "takes_heard": 2
+    },
+    "00058": {
+      "verdict": "confirmed",
+      "clip": "00004_00058",
+      "takes_heard": 4
+    },
+    "00063": {
+      "verdict": "confirmed",
+      "clip": "00005_00063",
+      "takes_heard": 3
+    },
+    "00092": {
+      "verdict": "confirmed",
+      "clip": "00001_00092",
+      "takes_heard": 4
+    },
+    "00056": {
+      "verdict": "confirmed",
+      "clip": "00002_00056",
+      "takes_heard": 3
+    },
+    "00007": {
+      "verdict": "confirmed",
+      "clip": "00001_00007",
+      "takes_heard": 2
+    },
+    "00008": {
+      "verdict": "confirmed",
+      "clip": "00001_0000834",
+      "takes_heard": 3
+    },
+    "00046": {
+      "verdict": "confirmed",
+      "clip": "00005_00046634",
+      "takes_heard": 4
+    },
+    "00050": {
+      "verdict": "confirmed",
+      "clip": "00003_00050",
+      "takes_heard": 3
+    },
+    "00059": {
+      "verdict": "confirmed",
+      "clip": "00004_00059136",
+      "takes_heard": 3
+    },
+    "00060": {
+      "verdict": "confirmed",
+      "clip": "00001_00060385",
+      "takes_heard": 4
+    },
+    "00005": {
+      "verdict": "confirmed",
+      "clip": "00005_00005",
+      "takes_heard": 4
+    },
+    "00006": {
+      "verdict": "confirmed",
+      "clip": "00001_00006977",
+      "takes_heard": 4
+    },
+    "00013": {
+      "verdict": "confirmed",
+      "clip": "00001_00013",
+      "takes_heard": 4
+    },
+    "00016": {
+      "verdict": "confirmed",
+      "clip": "00003_00016",
+      "takes_heard": 3
+    },
+    "00020": {
+      "verdict": "confirmed",
+      "clip": "00005_00020",
+      "takes_heard": 3
+    },
+    "00062": {
+      "verdict": "confirmed",
+      "clip": "00006_00062",
+      "takes_heard": 4
+    },
+    "00064": {
+      "verdict": "confirmed",
+      "clip": "00005_00064",
+      "takes_heard": 3
+    },
+    "00009": {
+      "verdict": "confirmed",
+      "clip": "00007_00009",
+      "takes_heard": 3
+    },
+    "00026": {
+      "verdict": "confirmed",
+      "clip": "00002_00026",
+      "takes_heard": 4
+    },
+    "00032": {
+      "verdict": "confirmed",
+      "clip": "00006_00032419",
+      "takes_heard": 4
+    },
+    "00042": {
+      "verdict": "confirmed",
+      "clip": "00001_00042",
+      "takes_heard": 1
+    },
+    "00043": {
+      "verdict": "confirmed",
+      "clip": "00003_00043",
+      "takes_heard": 3
+    },
+    "00049": {
+      "verdict": "confirmed",
+      "clip": "00004_00049",
+      "takes_heard": 3
+    },
+    "00053": {
+      "verdict": "confirmed",
+      "clip": "00001_00053",
+      "takes_heard": 3
+    },
+    "00065": {
+      "verdict": "confirmed",
+      "clip": "00003_00065",
+      "takes_heard": 3
+    },
+    "00066": {
+      "verdict": "confirmed",
+      "clip": "00001_0006626",
+      "takes_heard": 3
+    },
+    "00075": {
+      "verdict": "confirmed",
+      "clip": "00001_00075",
+      "takes_heard": 2
+    },
+    "00077": {
+      "verdict": "confirmed",
+      "clip": "00004_00077",
+      "takes_heard": 5
+    },
+    "00080": {
+      "verdict": "confirmed",
+      "clip": "00002_00080",
+      "takes_heard": 3
+    },
+    "00084": {
+      "verdict": "confirmed",
+      "clip": "00001_00084483",
+      "takes_heard": 3
+    },
+    "00085": {
+      "verdict": "confirmed",
+      "clip": "00004_00085",
+      "takes_heard": 3
+    },
+    "00093": {
+      "verdict": "confirmed",
+      "clip": "00000_00093313",
+      "takes_heard": 2
+    },
+    "00000": {
+      "verdict": "confirmed",
+      "clip": "00004_00000",
+      "takes_heard": 3
+    },
+    "00001": {
+      "verdict": "confirmed",
+      "clip": "00004_00001",
+      "takes_heard": 3
+    },
+    "00002": {
+      "verdict": "confirmed",
+      "clip": "00005_00002",
+      "takes_heard": 5
+    },
+    "00003": {
+      "verdict": "confirmed",
+      "clip": "00002_00003",
+      "takes_heard": 3
+    },
+    "00004": {
+      "verdict": "confirmed",
+      "clip": "00001_00004",
+      "takes_heard": 3
+    },
+    "00010": {
+      "verdict": "confirmed",
+      "clip": "00005_00010",
+      "takes_heard": 4
+    },
+    "00012": {
+      "verdict": "confirmed",
+      "clip": "00000_00012765",
+      "takes_heard": 3
+    },
+    "00014": {
+      "verdict": "confirmed",
+      "clip": "00002_00014351",
+      "takes_heard": 3
+    },
+    "00015": {
+      "verdict": "confirmed",
+      "clip": "00002_00015",
+      "takes_heard": 3
+    },
+    "00017": {
+      "verdict": "confirmed",
+      "clip": "00004_00017246",
+      "takes_heard": 4
+    },
+    "00018": {
+      "verdict": "confirmed",
+      "clip": "00000_00018942",
+      "takes_heard": 4
+    },
+    "00019": {
+      "verdict": "confirmed",
+      "clip": "00002_00019",
+      "takes_heard": 3
+    },
+    "00021": {
+      "verdict": "confirmed",
+      "clip": "00005_00021",
+      "takes_heard": 4
+    },
+    "00022": {
+      "verdict": "confirmed",
+      "clip": "00002_00022",
+      "takes_heard": 4
+    },
+    "00023": {
+      "verdict": "confirmed",
+      "clip": "00005_00023",
+      "takes_heard": 4
+    },
+    "00024": {
+      "verdict": "confirmed",
+      "clip": "00005_00024",
+      "takes_heard": 4
+    },
+    "00025": {
+      "verdict": "confirmed",
+      "clip": "00001_00025",
+      "takes_heard": 3
+    },
+    "00027": {
+      "verdict": "confirmed",
+      "clip": "00001_00027",
+      "takes_heard": 2
+    },
+    "00028": {
+      "verdict": "confirmed",
+      "clip": "00002_00028",
+      "takes_heard": 2
+    },
+    "00029": {
+      "verdict": "confirmed",
+      "clip": "00000_00029984",
+      "takes_heard": 3
+    },
+    "00030": {
+      "verdict": "confirmed",
+      "clip": "00002_00030",
+      "takes_heard": 3
+    },
+    "00031": {
+      "verdict": "confirmed",
+      "clip": "00002_00031",
+      "takes_heard": 3
+    },
+    "00033": {
+      "verdict": "confirmed",
+      "clip": "00005_00033",
+      "takes_heard": 3
+    },
+    "00034": {
+      "verdict": "confirmed",
+      "clip": "00001_00034",
+      "takes_heard": 3
+    },
+    "00038": {
+      "verdict": "confirmed",
+      "clip": "00002_00038",
+      "takes_heard": 3
+    },
+    "00040": {
+      "verdict": "confirmed",
+      "clip": "00000_00040652",
+      "takes_heard": 3
+    },
+    "00041": {
+      "verdict": "confirmed",
+      "clip": "00004_00041",
+      "takes_heard": 3
+    },
+    "00047": {
+      "verdict": "confirmed",
+      "clip": "00004_00047",
+      "takes_heard": 3
+    },
+    "00048": {
+      "verdict": "confirmed",
+      "clip": "00002_00048",
+      "takes_heard": 3
+    },
+    "00051": {
+      "verdict": "confirmed",
+      "clip": "00002_00051139",
+      "takes_heard": 3
+    },
+    "00052": {
+      "verdict": "confirmed",
+      "clip": "00002_00052350",
+      "takes_heard": 3
+    },
+    "00055": {
+      "verdict": "confirmed",
+      "clip": "00002_00055",
+      "takes_heard": 4
+    },
+    "00057": {
+      "verdict": "confirmed",
+      "clip": "00005_00057",
+      "takes_heard": 3
+    },
+    "00067": {
+      "verdict": "confirmed",
+      "clip": "00006_00067847",
+      "takes_heard": 4
+    },
+    "00068": {
+      "verdict": "confirmed",
+      "clip": "00002_00068",
+      "takes_heard": 3
+    },
+    "00070": {
+      "verdict": "confirmed",
+      "clip": "00002_00070",
+      "takes_heard": 3
+    },
+    "00071": {
+      "verdict": "confirmed",
+      "clip": "00002_00071",
+      "takes_heard": 3
+    },
+    "00076": {
+      "verdict": "confirmed",
+      "clip": "00004_00076",
+      "takes_heard": 3
+    },
+    "00078": {
+      "verdict": "confirmed",
+      "clip": "00006_00078",
+      "takes_heard": 3
+    },
+    "00081": {
+      "verdict": "confirmed",
+      "clip": "00001_00081632",
+      "takes_heard": 3
+    },
+    "00082": {
+      "verdict": "confirmed",
+      "clip": "00003_00082",
+      "takes_heard": 3
+    },
+    "00086": {
+      "verdict": "confirmed",
+      "clip": "00001_00086",
+      "takes_heard": 3
+    },
+    "00089": {
+      "verdict": "confirmed",
+      "clip": "00000_00089291",
+      "takes_heard": 3
+    },
+    "00090": {
+      "verdict": "confirmed",
+      "clip": "00002_00090",
+      "takes_heard": 2
+    },
+    "00036": {
+      "verdict": "confirmed",
+      "clip": "00001_00036231",
+      "takes_heard": 2
+    },
+    "00035": {
+      "verdict": "confirmed",
+      "clip": "00003_00035",
+      "takes_heard": 2
+    },
+    "00088": {
+      "verdict": "confirmed",
+      "clip": "00003_00088",
+      "takes_heard": 2
+    },
+    "00069": {
+      "verdict": "confirmed",
+      "clip": "00000_00069198",
+      "takes_heard": 2
+    },
+    "00087": {
+      "verdict": "confirmed",
+      "clip": "00000_00087",
+      "takes_heard": 1
+    }
+  },
+  "superseded": {
+    "00035": [
+      {
+        "verdict": "boundary_wrong",
+        "clip": "00005_00035304",
+        "takes_heard": 5,
+        "note": "An additional in in every audio as the first word"
+      }
+    ],
+    "00036": [
+      {
+        "verdict": "boundary_wrong",
+        "clip": "00005_00036",
+        "takes_heard": 5,
+        "note": "all speakers add an additional wa"
+      }
+    ],
+    "00069": [
+      {
+        "verdict": "boundary_wrong",
+        "clip": "00001_00069126",
+        "takes_heard": 4,
+        "note": "There is an additional wa in the text"
+      }
+    ],
+    "00088": [
+      {
+        "verdict": "boundary_wrong",
+        "clip": "00008_00088",
+        "takes_heard": 4,
+        "note": "An additional word in the beginning in the audio"
+      }
+    ],
+    "00087": [
+      {
+        "verdict": "boundary_wrong",
+        "clip": "00006_00087",
+        "takes_heard": 3,
+        "note": "In the audio there is an additional indama"
+      }
+    ]
+  }
+}

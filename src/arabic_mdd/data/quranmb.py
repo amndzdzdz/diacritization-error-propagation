@@ -34,6 +34,37 @@ class MDDGroundTruth:
     human_annotation: list[str]
     reference_arabic: str
     match_type: str
+    match_distance: int
+    """Residual from the uploader's own recovery of `reference_arabic`.
+
+    Load-bearing, not metadata: `reference_arabic` was **not** shipped with the
+    benchmark. The uploader reconstructed it by phonemising a Qur'an text and
+    matching against `reference_phoneme_string`, and `match_distance` is what
+    was left over — which our own edit distances reproduce row for row. So
+    `reference_arabic` is downstream of the phoneme column, and validating a
+    verse recovery against it measures the uploader's matcher rather than ours
+    (week-05 task 1's circularity trap). Exposed here so that circularity is
+    visible at the point of use instead of only in a week-4 document.
+
+    `match_type` is the same fact coarsened: 904 rows `exact`, 738 `fuzzy`.
+    """
+
+    @property
+    def prompt_index(self) -> str:
+        """The prompt this clip reads, from `id` = `speaker_promptindex[take]`.
+
+        98 values across the 1,642 rows, and it determines
+        `reference_phoneme_string` exactly. The grouping key for anything
+        per-sentence: it is metadata, so unlike `reference_arabic` it is not
+        downstream of the uploader's phonemisation.
+
+        Prefer this over the Arabic text as a key. Collapsing on text gives 96
+        groups, because prompts 73/91 are a true duplicate and prompts 9/42
+        share their Arabic string while differing in phoneme string — the same
+        verse recited with a pausal and a liaison word-final form. Keying on
+        text merges that pair and discards the distinction.
+        """
+        return self.id.split("_")[1][:5]
 
 
 def parse_ground_truth_rows(rows: Iterable[Mapping[str, object]]) -> dict[str, MDDGroundTruth]:
@@ -47,6 +78,7 @@ def parse_ground_truth_rows(rows: Iterable[Mapping[str, object]]) -> dict[str, M
             human_annotation=parse_phoneme_sequence(row["annotation_phoneme_string"]),  # type: ignore
             reference_arabic=row["reference_arabic_string"],  # type: ignore
             match_type=row["match_type"],  # type: ignore
+            match_distance=int(row["match_distance"]),  # type: ignore
         )
     return result
 

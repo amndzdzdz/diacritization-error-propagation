@@ -1,0 +1,2625 @@
+{
+  "decision": "docs/weeks/week-05.md task 1; docs/msa-arm.md 3.3b D1",
+  "generated_by": "scripts/recover_quran_verses.py",
+  "route": "c",
+  "route_note": "Consonant-skeleton span match against an authoritative text. Routes (a) and (b) are closed: ID carries no verse reference, and the organizers publish no test Arabic (test_references is ID+phonemes, QuranMB.v2 is ID+audio, Iqra_Extra_IS26 is gated). The query is the skeleton of reference_arabic_string, which the uploader derived from reference_phoneme_string, so this REPRODUCES the uploader's recovery and does not independently validate it. The independent instrument is scripts/verify_verse_map.py (human listening).",
+  "edition": {
+    "name": "tanzil-simple-xml",
+    "url": "https://tanzil.net/pub/download/index.php?quranType=simple&outType=xml&agree=true",
+    "sha256": "d9b5bad94e4725191aa8da9a0404bd8e6447696ef05a71f9220ab546d7a8f47f",
+    "verses": 6236,
+    "vendored": false,
+    "licence_note": "Tanzil ships a copyright block asking it not be removed, so the text is kept local and pinned by sha256 rather than committed."
+  },
+  "convention": "prescriptive",
+  "key": "prompt index (98), not Arabic text (96)",
+  "phonetize_ceiling": "97/98 by construction: prompts 9 and 42 share one Arabic string but have different phoneme strings (pausal vs liaison final word), and phonetize is deterministic, so both cannot match. Subtract this BEFORE reading the exact-match count, not after.",
+  "summary": {
+    "prompts": 98,
+    "located": 98,
+    "unique_location": 83,
+    "text_unambiguous": 96,
+    "phoneme_exact": 54,
+    "dataset_arabic_agrees": 94
+  },
+  "character_audit": {
+    "characters": 685174,
+    "alef_wasla_U+0671": 0,
+    "dagger_alef_U+0670": 3218,
+    "quranic_marks_U+06D6_U+06ED": 0,
+    "unsupported_characters": {}
+  },
+  "recovered_text_audit": {
+    "characters": 4442,
+    "unsupported_characters": {}
+  },
+  "prompts": [
+    {
+      "prompt": "00000",
+      "n_words": 6,
+      "n_clips": 15,
+      "surah": 4,
+      "ayah_start": 1,
+      "ayah_end": 1,
+      "recovered_text": "وَاتَّقُوا اللَّهَ الَّذِي تَسَاءَلُونَ بِهِ وَالْأَرْحَامَ",
+      "candidates": [
+        {
+          "surah": 4,
+          "ayah_start": 1,
+          "ayah_end": 1,
+          "text": "وَاتَّقُوا اللَّهَ الَّذِي تَسَاءَلُونَ بِهِ وَالْأَرْحَامَ",
+          "n_occurrences": 1,
+          "phoneme_distance": 0
+        }
+      ],
+      "n_locations": 1,
+      "ambiguous_text": false,
+      "phoneme_distance": 0,
+      "phoneme_exact": true,
+      "dataset_agrees": true,
+      "override": null,
+      "skeleton_text": ""
+    },
+    {
+      "prompt": "00001",
+      "n_words": 6,
+      "n_clips": 12,
+      "surah": 35,
+      "ayah_start": 28,
+      "ayah_end": 28,
+      "recovered_text": "إِنَّمَا يَخْشَى اللَّهَ مِنْ عِبَادِهِ الْعُلَمَاءُ",
+      "candidates": [
+        {
+          "surah": 35,
+          "ayah_start": 28,
+          "ayah_end": 28,
+          "text": "إِنَّمَا يَخْشَى اللَّهَ مِنْ عِبَادِهِ الْعُلَمَاءُ",
+          "n_occurrences": 1,
+          "phoneme_distance": 0
+        }
+      ],
+      "n_locations": 1,
+      "ambiguous_text": false,
+      "phoneme_distance": 0,
+      "phoneme_exact": true,
+      "dataset_agrees": true,
+      "override": null,
+      "skeleton_text": ""
+    },
+    {
+      "prompt": "00002",
+      "n_words": 6,
+      "n_clips": 15,
+      "surah": 9,
+      "ayah_start": 3,
+      "ayah_end": 3,
+      "recovered_text": "أَنَّ اللَّهَ بَرِيءٌ مِّنَ الْمُشْرِكِينَ وَرَسُولُهُ",
+      "candidates": [
+        {
+          "surah": 9,
+          "ayah_start": 3,
+          "ayah_end": 3,
+          "text": "أَنَّ اللَّهَ بَرِيءٌ مِّنَ الْمُشْرِكِينَ وَرَسُولُهُ",
+          "n_occurrences": 1,
+          "phoneme_distance": 0
+        }
+      ],
+      "n_locations": 1,
+      "ambiguous_text": false,
+      "phoneme_distance": 0,
+      "phoneme_exact": true,
+      "dataset_agrees": true,
+      "override": null,
+      "skeleton_text": ""
+    },
+    {
+      "prompt": "00003",
+      "n_words": 4,
+      "n_clips": 21,
+      "surah": 2,
+      "ayah_start": 124,
+      "ayah_end": 124,
+      "recovered_text": "وَإِذِ ابْتَلَىٰ إِبْرَاهِيمَ رَبُّهُ",
+      "candidates": [
+        {
+          "surah": 2,
+          "ayah_start": 124,
+          "ayah_end": 124,
+          "text": "وَإِذِ ابْتَلَىٰ إِبْرَاهِيمَ رَبُّهُ",
+          "n_occurrences": 1,
+          "phoneme_distance": 0
+        }
+      ],
+      "n_locations": 1,
+      "ambiguous_text": false,
+      "phoneme_distance": 0,
+      "phoneme_exact": true,
+      "dataset_agrees": true,
+      "override": null,
+      "skeleton_text": ""
+    },
+    {
+      "prompt": "00004",
+      "n_words": 4,
+      "n_clips": 13,
+      "surah": 2,
+      "ayah_start": 106,
+      "ayah_end": 106,
+      "recovered_text": "مَا نَنسَخْ مِنْ آيَةٍ",
+      "candidates": [
+        {
+          "surah": 2,
+          "ayah_start": 106,
+          "ayah_end": 106,
+          "text": "مَا نَنسَخْ مِنْ آيَةٍ",
+          "n_occurrences": 1,
+          "phoneme_distance": 0
+        }
+      ],
+      "n_locations": 1,
+      "ambiguous_text": false,
+      "phoneme_distance": 0,
+      "phoneme_exact": true,
+      "dataset_agrees": true,
+      "override": null,
+      "skeleton_text": ""
+    },
+    {
+      "prompt": "00005",
+      "n_words": 4,
+      "n_clips": 17,
+      "surah": 8,
+      "ayah_start": 11,
+      "ayah_end": 11,
+      "recovered_text": "يُغَشِّيكُمُ النُّعَاسَ أَمَنَةً مِّنْهُ",
+      "candidates": [
+        {
+          "surah": 8,
+          "ayah_start": 11,
+          "ayah_end": 11,
+          "text": "يُغَشِّيكُمُ النُّعَاسَ أَمَنَةً مِّنْهُ",
+          "n_occurrences": 1,
+          "phoneme_distance": 2
+        }
+      ],
+      "n_locations": 1,
+      "ambiguous_text": false,
+      "phoneme_distance": 2,
+      "phoneme_exact": false,
+      "dataset_agrees": true,
+      "override": null,
+      "skeleton_text": ""
+    },
+    {
+      "prompt": "00006",
+      "n_words": 5,
+      "n_clips": 15,
+      "surah": 24,
+      "ayah_start": 33,
+      "ayah_end": 33,
+      "recovered_text": "وَلْيَسْتَعْفِفِ الَّذِينَ لَا يَجِدُونَ نِكَاحًا",
+      "candidates": [
+        {
+          "surah": 24,
+          "ayah_start": 33,
+          "ayah_end": 33,
+          "text": "وَلْيَسْتَعْفِفِ الَّذِينَ لَا يَجِدُونَ نِكَاحًا",
+          "n_occurrences": 1,
+          "phoneme_distance": 2
+        }
+      ],
+      "n_locations": 1,
+      "ambiguous_text": false,
+      "phoneme_distance": 2,
+      "phoneme_exact": false,
+      "dataset_agrees": true,
+      "override": null,
+      "skeleton_text": ""
+    },
+    {
+      "prompt": "00007",
+      "n_words": 5,
+      "n_clips": 18,
+      "surah": 30,
+      "ayah_start": 54,
+      "ayah_end": 54,
+      "recovered_text": "اللَّهُ الَّذِي خَلَقَكُم مِّن ضَعْفٍ",
+      "candidates": [
+        {
+          "surah": 30,
+          "ayah_start": 54,
+          "ayah_end": 54,
+          "text": "اللَّهُ الَّذِي خَلَقَكُم مِّن ضَعْفٍ",
+          "n_occurrences": 1,
+          "phoneme_distance": 3
+        }
+      ],
+      "n_locations": 1,
+      "ambiguous_text": false,
+      "phoneme_distance": 3,
+      "phoneme_exact": false,
+      "dataset_agrees": true,
+      "override": null,
+      "skeleton_text": ""
+    },
+    {
+      "prompt": "00008",
+      "n_words": 12,
+      "n_clips": 22,
+      "surah": 2,
+      "ayah_start": 140,
+      "ayah_end": 140,
+      "recovered_text": "أَمْ تَقُولُونَ إِنَّ إِبْرَاهِيمَ وَإِسْمَاعِيلَ وَإِسْحَاقَ وَيَعْقُوبَ وَالْأَسْبَاطَ كَانُوا هُودًا أَوْ نَصَارَىٰ",
+      "candidates": [
+        {
+          "surah": 2,
+          "ayah_start": 140,
+          "ayah_end": 140,
+          "text": "أَمْ تَقُولُونَ إِنَّ إِبْرَاهِيمَ وَإِسْمَاعِيلَ وَإِسْحَاقَ وَيَعْقُوبَ وَالْأَسْبَاطَ كَانُوا هُودًا أَوْ نَصَارَىٰ",
+          "n_occurrences": 1,
+          "phoneme_distance": 3
+        }
+      ],
+      "n_locations": 1,
+      "ambiguous_text": false,
+      "phoneme_distance": 3,
+      "phoneme_exact": false,
+      "dataset_agrees": true,
+      "override": null,
+      "skeleton_text": ""
+    },
+    {
+      "prompt": "00009",
+      "n_words": 4,
+      "n_clips": 8,
+      "surah": 2,
+      "ayah_start": 143,
+      "ayah_end": 143,
+      "recovered_text": "وَكَذَٰلِكَ جَعَلْنَاكُمْ أُمَّةً وَسَطًا",
+      "candidates": [
+        {
+          "surah": 2,
+          "ayah_start": 143,
+          "ayah_end": 143,
+          "text": "وَكَذَٰلِكَ جَعَلْنَاكُمْ أُمَّةً وَسَطًا",
+          "n_occurrences": 1,
+          "phoneme_distance": 1
+        }
+      ],
+      "n_locations": 1,
+      "ambiguous_text": false,
+      "phoneme_distance": 1,
+      "phoneme_exact": false,
+      "dataset_agrees": true,
+      "override": null,
+      "skeleton_text": ""
+    },
+    {
+      "prompt": "00010",
+      "n_words": 5,
+      "n_clips": 15,
+      "surah": 42,
+      "ayah_start": 27,
+      "ayah_end": 27,
+      "recovered_text": "وَلَوْ بَسَطَ اللَّهُ الرِّزْقَ لِعِبَادِهِ",
+      "candidates": [
+        {
+          "surah": 42,
+          "ayah_start": 27,
+          "ayah_end": 27,
+          "text": "وَلَوْ بَسَطَ اللَّهُ الرِّزْقَ لِعِبَادِهِ",
+          "n_occurrences": 1,
+          "phoneme_distance": 0
+        }
+      ],
+      "n_locations": 1,
+      "ambiguous_text": false,
+      "phoneme_distance": 0,
+      "phoneme_exact": true,
+      "dataset_agrees": true,
+      "override": null,
+      "skeleton_text": ""
+    },
+    {
+      "prompt": "00011",
+      "n_words": 5,
+      "n_clips": 19,
+      "surah": 10,
+      "ayah_start": 54,
+      "ayah_end": 54,
+      "recovered_text": "وَأَسَرُّوا النَّدَامَةَ لَمَّا رَأَوُا الْعَذَابَ",
+      "candidates": [
+        {
+          "surah": 10,
+          "ayah_start": 54,
+          "ayah_end": 54,
+          "text": "وَأَسَرُّوا النَّدَامَةَ لَمَّا رَأَوُا الْعَذَابَ",
+          "n_occurrences": 2,
+          "phoneme_distance": 2
+        }
+      ],
+      "n_locations": 2,
+      "ambiguous_text": false,
+      "phoneme_distance": 2,
+      "phoneme_exact": false,
+      "dataset_agrees": true,
+      "override": null,
+      "skeleton_text": ""
+    },
+    {
+      "prompt": "00012",
+      "n_words": 5,
+      "n_clips": 18,
+      "surah": 20,
+      "ayah_start": 120,
+      "ayah_end": 120,
+      "recovered_text": "هَلْ أَدُلُّكَ عَلَىٰ شَجَرَةِ الْخُلْدِ",
+      "candidates": [
+        {
+          "surah": 20,
+          "ayah_start": 120,
+          "ayah_end": 120,
+          "text": "هَلْ أَدُلُّكَ عَلَىٰ شَجَرَةِ الْخُلْدِ",
+          "n_occurrences": 1,
+          "phoneme_distance": 0
+        }
+      ],
+      "n_locations": 1,
+      "ambiguous_text": false,
+      "phoneme_distance": 0,
+      "phoneme_exact": true,
+      "dataset_agrees": true,
+      "override": null,
+      "skeleton_text": ""
+    },
+    {
+      "prompt": "00013",
+      "n_words": 6,
+      "n_clips": 22,
+      "surah": 3,
+      "ayah_start": 78,
+      "ayah_end": 78,
+      "recovered_text": "وَإِنَّ مِنْهُمْ لَفَرِيقًا يَلْوُونَ أَلْسِنَتَهُم بِالْكِتَابِ",
+      "candidates": [
+        {
+          "surah": 3,
+          "ayah_start": 78,
+          "ayah_end": 78,
+          "text": "وَإِنَّ مِنْهُمْ لَفَرِيقًا يَلْوُونَ أَلْسِنَتَهُم بِالْكِتَابِ",
+          "n_occurrences": 1,
+          "phoneme_distance": 2
+        }
+      ],
+      "n_locations": 1,
+      "ambiguous_text": false,
+      "phoneme_distance": 2,
+      "phoneme_exact": false,
+      "dataset_agrees": true,
+      "override": null,
+      "skeleton_text": ""
+    },
+    {
+      "prompt": "00014",
+      "n_words": 8,
+      "n_clips": 14,
+      "surah": 2,
+      "ayah_start": 211,
+      "ayah_end": 211,
+      "recovered_text": "سَلْ بَنِي إِسْرَائِيلَ كَمْ آتَيْنَاهُم مِّنْ آيَةٍ بَيِّنَةٍ",
+      "candidates": [
+        {
+          "surah": 2,
+          "ayah_start": 211,
+          "ayah_end": 211,
+          "text": "سَلْ بَنِي إِسْرَائِيلَ كَمْ آتَيْنَاهُم مِّنْ آيَةٍ بَيِّنَةٍ",
+          "n_occurrences": 1,
+          "phoneme_distance": 0
+        }
+      ],
+      "n_locations": 1,
+      "ambiguous_text": false,
+      "phoneme_distance": 0,
+      "phoneme_exact": true,
+      "dataset_agrees": true,
+      "override": null,
+      "skeleton_text": ""
+    },
+    {
+      "prompt": "00015",
+      "n_words": 9,
+      "n_clips": 19,
+      "surah": 4,
+      "ayah_start": 153,
+      "ayah_end": 153,
+      "recovered_text": "يَسْأَلُكَ أَهْلُ الْكِتَابِ أَن تُنَزِّلَ عَلَيْهِمْ كِتَابًا مِّنَ السَّمَاءِ",
+      "candidates": [
+        {
+          "surah": 4,
+          "ayah_start": 153,
+          "ayah_end": 153,
+          "text": "يَسْأَلُكَ أَهْلُ الْكِتَابِ أَن تُنَزِّلَ عَلَيْهِمْ كِتَابًا مِّنَ السَّمَاءِ",
+          "n_occurrences": 1,
+          "phoneme_distance": 0
+        }
+      ],
+      "n_locations": 1,
+      "ambiguous_text": false,
+      "phoneme_distance": 0,
+      "phoneme_exact": true,
+      "dataset_agrees": true,
+      "override": null,
+      "skeleton_text": ""
+    },
+    {
+      "prompt": "00016",
+      "n_words": 7,
+      "n_clips": 12,
+      "surah": 12,
+      "ayah_start": 7,
+      "ayah_end": 7,
+      "recovered_text": "لَّقَدْ كَانَ فِي يُوسُفَ وَإِخْوَتِهِ آيَاتٌ لِّلسَّائِلِينَ",
+      "candidates": [
+        {
+          "surah": 12,
+          "ayah_start": 7,
+          "ayah_end": 7,
+          "text": "لَّقَدْ كَانَ فِي يُوسُفَ وَإِخْوَتِهِ آيَاتٌ لِّلسَّائِلِينَ",
+          "n_occurrences": 1,
+          "phoneme_distance": 2
+        }
+      ],
+      "n_locations": 1,
+      "ambiguous_text": false,
+      "phoneme_distance": 2,
+      "phoneme_exact": false,
+      "dataset_agrees": true,
+      "override": null,
+      "skeleton_text": ""
+    },
+    {
+      "prompt": "00017",
+      "n_words": 4,
+      "n_clips": 22,
+      "surah": 26,
+      "ayah_start": 69,
+      "ayah_end": 69,
+      "recovered_text": "وَاتْلُ عَلَيْهِمْ نَبَأَ إِبْرَاهِيمَ",
+      "candidates": [
+        {
+          "surah": 26,
+          "ayah_start": 69,
+          "ayah_end": 69,
+          "text": "وَاتْلُ عَلَيْهِمْ نَبَأَ إِبْرَاهِيمَ",
+          "n_occurrences": 1,
+          "phoneme_distance": 0
+        }
+      ],
+      "n_locations": 1,
+      "ambiguous_text": false,
+      "phoneme_distance": 0,
+      "phoneme_exact": true,
+      "dataset_agrees": true,
+      "override": null,
+      "skeleton_text": ""
+    },
+    {
+      "prompt": "00018",
+      "n_words": 5,
+      "n_clips": 23,
+      "surah": 24,
+      "ayah_start": 58,
+      "ayah_end": 58,
+      "recovered_text": "وَحِينَ تَضَعُونَ ثِيَابَكُم مِّنَ الظَّهِيرَةِ",
+      "candidates": [
+        {
+          "surah": 24,
+          "ayah_start": 58,
+          "ayah_end": 58,
+          "text": "وَحِينَ تَضَعُونَ ثِيَابَكُم مِّنَ الظَّهِيرَةِ",
+          "n_occurrences": 1,
+          "phoneme_distance": 0
+        }
+      ],
+      "n_locations": 1,
+      "ambiguous_text": false,
+      "phoneme_distance": 0,
+      "phoneme_exact": true,
+      "dataset_agrees": true,
+      "override": null,
+      "skeleton_text": ""
+    },
+    {
+      "prompt": "00019",
+      "n_words": 4,
+      "n_clips": 15,
+      "surah": 2,
+      "ayah_start": 75,
+      "ayah_end": 75,
+      "recovered_text": "أَفَتَطْمَعُونَ أَن يُؤْمِنُوا لَكُمْ",
+      "candidates": [
+        {
+          "surah": 2,
+          "ayah_start": 75,
+          "ayah_end": 75,
+          "text": "أَفَتَطْمَعُونَ أَن يُؤْمِنُوا لَكُمْ",
+          "n_occurrences": 1,
+          "phoneme_distance": 0
+        }
+      ],
+      "n_locations": 1,
+      "ambiguous_text": false,
+      "phoneme_distance": 0,
+      "phoneme_exact": true,
+      "dataset_agrees": true,
+      "override": null,
+      "skeleton_text": ""
+    },
+    {
+      "prompt": "00020",
+      "n_words": 2,
+      "n_clips": 15,
+      "surah": 79,
+      "ayah_start": 7,
+      "ayah_end": 7,
+      "recovered_text": "تَتْبَعُهَا الرَّادِفَةُ",
+      "candidates": [
+        {
+          "surah": 79,
+          "ayah_start": 7,
+          "ayah_end": 7,
+          "text": "تَتْبَعُهَا الرَّادِفَةُ",
+          "n_occurrences": 1,
+          "phoneme_distance": 2
+        }
+      ],
+      "n_locations": 1,
+      "ambiguous_text": false,
+      "phoneme_distance": 2,
+      "phoneme_exact": false,
+      "dataset_agrees": true,
+      "override": null,
+      "skeleton_text": ""
+    },
+    {
+      "prompt": "00021",
+      "n_words": 7,
+      "n_clips": 18,
+      "surah": 36,
+      "ayah_start": 51,
+      "ayah_end": 51,
+      "recovered_text": "فَإِذَا هُم مِّنَ الْأَجْدَاثِ إِلَىٰ رَبِّهِمْ يَنسِلُونَ",
+      "candidates": [
+        {
+          "surah": 36,
+          "ayah_start": 51,
+          "ayah_end": 51,
+          "text": "فَإِذَا هُم مِّنَ الْأَجْدَاثِ إِلَىٰ رَبِّهِمْ يَنسِلُونَ",
+          "n_occurrences": 1,
+          "phoneme_distance": 0
+        }
+      ],
+      "n_locations": 1,
+      "ambiguous_text": false,
+      "phoneme_distance": 0,
+      "phoneme_exact": true,
+      "dataset_agrees": true,
+      "override": null,
+      "skeleton_text": ""
+    },
+    {
+      "prompt": "00022",
+      "n_words": 8,
+      "n_clips": 17,
+      "surah": 5,
+      "ayah_start": 73,
+      "ayah_end": 73,
+      "recovered_text": "لَّقَدْ كَفَرَ الَّذِينَ قَالُوا إِنَّ اللَّهَ ثَالِثُ ثَلَاثَةٍ",
+      "candidates": [
+        {
+          "surah": 5,
+          "ayah_start": 73,
+          "ayah_end": 73,
+          "text": "لَّقَدْ كَفَرَ الَّذِينَ قَالُوا إِنَّ اللَّهَ ثَالِثُ ثَلَاثَةٍ",
+          "n_occurrences": 1,
+          "phoneme_distance": 0
+        }
+      ],
+      "n_locations": 1,
+      "ambiguous_text": false,
+      "phoneme_distance": 0,
+      "phoneme_exact": true,
+      "dataset_agrees": true,
+      "override": null,
+      "skeleton_text": ""
+    },
+    {
+      "prompt": "00023",
+      "n_words": 7,
+      "n_clips": 15,
+      "surah": 23,
+      "ayah_start": 112,
+      "ayah_end": 112,
+      "recovered_text": "قَالَ كَمْ لَبِثْتُمْ فِي الْأَرْضِ عَدَدَ سِنِينَ",
+      "candidates": [
+        {
+          "surah": 23,
+          "ayah_start": 112,
+          "ayah_end": 112,
+          "text": "قَالَ كَمْ لَبِثْتُمْ فِي الْأَرْضِ عَدَدَ سِنِينَ",
+          "n_occurrences": 1,
+          "phoneme_distance": 0
+        }
+      ],
+      "n_locations": 1,
+      "ambiguous_text": false,
+      "phoneme_distance": 0,
+      "phoneme_exact": true,
+      "dataset_agrees": true,
+      "override": null,
+      "skeleton_text": ""
+    },
+    {
+      "prompt": "00024",
+      "n_words": 5,
+      "n_clips": 17,
+      "surah": 20,
+      "ayah_start": 122,
+      "ayah_end": 122,
+      "recovered_text": "ثُمَّ اجْتَبَاهُ رَبُّهُ فَتَابَ عَلَيْهِ",
+      "candidates": [
+        {
+          "surah": 20,
+          "ayah_start": 122,
+          "ayah_end": 122,
+          "text": "ثُمَّ اجْتَبَاهُ رَبُّهُ فَتَابَ عَلَيْهِ",
+          "n_occurrences": 1,
+          "phoneme_distance": 0
+        }
+      ],
+      "n_locations": 1,
+      "ambiguous_text": false,
+      "phoneme_distance": 0,
+      "phoneme_exact": true,
+      "dataset_agrees": true,
+      "override": null,
+      "skeleton_text": ""
+    },
+    {
+      "prompt": "00025",
+      "n_words": 3,
+      "n_clips": 19,
+      "surah": 2,
+      "ayah_start": 193,
+      "ayah_end": 193,
+      "recovered_text": "وَيَكُونَ الدِّينُ لِلَّهِ",
+      "candidates": [
+        {
+          "surah": 2,
+          "ayah_start": 193,
+          "ayah_end": 193,
+          "text": "وَيَكُونَ الدِّينُ لِلَّهِ",
+          "n_occurrences": 1,
+          "phoneme_distance": 0
+        }
+      ],
+      "n_locations": 1,
+      "ambiguous_text": false,
+      "phoneme_distance": 0,
+      "phoneme_exact": true,
+      "dataset_agrees": true,
+      "override": null,
+      "skeleton_text": ""
+    },
+    {
+      "prompt": "00026",
+      "n_words": 4,
+      "n_clips": 16,
+      "surah": 4,
+      "ayah_start": 3,
+      "ayah_end": 3,
+      "recovered_text": "ذَٰلِكَ أَدْنَىٰ أَلَّا تَعُولُوا",
+      "candidates": [
+        {
+          "surah": 4,
+          "ayah_start": 3,
+          "ayah_end": 3,
+          "text": "ذَٰلِكَ أَدْنَىٰ أَلَّا تَعُولُوا",
+          "n_occurrences": 1,
+          "phoneme_distance": 1
+        }
+      ],
+      "n_locations": 1,
+      "ambiguous_text": false,
+      "phoneme_distance": 1,
+      "phoneme_exact": false,
+      "dataset_agrees": true,
+      "override": null,
+      "skeleton_text": ""
+    },
+    {
+      "prompt": "00027",
+      "n_words": 5,
+      "n_clips": 14,
+      "surah": 36,
+      "ayah_start": 8,
+      "ayah_end": 8,
+      "recovered_text": "فَهِيَ إِلَى الْأَذْقَانِ فَهُم مُّقْمَحُونَ",
+      "candidates": [
+        {
+          "surah": 36,
+          "ayah_start": 8,
+          "ayah_end": 8,
+          "text": "فَهِيَ إِلَى الْأَذْقَانِ فَهُم مُّقْمَحُونَ",
+          "n_occurrences": 1,
+          "phoneme_distance": 0
+        }
+      ],
+      "n_locations": 1,
+      "ambiguous_text": false,
+      "phoneme_distance": 0,
+      "phoneme_exact": true,
+      "dataset_agrees": true,
+      "override": null,
+      "skeleton_text": ""
+    },
+    {
+      "prompt": "00028",
+      "n_words": 4,
+      "n_clips": 17,
+      "surah": 36,
+      "ayah_start": 72,
+      "ayah_end": 72,
+      "recovered_text": "وَذَلَّلْنَاهَا لَهُمْ فَمِنْهَا رَكُوبُهُمْ",
+      "candidates": [
+        {
+          "surah": 36,
+          "ayah_start": 72,
+          "ayah_end": 72,
+          "text": "وَذَلَّلْنَاهَا لَهُمْ فَمِنْهَا رَكُوبُهُمْ",
+          "n_occurrences": 1,
+          "phoneme_distance": 0
+        }
+      ],
+      "n_locations": 1,
+      "ambiguous_text": false,
+      "phoneme_distance": 0,
+      "phoneme_exact": true,
+      "dataset_agrees": true,
+      "override": null,
+      "skeleton_text": ""
+    },
+    {
+      "prompt": "00029",
+      "n_words": 3,
+      "n_clips": 24,
+      "surah": 11,
+      "ayah_start": 31,
+      "ayah_end": 31,
+      "recovered_text": "لِلَّذِينَ تَزْدَرِي أَعْيُنُكُمْ",
+      "candidates": [
+        {
+          "surah": 11,
+          "ayah_start": 31,
+          "ayah_end": 31,
+          "text": "لِلَّذِينَ تَزْدَرِي أَعْيُنُكُمْ",
+          "n_occurrences": 1,
+          "phoneme_distance": 0
+        }
+      ],
+      "n_locations": 1,
+      "ambiguous_text": false,
+      "phoneme_distance": 0,
+      "phoneme_exact": true,
+      "dataset_agrees": true,
+      "override": null,
+      "skeleton_text": ""
+    },
+    {
+      "prompt": "00030",
+      "n_words": 4,
+      "n_clips": 15,
+      "surah": 2,
+      "ayah_start": 232,
+      "ayah_end": 232,
+      "recovered_text": "ذَٰلِكُمْ أَزْكَىٰ لَكُمْ وَأَطْهَرُ",
+      "candidates": [
+        {
+          "surah": 2,
+          "ayah_start": 232,
+          "ayah_end": 232,
+          "text": "ذَٰلِكُمْ أَزْكَىٰ لَكُمْ وَأَطْهَرُ",
+          "n_occurrences": 1,
+          "phoneme_distance": 0
+        }
+      ],
+      "n_locations": 1,
+      "ambiguous_text": false,
+      "phoneme_distance": 0,
+      "phoneme_exact": true,
+      "dataset_agrees": true,
+      "override": null,
+      "skeleton_text": ""
+    },
+    {
+      "prompt": "00031",
+      "n_words": 3,
+      "n_clips": 20,
+      "surah": 12,
+      "ayah_start": 88,
+      "ayah_end": 88,
+      "recovered_text": "بِبِضَاعَةٍ مُّزْجَاةٍ فَأَوْفِ",
+      "candidates": [
+        {
+          "surah": 12,
+          "ayah_start": 88,
+          "ayah_end": 88,
+          "text": "بِبِضَاعَةٍ مُّزْجَاةٍ فَأَوْفِ",
+          "n_occurrences": 1,
+          "phoneme_distance": 0
+        }
+      ],
+      "n_locations": 1,
+      "ambiguous_text": false,
+      "phoneme_distance": 0,
+      "phoneme_exact": true,
+      "dataset_agrees": true,
+      "override": null,
+      "skeleton_text": ""
+    },
+    {
+      "prompt": "00032",
+      "n_words": 2,
+      "n_clips": 13,
+      "surah": 68,
+      "ayah_start": 51,
+      "ayah_end": 51,
+      "recovered_text": "لَيُزْلِقُونَكَ بِأَبْصَارِهِمْ",
+      "candidates": [
+        {
+          "surah": 68,
+          "ayah_start": 51,
+          "ayah_end": 51,
+          "text": "لَيُزْلِقُونَكَ بِأَبْصَارِهِمْ",
+          "n_occurrences": 1,
+          "phoneme_distance": 1
+        }
+      ],
+      "n_locations": 1,
+      "ambiguous_text": false,
+      "phoneme_distance": 1,
+      "phoneme_exact": false,
+      "dataset_agrees": true,
+      "override": null,
+      "skeleton_text": ""
+    },
+    {
+      "prompt": "00033",
+      "n_words": 4,
+      "n_clips": 19,
+      "surah": 17,
+      "ayah_start": 66,
+      "ayah_end": 66,
+      "recovered_text": "الَّذِي يُزْجِي لَكُمُ الْفُلْكَ",
+      "candidates": [
+        {
+          "surah": 17,
+          "ayah_start": 66,
+          "ayah_end": 66,
+          "text": "الَّذِي يُزْجِي لَكُمُ الْفُلْكَ",
+          "n_occurrences": 1,
+          "phoneme_distance": 0
+        }
+      ],
+      "n_locations": 1,
+      "ambiguous_text": false,
+      "phoneme_distance": 0,
+      "phoneme_exact": true,
+      "dataset_agrees": true,
+      "override": null,
+      "skeleton_text": ""
+    },
+    {
+      "prompt": "00034",
+      "n_words": 2,
+      "n_clips": 20,
+      "surah": 1,
+      "ayah_start": 5,
+      "ayah_end": 5,
+      "recovered_text": "إِيَّاكَ نَعْبُدُ",
+      "candidates": [
+        {
+          "surah": 1,
+          "ayah_start": 5,
+          "ayah_end": 5,
+          "text": "إِيَّاكَ نَعْبُدُ",
+          "n_occurrences": 1,
+          "phoneme_distance": 0
+        }
+      ],
+      "n_locations": 1,
+      "ambiguous_text": false,
+      "phoneme_distance": 0,
+      "phoneme_exact": true,
+      "dataset_agrees": true,
+      "override": null,
+      "skeleton_text": ""
+    },
+    {
+      "prompt": "00035",
+      "n_words": 5,
+      "n_clips": 16,
+      "surah": 3,
+      "ayah_start": 97,
+      "ayah_end": 97,
+      "recovered_text": "إِنَّ اللَّهَ غَنِيٌّ عَنِ الْعَالَمِينَ",
+      "candidates": [
+        {
+          "surah": 3,
+          "ayah_start": 97,
+          "ayah_end": 97,
+          "text": "اللَّهَ غَنِيٌّ عَنِ الْعَالَمِينَ",
+          "n_occurrences": 1,
+          "phoneme_distance": 5
+        }
+      ],
+      "n_locations": 1,
+      "ambiguous_text": false,
+      "phoneme_distance": 3,
+      "phoneme_exact": false,
+      "dataset_agrees": false,
+      "override": {
+        "text": "إِنَّ اللَّهَ غَنِيٌّ عَنِ الْعَالَمِينَ",
+        "heard": "an extra initial 'inna' on every take",
+        "why": "3:97 reads فَإِنَّ; the benchmark drops the fa, so the skeleton search could not match the word and started one word late. d 5 -> 3.",
+        "relocated": false
+      },
+      "skeleton_text": "اللَّهَ غَنِيٌّ عَنِ الْعَالَمِينَ"
+    },
+    {
+      "prompt": "00036",
+      "n_words": 6,
+      "n_clips": 20,
+      "surah": 2,
+      "ayah_start": 20,
+      "ayah_end": 20,
+      "recovered_text": "وَإِنَّ اللَّهَ عَلَىٰ كُلِّ شَيْءٍ قَدِيرٌ",
+      "candidates": [
+        {
+          "surah": 2,
+          "ayah_start": 20,
+          "ayah_end": 20,
+          "text": "إِنَّ اللَّهَ عَلَىٰ كُلِّ شَيْءٍ قَدِيرٌ",
+          "n_occurrences": 8,
+          "phoneme_distance": 3
+        }
+      ],
+      "n_locations": 8,
+      "ambiguous_text": false,
+      "phoneme_distance": 1,
+      "phoneme_exact": false,
+      "dataset_agrees": false,
+      "override": {
+        "text": "وَإِنَّ اللَّهَ عَلَىٰ كُلِّ شَيْءٍ قَدِيرٌ",
+        "heard": "an extra initial 'wa' on every take",
+        "why": "the reference phonemes do begin 'w a < i nn a'; the skeleton span omitted the conjunction. d 3 -> 1.",
+        "relocated": false
+      },
+      "skeleton_text": "إِنَّ اللَّهَ عَلَىٰ كُلِّ شَيْءٍ قَدِيرٌ"
+    },
+    {
+      "prompt": "00037",
+      "n_words": 4,
+      "n_clips": 19,
+      "surah": 1,
+      "ayah_start": 2,
+      "ayah_end": 2,
+      "recovered_text": "الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ",
+      "candidates": [
+        {
+          "surah": 1,
+          "ayah_start": 2,
+          "ayah_end": 2,
+          "text": "الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ",
+          "n_occurrences": 4,
+          "phoneme_distance": 1
+        }
+      ],
+      "n_locations": 4,
+      "ambiguous_text": false,
+      "phoneme_distance": 1,
+      "phoneme_exact": false,
+      "dataset_agrees": true,
+      "override": null,
+      "skeleton_text": ""
+    },
+    {
+      "prompt": "00038",
+      "n_words": 8,
+      "n_clips": 27,
+      "surah": 14,
+      "ayah_start": 35,
+      "ayah_end": 35,
+      "recovered_text": "وَإِذْ قَالَ إِبْرَاهِيمُ رَبِّ اجْعَلْ هَٰذَا الْبَلَدَ آمِنًا",
+      "candidates": [
+        {
+          "surah": 14,
+          "ayah_start": 35,
+          "ayah_end": 35,
+          "text": "وَإِذْ قَالَ إِبْرَاهِيمُ رَبِّ اجْعَلْ هَٰذَا الْبَلَدَ آمِنًا",
+          "n_occurrences": 1,
+          "phoneme_distance": 0
+        }
+      ],
+      "n_locations": 1,
+      "ambiguous_text": false,
+      "phoneme_distance": 0,
+      "phoneme_exact": true,
+      "dataset_agrees": true,
+      "override": null,
+      "skeleton_text": ""
+    },
+    {
+      "prompt": "00039",
+      "n_words": 3,
+      "n_clips": 14,
+      "surah": 2,
+      "ayah_start": 5,
+      "ayah_end": 5,
+      "recovered_text": "وَأُولَٰئِكَ هُمُ الْمُفْلِحُونَ",
+      "candidates": [
+        {
+          "surah": 2,
+          "ayah_start": 5,
+          "ayah_end": 5,
+          "text": "وَأُولَٰئِكَ هُمُ الْمُفْلِحُونَ",
+          "n_occurrences": 6,
+          "phoneme_distance": 0
+        }
+      ],
+      "n_locations": 6,
+      "ambiguous_text": false,
+      "phoneme_distance": 0,
+      "phoneme_exact": true,
+      "dataset_agrees": true,
+      "override": null,
+      "skeleton_text": ""
+    },
+    {
+      "prompt": "00040",
+      "n_words": 5,
+      "n_clips": 21,
+      "surah": 2,
+      "ayah_start": 2,
+      "ayah_end": 2,
+      "recovered_text": "ذَٰلِكَ الْكِتَابُ لَا رَيْبَ فِيهِ",
+      "candidates": [
+        {
+          "surah": 2,
+          "ayah_start": 2,
+          "ayah_end": 2,
+          "text": "ذَٰلِكَ الْكِتَابُ لَا رَيْبَ فِيهِ",
+          "n_occurrences": 1,
+          "phoneme_distance": 0
+        }
+      ],
+      "n_locations": 1,
+      "ambiguous_text": false,
+      "phoneme_distance": 0,
+      "phoneme_exact": true,
+      "dataset_agrees": true,
+      "override": null,
+      "skeleton_text": ""
+    },
+    {
+      "prompt": "00041",
+      "n_words": 4,
+      "n_clips": 19,
+      "surah": 3,
+      "ayah_start": 144,
+      "ayah_end": 144,
+      "recovered_text": "وَمَا مُحَمَّدٌ إِلَّا رَسُولٌ",
+      "candidates": [
+        {
+          "surah": 3,
+          "ayah_start": 144,
+          "ayah_end": 144,
+          "text": "وَمَا مُحَمَّدٌ إِلَّا رَسُولٌ",
+          "n_occurrences": 1,
+          "phoneme_distance": 0
+        }
+      ],
+      "n_locations": 1,
+      "ambiguous_text": false,
+      "phoneme_distance": 0,
+      "phoneme_exact": true,
+      "dataset_agrees": true,
+      "override": null,
+      "skeleton_text": ""
+    },
+    {
+      "prompt": "00042",
+      "n_words": 4,
+      "n_clips": 18,
+      "surah": 2,
+      "ayah_start": 143,
+      "ayah_end": 143,
+      "recovered_text": "وَكَذَٰلِكَ جَعَلْنَاكُمْ أُمَّةً وَسَطًا",
+      "candidates": [
+        {
+          "surah": 2,
+          "ayah_start": 143,
+          "ayah_end": 143,
+          "text": "وَكَذَٰلِكَ جَعَلْنَاكُمْ أُمَّةً وَسَطًا",
+          "n_occurrences": 1,
+          "phoneme_distance": 1
+        }
+      ],
+      "n_locations": 1,
+      "ambiguous_text": false,
+      "phoneme_distance": 1,
+      "phoneme_exact": false,
+      "dataset_agrees": true,
+      "override": null,
+      "skeleton_text": ""
+    },
+    {
+      "prompt": "00043",
+      "n_words": 6,
+      "n_clips": 22,
+      "surah": 30,
+      "ayah_start": 6,
+      "ayah_end": 6,
+      "recovered_text": "وَعْدَ اللَّهِ لَا يُخْلِفُ اللَّهُ وَعْدَهُ",
+      "candidates": [
+        {
+          "surah": 30,
+          "ayah_start": 6,
+          "ayah_end": 6,
+          "text": "وَعْدَ اللَّهِ لَا يُخْلِفُ اللَّهُ وَعْدَهُ",
+          "n_occurrences": 1,
+          "phoneme_distance": 1
+        }
+      ],
+      "n_locations": 1,
+      "ambiguous_text": false,
+      "phoneme_distance": 1,
+      "phoneme_exact": false,
+      "dataset_agrees": true,
+      "override": null,
+      "skeleton_text": ""
+    },
+    {
+      "prompt": "00044",
+      "n_words": 4,
+      "n_clips": 17,
+      "surah": 56,
+      "ayah_start": 74,
+      "ayah_end": 74,
+      "recovered_text": "فَسَبِّحْ بِاسْمِ رَبِّكَ الْعَظِيمِ",
+      "candidates": [
+        {
+          "surah": 56,
+          "ayah_start": 74,
+          "ayah_end": 74,
+          "text": "فَسَبِّحْ بِاسْمِ رَبِّكَ الْعَظِيمِ",
+          "n_occurrences": 3,
+          "phoneme_distance": 0
+        }
+      ],
+      "n_locations": 3,
+      "ambiguous_text": false,
+      "phoneme_distance": 0,
+      "phoneme_exact": true,
+      "dataset_agrees": true,
+      "override": null,
+      "skeleton_text": ""
+    },
+    {
+      "prompt": "00045",
+      "n_words": 3,
+      "n_clips": 19,
+      "surah": 2,
+      "ayah_start": 24,
+      "ayah_end": 24,
+      "recovered_text": "وَقُودُهَا النَّاسُ وَالْحِجَارَةُ",
+      "candidates": [
+        {
+          "surah": 2,
+          "ayah_start": 24,
+          "ayah_end": 24,
+          "text": "وَقُودُهَا النَّاسُ وَالْحِجَارَةُ",
+          "n_occurrences": 2,
+          "phoneme_distance": 3
+        }
+      ],
+      "n_locations": 2,
+      "ambiguous_text": false,
+      "phoneme_distance": 3,
+      "phoneme_exact": false,
+      "dataset_agrees": true,
+      "override": null,
+      "skeleton_text": ""
+    },
+    {
+      "prompt": "00046",
+      "n_words": 7,
+      "n_clips": 14,
+      "surah": 59,
+      "ayah_start": 7,
+      "ayah_end": 7,
+      "recovered_text": "كَيْ لَا يَكُونَ دُولَةً بَيْنَ الْأَغْنِيَاءِ مِنكُمْ",
+      "candidates": [
+        {
+          "surah": 59,
+          "ayah_start": 7,
+          "ayah_end": 7,
+          "text": "كَيْ لَا يَكُونَ دُولَةً بَيْنَ الْأَغْنِيَاءِ مِنكُمْ",
+          "n_occurrences": 1,
+          "phoneme_distance": 3
+        }
+      ],
+      "n_locations": 1,
+      "ambiguous_text": false,
+      "phoneme_distance": 3,
+      "phoneme_exact": false,
+      "dataset_agrees": true,
+      "override": null,
+      "skeleton_text": ""
+    },
+    {
+      "prompt": "00047",
+      "n_words": 6,
+      "n_clips": 13,
+      "surah": 2,
+      "ayah_start": 158,
+      "ayah_end": 158,
+      "recovered_text": "إِنَّ الصَّفَا وَالْمَرْوَةَ مِن شَعَائِرِ اللَّهِ",
+      "candidates": [
+        {
+          "surah": 2,
+          "ayah_start": 158,
+          "ayah_end": 158,
+          "text": "إِنَّ الصَّفَا وَالْمَرْوَةَ مِن شَعَائِرِ اللَّهِ",
+          "n_occurrences": 1,
+          "phoneme_distance": 0
+        }
+      ],
+      "n_locations": 1,
+      "ambiguous_text": false,
+      "phoneme_distance": 0,
+      "phoneme_exact": true,
+      "dataset_agrees": true,
+      "override": null,
+      "skeleton_text": ""
+    },
+    {
+      "prompt": "00048",
+      "n_words": 5,
+      "n_clips": 13,
+      "surah": 22,
+      "ayah_start": 14,
+      "ayah_end": 14,
+      "recovered_text": "إِنَّ اللَّهَ يَفْعَلُ مَا يُرِيدُ",
+      "candidates": [
+        {
+          "surah": 22,
+          "ayah_start": 14,
+          "ayah_end": 14,
+          "text": "إِنَّ اللَّهَ يَفْعَلُ مَا يُرِيدُ",
+          "n_occurrences": 1,
+          "phoneme_distance": 0
+        }
+      ],
+      "n_locations": 1,
+      "ambiguous_text": false,
+      "phoneme_distance": 0,
+      "phoneme_exact": true,
+      "dataset_agrees": true,
+      "override": null,
+      "skeleton_text": ""
+    },
+    {
+      "prompt": "00049",
+      "n_words": 3,
+      "n_clips": 14,
+      "surah": 2,
+      "ayah_start": 3,
+      "ayah_end": 3,
+      "recovered_text": "الَّذِينَ يُؤْمِنُونَ بِالْغَيْبِ",
+      "candidates": [
+        {
+          "surah": 2,
+          "ayah_start": 3,
+          "ayah_end": 3,
+          "text": "الَّذِينَ يُؤْمِنُونَ بِالْغَيْبِ",
+          "n_occurrences": 1,
+          "phoneme_distance": 1
+        }
+      ],
+      "n_locations": 1,
+      "ambiguous_text": false,
+      "phoneme_distance": 1,
+      "phoneme_exact": false,
+      "dataset_agrees": true,
+      "override": null,
+      "skeleton_text": ""
+    },
+    {
+      "prompt": "00050",
+      "n_words": 3,
+      "n_clips": 15,
+      "surah": 1,
+      "ayah_start": 6,
+      "ayah_end": 6,
+      "recovered_text": "اهْدِنَا الصِّرَاطَ الْمُسْتَقِيمَ",
+      "candidates": [
+        {
+          "surah": 1,
+          "ayah_start": 6,
+          "ayah_end": 6,
+          "text": "اهْدِنَا الصِّرَاطَ الْمُسْتَقِيمَ",
+          "n_occurrences": 1,
+          "phoneme_distance": 3
+        }
+      ],
+      "n_locations": 1,
+      "ambiguous_text": false,
+      "phoneme_distance": 3,
+      "phoneme_exact": false,
+      "dataset_agrees": true,
+      "override": null,
+      "skeleton_text": ""
+    },
+    {
+      "prompt": "00051",
+      "n_words": 7,
+      "n_clips": 10,
+      "surah": 20,
+      "ayah_start": 46,
+      "ayah_end": 46,
+      "recovered_text": "قَالَ لَا تَخَافَا إِنَّنِي مَعَكُمَا أَسْمَعُ وَأَرَىٰ",
+      "candidates": [
+        {
+          "surah": 20,
+          "ayah_start": 46,
+          "ayah_end": 46,
+          "text": "قَالَ لَا تَخَافَا إِنَّنِي مَعَكُمَا أَسْمَعُ وَأَرَىٰ",
+          "n_occurrences": 1,
+          "phoneme_distance": 0
+        }
+      ],
+      "n_locations": 1,
+      "ambiguous_text": false,
+      "phoneme_distance": 0,
+      "phoneme_exact": true,
+      "dataset_agrees": true,
+      "override": null,
+      "skeleton_text": ""
+    },
+    {
+      "prompt": "00052",
+      "n_words": 4,
+      "n_clips": 18,
+      "surah": 1,
+      "ayah_start": 5,
+      "ayah_end": 5,
+      "recovered_text": "إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ",
+      "candidates": [
+        {
+          "surah": 1,
+          "ayah_start": 5,
+          "ayah_end": 5,
+          "text": "إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ",
+          "n_occurrences": 1,
+          "phoneme_distance": 0
+        }
+      ],
+      "n_locations": 1,
+      "ambiguous_text": false,
+      "phoneme_distance": 0,
+      "phoneme_exact": true,
+      "dataset_agrees": true,
+      "override": null,
+      "skeleton_text": ""
+    },
+    {
+      "prompt": "00053",
+      "n_words": 7,
+      "n_clips": 13,
+      "surah": 39,
+      "ayah_start": 73,
+      "ayah_end": 73,
+      "recovered_text": "وَسِيقَ الَّذِينَ اتَّقَوْا رَبَّهُمْ إِلَى الْجَنَّةِ زُمَرًا",
+      "candidates": [
+        {
+          "surah": 39,
+          "ayah_start": 73,
+          "ayah_end": 73,
+          "text": "وَسِيقَ الَّذِينَ اتَّقَوْا رَبَّهُمْ إِلَى الْجَنَّةِ زُمَرًا",
+          "n_occurrences": 1,
+          "phoneme_distance": 1
+        }
+      ],
+      "n_locations": 1,
+      "ambiguous_text": false,
+      "phoneme_distance": 1,
+      "phoneme_exact": false,
+      "dataset_agrees": true,
+      "override": null,
+      "skeleton_text": ""
+    },
+    {
+      "prompt": "00054",
+      "n_words": 6,
+      "n_clips": 14,
+      "surah": 21,
+      "ayah_start": 104,
+      "ayah_end": 104,
+      "recovered_text": "يَوْمَ نَطْوِي السَّمَاءَ كَطَيِّ السِّجِلِّ لِلْكُتُبِ",
+      "candidates": [
+        {
+          "surah": 21,
+          "ayah_start": 104,
+          "ayah_end": 104,
+          "text": "يَوْمَ نَطْوِي السَّمَاءَ كَطَيِّ السِّجِلِّ لِلْكُتُبِ",
+          "n_occurrences": 1,
+          "phoneme_distance": 10
+        }
+      ],
+      "n_locations": 1,
+      "ambiguous_text": false,
+      "phoneme_distance": 10,
+      "phoneme_exact": false,
+      "dataset_agrees": true,
+      "override": null,
+      "skeleton_text": ""
+    },
+    {
+      "prompt": "00055",
+      "n_words": 3,
+      "n_clips": 18,
+      "surah": 7,
+      "ayah_start": 199,
+      "ayah_end": 199,
+      "recovered_text": "وَأَعْرِضْ عَنِ الْجَاهِلِينَ",
+      "candidates": [
+        {
+          "surah": 7,
+          "ayah_start": 199,
+          "ayah_end": 199,
+          "text": "وَأَعْرِضْ عَنِ الْجَاهِلِينَ",
+          "n_occurrences": 1,
+          "phoneme_distance": 0
+        }
+      ],
+      "n_locations": 1,
+      "ambiguous_text": false,
+      "phoneme_distance": 0,
+      "phoneme_exact": true,
+      "dataset_agrees": true,
+      "override": null,
+      "skeleton_text": ""
+    },
+    {
+      "prompt": "00056",
+      "n_words": 6,
+      "n_clips": 18,
+      "surah": 2,
+      "ayah_start": 125,
+      "ayah_end": 125,
+      "recovered_text": "وَإِذْ جَعَلْنَا الْبَيْتَ مَثَابَةً لِّلنَّاسِ وَأَمْنًا",
+      "candidates": [
+        {
+          "surah": 2,
+          "ayah_start": 125,
+          "ayah_end": 125,
+          "text": "وَإِذْ جَعَلْنَا الْبَيْتَ مَثَابَةً لِّلنَّاسِ وَأَمْنًا",
+          "n_occurrences": 1,
+          "phoneme_distance": 4
+        }
+      ],
+      "n_locations": 1,
+      "ambiguous_text": false,
+      "phoneme_distance": 4,
+      "phoneme_exact": false,
+      "dataset_agrees": true,
+      "override": null,
+      "skeleton_text": ""
+    },
+    {
+      "prompt": "00057",
+      "n_words": 6,
+      "n_clips": 15,
+      "surah": 5,
+      "ayah_start": 66,
+      "ayah_end": 66,
+      "recovered_text": "لَأَكَلُوا مِن فَوْقِهِمْ وَمِن تَحْتِ أَرْجُلِهِم",
+      "candidates": [
+        {
+          "surah": 5,
+          "ayah_start": 66,
+          "ayah_end": 66,
+          "text": "لَأَكَلُوا مِن فَوْقِهِمْ وَمِن تَحْتِ أَرْجُلِهِم",
+          "n_occurrences": 1,
+          "phoneme_distance": 0
+        }
+      ],
+      "n_locations": 1,
+      "ambiguous_text": false,
+      "phoneme_distance": 0,
+      "phoneme_exact": true,
+      "dataset_agrees": true,
+      "override": null,
+      "skeleton_text": ""
+    },
+    {
+      "prompt": "00058",
+      "n_words": 7,
+      "n_clips": 13,
+      "surah": 20,
+      "ayah_start": 45,
+      "ayah_end": 45,
+      "recovered_text": "قَالَا رَبَّنَا إِنَّنَا نَخَافُ أَن يَفْرُطَ عَلَيْنَا",
+      "candidates": [
+        {
+          "surah": 20,
+          "ayah_start": 45,
+          "ayah_end": 45,
+          "text": "قَالَا رَبَّنَا إِنَّنَا نَخَافُ أَن يَفْرُطَ عَلَيْنَا",
+          "n_occurrences": 1,
+          "phoneme_distance": 5
+        }
+      ],
+      "n_locations": 1,
+      "ambiguous_text": false,
+      "phoneme_distance": 5,
+      "phoneme_exact": false,
+      "dataset_agrees": true,
+      "override": null,
+      "skeleton_text": ""
+    },
+    {
+      "prompt": "00059",
+      "n_words": 8,
+      "n_clips": 17,
+      "surah": 4,
+      "ayah_start": 129,
+      "ayah_end": 129,
+      "recovered_text": "وَلَن تَسْتَطِيعُوا أَن تَعْدِلُوا بَيْنَ النِّسَاءِ وَلَوْ حَرَصْتُمْ",
+      "candidates": [
+        {
+          "surah": 4,
+          "ayah_start": 129,
+          "ayah_end": 129,
+          "text": "وَلَن تَسْتَطِيعُوا أَن تَعْدِلُوا بَيْنَ النِّسَاءِ وَلَوْ حَرَصْتُمْ",
+          "n_occurrences": 1,
+          "phoneme_distance": 3
+        }
+      ],
+      "n_locations": 1,
+      "ambiguous_text": false,
+      "phoneme_distance": 3,
+      "phoneme_exact": false,
+      "dataset_agrees": true,
+      "override": null,
+      "skeleton_text": ""
+    },
+    {
+      "prompt": "00060",
+      "n_words": 5,
+      "n_clips": 24,
+      "surah": 4,
+      "ayah_start": 87,
+      "ayah_end": 87,
+      "recovered_text": "وَمَنْ أَصْدَقُ مِنَ اللَّهِ حَدِيثًا",
+      "candidates": [
+        {
+          "surah": 4,
+          "ayah_start": 87,
+          "ayah_end": 87,
+          "text": "وَمَنْ أَصْدَقُ مِنَ اللَّهِ حَدِيثًا",
+          "n_occurrences": 1,
+          "phoneme_distance": 3
+        }
+      ],
+      "n_locations": 1,
+      "ambiguous_text": false,
+      "phoneme_distance": 3,
+      "phoneme_exact": false,
+      "dataset_agrees": true,
+      "override": null,
+      "skeleton_text": ""
+    },
+    {
+      "prompt": "00061",
+      "n_words": 9,
+      "n_clips": 19,
+      "surah": 1,
+      "ayah_start": 7,
+      "ayah_end": 7,
+      "recovered_text": "صِرَاطَ الَّذِينَ أَنْعَمْتَ عَلَيْهِمْ غَيْرِ الْمَغْضُوبِ عَلَيْهِمْ وَلَا الضَّالِّينَ",
+      "candidates": [
+        {
+          "surah": 1,
+          "ayah_start": 7,
+          "ayah_end": 7,
+          "text": "صِرَاطَ الَّذِينَ أَنْعَمْتَ عَلَيْهِمْ غَيْرِ الْمَغْضُوبِ عَلَيْهِمْ وَلَا الضَّالِّينَ",
+          "n_occurrences": 1,
+          "phoneme_distance": 6
+        }
+      ],
+      "n_locations": 1,
+      "ambiguous_text": false,
+      "phoneme_distance": 6,
+      "phoneme_exact": false,
+      "dataset_agrees": true,
+      "override": null,
+      "skeleton_text": ""
+    },
+    {
+      "prompt": "00062",
+      "n_words": 9,
+      "n_clips": 15,
+      "surah": 2,
+      "ayah_start": 173,
+      "ayah_end": 173,
+      "recovered_text": "فَمَنِ اضْطُرَّ غَيْرَ بَاغٍ وَلَا عَادٍ فَلَا إِثْمَ عَلَيْهِ",
+      "candidates": [
+        {
+          "surah": 2,
+          "ayah_start": 173,
+          "ayah_end": 173,
+          "text": "فَمَنِ اضْطُرَّ غَيْرَ بَاغٍ وَلَا عَادٍ فَلَا إِثْمَ عَلَيْهِ",
+          "n_occurrences": 1,
+          "phoneme_distance": 2
+        }
+      ],
+      "n_locations": 1,
+      "ambiguous_text": false,
+      "phoneme_distance": 2,
+      "phoneme_exact": false,
+      "dataset_agrees": true,
+      "override": null,
+      "skeleton_text": ""
+    },
+    {
+      "prompt": "00063",
+      "n_words": 8,
+      "n_clips": 14,
+      "surah": 2,
+      "ayah_start": 190,
+      "ayah_end": 190,
+      "recovered_text": "وَقَاتِلُوا فِي سَبِيلِ اللَّهِ الَّذِينَ يُقَاتِلُونَكُمْ وَلَا تَعْتَدُوا",
+      "candidates": [
+        {
+          "surah": 2,
+          "ayah_start": 190,
+          "ayah_end": 190,
+          "text": "وَقَاتِلُوا فِي سَبِيلِ اللَّهِ الَّذِينَ يُقَاتِلُونَكُمْ وَلَا تَعْتَدُوا",
+          "n_occurrences": 1,
+          "phoneme_distance": 5
+        }
+      ],
+      "n_locations": 1,
+      "ambiguous_text": false,
+      "phoneme_distance": 5,
+      "phoneme_exact": false,
+      "dataset_agrees": true,
+      "override": null,
+      "skeleton_text": ""
+    },
+    {
+      "prompt": "00064",
+      "n_words": 3,
+      "n_clips": 14,
+      "surah": 4,
+      "ayah_start": 46,
+      "ayah_end": 46,
+      "recovered_text": "وَاسْمَعْ غَيْرَ مُسْمَعٍ",
+      "candidates": [
+        {
+          "surah": 4,
+          "ayah_start": 46,
+          "ayah_end": 46,
+          "text": "وَاسْمَعْ غَيْرَ مُسْمَعٍ",
+          "n_occurrences": 1,
+          "phoneme_distance": 2
+        }
+      ],
+      "n_locations": 1,
+      "ambiguous_text": false,
+      "phoneme_distance": 2,
+      "phoneme_exact": false,
+      "dataset_agrees": true,
+      "override": null,
+      "skeleton_text": ""
+    },
+    {
+      "prompt": "00065",
+      "n_words": 5,
+      "n_clips": 13,
+      "surah": 17,
+      "ayah_start": 20,
+      "ayah_end": 20,
+      "recovered_text": "وَمَا كَانَ عَطَاءُ رَبِّكَ مَحْظُورًا",
+      "candidates": [
+        {
+          "surah": 17,
+          "ayah_start": 20,
+          "ayah_end": 20,
+          "text": "وَمَا كَانَ عَطَاءُ رَبِّكَ مَحْظُورًا",
+          "n_occurrences": 1,
+          "phoneme_distance": 1
+        }
+      ],
+      "n_locations": 1,
+      "ambiguous_text": false,
+      "phoneme_distance": 1,
+      "phoneme_exact": false,
+      "dataset_agrees": true,
+      "override": null,
+      "skeleton_text": ""
+    },
+    {
+      "prompt": "00066",
+      "n_words": 8,
+      "n_clips": 19,
+      "surah": 48,
+      "ayah_start": 21,
+      "ayah_end": 21,
+      "recovered_text": "وَأُخْرَىٰ لَمْ تَقْدِرُوا عَلَيْهَا قَدْ أَحَاطَ اللَّهُ بِهَا",
+      "candidates": [
+        {
+          "surah": 48,
+          "ayah_start": 21,
+          "ayah_end": 21,
+          "text": "وَأُخْرَىٰ لَمْ تَقْدِرُوا عَلَيْهَا قَدْ أَحَاطَ اللَّهُ بِهَا",
+          "n_occurrences": 1,
+          "phoneme_distance": 1
+        }
+      ],
+      "n_locations": 1,
+      "ambiguous_text": false,
+      "phoneme_distance": 1,
+      "phoneme_exact": false,
+      "dataset_agrees": true,
+      "override": null,
+      "skeleton_text": ""
+    },
+    {
+      "prompt": "00067",
+      "n_words": 5,
+      "n_clips": 14,
+      "surah": 2,
+      "ayah_start": 102,
+      "ayah_end": 102,
+      "recovered_text": "إِنَّمَا نَحْنُ فِتْنَةٌ فَلَا تَكْفُرْ",
+      "candidates": [
+        {
+          "surah": 2,
+          "ayah_start": 102,
+          "ayah_end": 102,
+          "text": "إِنَّمَا نَحْنُ فِتْنَةٌ فَلَا تَكْفُرْ",
+          "n_occurrences": 1,
+          "phoneme_distance": 0
+        }
+      ],
+      "n_locations": 1,
+      "ambiguous_text": false,
+      "phoneme_distance": 0,
+      "phoneme_exact": true,
+      "dataset_agrees": true,
+      "override": null,
+      "skeleton_text": ""
+    },
+    {
+      "prompt": "00068",
+      "n_words": 3,
+      "n_clips": 17,
+      "surah": 53,
+      "ayah_start": 60,
+      "ayah_end": 60,
+      "recovered_text": "وَتَضْحَكُونَ وَلَا تَبْكُونَ",
+      "candidates": [
+        {
+          "surah": 53,
+          "ayah_start": 60,
+          "ayah_end": 60,
+          "text": "وَتَضْحَكُونَ وَلَا تَبْكُونَ",
+          "n_occurrences": 1,
+          "phoneme_distance": 0
+        }
+      ],
+      "n_locations": 1,
+      "ambiguous_text": false,
+      "phoneme_distance": 0,
+      "phoneme_exact": true,
+      "dataset_agrees": true,
+      "override": null,
+      "skeleton_text": ""
+    },
+    {
+      "prompt": "00069",
+      "n_words": 9,
+      "n_clips": 14,
+      "surah": 17,
+      "ayah_start": 74,
+      "ayah_end": 74,
+      "recovered_text": "لَوْلَا أَن ثَبَّتْنَاكَ لَقَدْ كِدتَّ تَرْكَنُ إِلَيْهِمْ شَيْئًا قَلِيلًا",
+      "candidates": [
+        {
+          "surah": 17,
+          "ayah_start": 74,
+          "ayah_end": 74,
+          "text": "وَلَوْلَا أَن ثَبَّتْنَاكَ لَقَدْ كِدتَّ تَرْكَنُ إِلَيْهِمْ شَيْئًا قَلِيلًا",
+          "n_occurrences": 1,
+          "phoneme_distance": 3
+        }
+      ],
+      "n_locations": 1,
+      "ambiguous_text": false,
+      "phoneme_distance": 1,
+      "phoneme_exact": false,
+      "dataset_agrees": false,
+      "override": {
+        "text": "لَوْلَا أَن ثَبَّتْنَاكَ لَقَدْ كِدتَّ تَرْكَنُ إِلَيْهِمْ شَيْئًا قَلِيلًا",
+        "heard": "the leading 'wa' is in the text but not in the audio",
+        "why": "the reference phonemes begin 'l a w l aa' with no wa — the only override that REMOVES a word. d 3 -> 1.",
+        "relocated": false
+      },
+      "skeleton_text": "وَلَوْلَا أَن ثَبَّتْنَاكَ لَقَدْ كِدتَّ تَرْكَنُ إِلَيْهِمْ شَيْئًا قَلِيلًا"
+    },
+    {
+      "prompt": "00070",
+      "n_words": 6,
+      "n_clips": 21,
+      "surah": 18,
+      "ayah_start": 90,
+      "ayah_end": 90,
+      "recovered_text": "وَجَدَهَا تَطْلُعُ عَلَىٰ قَوْمٍ لَّمْ نَجْعَل",
+      "candidates": [
+        {
+          "surah": 18,
+          "ayah_start": 90,
+          "ayah_end": 90,
+          "text": "وَجَدَهَا تَطْلُعُ عَلَىٰ قَوْمٍ لَّمْ نَجْعَل",
+          "n_occurrences": 1,
+          "phoneme_distance": 0
+        }
+      ],
+      "n_locations": 1,
+      "ambiguous_text": false,
+      "phoneme_distance": 0,
+      "phoneme_exact": true,
+      "dataset_agrees": true,
+      "override": null,
+      "skeleton_text": ""
+    },
+    {
+      "prompt": "00071",
+      "n_words": 5,
+      "n_clips": 14,
+      "surah": 113,
+      "ayah_start": 4,
+      "ayah_end": 4,
+      "recovered_text": "وَمِن شَرِّ النَّفَّاثَاتِ فِي الْعُقَدِ",
+      "candidates": [
+        {
+          "surah": 113,
+          "ayah_start": 4,
+          "ayah_end": 4,
+          "text": "وَمِن شَرِّ النَّفَّاثَاتِ فِي الْعُقَدِ",
+          "n_occurrences": 1,
+          "phoneme_distance": 0
+        }
+      ],
+      "n_locations": 1,
+      "ambiguous_text": false,
+      "phoneme_distance": 0,
+      "phoneme_exact": true,
+      "dataset_agrees": true,
+      "override": null,
+      "skeleton_text": ""
+    },
+    {
+      "prompt": "00072",
+      "n_words": 3,
+      "n_clips": 15,
+      "surah": 2,
+      "ayah_start": 191,
+      "ayah_end": 191,
+      "recovered_text": "وَاقْتُلُوهُمْ حَيْثُ ثَقِفْتُمُوهُمْ",
+      "candidates": [
+        {
+          "surah": 2,
+          "ayah_start": 191,
+          "ayah_end": 191,
+          "text": "وَاقْتُلُوهُمْ حَيْثُ ثَقِفْتُمُوهُمْ",
+          "n_occurrences": 2,
+          "phoneme_distance": 0
+        }
+      ],
+      "n_locations": 2,
+      "ambiguous_text": false,
+      "phoneme_distance": 0,
+      "phoneme_exact": true,
+      "dataset_agrees": true,
+      "override": null,
+      "skeleton_text": ""
+    },
+    {
+      "prompt": "00073",
+      "n_words": 5,
+      "n_clips": 17,
+      "surah": 2,
+      "ayah_start": 144,
+      "ayah_end": 144,
+      "recovered_text": "فَوَلِّ وَجْهَكَ شَطْرَ الْمَسْجِدِ الْحَرَامِ",
+      "candidates": [
+        {
+          "surah": 2,
+          "ayah_start": 144,
+          "ayah_end": 144,
+          "text": "فَوَلِّ وَجْهَكَ شَطْرَ الْمَسْجِدِ الْحَرَامِ",
+          "n_occurrences": 3,
+          "phoneme_distance": 0
+        }
+      ],
+      "n_locations": 3,
+      "ambiguous_text": false,
+      "phoneme_distance": 0,
+      "phoneme_exact": true,
+      "dataset_agrees": true,
+      "override": null,
+      "skeleton_text": ""
+    },
+    {
+      "prompt": "00074",
+      "n_words": 3,
+      "n_clips": 14,
+      "surah": 2,
+      "ayah_start": 235,
+      "ayah_end": 235,
+      "recovered_text": "وَلَا جُنَاحَ عَلَيْكُمْ",
+      "candidates": [
+        {
+          "surah": 2,
+          "ayah_start": 235,
+          "ayah_end": 235,
+          "text": "وَلَا جُنَاحَ عَلَيْكُمْ",
+          "n_occurrences": 4,
+          "phoneme_distance": 1
+        }
+      ],
+      "n_locations": 4,
+      "ambiguous_text": false,
+      "phoneme_distance": 1,
+      "phoneme_exact": false,
+      "dataset_agrees": true,
+      "override": null,
+      "skeleton_text": ""
+    },
+    {
+      "prompt": "00075",
+      "n_words": 4,
+      "n_clips": 22,
+      "surah": 43,
+      "ayah_start": 89,
+      "ayah_end": 89,
+      "recovered_text": "فَاصْفَحْ عَنْهُمْ وَقُلْ سَلَامٌ",
+      "candidates": [
+        {
+          "surah": 43,
+          "ayah_start": 89,
+          "ayah_end": 89,
+          "text": "فَاصْفَحْ عَنْهُمْ وَقُلْ سَلَامٌ",
+          "n_occurrences": 1,
+          "phoneme_distance": 1
+        }
+      ],
+      "n_locations": 1,
+      "ambiguous_text": false,
+      "phoneme_distance": 1,
+      "phoneme_exact": false,
+      "dataset_agrees": true,
+      "override": null,
+      "skeleton_text": ""
+    },
+    {
+      "prompt": "00076",
+      "n_words": 4,
+      "n_clips": 10,
+      "surah": 79,
+      "ayah_start": 19,
+      "ayah_end": 19,
+      "recovered_text": "وَأَهْدِيَكَ إِلَىٰ رَبِّكَ فَتَخْشَىٰ",
+      "candidates": [
+        {
+          "surah": 79,
+          "ayah_start": 19,
+          "ayah_end": 19,
+          "text": "وَأَهْدِيَكَ إِلَىٰ رَبِّكَ فَتَخْشَىٰ",
+          "n_occurrences": 1,
+          "phoneme_distance": 0
+        }
+      ],
+      "n_locations": 1,
+      "ambiguous_text": false,
+      "phoneme_distance": 0,
+      "phoneme_exact": true,
+      "dataset_agrees": true,
+      "override": null,
+      "skeleton_text": ""
+    },
+    {
+      "prompt": "00077",
+      "n_words": 5,
+      "n_clips": 21,
+      "surah": 54,
+      "ayah_start": 4,
+      "ayah_end": 4,
+      "recovered_text": "مِّنَ الْأَنبَاءِ مَا فِيهِ مُزْدَجَرٌ",
+      "candidates": [
+        {
+          "surah": 54,
+          "ayah_start": 4,
+          "ayah_end": 4,
+          "text": "مِّنَ الْأَنبَاءِ مَا فِيهِ مُزْدَجَرٌ",
+          "n_occurrences": 1,
+          "phoneme_distance": 1
+        }
+      ],
+      "n_locations": 1,
+      "ambiguous_text": false,
+      "phoneme_distance": 1,
+      "phoneme_exact": false,
+      "dataset_agrees": true,
+      "override": null,
+      "skeleton_text": ""
+    },
+    {
+      "prompt": "00078",
+      "n_words": 5,
+      "n_clips": 16,
+      "surah": 11,
+      "ayah_start": 31,
+      "ayah_end": 31,
+      "recovered_text": "وَلَا أَقُولُ لِلَّذِينَ تَزْدَرِي أَعْيُنُكُمْ",
+      "candidates": [
+        {
+          "surah": 11,
+          "ayah_start": 31,
+          "ayah_end": 31,
+          "text": "وَلَا أَقُولُ لِلَّذِينَ تَزْدَرِي أَعْيُنُكُمْ",
+          "n_occurrences": 1,
+          "phoneme_distance": 0
+        }
+      ],
+      "n_locations": 1,
+      "ambiguous_text": false,
+      "phoneme_distance": 0,
+      "phoneme_exact": true,
+      "dataset_agrees": true,
+      "override": null,
+      "skeleton_text": ""
+    },
+    {
+      "prompt": "00079",
+      "n_words": 3,
+      "n_clips": 14,
+      "surah": 54,
+      "ayah_start": 15,
+      "ayah_end": 15,
+      "recovered_text": "فَهَلْ مِن مُّدَّكِرٍ",
+      "candidates": [
+        {
+          "surah": 54,
+          "ayah_start": 15,
+          "ayah_end": 15,
+          "text": "فَهَلْ مِن مُّدَّكِرٍ",
+          "n_occurrences": 6,
+          "phoneme_distance": 0
+        }
+      ],
+      "n_locations": 6,
+      "ambiguous_text": false,
+      "phoneme_distance": 0,
+      "phoneme_exact": true,
+      "dataset_agrees": true,
+      "override": null,
+      "skeleton_text": ""
+    },
+    {
+      "prompt": "00080",
+      "n_words": 4,
+      "n_clips": 18,
+      "surah": 7,
+      "ayah_start": 142,
+      "ayah_end": 142,
+      "recovered_text": "وَوَاعَدْنَا مُوسَىٰ ثَلَاثِينَ لَيْلَةً",
+      "candidates": [
+        {
+          "surah": 7,
+          "ayah_start": 142,
+          "ayah_end": 142,
+          "text": "وَوَاعَدْنَا مُوسَىٰ ثَلَاثِينَ لَيْلَةً",
+          "n_occurrences": 1,
+          "phoneme_distance": 1
+        }
+      ],
+      "n_locations": 1,
+      "ambiguous_text": false,
+      "phoneme_distance": 1,
+      "phoneme_exact": false,
+      "dataset_agrees": true,
+      "override": null,
+      "skeleton_text": ""
+    },
+    {
+      "prompt": "00081",
+      "n_words": 3,
+      "n_clips": 12,
+      "surah": 65,
+      "ayah_start": 9,
+      "ayah_end": 9,
+      "recovered_text": "فَذَاقَتْ وَبَالَ أَمْرِهَا",
+      "candidates": [
+        {
+          "surah": 65,
+          "ayah_start": 9,
+          "ayah_end": 9,
+          "text": "فَذَاقَتْ وَبَالَ أَمْرِهَا",
+          "n_occurrences": 1,
+          "phoneme_distance": 0
+        }
+      ],
+      "n_locations": 1,
+      "ambiguous_text": false,
+      "phoneme_distance": 0,
+      "phoneme_exact": true,
+      "dataset_agrees": true,
+      "override": null,
+      "skeleton_text": ""
+    },
+    {
+      "prompt": "00082",
+      "n_words": 5,
+      "n_clips": 19,
+      "surah": 12,
+      "ayah_start": 79,
+      "ayah_end": 79,
+      "recovered_text": "قَالَ مَعَاذَ اللَّهِ أَن نَّأْخُذَ",
+      "candidates": [
+        {
+          "surah": 12,
+          "ayah_start": 79,
+          "ayah_end": 79,
+          "text": "قَالَ مَعَاذَ اللَّهِ أَن نَّأْخُذَ",
+          "n_occurrences": 1,
+          "phoneme_distance": 0
+        }
+      ],
+      "n_locations": 1,
+      "ambiguous_text": false,
+      "phoneme_distance": 0,
+      "phoneme_exact": true,
+      "dataset_agrees": true,
+      "override": null,
+      "skeleton_text": ""
+    },
+    {
+      "prompt": "00083",
+      "n_words": 3,
+      "n_clips": 17,
+      "surah": 26,
+      "ayah_start": 173,
+      "ayah_end": 173,
+      "recovered_text": "فَسَاءَ مَطَرُ الْمُنذَرِينَ",
+      "candidates": [
+        {
+          "surah": 26,
+          "ayah_start": 173,
+          "ayah_end": 173,
+          "text": "فَسَاءَ مَطَرُ الْمُنذَرِينَ",
+          "n_occurrences": 2,
+          "phoneme_distance": 0
+        }
+      ],
+      "n_locations": 2,
+      "ambiguous_text": false,
+      "phoneme_distance": 0,
+      "phoneme_exact": true,
+      "dataset_agrees": true,
+      "override": null,
+      "skeleton_text": ""
+    },
+    {
+      "prompt": "00084",
+      "n_words": 4,
+      "n_clips": 16,
+      "surah": 44,
+      "ayah_start": 20,
+      "ayah_end": 20,
+      "recovered_text": "وَإِنِّي عُذْتُ بِرَبِّي وَرَبِّكُمْ",
+      "candidates": [
+        {
+          "surah": 44,
+          "ayah_start": 20,
+          "ayah_end": 20,
+          "text": "وَإِنِّي عُذْتُ بِرَبِّي وَرَبِّكُمْ",
+          "n_occurrences": 1,
+          "phoneme_distance": 1
+        }
+      ],
+      "n_locations": 1,
+      "ambiguous_text": false,
+      "phoneme_distance": 1,
+      "phoneme_exact": false,
+      "dataset_agrees": true,
+      "override": null,
+      "skeleton_text": ""
+    },
+    {
+      "prompt": "00085",
+      "n_words": 5,
+      "n_clips": 13,
+      "surah": 7,
+      "ayah_start": 203,
+      "ayah_end": 203,
+      "recovered_text": "مَا يُوحَىٰ إِلَيَّ مِن رَّبِّي",
+      "candidates": [
+        {
+          "surah": 7,
+          "ayah_start": 203,
+          "ayah_end": 203,
+          "text": "مَا يُوحَىٰ إِلَيَّ مِن رَّبِّي",
+          "n_occurrences": 1,
+          "phoneme_distance": 1
+        }
+      ],
+      "n_locations": 1,
+      "ambiguous_text": false,
+      "phoneme_distance": 1,
+      "phoneme_exact": false,
+      "dataset_agrees": true,
+      "override": null,
+      "skeleton_text": ""
+    },
+    {
+      "prompt": "00086",
+      "n_words": 4,
+      "n_clips": 20,
+      "surah": 43,
+      "ayah_start": 35,
+      "ayah_end": 35,
+      "recovered_text": "وَزُخْرُفًا وَإِن كُلُّ ذَٰلِكَ",
+      "candidates": [
+        {
+          "surah": 43,
+          "ayah_start": 35,
+          "ayah_end": 35,
+          "text": "وَزُخْرُفًا وَإِن كُلُّ ذَٰلِكَ",
+          "n_occurrences": 1,
+          "phoneme_distance": 0
+        }
+      ],
+      "n_locations": 1,
+      "ambiguous_text": false,
+      "phoneme_distance": 0,
+      "phoneme_exact": true,
+      "dataset_agrees": true,
+      "override": null,
+      "skeleton_text": ""
+    },
+    {
+      "prompt": "00087",
+      "n_words": 2,
+      "n_clips": 7,
+      "surah": 3,
+      "ayah_start": 37,
+      "ayah_end": 37,
+      "recovered_text": "رِزْقًا قَالَ",
+      "candidates": [
+        {
+          "surah": 3,
+          "ayah_start": 37,
+          "ayah_end": 37,
+          "text": "رِزْقًا قَالَ",
+          "n_occurrences": 1,
+          "phoneme_distance": 0
+        }
+      ],
+      "n_locations": 1,
+      "ambiguous_text": false,
+      "phoneme_distance": 0,
+      "phoneme_exact": true,
+      "dataset_agrees": true,
+      "override": {
+        "text": null,
+        "heard": "an extra initial عِندَهَا",
+        "why": "Deliberately NOT added, on three independent grounds. (1) The recovered text is already d=0 against the reference; adding عِندَهَا raises it to 7. (2) All 7 annotation_phoneme_strings are 10-11 phones beginning 'r i s q A n aa' — the benchmark's own annotators, hearing the same clips, did not transcribe it either. (3) recovered_text has to stay in the frame reference_phoneme_string defines, because that is the frame the annotation labels are aligned to; adding a 7-phone word would shift every label for this prompt. The audio really does contain it, and that is a property of the clips, not an error in the text."
+      },
+      "skeleton_text": ""
+    },
+    {
+      "prompt": "00088",
+      "n_words": 5,
+      "n_clips": 13,
+      "surah": 44,
+      "ayah_start": 11,
+      "ayah_end": 11,
+      "recovered_text": "يَغْشَى النَّاسَ هَٰذَا عَذَابٌ أَلِيمٌ",
+      "candidates": [],
+      "n_locations": 1,
+      "ambiguous_text": false,
+      "phoneme_distance": 3,
+      "phoneme_exact": false,
+      "dataset_agrees": false,
+      "override": {
+        "text": "يَغْشَى النَّاسَ هَٰذَا عَذَابٌ أَلِيمٌ",
+        "heard": "an extra word at the start",
+        "why": "the reference begins 'x $ aa nn aa s a' — a truncated يَغْشَى, with خ for غ. d is unchanged at 3 because that truncation and typo are in the benchmark, not in the recovery; the audio is what settles the span.",
+        "relocated": true
+      },
+      "skeleton_text": "النَّاسَ هَٰذَا عَذَابٌ أَلِيمٌ"
+    },
+    {
+      "prompt": "00089",
+      "n_words": 5,
+      "n_clips": 23,
+      "surah": 18,
+      "ayah_start": 32,
+      "ayah_end": 32,
+      "recovered_text": "وَحَفَفْنَاهُمَا بِنَخْلٍ وَجَعَلْنَا بَيْنَهُمَا زَرْعًا",
+      "candidates": [
+        {
+          "surah": 18,
+          "ayah_start": 32,
+          "ayah_end": 32,
+          "text": "وَحَفَفْنَاهُمَا بِنَخْلٍ وَجَعَلْنَا بَيْنَهُمَا زَرْعًا",
+          "n_occurrences": 1,
+          "phoneme_distance": 0
+        }
+      ],
+      "n_locations": 1,
+      "ambiguous_text": false,
+      "phoneme_distance": 0,
+      "phoneme_exact": true,
+      "dataset_agrees": true,
+      "override": null,
+      "skeleton_text": ""
+    },
+    {
+      "prompt": "00090",
+      "n_words": 3,
+      "n_clips": 17,
+      "surah": 25,
+      "ayah_start": 7,
+      "ayah_end": 7,
+      "recovered_text": "وَيَمْشِي فِي الْأَسْوَاقِ",
+      "candidates": [
+        {
+          "surah": 25,
+          "ayah_start": 7,
+          "ayah_end": 7,
+          "text": "وَيَمْشِي فِي الْأَسْوَاقِ",
+          "n_occurrences": 1,
+          "phoneme_distance": 0
+        }
+      ],
+      "n_locations": 1,
+      "ambiguous_text": false,
+      "phoneme_distance": 0,
+      "phoneme_exact": true,
+      "dataset_agrees": true,
+      "override": null,
+      "skeleton_text": ""
+    },
+    {
+      "prompt": "00091",
+      "n_words": 5,
+      "n_clips": 15,
+      "surah": 2,
+      "ayah_start": 144,
+      "ayah_end": 144,
+      "recovered_text": "فَوَلِّ وَجْهَكَ شَطْرَ الْمَسْجِدِ الْحَرَامِ",
+      "candidates": [
+        {
+          "surah": 2,
+          "ayah_start": 144,
+          "ayah_end": 144,
+          "text": "فَوَلِّ وَجْهَكَ شَطْرَ الْمَسْجِدِ الْحَرَامِ",
+          "n_occurrences": 3,
+          "phoneme_distance": 0
+        }
+      ],
+      "n_locations": 3,
+      "ambiguous_text": false,
+      "phoneme_distance": 0,
+      "phoneme_exact": true,
+      "dataset_agrees": true,
+      "override": null,
+      "skeleton_text": ""
+    },
+    {
+      "prompt": "00092",
+      "n_words": 10,
+      "n_clips": 20,
+      "surah": 7,
+      "ayah_start": 99,
+      "ayah_end": 99,
+      "recovered_text": "أَفَأَمِنُوا مَكْرَ اللَّهِ فَلَا يَأْمَنُ مَكْرَ اللَّهِ إِلَّا الْقَوْمُ الْخَاسِرُونَ",
+      "candidates": [
+        {
+          "surah": 7,
+          "ayah_start": 99,
+          "ayah_end": 99,
+          "text": "أَفَأَمِنُوا مَكْرَ اللَّهِ فَلَا يَأْمَنُ مَكْرَ اللَّهِ إِلَّا الْقَوْمُ الْخَاسِرُونَ",
+          "n_occurrences": 1,
+          "phoneme_distance": 5
+        }
+      ],
+      "n_locations": 1,
+      "ambiguous_text": false,
+      "phoneme_distance": 5,
+      "phoneme_exact": false,
+      "dataset_agrees": true,
+      "override": null,
+      "skeleton_text": ""
+    },
+    {
+      "prompt": "00093",
+      "n_words": 9,
+      "n_clips": 27,
+      "surah": 2,
+      "ayah_start": 256,
+      "ayah_end": 256,
+      "recovered_text": "لَا إِكْرَاهَ فِي الدِّينِ قَد تَّبَيَّنَ الرُّشْدُ مِنَ الْغَيِّ",
+      "candidates": [
+        {
+          "surah": 2,
+          "ayah_start": 256,
+          "ayah_end": 256,
+          "text": "لَا إِكْرَاهَ فِي الدِّينِ قَد تَّبَيَّنَ الرُّشْدُ مِنَ الْغَيِّ",
+          "n_occurrences": 1,
+          "phoneme_distance": 1
+        }
+      ],
+      "n_locations": 1,
+      "ambiguous_text": false,
+      "phoneme_distance": 1,
+      "phoneme_exact": false,
+      "dataset_agrees": true,
+      "override": null,
+      "skeleton_text": ""
+    },
+    {
+      "prompt": "00094",
+      "n_words": 6,
+      "n_clips": 15,
+      "surah": 2,
+      "ayah_start": 148,
+      "ayah_end": 148,
+      "recovered_text": "وَلِكُلٍّ وِجْهَةٌ هُوَ مُوَلِّيهَا فَاسْتَبِقُوا الْخَيْرَاتِ",
+      "candidates": [
+        {
+          "surah": 2,
+          "ayah_start": 148,
+          "ayah_end": 148,
+          "text": "وَلِكُلٍّ وِجْهَةٌ هُوَ مُوَلِّيهَا فَاسْتَبِقُوا الْخَيْرَاتِ",
+          "n_occurrences": 1,
+          "phoneme_distance": 6
+        }
+      ],
+      "n_locations": 1,
+      "ambiguous_text": false,
+      "phoneme_distance": 6,
+      "phoneme_exact": false,
+      "dataset_agrees": true,
+      "override": null,
+      "skeleton_text": ""
+    },
+    {
+      "prompt": "00095",
+      "n_words": 4,
+      "n_clips": 17,
+      "surah": 4,
+      "ayah_start": 37,
+      "ayah_end": 37,
+      "recovered_text": "وَأَعْتَدْنَا لِلْكَافِرِينَ عَذَابًا مُّهِينًا",
+      "candidates": [
+        {
+          "surah": 4,
+          "ayah_start": 37,
+          "ayah_end": 37,
+          "text": "وَأَعْتَدْنَا لِلْكَافِرِينَ عَذَابًا مُّهِينًا",
+          "n_occurrences": 2,
+          "phoneme_distance": 0
+        }
+      ],
+      "n_locations": 2,
+      "ambiguous_text": false,
+      "phoneme_distance": 0,
+      "phoneme_exact": true,
+      "dataset_agrees": true,
+      "override": null,
+      "skeleton_text": ""
+    },
+    {
+      "prompt": "00096",
+      "n_words": 5,
+      "n_clips": 17,
+      "surah": 10,
+      "ayah_start": 4,
+      "ayah_end": 4,
+      "recovered_text": "لِيَجْزِيَ الَّذِينَ آمَنُوا وَعَمِلُوا الصَّالِحَاتِ",
+      "candidates": [
+        {
+          "surah": 10,
+          "ayah_start": 4,
+          "ayah_end": 4,
+          "text": "لِيَجْزِيَ الَّذِينَ آمَنُوا وَعَمِلُوا الصَّالِحَاتِ",
+          "n_occurrences": 2,
+          "phoneme_distance": 0
+        },
+        {
+          "surah": 34,
+          "ayah_start": 4,
+          "ayah_end": 4,
+          "text": "لِّيَجْزِيَ الَّذِينَ آمَنُوا وَعَمِلُوا الصَّالِحَاتِ",
+          "n_occurrences": 1,
+          "phoneme_distance": 1
+        }
+      ],
+      "n_locations": 3,
+      "ambiguous_text": true,
+      "phoneme_distance": 0,
+      "phoneme_exact": true,
+      "dataset_agrees": true,
+      "override": null,
+      "skeleton_text": ""
+    },
+    {
+      "prompt": "00097",
+      "n_words": 1,
+      "n_clips": 18,
+      "surah": 1,
+      "ayah_start": 1,
+      "ayah_end": 1,
+      "recovered_text": "الرَّحْمَٰنِ",
+      "candidates": [
+        {
+          "surah": 1,
+          "ayah_start": 1,
+          "ayah_end": 1,
+          "text": "الرَّحْمَٰنِ",
+          "n_occurrences": 21,
+          "phoneme_distance": 1
+        },
+        {
+          "surah": 2,
+          "ayah_start": 163,
+          "ayah_end": 163,
+          "text": "الرَّحْمَٰنُ",
+          "n_occurrences": 21,
+          "phoneme_distance": 2
+        },
+        {
+          "surah": 17,
+          "ayah_start": 110,
+          "ayah_end": 110,
+          "text": "الرَّحْمَٰنَ",
+          "n_occurrences": 3,
+          "phoneme_distance": 2
+        }
+      ],
+      "n_locations": 45,
+      "ambiguous_text": true,
+      "phoneme_distance": 1,
+      "phoneme_exact": false,
+      "dataset_agrees": true,
+      "override": null,
+      "skeleton_text": ""
+    }
+  ]
+}
