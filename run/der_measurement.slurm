@@ -4,7 +4,7 @@
 #SBATCH --error=run/logs/error_logs/error_der_measurement_%j.log
 #SBATCH -J der_measurement
 #SBATCH -p NvidiaAll
-#SBATCH -t 04:00:00
+#SBATCH -t 12:00:00
 
 # Week-05 exit criterion 2, both clauses, in one job.
 #
@@ -44,16 +44,33 @@ nvidia-smi || echo "no nvidia-smi -- stage A/B will fall back to CPU and be slow
 uv sync --all-groups
 
 echo
-echo "=== execution providers actually available ==="
-# Not a gate: a CPU fallback is correct, only slow. Logged so that a
-# four-hour run and a twenty-minute run can be told apart after the fact.
-uv run python -c "
+echo "=== which execution provider a session actually SELECTS ==="
+# Job 224460's version of this printed get_available_providers()[0], which is
+# ORT's static priority order, not a choice -- so it reported TensorRT while
+# telling us nothing about what ran. This builds a real session on a real
+# model and asks it, which is the only way to know.
+#
+# Why it matters here rather than being trivia: catt-eo finished 6,236 verses
+# while catt-ed blew the 4h wall, and that asymmetry is what a TensorRT
+# problem looks like. EO is encoder-only, so few distinct input shapes. ED
+# decodes autoregressively, so the sequence grows by one every step and
+# TensorRT rebuilds its engine per shape -- thousands of builds. If the line
+# below says Tensorrt, that is the first thing to suspect.
+uv run python - <<'PY'
+from pathlib import Path
+
+import catt_tashkeel
 import onnxruntime as ort
-print('onnxruntime', ort.__version__)
-print('available  ', ort.get_available_providers())
-import onnxruntime.capi._pybind_state as C
-print('device     ', C.get_available_providers()[0])
-"
+
+print("onnxruntime", ort.__version__)
+print("available  ", ort.get_available_providers())
+
+models = sorted(Path(catt_tashkeel.__file__).parent.glob("onnx_models/**/*.onnx"))
+if models:
+    print("SELECTED   ", ort.InferenceSession(str(models[0])).get_providers())
+else:
+    print("SELECTED    (models not downloaded yet; this prints on the next run)")
+PY
 
 # The two corpora are gitignored (CC-BY-SA-4.0 share-alike for WikiNews, a
 # copyright block for Tanzil), so fail early and loudly rather than halfway
@@ -64,13 +81,26 @@ done
 
 echo
 echo "=== Stage A: calibration against CATT Table 5 ==="
+# Skipped if the artifact is already there. Job 224460 completed stage A and
+# then died in stage B at the wall, and stage A is the expensive half of the
+# WikiNews work (catt-ed decoding 558 long news segments), so re-running it
+# would burn the same hours to recompute a result we already have. Delete
+# run/wikinews_der.json to force it.
+#
 # --fetch-benchmark needs network; drop it if the compute nodes are offline
 # and copy run/catt_benchmark/ over from the login node instead.
-uv run python -u scripts/calibrate_der.py --fetch-benchmark --write
+if [ -s run/wikinews_der.json ]; then
+  echo "run/wikinews_der.json exists -- skipping. Leg A reproduced all 16"
+  echo "Table-5 figures exactly in job 224460; see insights/week-05.md."
+else
+  uv run python -u scripts/calibrate_der.py --fetch-benchmark --write
+fi
 
 echo
 echo "=== Stage B: DER on gold Qur'anic text ==="
+date
 uv run python -u scripts/measure_quranic_der.py --write
+date
 
 echo
 echo "=== done; artifacts ==="

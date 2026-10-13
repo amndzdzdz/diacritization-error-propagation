@@ -70,6 +70,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import time
 from pathlib import Path
 
 from arabic_mdd.data.normalize import DAGGER_ALEF, strip_diacritics
@@ -218,11 +219,23 @@ def main() -> None:
             "sets": {},
         }
         for key in ("corpus", "quranmb_subset"):
+            # Timed per tool per set, and flushed, because job 224460 hit its
+            # wall inside catt-ed and the log could not say whether it was
+            # nearly done or nowhere near. A rate here turns the next timeout
+            # into a measurement.
+            started = time.monotonic()
             batch = diacritize_long(tool, inputs[key])
+            elapsed = time.monotonic() - started
+            print(
+                f"  {'':<22} diacritized {len(batch.texts)} in {elapsed:.1f}s "
+                f"({elapsed / max(len(batch.texts), 1):.3f} s/item)",
+                flush=True,
+            )
             for suffix in ("", "_no_dagger_alef"):
                 scored = _score_set(sets[key + suffix], batch.texts)
                 scored["references"] = len(sets[key + suffix])
                 scored["chunking"] = batch.report()
+                scored["diacritize_seconds"] = elapsed
                 results[name]["sets"][key + suffix] = scored
                 _print_set(key + suffix, scored)
             print(
