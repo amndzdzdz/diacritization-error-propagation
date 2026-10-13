@@ -55,6 +55,12 @@ run/quran_*.xml.local
 # Reading sheet for the verse-map verification pass: a pure rendering of
 # run/quranmb_verse_map.json (which IS tracked), regenerated on every run.
 run/quranmb_verse_map_sheet.html
+# CATT's own WikiNews benchmark files (abjadai/catt, their gold plus the four
+# recorded system outputs their Table 5 was computed from). Fetched by
+# scripts/calibrate_der.py --fetch-benchmark; third-party outputs, so not
+# vendored. Every sha256 is recorded in run/wikinews_der.json, which IS tracked
+# and is what makes the exact reproduction auditable without the files.
+run/catt_benchmark/
 # Qualification test: the withheld gold must never reach a candidate, and raw
 # human submissions are personal data. The blank test and the instruction
 # sheet ARE tracked -- they are what §4 of the week plan commits in advance.
