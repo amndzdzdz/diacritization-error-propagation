@@ -33,17 +33,36 @@ import unicodedata
 from collections.abc import Iterable
 from dataclasses import dataclass, field
 
-# Arabic combining marks: harakat + tanwin + shadda + sukun (U+064B-U+0652),
-# hamza/madda marks (U+0653-U+0655), superscript alef (U+0670), and the
-# Qur'anic annotation block (U+06D6-U+06ED).
-DIACRITICS: frozenset[str] = frozenset(
-    {chr(c) for c in range(0x064B, 0x0656)}
-    | {chr(0x0670)}
-    | {chr(c) for c in range(0x06D6, 0x06EE)}
+from arabic_mdd.data.normalize import (
+    DIACRITICS,
+    TATWEEL,
+    is_arabic_letter,
+    skeleton,
+    strip_diacritics,
 )
 
-# A letter-stretching glyph, not a diacritic, but stripped alongside them.
-TATWEEL = chr(0x0640)
+# Re-exported: this module is a sampling frame, and the three names above are
+# the normalization contract's (§4.1), promoted into `normalize` in week 5 so
+# that RQ1's stripping step and `metrics.der` share one implementation with the
+# draw. Imported here rather than redefined so the committed block stays a
+# function of the same bytes it was drawn with.
+__all__ = [
+    "BARE_RATE",
+    "DIACRITICS",
+    "EXCLUDING",
+    "MIN_WORDS",
+    "PRE_VOWELIZED_RATE",
+    "TATWEEL",
+    "Candidate",
+    "Pool",
+    "build_pool",
+    "classify",
+    "diacritization_rate",
+    "draw_block",
+    "is_arabic_letter",
+    "skeleton",
+    "strip_diacritics",
+]
 
 # §4.1's bands. A row at or above `PRE_VOWELIZED_RATE` is not usable as
 # undiacritized input; below `BARE_RATE` it is effectively bare, which is what
@@ -71,16 +90,6 @@ DIGITS = "digits"
 
 #: Flags that remove a row from the pool. Everything else is kept and reported.
 EXCLUDING: frozenset[str] = frozenset({NO_ARABIC, NO_TASHKEEL, PRE_VOWELIZED, DUPLICATE})
-
-
-def is_arabic_letter(ch: str) -> bool:
-    """True for Arabic *letters* — excludes diacritics, digits, punctuation."""
-    return ("\u0621" <= ch <= "\u063a") or ("\u0641" <= ch <= "\u064a") or ch in "\u0671\u0675"
-
-
-def strip_diacritics(text: str) -> str:
-    """Remove combining marks and tatweel, leaving the consonantal skeleton."""
-    return "".join(ch for ch in text if ch not in DIACRITICS and ch != TATWEEL)
 
 
 def diacritization_rate(text: str) -> float | None:
@@ -120,14 +129,6 @@ def _has_latin(text: str) -> bool:
 
 def _has_digits(text: str) -> bool:
     return any(ch.isdigit() for ch in text)
-
-
-def skeleton(text: str) -> str:
-    """Normalized, undiacritized, depunctuated form — the dedup key."""
-    stripped = strip_diacritics(unicodedata.normalize("NFC", text))
-    return " ".join(
-        "".join(ch for ch in stripped if not unicodedata.category(ch).startswith("P")).split()
-    )
 
 
 @dataclass(frozen=True)
@@ -218,8 +219,9 @@ def build_pool(rows: Iterable[tuple[str, str, str]]) -> Pool:
     """Classify `(id, sentence, tashkeel_sentence)` rows into a sampling frame.
 
     Deduplication is by consonantal skeleton. The sibling Qur'anic corpus
-    collapses 1,642 rows onto 96 distinct sentences, so this is a measured
-    hazard rather than a precaution — and on `Iqra_train` dev the duplicate
+    collapses 1,642 rows onto 98 prompt indices and only 96 distinct Arabic
+    strings, so this is a measured hazard rather than a precaution — and on
+    `Iqra_train` dev the duplicate
     groups are overwhelmingly *mixed*: the same verse once bare and once
     pre-vowelized. Keeping the lowest id would therefore discard the usable
     member of the pair half the time, so an otherwise-eligible row wins over an

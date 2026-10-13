@@ -71,6 +71,12 @@ def load_iqra_train(split: str = "train") -> list[TrainingExample]:
     import datasets
 
     ds = datasets.load_dataset(IQRA_TRAIN_DATASET, split=split)
+    # Text work never touches the waveform, but iterating rows decodes every
+    # column, and decoding `audio` needs a backend (torchcodec) this project
+    # does not install. Dropping the column first is the same guard
+    # `quranmb.load_ground_truth` applies for the same reason.
+    if "audio" in ds.column_names:
+        ds = ds.remove_columns("audio")
     return parse_iqra_train_rows(ds)
 
 

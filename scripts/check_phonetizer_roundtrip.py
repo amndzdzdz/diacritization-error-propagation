@@ -15,11 +15,17 @@ QuranMB is deduplicated before scoring. Its 1,642 rows contain far fewer
 distinct sentences, so a per-row percentage would be a weighted average over
 repeats rather than a measure of the phonetizer.
 
-Run with: uv run python scripts/check_phonetizer_roundtrip.py
+Run with:
+    uv run python scripts/check_phonetizer_roundtrip.py                 # dev
+    uv run python scripts/check_phonetizer_roundtrip.py --split train   # all 71,391 rows
+
+Week 4 validated the MSA arm on `dev` (2,588 rows) and explicitly flagged that
+`train` had not been run; `--split` closes that caveat (week-05 task 9).
 """
 
 from __future__ import annotations
 
+import argparse
 import unicodedata
 from collections import Counter
 from collections.abc import Sequence
@@ -102,12 +108,12 @@ def _report(
         print()
 
 
-def _check_msa_arm() -> None:
+def _check_msa_arm(split: str) -> None:
     # `tashkeel_sentence`, not `sentence`: the undiacritized column cannot be
     # phonetized at all, and it is not what `phoneme_ref` was derived from.
-    examples = load_iqra_train(split="dev")
+    examples = load_iqra_train(split=split)
     pairs = [(e.id, e.tashkeel_sentence, e.canonical) for e in examples]
-    _report("MSA arm -- Iqra_train dev", "pausal", pairs)
+    _report(f"MSA arm -- Iqra_train {split}", "pausal", pairs)
 
 
 def _check_quranic_arm() -> None:
@@ -135,8 +141,20 @@ def _check_quranic_arm() -> None:
 
 
 def main() -> None:
-    _check_msa_arm()
-    _check_quranic_arm()
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--split",
+        default="dev",
+        help="Iqra_train split for the MSA arm (default: dev). The Qur'anic arm has one split.",
+    )
+    parser.add_argument(
+        "--skip-quranic", action="store_true", help="MSA arm only (skips a network call)"
+    )
+    args = parser.parse_args()
+
+    _check_msa_arm(args.split)
+    if not args.skip_quranic:
+        _check_quranic_arm()
 
 
 if __name__ == "__main__":

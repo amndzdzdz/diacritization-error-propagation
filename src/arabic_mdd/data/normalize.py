@@ -56,6 +56,20 @@ DAGGER_ALEF = "\u0670"
 
 TATWEEL = "\u0640"
 
+#: Arabic combining marks: harakat + tanwin + shadda + sukun (U+064B-U+0652),
+#: hamza/madda marks (U+0653-U+0655), superscript alef (U+0670), and the
+#: Qur'anic annotation block (U+06D6-U+06ED).
+#:
+#: Deliberately wider than the marks a DER counts (see `metrics.der`): this set
+#: answers "what does the consonantal skeleton *not* include", which is a
+#: question about the writing system, whereas DER's is a question about what a
+#: diacritizer is responsible for predicting.
+DIACRITICS: frozenset[str] = frozenset(
+    {chr(c) for c in range(0x064B, 0x0656)}
+    | {DAGGER_ALEF}
+    | {chr(c) for c in range(0x06D6, 0x06EE)}
+)
+
 #: Persian/Urdu orthographic variants of letters MSA writes differently. These
 #: are the *same* letter, so mapping them is a spelling normalization, not a
 #: phonetic claim. Measured on `Iqra_train` train: farsi yeh 143 occurrences,
@@ -178,6 +192,44 @@ def normalize(text: str) -> Normalized:
         text=_WHITESPACE.sub(" ", "".join(out)).strip(),
         flags=frozenset(flags),
         dropped=tuple(dropped),
+    )
+
+
+def is_arabic_letter(ch: str) -> bool:
+    """True for Arabic *letters* — excludes diacritics, digits, punctuation.
+
+    Note that alef wasla (U+0671) counts as a letter here, which is correct for
+    "is this part of a word" but is the reason §9's Qur'anic falsifier bites:
+    the character survives `strip_diacritics`, so an Uthmani text's `ٱ` will
+    not match a bare `ا` in a skeleton comparison.
+    """
+    return ("\u0621" <= ch <= "\u063a") or ("\u0641" <= ch <= "\u064a") or ch in "\u0671\u0675"
+
+
+def strip_diacritics(text: str) -> str:
+    """Remove combining marks and tatweel, leaving the consonantal skeleton.
+
+    The `strip` of `phonetize(diacritizer(strip(text)))`. Pinned here rather
+    than in a caller because three unrelated consumers must agree on it
+    byte-for-byte: RQ1 builds a diacritizer's input with it, `metrics.der`
+    checks that the tool returned the same skeleton it was given, and
+    `msa_pool` dedups the sampling frame with it. Two implementations of this
+    would be two silently different corpora.
+    """
+    return "".join(ch for ch in text if ch not in DIACRITICS and ch != TATWEEL)
+
+
+def skeleton(text: str) -> str:
+    """Normalized, undiacritized, depunctuated form — the dedup and match key.
+
+    Stricter than `strip_diacritics`: also folds punctuation and collapses
+    whitespace, so it answers "are these the same words" rather than "what are
+    the letters". NFC runs *before* stripping, which is safe because stripping
+    removes exactly the marks NFC could have reordered.
+    """
+    stripped = strip_diacritics(unicodedata.normalize("NFC", text))
+    return " ".join(
+        "".join(ch for ch in stripped if not unicodedata.category(ch).startswith("P")).split()
     )
 
 

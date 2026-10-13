@@ -1,0 +1,198 @@
+{
+  "source": "IqraEval/Iqra_train",
+  "split": "dev",
+  "reference_column": "tashkeel_sentence",
+  "reference_is_gold": false,
+  "reference_note": "organizers' vowelizer output; week 4 measured it wrong on 43.6% of pilot utterances. These are agreement rates, not accuracy rates.",
+  "input": "strip_diacritics(tashkeel_sentence)",
+  "decision_rule": "week-05 task 8: choose on ce_all DER; ED only if it leads EO by more than 0.3 absolute, else EO",
+  "results": {
+    "catt-eo": {
+      "provenance": {
+        "tool": "catt",
+        "variant": "eo",
+        "package": "catt-tashkeel",
+        "version": "1.0.2"
+      },
+      "rows": 2588,
+      "variants": {
+        "ce_all": {
+          "der": 1.346163352062085,
+          "wer": 4.851621808143547,
+          "positions": 60691,
+          "position_errors": 817,
+          "words": 14490,
+          "word_errors": 703,
+          "skeleton_mismatch": 0
+        },
+        "noce_all": {
+          "der": 0.9956494448172117,
+          "wer": 2.671834983041462,
+          "positions": 46201,
+          "position_errors": 460,
+          "words": 14447,
+          "word_errors": 386,
+          "skeleton_mismatch": 0
+        },
+        "ce_markedonly": {
+          "der": 1.5804263770626887,
+          "wer": 4.551733664870839,
+          "positions": 47329,
+          "position_errors": 748,
+          "words": 14478,
+          "word_errors": 659,
+          "skeleton_mismatch": 0
+        },
+        "noce_markedonly": {
+          "der": 1.1455744083000108,
+          "wer": 2.535074315877205,
+          "positions": 37012,
+          "position_errors": 424,
+          "words": 14398,
+          "word_errors": 365,
+          "skeleton_mismatch": 0
+        }
+      }
+    },
+    "catt-ed": {
+      "provenance": {
+        "tool": "catt",
+        "variant": "ed",
+        "package": "catt-tashkeel",
+        "version": "1.0.2"
+      },
+      "rows": 2588,
+      "variants": {
+        "ce_all": {
+          "der": 5.902028307327281,
+          "wer": 18.923395445134574,
+          "positions": 60691,
+          "position_errors": 3582,
+          "words": 14490,
+          "word_errors": 2742,
+          "skeleton_mismatch": 0
+        },
+        "noce_all": {
+          "der": 4.352719638103071,
+          "wer": 10.85346438706998,
+          "positions": 46201,
+          "position_errors": 2011,
+          "words": 14447,
+          "word_errors": 1568,
+          "skeleton_mismatch": 0
+        },
+        "ce_markedonly": {
+          "der": 6.835132793847324,
+          "wer": 17.61292996270203,
+          "positions": 47329,
+          "position_errors": 3235,
+          "words": 14478,
+          "word_errors": 2550,
+          "skeleton_mismatch": 0
+        },
+        "noce_markedonly": {
+          "der": 4.80654922727764,
+          "wer": 9.813863036532851,
+          "positions": 37012,
+          "position_errors": 1779,
+          "words": 14398,
+          "word_errors": 1413,
+          "skeleton_mismatch": 0
+        }
+      }
+    },
+    "shakkala": {
+      "provenance": {
+        "tool": "shakkala",
+        "package": "shakkala",
+        "version": "1.7",
+        "worker_python": "3.10"
+      },
+      "rows": 2588,
+      "variants": {
+        "ce_all": {
+          "der": 10.485904005536241,
+          "wer": 31.65631469979296,
+          "positions": 60691,
+          "position_errors": 6364,
+          "words": 14490,
+          "word_errors": 4587,
+          "skeleton_mismatch": 0
+        },
+        "noce_all": {
+          "der": 8.5604207701132,
+          "wer": 20.267183498304146,
+          "positions": 46201,
+          "position_errors": 3955,
+          "words": 14447,
+          "word_errors": 2928,
+          "skeleton_mismatch": 0
+        },
+        "ce_markedonly": {
+          "der": 12.406769633839717,
+          "wer": 30.038679375604364,
+          "positions": 47329,
+          "position_errors": 5872,
+          "words": 14478,
+          "word_errors": 4349,
+          "skeleton_mismatch": 0
+        },
+        "noce_markedonly": {
+          "der": 9.92380849454231,
+          "wer": 19.46103625503542,
+          "positions": 37012,
+          "position_errors": 3673,
+          "words": 14398,
+          "word_errors": 2802,
+          "skeleton_mismatch": 0
+        }
+      }
+    },
+    "mishkal": {
+      "provenance": {
+        "tool": "mishkal",
+        "package": "mishkal",
+        "version": "0.4.1"
+      },
+      "rows": 2588,
+      "variants": {
+        "ce_all": {
+          "der": 23.034716844342654,
+          "wer": 62.16011042097998,
+          "positions": 60691,
+          "position_errors": 13980,
+          "words": 14490,
+          "word_errors": 9007,
+          "skeleton_mismatch": 0
+        },
+        "noce_all": {
+          "der": 16.94119174909634,
+          "wer": 35.28068111026511,
+          "positions": 46201,
+          "position_errors": 7827,
+          "words": 14447,
+          "word_errors": 5097,
+          "skeleton_mismatch": 0
+        },
+        "ce_markedonly": {
+          "der": 27.06163240296647,
+          "wer": 58.882442326288164,
+          "positions": 47329,
+          "position_errors": 12808,
+          "words": 14478,
+          "word_errors": 8525,
+          "skeleton_mismatch": 0
+        },
+        "noce_markedonly": {
+          "der": 19.074894628769048,
+          "wer": 32.65731351576608,
+          "positions": 37012,
+          "position_errors": 7060,
+          "words": 14398,
+          "word_errors": 4702,
+          "skeleton_mismatch": 0
+        }
+      }
+    }
+  }
+}

@@ -27,8 +27,9 @@ rather than the original assumption.
 | 3b. Zero-base-rate control on `Iqra_TTS` | FR **0.0066**. Bound is 91% of the disagreement, i.e. vacuous. **The proxy strategy is retired**; the listening pilot is the only arbiter (§3.3) |
 | 3c. Case-ending impact on QuranMB | The pausal/prescriptive mismatch is **in the published benchmark**: `C` 72.0% vowel-final vs `P` 32.7%, on both checkpoints; worth 5–10% of its FR. **§3.4.1 decided: option 4** (§3.4.1) |
 | 4. 50-utterance listening pilot | Base rate **2.3%** lenient / **4.7%** counting case (CI spans the 3% boundary, **unresolved**). The dominant finding is elsewhere: the **vowelizer is wrong on 43.6% of usable utterances**, ~10:1 against speaker error. Corpus contamination found: 10% Qur'anic, 20% pre-vowelized, 22% unusable (§3.3a) |
-| 5. Phonetizer round-trip | **PASS at 99.85%** on `Iqra_train` dev (2584/2588, TER 0.000048, **0** out-of-inventory tokens) — the week-4 exit criterion, met on the MSA arm. The Qur'anic arm's is **unscoreable**: its Arabic text was recovered *from* its own phoneme string, so the metric returns the uploader's residual. Consequence for §3.3b D1 |
+| 5. Phonetizer round-trip | **PASS at 99.85%** on `Iqra_train` dev (2584/2588, TER 0.000048, **0** out-of-inventory tokens) — the week-4 exit criterion, met on the MSA arm. **[3 Oct 2026] Also PASS on the full train split at 99.93%** (71,344/71,391, TER 0.0000), closing week 4's declared caveat; all 47 mismatches are one upstream phenomenon (shadda on a long-vowel carrier), 2 of which land in the drawn block. The Qur'anic arm's is **unscoreable**: its Arabic text was recovered *from* its own phoneme string, so the metric returns the uploader's residual. Consequence for §3.3b D1 |
 | 6. Scope decision | **D1: the arm drops `A`** — label-path only, text-only annotation. **D3: two annotators, qualified against gold** rather than by credential. **D4: 500 utterances, seeded draw from a 2,092/2,588-row pool** (80.8%), three exclusion predicates and five flag-only ones. D2/D5/D6 open (§3.3b) |
+| 7. RQ1 sweep on the MSA deployment corpus **[3 Oct 2026]** | Four tools × four DER variants, 2,588 rows: `catt-eo` **1.346**, `catt-ed` 5.902, `shakkala` 10.486, `mishkal` 23.035 (`ce_all`). **D7 decided: the anchor is `catt-eo`**, by a 4.556 margin, so the pre-committed 0.3 tie-break never applied (§3.2). Ordering reproduces §4's conservation tail exactly — a third independent instrument. **These are agreement rates, not accuracy**: the reference is the vowelizer's output. And `catt-eo` agreeing with it at 98.65% of positions while §3.3a found it wrong on 43.6% of utterances implies **the anchor and `C_auto` share error modes** — a new constraint on D5 (§3.3b) |
 | 6b. Sampling frame | The 8.4% "vowelizer dropped a word" rate was **punctuation**, not loss — the real rate is **3 rows (0.1%)**. The split is **not** duplicate-free: 2,588 rows → 2,542 skeletons, and 33 of 44 duplicate groups are the same verse bare *and* pre-vowelized, which made filter order worth 16 rows (§3.3b D4) |
 
 Two things changed the plan rather than just the numbers. The
@@ -237,6 +238,64 @@ unrelated instrument. Full write-up in `insights/week-04.md`.
 **Pre-register the protocol in writing before a single utterance is
 annotated.** This is not a formality — the anchoring measurement is only
 interpretable if the procedure was fixed in advance.
+
+#### D7 — DECIDED (3 Oct 2026): the anchor is **CATT encoder-only (`catt-eo`)**. **[MEASURED]**
+
+"Anchor on CATT" left one thing open: CATT ships two models. The rule was
+fixed in writing before the measurement (week-05 task 8) and is encoded in
+`scripts/measure_der.py` as `ED_MARGIN_REQUIRED = 0.3`: **choose on DER with
+case endings; ED wins only if it leads EO by more than 0.3 absolute, otherwise
+EO**, with week 4's phoneme-conservation tail as the declared tie-breaker.
+
+**The margin never came into play. EO leads by 4.556 absolute.**
+
+| tool | `ce_all` DER | `ce_all` WER | week-4 conservation tail |
+|---|---|---|---|
+| `catt-eo` | **1.346** | 4.85 | 0.08% |
+| `catt-ed` | 5.902 | 18.92 | 1.04% |
+| `shakkala` | 10.486 | 31.66 | 1.39% |
+| `mishkal` | 23.035 | 62.16 | 5.14% |
+
+`IqraEval/Iqra_train` dev, 2,588 rows, 60,691 positions, 14,490 words. Full
+four-variant table in `run/msa_der.json`; write-up in `insights/week-05.md`.
+Version pinned and checked at runtime: `catt-tashkeel==1.0.2`
+(`SUPPORTED_CATT_VERSION` in `src/arabic_mdd/diacritizers/catt.py`), and the
+pin is recorded per-tool in the artifact's `provenance`, not just in
+`pyproject.toml`.
+
+**These are agreement rates, not accuracy rates**, and the distinction is
+load-bearing enough that the artifact carries `reference_is_gold: false`. The
+only diacritized column `Iqra_train` offers before the MSA block is annotated
+is `tashkeel_sentence` — the *organizers' vowelizer's output*, which §3.3a
+measured wrong on 43.6% of pilot utterances. Calling 1.346 CATT's accuracy
+would invert the paper's own finding. RQ1-MSA proper is computed against
+`C_gold` under D5.
+
+**Why that does not weaken D7.** The decision asked which of two CATT models
+to put in front of an annotator, and a tool that disagrees with the
+organizers' pipeline on 4.85% of words is a better starting draft than one
+that disagrees on 18.92%, *regardless of which party is right at those
+positions* — the annotator's cost is the number of edits, and anchoring bias
+is measured separately by D4's blind crossover either way. The agreement/
+accuracy gap would only threaten D7 if it were asymmetric between EO and ED,
+and a 4.4× ratio is far too large for that to flip the ranking.
+
+**The ordering sanity check passes on three independent instruments.** The
+`ce_all` DER ordering `eo < ed < shakkala < mishkal` is *exactly* §4's
+length-conservation ordering (0.08 < 1.04 < 1.39 < 5.14), an instrument that
+shares no machinery with DER, and it keeps Mishkal far below Shakkala as the
+NAACL Table 1 ordering does. Mishkal is worst by 17× over `catt-eo`, which §4
+predicted as an order of magnitude.
+
+**On the Table 3 sanity range (19–36% with case endings).** `mishkal` at 23.0
+lands inside it and `shakkala` at 10.5 sits near its Table 1 Classical figure
+of 6.85, so the externally-measured tools reproduce. `catt-eo` at 1.3 is far
+*below* the range — but that range is for text-only diacritizers scored
+against gold on MSA *speech*, and CATT appears in neither table. The §3.2
+caution that "a result near 2% indicts the measurement" is about **D5's**
+`C_auto`-vs-`C_gold` number, and it still is; it does not transfer to a
+tool-vs-vowelizer agreement rate on text. Flagged here so the 1.3 is not
+later quoted as if it had cleared that check.
 
 ### 3.3 `A` — the verbatim-production annotation, and the base-rate problem **[MEASURED, partly]**
 
@@ -690,6 +749,27 @@ blocked on the same work, not forgotten.
   single-annotator listening judgment to an objective `tashkeel_sentence`
   vs `C_gold` DER/WER over the whole annotated set. Recommended yes; the
   pilot's figure is retained as the pilot's own, with its 39.5% sensitivity.
+
+  **[3 Oct 2026] D7's measurement adds a constraint D5 must now answer: the
+  anchor and `C_auto` may be correlated.** `catt-eo` agrees with
+  `tashkeel_sentence` at **98.65%** of positions (WER 4.85%, so ~24% of
+  utterances carry any disagreement) — while §3.3a found that same column
+  wrong on **43.6%** of pilot utterances. The two are compatible in magnitude
+  only if CATT **agrees with the vowelizer at many positions where the
+  vowelizer is wrong**, i.e. they share error modes, or the organizers'
+  vowelizer is itself CATT-derived.
+
+  Why this bears on D5 rather than on D7: `C_gold` is produced by annotators
+  working from a CATT draft (§3.2), and `C_auto` is the vowelizer. If the two
+  are correlated, then every position where both are wrong *and* the annotator
+  accepts the draft leaves `C_gold == C_auto`, which **removes a real error
+  from D5's numerator and understates the headline**. The bias points the safe
+  way — it shrinks our own claim — but it must be bounded, not merely noted.
+
+  D4's 50-utterance blind crossover is the instrument: the un-anchored
+  annotator's positions are the ones where draft acceptance cannot have
+  operated. Resolve D5 and this together; do not quote the D5 number without
+  it. Full working in `insights/week-05.md`, observation 6 of the sweep entry.
 - **D6** — whether `Iqra_TTS`'s augmented rows are reported as a
   clearly-labelled synthetic detection sub-arm to partially recover what D1
   gives up (§3.3 option 3; `run/tts_detection.slurm` exists, zero
@@ -1430,7 +1510,9 @@ So that a bad outcome is a finding rather than a scramble.
   already known: **alef wasla U+0671** is absent from the vendored Buckwalter
   map, so `ٱلْحَمْدُ` silently loses the `< a` that `الْحَمْدُ` produces. It occurs
   in **0** MSA dev rows — which is why the 99.85% MSA round-trip says nothing
-  about it — and is ordinary Qur'anic orthography. If the Qur'anic text
+  about it, and nor does the 99.93% train-split round-trip of 3 Oct: that run
+  reported no *out-of-inventory* token, which is the overflow test, not the
+  deletion test — and is ordinary Qur'anic orthography. If the Qur'anic text
   recovered by the clip → verse probe carries it, every affected position is
   a mechanical false rejection on the arm that supplies the headline number.
   The instrument exists (`normalize.unsupported_characters`); run it on that
@@ -1442,3 +1524,14 @@ So that a bad outcome is a finding rather than a scramble.
 - **Anchoring is large.** Then correct-the-machine has to be abandoned for
   the affected subset, which costs schedule. Measured at ~50 utterances
   precisely so this is discovered in week 5, not week 9.
+
+  **[3 Oct 2026] This falsifier got sharper teeth.** D7's sweep shows the
+  anchor (`catt-eo`) agreeing with `C_auto` (`tashkeel_sentence`) at 98.65% of
+  positions, on a column §3.3a found wrong on 43.6% of utterances — so the
+  anchor and the thing we are measuring the error *of* are correlated. That
+  changes the consequence of anchoring from "annotators are lazy, `C_gold` is
+  noisy" (symmetric noise) to **"accepted draft positions migrate `C_gold`
+  toward `C_auto`"** (directional, and it shrinks the headline). The crossover
+  is no longer just a quality check on the annotators; it is the only estimate
+  of this bias. Treat its result as load-bearing for D5, not as a reliability
+  footnote.
