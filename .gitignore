@@ -40,3 +40,14 @@ run/logs/output_logs/*.log
 run/logs/error_logs/*.log
 !run/logs/output_logs/.gitkeep
 !run/logs/error_logs/.gitkeep
+# WikiNews gold set (CC-BY-SA-4.0), kept locally so /tmp clearing cannot lose
+# it. NOT committed: share-alike is viral over derivatives, so vendoring is an
+# undecided licence call (insights/week-05.md). The sha256 is recorded there
+# and in run/qualification/gold.json, which is what makes the draw auditable
+# without the file being in git.
+run/WikiNewsMax.tsv.local
+# Qualification test: the withheld gold must never reach a candidate, and raw
+# human submissions are personal data. The blank test and the instruction
+# sheet ARE tracked -- they are what §4 of the week plan commits in advance.
+run/qualification/gold.json
+run/qualification/submissions/

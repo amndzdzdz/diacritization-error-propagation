@@ -50,6 +50,24 @@ write fully marked Arabic; the phonetizer applies the convention
 mechanically downstream (`phonetizer.py` `normalize`). Consequence worth
 knowing: some positions cannot hurt us even if they are wrong (§4).
 
+**CORRECTION, 2026-10-04 — the paragraph above is false for mid-sentence
+words, and the error is load-bearing for task 4's protocol.** The pausal
+convention is applied at the *end of the utterance* only. A non-final word's
+final mark survives into the phoneme string, so the choice between a pausal
+and a liaison form there is label-impacting. Measured on annotator 1's
+submission: `phonetize("مِنْ")` yields `m i n` but `phonetize("مِنَ")` yields
+`m i n a` — the same word, two different label sequences. Five of annotator
+1's 42 bucket-B errors are exactly this, and all five match `max_gold` (the
+liaison reading) rather than `original_gold` (the pausal one), so they are a
+convention mismatch and not a skill deficit.
+
+What survives of the paragraph: annotators need not learn the convention for
+the **final word** of an utterance, which is the only place §4's "final
+word's final mark" free class applies. Everywhere else they must be told
+explicitly to write the pausal form. **Task 4's protocol must state this**;
+this test did not, which is why the five errors are charged to the
+instructions rather than to the annotator.
+
 ## 4. What is scored, and what is free
 
 `C_gold` is pausal (§3.4.1), applied mechanically, so marks that the
@@ -107,8 +125,24 @@ the marks' provenance is unverified; §3.3a excluded them for a different
 reason and never checked whether they are correct. Would need auditing
 first.
 
-**OPEN**: confirm availability and licence of the chosen set before the
-test runs. This is the only unresolved item in this protocol.
+**RESOLVED 2026-10-03.** The set is `CAMeL-Lab/wild_diacritics` →
+`data/WikiNewsMax.tsv` (ACL 2024 "Arabic Diacritics in the Wild"), data
+**CC-BY-SA-4.0**, with Darwish et al. 2017 to be cited additionally.
+Audited clean against the §4.1 normalization contract; measurements in
+[insights/week-05.md](../insights/week-05.md). Two things it changes here:
+
+- **Use `original_gold`, not `max_gold`.** The file ships both; they differ
+  on 3.72% of Arabic words. `original_gold` is the Darwish 2017 reference
+  that published machine DER is measured against, which is the entire reason
+  this set was recommended.
+- **Score with an acceptable-alternatives allowance.** `max_gold_alt` gives
+  359 words (2.46%) a second defensible reading, mostly loanword
+  vocalization. Counting those as errors or as disagreements charges the
+  annotator for the language's own underdetermination. See §8.
+
+Share-alike is viral over derivatives: a redistributed stripped-gold
+qualification set, and anything shipped alongside it, inherits CC-BY-SA-4.0.
+The 500-row MSA block is drawn from `Iqra_train`/CV-Ar and is unaffected.
 
 ## 6. Size
 
@@ -123,14 +157,78 @@ lands in the ambiguous 8–14% zone, **extend by a further 100 utterances
 rather than deciding on the point estimate.** The test is text-only and
 cheap; extending it is cheaper than mis-assigning the annotation work.
 
+**The unit above is an `Iqra_train` utterance, and the chosen material is
+not made of those.** A WikiNews segment carries ~76 marks (4.01 per Arabic
+word, 19-word median) against an `Iqra_train` utterance's 19.4 — about 4×.
+So 70 *segments* would deliver ~1,300 bucket-B and ~4,000 bucket-A
+positions, overshooting the targets above at roughly 4× the annotator hours.
+The targets, not the item count, are what this section actually fixes:
+**~11 segments satisfies bucket B and ~19 satisfies bucket A, so ~20
+segments**, sampled from the 293 segments in the 8–40-Arabic-word band
+(restricting to that band is also what keeps §5's register criterion
+satisfiable). The 70 here and the 70 articles in the WikiNews set are
+unrelated numbers that happen to coincide — do not let them co-vary.
+
+The extension rule is unchanged in substance: if bucket B lands in the
+ambiguous zone, extend by enough segments to roughly triple the bucket-B
+position count.
+
+**SIGNED OFF 2026-10-03: n = 20. [MEASURED — the packet is built.]**
+`scripts/build_qualification_test.py`, seed **20261003** (distinct from the
+annotation block's 20261001), drawing from the 293-segment band. Realized,
+rather than estimated:
+
+| | drawn | §6 target |
+|---|---|---|
+| segments | 20 | — |
+| Arabic words | 427 | — |
+| **bucket A** marked positions | **1,259** | ~1,067 ✓ |
+| **bucket B** marked positions | **326** | ~202 ✓ |
+
+**The two counts above are in the wrong unit, corrected 2026-10-04.** The
+builder counted marked *letters*; §4's table counts *marks*, so a letter
+carrying `<shadda><fatha>` is two positions and not one. The builder also did
+not apply §4's free classes before counting. Net effect: bucket B was
+overstated (it included tanwin and the final word's final mark) and bucket A
+understated (shadda was merged with its harakah). The realized **scored**
+counts, from `scripts/score_qualification.py`, are:
+
+| | scored | §6 target |
+|---|---|---|
+| **bucket A** | **1,363** | ~1,067 ✓ |
+| **bucket B** | **293** | ~202 ✓ |
+
+Both targets still clear, so the sign-off above is unaffected — but
+`build_qualification_test.py`'s counts should not be quoted as position counts
+anywhere. The scorer's are authoritative.
+
+Both targets are met with margin, so the sizing argument above is confirmed in
+the correct unit rather than assumed. Bucket B's 326 is comfortably past the
+point where §6's "extend by 100 utterances" worry applies — at 326 positions a
+20-error result gives a 95% interval of roughly [4%, 9%], which resolves
+against the 10% band rather than straddling it. Counts are pre-pausal-filter;
+§8 step 2 applies that at scoring and can only reduce bucket B.
+
+12 of the 427 words carry a `max_gold_alt` second reading, so §8 step 3's
+allowance is small but non-empty on this draw.
+
+**Also measured while building it, and worth recording because it validates
+our own code against an external reference:**
+`strip_diacritics(original_gold)` reproduces the file's own `dediac` column on
+**all 16,163 word rows, zero disagreements**. The packet's blank text is
+therefore the text the gold was written for, and §8 step 1's skeleton check
+cannot fire on our preprocessing. The builder refuses to emit a packet if this
+ever stops holding.
+
 ## 7. Procedure
 
-1. Strip all marks from the 70 gold sentences. Present as plain text.
+1. Strip all marks from the **20** drawn segments (§6; the "70" this step
+   used to say was the pre-correction item count). Present as plain text.
 2. **From scratch, not correct-the-machine.** The real job is
    correct-the-machine, so the test is deliberately harder than the job —
    it measures the person's own skill rather than their ability to spot a
    machine's errors. A conservative bar.
-3. Both annotators receive the **same 70 items**, which yields an
+3. Both annotators receive the **same 20 items**, which yields an
    agreement number for free.
 4. Worked alone. No discussion, no automatic diacritization tool, no
    looking up the source article. Gold never shown.
@@ -142,14 +240,23 @@ cheap; extending it is cheaper than mis-assigning the annotation work.
 ## 8. Scoring
 
 1. Verify the consonant skeleton is unchanged; flag items where it is not.
-2. Apply the pausal filter, then compare mark-by-mark against gold.
-3. Bucket each surviving position (A or B). Report error rate per bucket
+2. Apply the pausal filter, then compare mark-by-mark against gold
+   (`original_gold` — see §5).
+3. **Accept `max_gold_alt` where it exists.** On the 359 words (2.46%) the
+   source marks with a second defensible reading, either reading scores as
+   correct. Without this, the test charges annotators for positions the
+   language itself leaves open and depresses both the error rate and the
+   agreement number — and the alternatives happen to be enumerated for us on
+   this set, which will not be true on our own corpus. Report the count of
+   positions where the allowance was invoked, so the effect on the measured
+   rate is visible rather than buried.
+4. Bucket each surviving position (A or B). Report error rate per bucket
    with 95% Wilson intervals.
-4. Separate **omissions** (gold has a mark, annotator left none) from
+5. Separate **omissions** (gold has a mark, annotator left none) from
    **substitutions** (wrong mark). They mean different things and an
    omission-heavy profile is a different problem from a
    substitution-heavy one.
-5. Report inter-annotator agreement on the same items, as a secondary
+6. Report inter-annotator agreement on the same items, as a secondary
    number — Pearson + ICC(2,1) per the plan's reporting model, not bare
    kappa.
 
@@ -192,6 +299,43 @@ they are strong and spends specialist time only where it is needed.
 
 **Completion:** ≥95% of items attempted. Skipping hard items inflates
 accuracy.
+
+### 9.1 Annotator 1 — RESULT, measured 2026-10-04
+
+20/20 items, 30 minutes, 427 Arabic words. Pass marks above were committed
+before this was scored and are applied unchanged.
+
+| bucket | scored | errors | rate | 95% Wilson | §9 outcome |
+|---|---|---|---|---|---|
+| A internal | 1,363 | 16 | **1.17%** | [0.72, 1.90] | **qualified** — whole interval under the 2% bar |
+| B case end | 293 | 42 | **14.33%** | [10.78, 18.81] | **flag-and-adjudicate** — interval lies wholly inside 10–25% |
+
+**No extension under §6.** The extension rule fires when bucket B straddles a
+band edge; [10.78, 18.81] is interior to 10–25%, so the routing is already
+determinate and ~90 further minutes of annotator time would change no action.
+
+**The calibration this test was chosen to deliver.** Against CATT EO on the
+same corpus and the same reference: annotator **3.50% DER vs 5.425%** overall,
+and **1.17% vs 3.105%** on bucket A — 1.55× and 2.65× better respectively. The
+human-beats-machine premise underlying D1 and D5 is therefore measured, not
+assumed, and measured apples-to-apples rather than across corpora.
+
+**Two systematic non-skill classes inside bucket B's 42 errors**, both
+charged to the instructions:
+
+- **13 label-invariant** — a final sukun omitted on a foreign proper noun.
+  Verified by phonetizing both forms: the label sequence is identical, so
+  these cannot propagate to any MDD number.
+- **5 liaison-for-pausal** — see §3's correction. All five match `max_gold`.
+
+Net of both, the label-impacting bucket-B rate is **9.90%**, which *does*
+straddle the 10% edge. This is recorded for interest and is **not** used for
+routing: §9's bands are defined on the raw measured rate, and re-deriving a
+route from a post-hoc subset is exactly the threshold drift §1 forbids.
+
+**Timing, for D4.** 14.2 words/min from scratch ⇒ a 500-row block is ~3.1 h
+and the full 2,092-row pool ~12.9 h. The real job is correct-the-machine and
+therefore faster, so these are upper bounds.
 
 ## 10. Anchoring — the other half of plan line 134
 
