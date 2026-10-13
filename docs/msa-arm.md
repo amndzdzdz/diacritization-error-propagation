@@ -181,6 +181,27 @@ correct-the-machine choice itself:
   runs on: the first 50 utterances of the drawn 500, in draw order
   (`run/msa_annotation_block.json`, `crossover: true`).
 
+**[4 Oct 2026] Unblocked and written:
+[annotation-protocol-msa.md](annotation-protocol-msa.md).** The crossover is
+specified there as both annotators doing all 50 rows with roles swapped at
+rank 25, which gives agreement on 50 rather than 25 and balances annotator
+identity against condition. Three things that document settles and that are
+not obvious from this section:
+
+- **The crossover runs *first*, before any of the 450.** Run last, it would
+  measure anchoring in annotators already fluent in `catt-eo`'s habits — a
+  different and smaller quantity than the one the paper would claim.
+- **Anchoring on `catt-eo` is self-penalizing for D5 but *not* for RQ1's
+  per-tool table**, where `catt-eo` is scored against a reference it helped
+  write and so gets an advantage `shakkala`/`mishkal`/`farasa` do not. That
+  cell now carries a pre-committed caveat, with the blind arm as the only
+  unanchored estimate.
+- **Pilot §6a's "the starting-point tool must never enter the evaluated set"
+  is formally replaced**, not quietly broken — it was costless when the
+  starting point was an LLM and is impossible now that it is a headline
+  system. The replacement permits it conditional on a blind arm plus a
+  flagged results cell.
+
 ~~Week 4 task 5 decides what to anchor on: if the NAACL 2024 audio-informed
 restoration method beats text-only CATT on Common Voice, it is the better
 starting point *and* the anchoring bias then points away from the system
@@ -972,6 +993,30 @@ sentence read forward instead of backward.
 
 Every number in that passage is measured and reproducible from public
 artifacts plus `scripts/case_ending_impact.py`.
+
+**[4 Oct 2026] "Pausal" has a second clause nobody had written down:
+no liaison vowels. [MEASURED]** The convention was specified as "the
+utterance-final case ending is dropped", and that turns out to be
+incomplete. Where a sukun-final word precedes `ال`, careful MSA inserts a
+helping vowel (`مِنْ الْمَاءِ` → *mina l-māʾi*); the organizers' reference does
+**not**. Id `63729`'s `tashkeel_sentence` keeps the sukun and its `canonical`
+reads `... m i n  l m aa < i ...`, with no inserted vowel. Our phonetizer
+agrees the choice is label-impacting: `phonetize("مِنْ")` → `m i n` versus
+`phonetize("مِنَ")` → `m i n a`.
+
+This is a *mid-sentence* position, so §3.4's "non-final positions are
+convention-free" is true of case endings and false of sandhi. **31 positions
+in D4's 500-row block, 1.49% of non-final words** — small, but systematic
+rather than random, so left uninstructed it biases rather than adds noise.
+
+Found only because annotator 1's qualification errors were read word by word:
+5 of their 42 bucket-B errors are exactly this, all 5 matching WikiNews'
+`max_gold` liaison reading against `original_gold`'s pausal one. It is now
+rule **R4** in [annotation-protocol-msa.md](annotation-protocol-msa.md) §3,
+and the omission is corrected in
+[annotator-qualification.md](annotator-qualification.md) §3, whose claim that
+annotators "do not need to learn the pausal convention" was false for every
+word except the last.
 
 **Two constraints on how it is written up**, both load-bearing:
 

@@ -7,6 +7,23 @@ this number decides what the MSA arm can claim (`docs/msa-arm.md` §9).
 Scope: the 50-utterance listening pilot only. The full annotation protocol
 (weeks 5–8) inherits these rules; it is a separate document.
 
+**That document now exists:
+[annotation-protocol-msa.md](annotation-protocol-msa.md) (4 Oct 2026).** It
+supersedes this one for the main block, and "inherits these rules" turned out
+to overstate the continuity — the main block is text-only (§3.3b D1), so §4's
+audio tag vocabulary (`dialect`, `hesit`) and §7–8's strict/lenient base-rate
+machinery do not carry over at all. Two things did: §6a's instruction to
+store the machine draft and the annotator's output separately per word (now
+the logging schema in its §6), and §9a's lesson that filtering belongs in the
+sampling frame rather than in per-utterance verdicts (its §1).
+
+**One rule of this document is formally replaced, not inherited.** §6a's "the
+LLM used in step 2 must never enter the evaluated diacritizer set" was
+costless when the starting point was an LLM. D7 makes the starting point
+`catt-eo`, a headline system, so the exclusion is impossible. See its §2 for
+the replacement: an evaluated tool may anchor, conditional on a blind arm
+measuring the contamination and the affected results cell being flagged.
+
 **Note added 2026-10-01.** The main block is no longer a listening task.
 `docs/msa-arm.md` §3.3b D1 dropped `A` from the MSA arm, so the main block
 annotates `C_gold` (diacritization) from text only, and the rules below that
