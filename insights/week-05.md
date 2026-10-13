@@ -1004,6 +1004,127 @@ derived from the skeleton match alone still carries the reproduction caveat.
 
 ---
 
+### Experiment: calibrating our DER against CATT's Table 5 — exit criterion 2, calibration clause
+
+#### Hypothesis
+
+Our `metrics.der` is the literature's DER, to within the pre-registered ±0.5
+absolute. If it is not, no Qur'anic number this week produces can be placed
+next to a published figure, and exit criterion 2 fails on its second clause
+regardless of what the first clause measures.
+
+#### Methodology
+
+Two legs, because the first version of this had one leg and could detect a gap
+without being able to attribute it — the corpus, the tool invocation and the
+metric definition all varied at once.
+
+- **Leg A — the metric alone.** CATT's repository ships the exact files their
+  Table 5 was computed from: `WikiNews_data_gt.txt` plus four recorded system
+  outputs. Scoring those pairs isolates the metric: same corpus, same tool
+  output, only the definition varies. Scored twice — once with
+  `metrics.der_published` (our implementation of their convention, built on
+  their own pinned `catt_tashkeel` tokenizer rather than on a re-reading of the
+  paper) and once with `metrics.der`.
+- **Leg B — our pipeline.** Our four tools on `WikiNewsMax.tsv`, scored inside
+  their convention against the ±0.5 band. **Not yet run** — see Observations 5.
+
+#### Configuration
+
+- `catt_tashkeel` 1.0.2 (pinned), tokenizer used verbatim as the convention's
+  definition
+- Gold `WikiNews_data_gt.txt`, 400 lines,
+  `sha256:7639173c6e92365e9b0f623e813ecd793ca0dfc9c59c8480e64b0dcff6797711`;
+  the four output files' digests are in `run/wikinews_der.json`
+- Band pre-registered at ±0.5 absolute DER, decisive for `catt-eo`/`catt-ed`
+  only (CATT's authors ran their own system; the Shakkala and Mishkal rows are
+  their invocation of other people's tools, so those are diagnostic)
+- 95,183 scored positions under the published convention
+
+#### Results
+
+The first attempt, our convention on our pipeline, came out **outside the
+band**: `catt-eo` `ce_all` DER 6.346 against a published 5.425 (+0.921) and
+`noce_all` 4.430 against 3.105 (+1.325) — but CE **WER** 21.844 against 22.132
+(−0.288).
+
+Leg A, after implementing their convention — all sixteen figures, three
+decimals:
+
+| tool | published CE/no-CE DER | ours | published CE/no-CE WER | ours |
+|---|---|---|---|---|
+| `catt-eo` | 5.425 / 3.105 | **5.425 / 3.105** | 22.132 / 12.679 | **22.132 / 12.679** |
+| `catt-ed` | 5.963 / 3.631 | **5.963 / 3.631** | 20.060 / 11.310 | **20.060 / 11.310** |
+| `shakkala` | 9.978 / 6.593 | **9.978 / 6.593** | 37.241 / 24.988 | **37.241 / 24.988** |
+| `mishkal` | 15.246 / 8.558 | **15.246 / 8.558** | 54.187 / 27.337 | **54.187 / 27.337** |
+
+What our convention reads on those identical pairs, i.e. the price of the
+definition:
+
+| tool | `ce_all` | `noce_all` | CE DER offset | no-CE DER offset | skeleton mismatch |
+|---|---|---|---|---|---|
+| `catt-eo` | 6.467 | 4.534 | +1.041 | +1.430 | 9 / 400 |
+| `catt-ed` | 7.033 | 5.226 | +1.070 | +1.596 | 9 / 400 |
+| `shakkala` | 12.156 | 9.979 | +2.179 | +3.387 | 0 / 400 |
+| `mishkal` | 19.904 | 13.622 | +4.657 | +5.063 | **290 / 400** |
+
+Denominators: 95,183 positions published; 75,589 ours for the CATT models,
+78,594 for Shakkala, **8,526** for Mishkal.
+
+#### Observations
+
+1. **Matching WER with inflated DER is what cracked it.** A worse tool or a
+   different corpus moves both rates together. Only a denominator difference
+   moves one and not the other. That single asymmetry is what ruled out two of
+   the three candidate explanations before any code was read.
+2. **Reading their code beat arithmetic.** The tempting move was to solve for
+   the convention that makes 6.346 become 5.425. That would have produced a
+   formula fitted to four numbers and justified after the fact. Reading
+   `catt_tashkeel/tokenizer.py` gave four *independently testable* differences
+   instead — spaces and BOS/EOS are scored `<NT>` positions; "without case
+   endings" **masks** the final letter rather than dropping it; dagger alef is
+   deleted (`tokenizer.py:58`); distance is an edit distance where we refuse to
+   align. Each has its own test in `tests/metrics/test_der_published.py`.
+3. **The spaces are most of the gap.** 95,183 published positions against our
+   75,589 — ~26% more denominator, nearly all of it inter-word space scored as
+   a position every tool trivially gets right. That dilutes DER downward
+   without changing WER at all, which is exactly the asymmetry in Observation 1.
+4. **Mishkal's published figure is computed over text Mishkal mangled.** Our
+   metric refuses **290 of 400 lines** of CATT's own recorded Mishkal output as
+   skeleton mismatches — the tool edited the letters, not just the marks, in
+   72.5% of lines, and an edit distance absorbs that silently as a handful of
+   substitutions. This is independent confirmation of week 4's U+0001
+   word-merging finding, on a different corpus and from the authors' own
+   artifact. It is also the strongest available argument for why `refuse` is the
+   right default: the published 15.246 is not a diacritization error rate, it is
+   a diacritization-plus-corruption edit rate. The 9/400 for both CATT models is
+   worth a look later but is small enough not to move anything.
+5. **Leg B has not run.** Backgrounded locally, it was OOM-killed at 14 GB when
+   a second model-loading job started alongside it, and produced no output at
+   all — buffered stdout, zero bytes, no artifact. Moved to
+   `run/der_measurement.slurm`. Leg A needed no models, which is why it is the
+   leg that is finished.
+
+#### Conclusion
+
+**Exit criterion 2's calibration clause is MET, by its strongest branch.** The
+clause allows either ±0.5 agreement *or* an explained definitional difference
+with our definition stated. What we have is better than both: exact
+reproduction of all sixteen published figures, so the difference between the
+conventions is a *measurement* (+1.04 for `catt-eo` to +4.66 for `mishkal` on
+CE DER) rather than an unexplained gap or a widened band.
+
+Consequence for everything downstream: **every rate must name its convention.**
+Our numbers are not comparable to a published DER unless scored by
+`der_published`, which is why both conventions are reported side by side in
+`run/quranic_der.json` rather than ours alone.
+
+The band was never relaxed. It was pre-registered at ±0.5, the first
+measurement failed it, and the failure was diagnosed instead of accommodated —
+which is the only reason the number above means anything.
+
+---
+
 ### Pre-registered predictions: the Qur'anic DER measurement
 
 Written **before** `scripts/measure_quranic_der.py` was run, so that they can be
