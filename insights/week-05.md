@@ -1001,3 +1001,42 @@ consults a forbidden column — so the instrument was substituted and the
 substitution recorded in the week plan, per task 1's own rule. The result is
 reported as **validation by audio**, not as a validated route (c); anything
 derived from the skeleton match alone still carries the reproduction caveat.
+
+---
+
+### Pre-registered predictions: the Qur'anic DER measurement
+
+Written **before** `scripts/measure_quranic_der.py` was run, so that they can be
+wrong. Three predictions, each with the thing that would falsify it.
+
+1. **Every tool scores materially worse on the Qur'an than on its published
+   WikiNews figure.** Qur'anic orthography (dagger alef, alef wasla, the
+   pause marks) and Qur'anic morphology are out of domain for all four, none of
+   which lists Qur'anic text in its training data. The 60-verse planning probe
+   already put `catt-eo` at 6.219 `ce_all` against a published 5.425.
+   *Falsified by:* any tool at or below its WikiNews rate.
+2. **`catt-eo`'s MSA 1.346 does not transfer.** That number was *agreement with
+   a vowelizer* on `Iqra_train`, not accuracy against gold; the Qur'anic number
+   is accuracy against gold. The size of that gap is the week's real finding,
+   because it is the first direct evidence that an agreement rate overstates a
+   diacritizer's quality — which is the premise of the whole paper.
+   *Falsified by:* a Qur'anic rate near 1.3.
+3. **The 98-prompt subset is noisier than the corpus number but not
+   systematically different** — 4,442 characters against ~685,000, so roughly
+   a 12× wider interval, but centred in the same place. The subset is the text
+   that actually carries this arm's labels, so a systematic difference would
+   mean the corpus number cannot stand in for it.
+   *Falsified by:* a subset/corpus gap larger than the between-tool gaps.
+
+**Pre-declared sanity check on the metric, not on the tools:** the ordering must
+come out `catt-eo < catt-ed < shakkala < mishkal`. Two unrelated instruments
+already agree on it (DER on MSA; week-4 phoneme conservation). A third
+instrument disagreeing is evidence that the metric is wrong, not that the tools
+changed.
+
+**Declared in advance, not chosen after seeing the numbers:** the headline keeps
+dagger alef (U+0670) scored, consistent with the MSA and WikiNews numbers so the
+three are comparable, and a **second row** reports the rate with U+0670 deleted
+from the reference. The planning probe measured that choice at 0.85 DER absolute
+on 60 verses — larger than the calibration tolerance — and the published
+convention deletes it, so the choice has to be named rather than defaulted.
