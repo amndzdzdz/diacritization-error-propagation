@@ -48,11 +48,27 @@ first two change the design rather than informing it.
    which vowelizer they used is still worth the email (task 8).
 
 3. **`phonetize(recovered_verse)` agrees with the benchmark's own
-   `reference_phoneme_string` on only 54 of 98 prompts** (ceiling 97), and the
-   44 inexact are dominated by **one** disagreement: the dagger alef U+0670,
-   which `normalize()` drops on 177/177 MSA evidence and which QuranMB's
-   reference realizes as a long vowel (`m aa n`, not `m a n`). This is the
-   week's central design problem and task 1 exists for it.
+   `reference_phoneme_string` on only 54 of 98 prompts** (ceiling 97). This is
+   the week's central design problem and task 1 exists for it.
+
+   **[14 Oct 2026 — measured, and it is not the dagger alef.]** An earlier
+   version of this item asserted the 44 inexact prompts were "dominated by
+   one disagreement," U+0670. That was an inference from the DER work, not a
+   measurement, and it is wrong: only **21 of 98** prompts contain a dagger
+   alef at all, and only **10 of the 44** mismatches do. The other **34**
+   contain none. The real picture, from 64 diff sites over the 44 prompts:
+   **59 are utterance-internal** (so not a pausal/case-ending convention
+   gap), they are long/short vowel and gemination disagreements, and the
+   single most frequent site occurs **4** times — scattered, not systematic.
+   The signatures that do recur (`uu` → `u w aa`, a dropped `n`) look like
+   **tajwīd**: madd lengthening and nūn assimilation, which a general-purpose
+   MSA phonetiser does not implement and which a recitation reference does.
+
+   Consequence for task 1: the gap is a convention difference between a
+   general phonetiser and a recitation-aware reference, **not a bug one rule
+   fixes**. That makes leg B's separately-reported number mandatory rather
+   than tidy, and it removes the option of closing the gap first and using
+   candidate (i).
 
 4. **The verse map is done and audio-verified.** 98/98 located,
    `unsupported_characters` **{}** over all 4,442 recovered characters, the
@@ -177,7 +193,7 @@ Ordered by what blocks what.
    |---|---|---|
    | (i) `reference_phoneme_string` | the benchmark's own canonical; what the week-3 gate scored against | by definition |
    | (ii) `phonetize(recovered_verse)` | our pipeline on the recovered Qur'anic text | **54/98 prompts**, ceiling 97 |
-   | (iii) (ii) with a declared U+0670 rule | as (ii), dagger alef realized as a long vowel | to be measured |
+   | (iii) (ii) with a declared U+0670 rule | as (ii), dagger alef realized as a long vowel | **48/98** — *worse*; see below |
 
    **The trap, stated so it is not walked into.** The tempting choice is (i),
    because it makes the `C_gold` cell reproduce the published F1 = 0.4415
@@ -209,11 +225,36 @@ Ordered by what blocks what.
    `normalize()` drops it on MSA evidence (177/177, and there are 0 MSA dev
    rows with U+0671 so the MSA evidence says nothing about Qur'anic
    orthography); the Tanzil `simple` edition writes it 3,218 times (0.973% of
-   330,709 letter positions); QuranMB's reference realizes it as a long
-   vowel. Decide, record as a numbered decision in `docs/msa-arm.md`, and
-   note that whichever way it goes it applies to **both** cells of leg A, so
-   it cannot move ΔF1 much — it moves the *agreement with the benchmark*,
-   which is leg B's number.
+   330,709 letter positions). Whichever way it goes it applies to **both**
+   cells of leg A, so it cannot move ΔF1 much — it moves the *agreement with
+   the benchmark*, which is leg B's number.
+
+   **[14 Oct 2026 — measured, so this is now a recording job, not an open
+   question.]** Three rules, scored as `phoneme_exact` against the
+   benchmark's own canonical over all 98 prompts:
+
+   | rule | exact | of the 21 dagger prompts |
+   |---|---|---|
+   | delete U+0670 (`normalize()` today) | **54/98** | 11/21 |
+   | U+0670 → alef (the "long vowel" rule) | **48/98** | 5/21 |
+   | context-dependent: keep after U+0649, alef after a bare fatha | **54/98** | 11/21 |
+
+   The plain long-vowel rule **loses 6 prompts**, and the context-dependent
+   one is an exact wash. The reason is in the context audit: of the 24 dagger
+   alefs in the prompts, **14 follow alef maqsura** (U+0649, as in `عَلَىٰ`),
+   where the carrier letter already supplies the length and adding an alef
+   doubles it; only **10 follow a bare fatha** (as in `ذَٰلِكَ`), which is the
+   case the long-vowel intuition was built on. So the intuition was right
+   about 10 positions and wrong about 14.
+
+   **Decision this implies: keep the deletion rule**, now resting on Qur'anic
+   evidence (54 vs 48 on gold prompt text) and not only on the MSA 177/177.
+   That also means **`data/normalize.py` is not touched**, so the
+   byte-identical regeneration guard below has nothing to catch — which is
+   the cheapest possible outcome and the reason this was worth measuring
+   before writing any code. Still record it as a numbered decision in
+   `docs/msa-arm.md`; the measurement is what makes it a decision rather than
+   a default.
 
    **If the rule changes `data/normalize.py`, the MSA artifacts must
    regenerate byte-identically.** `run/msa_annotation_block.json` and
