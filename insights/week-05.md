@@ -868,12 +868,26 @@ quranic_marks U+06D6–U+06ED: 0 | unsupported_characters: {}
    This is still a *reproduction*: the same algorithm class, agreeing with
    itself. It raises confidence and proves nothing, and the week plan said so
    in advance.
-2. **54/98 exact is not 54% correct.** The 44 inexact are dominated by one
+2. **54/98 exact is not 54% correct.** ~~The 44 inexact are dominated by one
    phonetizer disagreement — the dagger alef (U+0670), which `normalize()`
    drops on MSA evidence (177/177) but which QuranMB's reference realizes as a
-   long vowel. `الرَّحْمَٰنِ` phonetizes `m a n` where the reference has
+   long vowel.~~ `الرَّحْمَٰنِ` phonetizes `m a n` where the reference has
    `m aa n`, so the entire candidate set for prompt 00097 has a **distance
    floor of 1** that no recovery could remove.
+
+   **[14 Oct 2026 — corrected; the struck claim was an inference, and it was
+   wrong.]** "Dominated by the dagger alef" was never measured, only inferred
+   from the DER work. Measured: only **21 of 98** prompts contain a dagger alef
+   at all, and only **10 of the 44** mismatches do — **34 contain none**. Of
+   the 64 diff sites over the 44 prompts, **59 are utterance-internal**, and the
+   most frequent single site occurs **4** times, so the gap is scattered rather
+   than systematic. The recurring signatures (`uu` → `u w aa`, a dropped `n`)
+   are **tajwīd** — madd lengthening and nūn assimilation — i.e. a convention
+   difference between a general MSA phonetiser and a recitation-aware
+   reference, not one rule away from closed. Prompt 00097's distance floor
+   stands; it just is not representative. Deciding the U+0670 rule on this
+   corpus is **D9** in `docs/msa-arm.md` §3.3b: deletion scores 54/98 against
+   48/98 for the long-vowel rule, so the rule was kept.
 3. **Route (b) is closed by evidence, not by effort.** `test_references` is
    ID + phonemes, `QuranMB.v2` is ID + audio, and `IqraEval/Iqra_Extra_IS26` —
    the place the week plan named — is a gated repo returning **HTTP 401**. The

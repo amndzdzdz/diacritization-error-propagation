@@ -854,6 +854,95 @@ Qur'anic verses carrying none, so the predicate genuinely needs an
 authoritative full Qur'an text — the same artifact D1 is conditional on. It is
 blocked on the same work, not forgotten.
 
+#### D9 — DECIDED (14 Oct 2026): `C_gold` on the Qur'anic arm is **our phonetizer's output on the recovered text**, and the **U+0670 deletion rule stays**. **[MEASURED]**
+
+Week-6 task 1. Two parts, both of which could have been defaulted into and
+were instead measured first.
+
+**Part 1 — `C_gold` is our own phonetizer's output, not the benchmark's
+canonical.** The arm's label path is two legs:
+
+- **Leg A, the measurement.** `C_gold := phonetize(recovered_text)` and
+  `C_auto := phonetize(diacritize(strip_diacritics(recovered_text)))`, where
+  `recovered_text` is the per-prompt field of that name in
+  `run/quranmb_verse_map.json` (week 6's plan calls it `recovered_verse`; the
+  artifact's key is `recovered_text`). Same
+  phonetizer, same text, same convention on both sides, so the only thing
+  differing between the cells is the diacritizer and ΔF1 is attributable to it.
+- **Leg B, the anchor.** Score once with `C := reference_phoneme_string` and
+  confirm the published F1 = 0.4415 reproduces. The gap between leg B's F1 and
+  leg A's `C_gold` F1 is the phonetizer's own contribution, reported as a third
+  number in the limitations.
+
+**Why not the benchmark's `reference_phoneme_string` as `C_gold`** — the
+tempting choice, since it makes the gold cell reproduce the published F1 by
+construction. Because `C_auto` must be built by our pipeline, pairing it with
+the uploader's canonical would make ΔF1 the sum of two differences: the
+diacritizer's error, which is the paper's number, and our phonetizer's
+disagreement with theirs, which is **44 of 98 prompts** of confound that the
+write-up would attribute entirely to diacritization.
+
+That 44 is a convention difference, not a bug awaiting a fix. Of 64 diff sites
+across the 44 prompts, **59 are utterance-internal** (so not a pausal/case-ending
+gap), the most frequent single site occurs **4** times, and the signatures that
+do recur (`uu` → `u w aa`, a dropped `n`) are **tajwīd** — madd lengthening and
+nūn assimilation, which a recitation reference implements and a general-purpose
+MSA phonetiser does not. So leg B's separately-reported number is mandatory
+rather than tidy, and closing the gap first was never an option.
+
+**Part 2 — U+0670 is deleted, on Qur'anic evidence this time.** Three rules,
+scored as `phoneme_exact` against the benchmark's own canonical over all 98
+prompts (ceiling 97, see §3.3b's recovery entry for why):
+
+| rule | exact | of the 21 dagger prompts |
+|---|---|---|
+| **delete U+0670** (`phonetizer.normalize` today) | **54/98** | 11/21 |
+| U+0670 → alef (the "long vowel" rule) | 48/98 | 5/21 |
+| context-dependent: keep after U+0649, alef after a bare fatha | 54/98 | 11/21 |
+
+The long-vowel rule **loses 6 prompts** and the context-dependent rule is an
+exact wash. The reason is in the context audit: of the 24 dagger alefs in the
+prompts, **14 follow alef maqsura** (U+0649, as in `عَلَىٰ`), where the carrier
+letter already supplies the length and adding an alef doubles it; only **10
+follow a bare fatha** (as in `ذَٰلِكَ`), which is the case the long-vowel
+intuition was built on. The intuition was right about 10 positions and wrong
+about 14.
+
+So the rule that was previously resting only on MSA evidence (177/177 dev rows,
+and there are **0** MSA dev rows containing U+0671, so the MSA evidence says
+nothing about Qur'anic orthography) now also rests on Qur'anic evidence — and
+U+0670 is not rare there: the Tanzil `simple` edition writes it **3,218** times,
+0.973% of 330,709 letter positions.
+
+**Measured count under the chosen rule: `phoneme_exact` = 54/98.** This
+supersedes the earlier 54/98 figure as a *decision* rather than as a default —
+the number is the same, which is the point: the rule was audited and kept.
+
+**Consequences, all cheap.** The deletion lives at `phonetizer.py:179`, not in
+`data/normalize.py`, so §4.1.1's contract table is unchanged and no MSA artifact
+regenerates. The byte-identical regeneration guard week 6 held in reserve
+(`run/msa_annotation_block.json`, `run/qualification/blank.txt`) has nothing to
+catch. Whichever way part 2 had gone it would have applied to **both** cells of
+leg A, so it could not have moved ΔF1 much — it moves leg B's agreement with
+the benchmark, which is why it had to be decided before leg B is quoted.
+
+**Provenance, and a deliberate limit on it.** `run/quranmb_verse_map.json`
+carries `phoneme_exact` per prompt under the chosen rule; the three-rule
+comparison and the context audit were measured read-only on 14 Oct 2026 (commit
+`a6a5e2a`) and are recorded here and in `docs/weeks/week-06.md` task 1 **as
+prose, not as a regenerable artifact**. That is a conscious trade: the rule is
+settled and not expected to be re-opened, so a script to reproduce the two
+rejected rows would be effort spent on the wrong 20%.
+
+**Re-opening conditions.** Only two, and neither is likely. If the Qur'anic arm
+ever scores against a recitation-aware phonetiser (one implementing madd and
+nūn assimilation), leg A's `C_gold` is redefined against it and the 44-prompt
+gap is re-measured — part 1 is a statement about *our* phonetizer, not about the
+benchmark. And if a later corpus puts dagger alefs predominantly after a bare
+fatha rather than after alef maqsura, part 2's 14-vs-10 split inverts and the
+rule is re-taken for that corpus; a domain-parameterized rule is acceptable, a
+globally changed one is not.
+
 #### Still open
 
 - **D2** — whether `A := C_gold` is stated as an assumption with the
@@ -1372,7 +1461,7 @@ Rates are over the whole `Iqra_train` train split (71,391 rows):
 | Letters with no MSA phoneme (`چ`, `ڨ`) | dropped, row flagged | 4 (0.01%) | **no** |
 | Digits | spell out — **vacuous rule** | **0** | — |
 | Genuinely unexpected characters | dropped, row flagged | 22 (0.03%) — but 21 are the Latin rows above; the 22nd is one U+262D HAMMER AND SICKLE | yes |
-| U+0670 dagger alef | **kept** here; handled in `phonetizer.normalize` | 2,738 (3.8%) | yes |
+| U+0670 dagger alef | **kept** here; deleted in `phonetizer.normalize` — **D9**, measured on both arms | 2,738 (3.8%) | yes |
 
 **Total exclusion cost: 25 rows (0.035%).** `UNFAIR = {latin, digits,
 no_msa_equivalent}` — the classes where the audio contains speech the
