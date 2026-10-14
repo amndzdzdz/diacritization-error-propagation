@@ -1026,8 +1026,8 @@ metric definition all varied at once.
   `metrics.der_published` (our implementation of their convention, built on
   their own pinned `catt_tashkeel` tokenizer rather than on a re-reading of the
   paper) and once with `metrics.der`.
-- **Leg B — our pipeline.** Our four tools on `WikiNewsMax.tsv`, scored inside
-  their convention against the ±0.5 band. **Not yet run** — see Observations 5.
+- **Leg B — our pipeline.** Our four tools on `WikiNewsMax.tsv` (558 segments,
+  16,125 word rows), scored inside their convention against the ±0.5 band.
 
 #### Configuration
 
@@ -1071,6 +1071,18 @@ definition:
 Denominators: 95,183 positions published; 75,589 ours for the CATT models,
 78,594 for Shakkala, **8,526** for Mishkal.
 
+Leg B, our four tools on `WikiNewsMax.tsv`, scored in their convention (job
+224461; `strip_diacritics(original_gold)` reproduced the file's own `dediac`
+column on all 16,125 word rows, so the input is the undiacritized form of the
+reference):
+
+| tool | ours | published | delta | band | skeleton mismatch |
+|---|---|---|---|---|---|
+| `catt-eo` | 5.204 | 5.425 | **−0.221** | PASS | 0 / 558 |
+| `catt-ed` | 5.440 | 5.963 | **−0.523** | outside, by 0.023 | 0 / 558 |
+| `shakkala` | 9.916 | 9.978 | −0.062 | pass (diagnostic) | 0 / 558 |
+| `mishkal` | 15.067 | 15.246 | −0.179 | pass (diagnostic) | 3 / 558 |
+
 #### Observations
 
 1. **Matching WER with inflated DER is what cracked it.** A worse tool or a
@@ -1089,21 +1101,51 @@ Denominators: 95,183 positions published; 75,589 ours for the CATT models,
    75,589 — ~26% more denominator, nearly all of it inter-word space scored as
    a position every tool trivially gets right. That dilutes DER downward
    without changing WER at all, which is exactly the asymmetry in Observation 1.
-4. **Mishkal's published figure is computed over text Mishkal mangled.** Our
-   metric refuses **290 of 400 lines** of CATT's own recorded Mishkal output as
-   skeleton mismatches — the tool edited the letters, not just the marks, in
-   72.5% of lines, and an edit distance absorbs that silently as a handful of
-   substitutions. This is independent confirmation of week 4's U+0001
-   word-merging finding, on a different corpus and from the authors' own
-   artifact. It is also the strongest available argument for why `refuse` is the
-   right default: the published 15.246 is not a diacritization error rate, it is
-   a diacritization-plus-corruption edit rate. The 9/400 for both CATT models is
-   worth a look later but is small enough not to move anything.
-5. **Leg B has not run.** Backgrounded locally, it was OOM-killed at 14 GB when
-   a second model-loading job started alongside it, and produced no output at
-   all — buffered stdout, zero bytes, no artifact. Moved to
-   `run/der_measurement.slurm`. Leg A needed no models, which is why it is the
-   leg that is finished.
+4. **CATT's recorded Mishkal output does not share a skeleton with their gold
+   file — but Mishkal itself is not the cause.** Our metric refuses **290 of
+   400 lines** of their recorded Mishkal output, and **9 of 400** for each CATT
+   model.
+
+   *This observation originally read "Mishkal's published figure is computed
+   over text Mishkal mangled," and that was wrong.* It was written before Leg B
+   had run, from the 290/400 alone. Leg B then ran Mishkal ourselves and got
+   **3 skeleton mismatches in 558 WikiNews segments**, and the Qur'anic run got
+   **4 in 6,236 verses** — three orders of magnitude lower than 72.5%. Mishkal
+   does not routinely edit letters. The mismatch lives in the authors'
+   *artifact*, not in the tool, and the most likely cause is a preprocessing
+   difference between their gt file and their output files (their own
+   `clean_text` strips tatweel and maps ٱ→ا, which would do exactly this if
+   applied asymmetrically). The 9/400 on both CATT models, where our own CATT
+   runs give 0, points the same way.
+
+   What survives: an edit distance cannot tell these apart, and
+   `skeleton_mismatch` found a real property of a published benchmark's files
+   that the published metric could not see. What does not survive: any claim
+   about Mishkal's behaviour drawn from it. Week 4's U+0001 word-merging finding
+   stands on its own evidence and is **not** corroborated by this.
+5. **A reminder of why conclusions wait for data.** Observation 4 was asserted
+   from one leg and contradicted by the other within a day. The cost was a
+   wrong sentence in a committed file; the fix was cheap only because the
+   artifact recorded `skeleton_mismatch` per tool per leg, so the contradiction
+   was mechanical to spot.
+6. **Leg B's one "failure" is a mis-specified test, and the four-point design
+   is what shows it.** `catt-ed` missed the band by 0.023. But **all four
+   deltas are negative** (−0.062 to −0.523), which is exactly the signature the
+   decisive/diagnostic split was built to detect: a bad tool invocation moves
+   one row, a systematic offset moves all four the same way. Leg B scores 558
+   segments of CAMeL-Lab's `WikiNewsMax.tsv`; CATT's Table 5 was computed on
+   their own 400-line file. Different text, uniformly slightly easier.
+
+   So the residual is the **corpus**, not our invocation of the tools — and the
+   script's printed conclusion ("the residual is our invocation") is wrong and
+   has been corrected. The same-corpus test is Leg A, which is exact. `catt-ed`
+   is not a calibration failure.
+
+   Worth being honest about the asymmetry: had the deltas come out *positive*
+   by this margin, the same reasoning would apply, and it would be tempting to
+   use it to excuse a real problem. What makes it legitimate here is that Leg A
+   independently pins the convention to zero error on matched text, so there is
+   nothing left for a +0.5 band on mismatched text to usefully test.
 
 #### Conclusion
 
@@ -1123,9 +1165,14 @@ The band was never relaxed. It was pre-registered at ±0.5, the first
 measurement failed it, and the failure was diagnosed instead of accommodated —
 which is the only reason the number above means anything.
 
+Reproduced twice on two platforms (locally, and on `enderbit` as job 224461),
+so the exactness is not an artifact of one machine's arithmetic.
+
 ---
 
-### Pre-registered predictions: the Qur'anic DER measurement
+### Experiment: DER on gold Qur'anic text — exit criterion 2, first clause
+
+#### Hypothesis
 
 Written **before** `scripts/measure_quranic_der.py` was run, so that they can be
 wrong. Three predictions, each with the thing that would falsify it.
@@ -1161,3 +1208,192 @@ three are comparable, and a **second row** reports the rate with U+0670 deleted
 from the reference. The planning probe measured that choice at 0.85 DER absolute
 on 60 verses — larger than the calibration tolerance — and the published
 convention deletes it, so the choice has to be named rather than defaulted.
+
+#### Methodology
+
+Four tools × two reference sets × two dagger-alef treatments × two conventions
+× four variants of ours. Reference is the canonical Qur'anic text; input is
+`strip_diacritics(reference)`, so the tools see exactly the undiacritized form
+of what they are scored against. `strip_diacritics` already removes U+0670,
+which is why the dagger-alef rows share their input byte-for-byte with the
+headline rows — the transform is on the reference only, and `der.py` is
+untouched.
+
+The two reference sets are reported separately, never averaged: the **corpus**
+(all 6,236 verses — the whole domain, not a sample) and the **QuranMB subset**
+(the 98 `recovered_text` spans that actually carry this arm's labels, every one
+confirmed by ear).
+
+#### Configuration
+
+- Job 224461 on `enderbit`, 2026-10-13 23:05 → 2026-10-14 02:53 (3h48m for
+  stage B). `sampled: false` — every tool ran the full corpus, so no sampling
+  error to account for.
+- `tanzil-simple-xml`, sha256 `d9b5bad9…f47f` (asserted against the pin, since
+  the verse map is tied to that edition), 6,236 verses, 678,939 characters
+- Subset from `run/quranmb_verse_map.json` (route c, audio-verified), 98
+  prompts, 4,345 characters
+- U+0670 appears **3,218** times in the corpus, 24 in the subset
+- 330,709 scored positions under `ce_all`; 0 skeleton mismatches for all three
+  neural tools, 4 for Mishkal
+- Chunking: 0 of 6,236 verses split for any tool — verses are short, so even
+  Shakkala's 314-character limit never fired. The Qur'anic numbers carry **no
+  seam artifacts at all**.
+
+#### Results
+
+Published convention, CE DER, against the same tools' WikiNews figures:
+
+| tool | **Qur'an corpus** | our WikiNews | published WikiNews | Qur'an − published |
+|---|---|---|---|---|
+| `catt-eo` | **4.599** | 5.204 | 5.425 | **−0.826** |
+| `catt-ed` | **4.897** | 5.440 | 5.963 | **−1.066** |
+| `shakkala` | **9.448** | 9.916 | 9.978 | **−0.530** |
+| `mishkal` | **18.499** | 15.067 | 15.246 | **+3.253** |
+
+Both reference sets, both conventions (`ce_all` is ours, U+0670 scored):
+
+| tool | corpus pub-conv CE / no-CE | corpus `ce_all` / `noce_all` | subset pub-conv CE | subset `ce_all` |
+|---|---|---|---|---|
+| `catt-eo` | 4.599 / 2.821 | 6.736 / 5.001 | 3.982 | 6.209 |
+| `catt-ed` | 4.897 / 3.040 | 7.121 / 5.360 | 4.677 | 7.096 |
+| `shakkala` | 9.448 / 6.290 | 12.835 / 10.558 | 9.207 | 12.885 |
+| `mishkal` | 18.499 / 12.193 | 24.236 / 19.901 | 18.195 | 24.650 |
+
+**Agreement-rate inflation**, our convention `ce_all`, the same four tools on
+all three references this project has measured:
+
+| tool | MSA (agreement) | WikiNews (gold) | ratio | Qur'an (gold) | ratio |
+|---|---|---|---|---|---|
+| `catt-eo` | 1.346 | 6.346 | **4.71×** | 6.736 | **5.00×** |
+| `catt-ed` | 5.902 | 6.649 | 1.13× | 7.121 | 1.21× |
+| `shakkala` | 10.486 | 12.110 | 1.15× | 12.835 | 1.22× |
+| `mishkal` | 23.035 | 18.303 | 0.79× | 24.236 | 1.05× |
+
+Dagger alef, the declared second row, corpus `ce_all`:
+
+| tool | U+0670 scored | U+0670 deleted | cost |
+|---|---|---|---|
+| `catt-eo` | 6.736 | 5.774 | +0.962 |
+| `catt-ed` | 7.121 | 6.153 | +0.969 |
+| `shakkala` | 12.835 | 11.867 | +0.968 |
+| `mishkal` | 24.236 | 23.270 | +0.967 |
+
+**Pre-declared ordering check: HOLDS.** `catt-eo` 4.599 < `catt-ed` 4.897 <
+`shakkala` 9.448 < `mishkal` 18.499.
+
+Throughput, CPU, 6,236 verses: `catt-eo` 96.0 s (0.015 s/verse), `shakkala`
+1,818.6 s (0.292), `mishkal` 3,969.8 s (0.637), `catt-ed` 7,513.5 s (1.205).
+
+#### Observations
+
+1. **Prediction 1 is falsified for three of four tools, and the exception
+   explains the rule.** I predicted every tool would be materially *worse* on
+   the Qur'an, reasoning that Qur'anic orthography and morphology are out of
+   domain. The three *trained* models are all **better** (−0.530 to −1.066);
+   the only tool that is worse is **Mishkal, the only rule-based one**, by
+   +3.253.
+
+   The reasoning error was treating "Qur'anic" as exotic. The Qur'an is
+   plausibly the **largest body of fully-diacritized Arabic text in existence**,
+   so for a model trained on diacritized text it is the most *in*-domain
+   material available, and it is formulaic and repetitive besides. A
+   hand-written rule set gets none of that benefit and pays the full price of
+   the unusual orthography. The trained/rule-based split falling exactly along
+   the better/worse line is strong evidence this is the mechanism rather than a
+   coincidence.
+2. **Prediction 2 holds, and it is the week's real finding.** `catt-eo`'s MSA
+   1.346 does not transfer: gold text puts it at 6.346 (WikiNews) and 6.736
+   (Qur'an), so the agreement rate **understated its error by ~5×**.
+
+   The inflation table is what makes this a finding rather than an anecdote.
+   `catt-ed`, `shakkala` and `mishkal` sit at 1.05–1.22× — that is what the
+   domain difference between `Iqra_train` and gold text is worth. `catt-eo`
+   alone sits at 5.00×. Since the other three calibrate the domain effect,
+   roughly **4× of EO's gap is specific to EO**.
+3. **That resolves observation 6 of the MSA sweep, in favour of its second
+   branch.** That observation posed the alternatives as "either they share
+   error modes **or the organizers' vowelizer is CATT-derived**." A generically
+   shared error mode among diacritizers would inflate all four tools. Only EO
+   inflates, by ~4× beyond the domain effect. The evidence now points hard at
+   `tashkeel_sentence` being EO-derived or near-identical to it.
+
+   The competing explanation, stated rather than buried: `Iqra_train` is short
+   read sentences and may simply be easier text. But that would lift all four
+   tools, and the other three measure that lift at ~1.15×. The residual needs a
+   different cause. **Decisive and cheap test:** find out which vowelizer the
+   organizers used. Not yet done.
+4. **Consequence for task 8 — the decision survives, the margin does not.** The
+   EO-vs-ED choice was made on MSA agreement, where EO led by **4.38×**. On
+   gold text they are nearly tied:
+
+   | reference | `catt-eo` | `catt-ed` | gap |
+   |---|---|---|---|
+   | MSA agreement | 1.346 | 5.902 | **+4.556** |
+   | WikiNews gold | 6.346 | 6.649 | +0.303 |
+   | Qur'an gold | 6.736 | 7.121 | +0.386 |
+
+   EO is still ahead on both gold references, so D7 stands and the
+   pre-committed rule was applied honestly. But its apparent margin was
+   inflated roughly **12×** by a reference that now looks EO-derived. The rule
+   was sound; the instrument was compromised in a way that was invisible before
+   gold text existed. If EO's advantage later proves to be measurement
+   artifact, the decision is a coin-flip rather than "decisive" — so the word
+   *decisively* in task 8's conclusion is now carrying more weight than the
+   evidence supports.
+5. **Prediction 3 fails on its own stated falsifier, narrowly, and the failure
+   is informative.** The subset is *easier* than the corpus for **all four**
+   tools (−0.220 to −0.616). The declared falsifier was "a gap larger than the
+   between-tool gaps," and 0.616 exceeds the smallest between-tool gap (0.298),
+   so by the letter of the pre-registration this is falsified.
+
+   The uniform sign matters more than the magnitude: four tools moving the same
+   direction is **systematic, not noise**. I predicted "noisier but centred in
+   the same place" and got "consistently shifted." So the corpus number is a
+   **conservative** stand-in for the subset — it never flatters the tools — but
+   it is not interchangeable with it, and the 98-prompt figures are the ones
+   that apply to this arm's labels.
+6. **Dagger alef is a near-constant and the declared row earned itself.** The
+   cost is +0.962 to +0.969 for all four tools, because 3,181–3,204 of the
+   3,218 U+0670 positions are errors for *every* tool — no tool emits it at
+   all. 3,218/330,709 = 0.973%, which is the whole story: the "cost" is just
+   the base rate. Had this been folded silently into the headline it would have
+   shifted every Qur'anic rate by ~1.0 absolute, twice the calibration
+   tolerance, for a reason that has nothing to do with diacritization quality.
+7. **The Qur'anic numbers are free of seam artifacts.** 0 of 6,236 verses were
+   split for any tool, including Shakkala at its 314-character limit. The
+   chunking machinery built for this week was necessary for WikiNews (69 of 558
+   segments split for Shakkala) and turned out to be unnecessary here. Worth
+   recording as a negative result: verse-level Qur'anic text needs no chunking.
+8. **The TensorRT hypothesis was wrong.** `catt-eo` finished the corpus while
+   `catt-ed` blew job 224460's wall, and I attributed the asymmetry to
+   TensorRT rebuilding engines per decode shape. The fixed provider probe says
+   `SELECTED ['CPUExecutionProvider']` — no GPU involvement at all, on a node
+   with a visible RTX 2060. The asymmetry is just ED's autoregressive decode:
+   1.205 s/verse against EO's 0.015, an **80× ratio** that needs no exotic
+   explanation. Job 224460 died because stage A alone took 3h14m of its 4h
+   budget, not because of a provider pathology. Why ORT declines the GPU here
+   is unresolved and worth knowing before week 7's heavier runs.
+
+#### Conclusion
+
+**Exit criterion 2's first clause is MET.** RQ1 now has four numbers on
+genuinely gold text — the full Qur'anic corpus, every tool, no sampling, no
+chunking seams, 0 skeleton mismatches for the three neural tools — and
+`reference_is_gold: true` in `run/quranic_der.json` is what distinguishes them
+from `run/msa_der.json`'s agreement rates. Combined with the calibration clause
+(met by exact reproduction), **exit criterion 2 is closed.**
+
+The headline for the paper is not the Qur'anic rate itself. It is that
+**`catt-eo`'s error was understated ~5× by a reference that was itself a
+vowelizer's output**, while three other tools show the same comparison is worth
+only ~1.15×. That is direct, quantified evidence for the premise the whole
+paper rests on: evaluating against automatic diacritization hides error. We now
+have it measured rather than argued, from an experiment designed to test
+something else.
+
+Two predictions out of three failed. Both failed usefully — prediction 1 was
+wrong about the *direction* of the domain effect and the trained/rule-based
+split explains why, and prediction 3 was wrong about *noise versus shift*. The
+value of pre-registering them is precisely that this is now a recorded result
+instead of a story adjusted to fit.

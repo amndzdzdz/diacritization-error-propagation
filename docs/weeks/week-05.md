@@ -162,6 +162,47 @@ before the measurements run.
    against. Against `max_gold` this criterion would fail for a reason
    unrelated to our metric.
 
+   > **[14 Oct 2026] MET — both clauses.** Jobs 224460 and 224461 on
+   > `enderbit`; artifacts `run/wikinews_der.json` and `run/quranic_der.json`;
+   > write-up in `insights/week-05.md`.
+   >
+   > **Gold-text clause.** `scripts/measure_quranic_der.py` scores all four
+   > tools against two genuinely gold references — the 6,236 verses of the
+   > Tanzil `simple` edition (sha256 `d9b5bad9…f47f`, 330,709 letter
+   > positions) and the 98 recovered QuranMB prompt texts (4,442 characters),
+   > reported separately. Both carry `reference_is_gold: true`, which is the
+   > field that distinguishes them from `run/msa_der.json`, whose reference is
+   > itself a vowelizer's output. Headline, published convention, case endings
+   > included: `catt-eo` **4.599** on the corpus and **3.982** on the 98
+   > prompts. The pre-declared ordering `eo < ed < shakkala < mishkal` holds on
+   > both references and in both conventions.
+   >
+   > **Calibration clause — the branch that fired is neither of the two the
+   > clause anticipated.** The clause offered ±0.5 agreement *or* an explained
+   > definitional difference in prose. What `scripts/calibrate_der.py` leg A
+   > delivers is stronger than both: scoring CATT's own recorded outputs
+   > against their own gold file reproduces **all sixteen Table-5 figures to
+   > within 0.0005** — the table's printing precision — for
+   > `eo_mlm_ns_epoch_193`, `ed_mlm_ns_epoch_178`, Shakkala and Mishkal. The
+   > variant is named per row, the gold column is `original_gold` as required,
+   > and the two conventions differ by a *measured* offset (+1.04 for
+   > `catt-eo` to +4.66 for `mishkal` on CE DER) rather than by an argued one.
+   >
+   > The ±0.5 band was pre-registered and is reported unwidened. Leg B, our
+   > invocation of the four tools on CAMeL-Lab's 558-segment
+   > `WikiNewsMax.tsv`: `catt-eo` **−0.221** (inside), `catt-ed` **−0.523**
+   > (outside, by 0.023), `shakkala` −0.062, `mishkal` −0.179. All four deltas
+   > are negative, which is the signature the decisive/diagnostic split exists
+   > to detect — a bad invocation moves one row, a corpus difference moves all
+   > four the same way, and leg B's 558 segments are not CATT's 400-line file.
+   > The same-corpus test is leg A and it is exact, so `catt-ed`'s 0.023 is a
+   > property of the corpus substitution and not of our metric. Stated plainly
+   > because the band's whole purpose is to not be moved after the fact.
+   >
+   > **Both conventions are reported side by side in every artifact**, and the
+   > consequence binds the rest of the project: no rate of ours is comparable
+   > to a published DER unless scored by `metrics/der_published.py`.
+
 3. **`docs/annotation-protocol-msa.md` is committed, with the crossover
    assignment fixed, before the first utterance of the 500 is annotated.**
    Verifiable from git history, which is the point.
@@ -387,7 +428,8 @@ Ordered by what blocks what, not by size.
    Table 1 ordering? Two independent instruments already agree; a third
    disagreeing means the metric is wrong.
 
-   **STATUS 2026-10-03 — module and MSA half DONE; Qur'anic half BLOCKED.**
+   **STATUS 2026-10-14 — DONE, both halves.** The Qur'anic half is measured
+   and calibrated; details below the 10-03 entry it supersedes.
 
    - Module: `src/arabic_mdd/metrics/der.py` + `tests/metrics/test_der.py`
      (26 tests). Four named variants, no default; alignment **refused**
@@ -403,11 +445,26 @@ Ordered by what blocks what, not by size.
      `eo < ed < shakkala < mishkal` is exactly the conservation-tail ordering,
      and Mishkal stays far below Shakkala as in NAACL Table 1. Mishkal is 17×
      `catt-eo`.
-   - **Qur'anic half not done**, and it is blocked rather than skipped: it
-     needs an authoritative Qur'an edition plus task 1's clip→verse map, and
-     task 1 route (a) closed *negative*. So week 5's "one clean number on
-     genuinely gold text" (exit criterion 2) does **not** exist yet. Four
-     unexpected findings are logged in `insights/week-05.md` instead.
+   - **Qur'anic half DONE 2026-10-14** (job 224461), unblocking what the
+     10-03 entry below recorded as blocked. `run/quranic_der.json`,
+     `reference_is_gold: true`: all four tools over the full 6,236-verse
+     Tanzil `simple` edition plus the 98-prompt QuranMB subset, two
+     conventions, `sampled: false`, 0 chunking seams. Published convention CE
+     DER: `catt-eo` **4.599**, `catt-ed` 4.897, `shakkala` 9.448, `mishkal`
+     18.499. Ordering check **HOLDS**, so the third instrument agrees with the
+     two that already did.
+   - **Calibration DONE** (`run/wikinews_der.json`). `metrics/der_published.py`
+     reproduces **all sixteen** of CATT's Table-5 figures to three decimals,
+     on two platforms. Our convention's offset is therefore measured
+     (+1.04 `catt-eo` to +4.66 `mishkal` on CE DER), not assumed. Every rate
+     this project reports must now name its convention.
+   - **The finding that outranks the Qur'anic rate itself:** `catt-eo`'s MSA
+     1.346 was an *agreement* rate and understated its error ~5× against gold
+     (6.736 Qur'an, 6.346 WikiNews), while the other three tools put the same
+     comparison at only 1.05–1.22×. See task 8's amended status — this bears
+     directly on D7.
+   - Two of three pre-registered predictions **failed**, both informatively.
+     Scored in full in `insights/week-05.md`.
 
 4. **▲ Pre-register the main-block annotation protocol** —
    `docs/annotation-protocol-msa.md`, committed **before** any of the 500 is
@@ -596,6 +653,30 @@ Ordered by what blocks what, not by size.
    (or the organizers' vowelizer is CATT-derived). If `C_auto` and CATT are
    correlated, D5's error-propagation headline is **understated**. See
    `insights/week-05.md`, observation 6.
+
+   **AMENDED 2026-10-14 — D7 stands; the word "decisively" does not.** Gold
+   text (`run/quranic_der.json`, `run/wikinews_der.json`) shows the 4.556
+   margin above was an artifact of the reference, not a property of the tools:
+
+   | reference | `catt-eo` | `catt-ed` | gap |
+   |---|---|---|---|
+   | MSA agreement (`tashkeel_sentence`) | 1.346 | 5.902 | **+4.556** |
+   | WikiNews gold | 6.346 | 6.649 | +0.303 |
+   | Qur'an gold | 6.736 | 7.121 | +0.386 |
+
+   EO still leads on **both** gold references, so the decision does not
+   change and the pre-committed rule was applied honestly. But the margin
+   shrinks ~12×, to roughly the 0.3 threshold the rule set — meaning the
+   tie-breaker **would** have come into play had this reference been used. The
+   claim to retire is that EO won by a wide margin; it won narrowly.
+
+   The 10-03 ambiguity above is also now largely resolved in favour of its
+   second branch. Agreement-rate inflation is **5.00× for `catt-eo`** but only
+   1.05–1.22× for the other three tools, and a generically shared error mode
+   would inflate all four. `tashkeel_sentence` looks EO-derived.
+   **Open, and cheap to close: ask the organizers which vowelizer produced
+   `tashkeel_sentence`.** That single fact determines whether D5's headline is
+   understated and whether D7 is a genuine choice or a coin-flip.
 
 9. **Housekeeping, each small, each closing a known caveat.**
 

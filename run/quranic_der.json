@@ -1,0 +1,946 @@
+{
+  "purpose": "docs/weeks/week-05.md exit criterion 2, first clause",
+  "generated_by": "scripts/measure_quranic_der.py",
+  "reference_is_gold": true,
+  "reference_note": "the canonical Qur'anic text — unlike run/msa_der.json, whose reference is itself a vowelizer's output, so these are accuracy rates rather than agreement rates",
+  "edition": {
+    "name": "tanzil-simple-xml",
+    "sha256": "d9b5bad94e4725191aa8da9a0404bd8e6447696ef05a71f9220ab546d7a8f47f",
+    "verses": 6236
+  },
+  "subset": {
+    "source": "run/quranmb_verse_map.json",
+    "route": "c",
+    "route_note": "Consonant-skeleton span match against an authoritative text. Routes (a) and (b) are closed: ID carries no verse reference, and the organizers publish no test Arabic (test_references is ID+phonemes, QuranMB.v2 is ID+audio, Iqra_Extra_IS26 is gated). The query is the skeleton of reference_arabic_string, which the uploader derived from reference_phoneme_string, so this REPRODUCES the uploader's recovery and does not independently validate it. The independent instrument is scripts/verify_verse_map.py (human listening).",
+    "verified_by": "run/quranmb_verse_map_verified.json — human audio",
+    "prompts": 98,
+    "characters": 4345
+  },
+  "input": "strip_diacritics(reference)",
+  "sampled": false,
+  "sampling_note": "the full corpus was measured for every tool; catt-ed's 0.32 s/verse batched made the sampling fallback unnecessary",
+  "dagger_alef": {
+    "codepoint": "U+0670",
+    "corpus_occurrences": 3218,
+    "subset_occurrences": 24,
+    "headline_row": "corpus / quranmb_subset — U+0670 scored",
+    "declared_second_row": "*_no_dagger_alef — U+0670 deleted from the reference; the input is byte-identical either way, since strip_diacritics already removes it",
+    "why": "no tool under test emits U+0670, so it is a guaranteed error wherever the reference writes it; our convention scores it and the published convention deletes it, and the gap exceeds the calibration tolerance"
+  },
+  "conventions": {
+    "ours": "arabic_mdd.metrics.der — four named variants",
+    "published": {
+      "name": "catt/fadel",
+      "source": "abjadai/catt compute_der.py + xer.py; docs/novelty-check.md Table 5",
+      "tokenizer": "catt_tashkeel.TashkeelTokenizer",
+      "tokenizer_version": "1.0.2",
+      "note": "spaces and <BOS>/<EOS> are scored positions; without-case-endings masks the pre-space letter rather than dropping it; dagger alef U+0670 is deleted before scoring; distance is an edit distance over labels"
+    },
+    "calibration": "run/wikinews_der.json Leg A — all 16 Table-5 figures exact"
+  },
+  "expected_order": [
+    "catt-eo",
+    "catt-ed",
+    "shakkala",
+    "mishkal"
+  ],
+  "observed_order": [
+    "catt-eo",
+    "catt-ed",
+    "shakkala",
+    "mishkal"
+  ],
+  "results": {
+    "catt-eo": {
+      "provenance": {
+        "tool": "catt",
+        "variant": "eo",
+        "package": "catt-tashkeel",
+        "version": "1.0.2"
+      },
+      "max_input_chars": 1024,
+      "sets": {
+        "corpus": {
+          "published_convention": {
+            "ce_der": 4.598729339714764,
+            "ce_wer": 20.974293059125966,
+            "noce_der": 2.8205282764108066,
+            "noce_wer": 13.582262210796916,
+            "ce_positions": 414745
+          },
+          "our_convention": {
+            "ce_all": {
+              "der": 6.735831199029963,
+              "wer": 24.73521850899743,
+              "positions": 330709,
+              "position_errors": 22276,
+              "words": 77800,
+              "word_errors": 19244,
+              "skeleton_mismatch": 0
+            },
+            "noce_all": {
+              "der": 5.000612868660269,
+              "wer": 14.886178130262092,
+              "positions": 252909,
+              "position_errors": 12647,
+              "words": 77797,
+              "word_errors": 11581,
+              "skeleton_mismatch": 0
+            },
+            "ce_markedonly": {
+              "der": 5.673930078121908,
+              "wer": 16.804680468046804,
+              "positions": 252682,
+              "position_errors": 14337,
+              "words": 77770,
+              "word_errors": 13069,
+              "skeleton_mismatch": 0
+            },
+            "noce_markedonly": {
+              "der": 5.095109034734389,
+              "wer": 12.252562799850798,
+              "positions": 200349,
+              "position_errors": 10208,
+              "words": 77747,
+              "word_errors": 9526,
+              "skeleton_mismatch": 0
+            }
+          },
+          "references": 6236,
+          "chunking": {
+            "chunked_items": 0,
+            "seams": 0
+          },
+          "diacritize_seconds": 95.9802873150038
+        },
+        "corpus_no_dagger_alef": {
+          "published_convention": {
+            "ce_der": 4.598729339714764,
+            "ce_wer": 20.974293059125966,
+            "noce_der": 2.8205282764108066,
+            "noce_wer": 13.582262210796916,
+            "ce_positions": 414745
+          },
+          "our_convention": {
+            "ce_all": {
+              "der": 5.773958374280712,
+              "wer": 20.974293059125966,
+              "positions": 330709,
+              "position_errors": 19095,
+              "words": 77800,
+              "word_errors": 16318,
+              "skeleton_mismatch": 0
+            },
+            "noce_all": {
+              "der": 4.4980605672396,
+              "wer": 13.31028188747638,
+              "positions": 252909,
+              "position_errors": 11376,
+              "words": 77797,
+              "word_errors": 10355,
+              "skeleton_mismatch": 0
+            },
+            "ce_markedonly": {
+              "der": 4.447900466562986,
+              "wer": 12.933007586472932,
+              "positions": 250770,
+              "position_errors": 11154,
+              "words": 77770,
+              "word_errors": 10058,
+              "skeleton_mismatch": 0
+            },
+            "noce_markedonly": {
+              "der": 4.460716050491891,
+              "wer": 10.656359730922093,
+              "positions": 200349,
+              "position_errors": 8937,
+              "words": 77747,
+              "word_errors": 8285,
+              "skeleton_mismatch": 0
+            }
+          },
+          "references": 6236,
+          "chunking": {
+            "chunked_items": 0,
+            "seams": 0
+          },
+          "diacritize_seconds": 95.9802873150038
+        },
+        "quranmb_subset": {
+          "published_convention": {
+            "ce_der": 3.982462550237486,
+            "ce_wer": 19.517102615694164,
+            "noce_der": 2.4479356960175376,
+            "noce_wer": 12.072434607645874,
+            "ce_positions": 2737
+          },
+          "our_convention": {
+            "ce_all": {
+              "der": 6.209150326797386,
+              "wer": 23.943661971830984,
+              "positions": 2142,
+              "position_errors": 133,
+              "words": 497,
+              "word_errors": 119,
+              "skeleton_mismatch": 0
+            },
+            "noce_all": {
+              "der": 4.437689969604863,
+              "wer": 13.480885311871228,
+              "positions": 1645,
+              "position_errors": 73,
+              "words": 497,
+              "word_errors": 67,
+              "skeleton_mismatch": 0
+            },
+            "ce_markedonly": {
+              "der": 5.8645707376058045,
+              "wer": 17.505030181086518,
+              "positions": 1654,
+              "position_errors": 97,
+              "words": 497,
+              "word_errors": 87,
+              "skeleton_mismatch": 0
+            },
+            "noce_markedonly": {
+              "der": 4.868624420401854,
+              "wer": 11.87122736418511,
+              "positions": 1294,
+              "position_errors": 63,
+              "words": 497,
+              "word_errors": 59,
+              "skeleton_mismatch": 0
+            }
+          },
+          "references": 98,
+          "chunking": {
+            "chunked_items": 0,
+            "seams": 0
+          },
+          "diacritize_seconds": 0.3469754850084428
+        },
+        "quranmb_subset_no_dagger_alef": {
+          "published_convention": {
+            "ce_der": 3.982462550237486,
+            "ce_wer": 19.517102615694164,
+            "noce_der": 2.4479356960175376,
+            "noce_wer": 12.072434607645874,
+            "ce_positions": 2737
+          },
+          "our_convention": {
+            "ce_all": {
+              "der": 5.088702147525677,
+              "wer": 19.517102615694164,
+              "positions": 2142,
+              "position_errors": 109,
+              "words": 497,
+              "word_errors": 97,
+              "skeleton_mismatch": 0
+            },
+            "noce_all": {
+              "der": 3.8297872340425534,
+              "wer": 11.46881287726358,
+              "positions": 1645,
+              "position_errors": 63,
+              "words": 497,
+              "word_errors": 57,
+              "skeleton_mismatch": 0
+            },
+            "ce_markedonly": {
+              "der": 4.451219512195122,
+              "wer": 13.078470824949699,
+              "positions": 1640,
+              "position_errors": 73,
+              "words": 497,
+              "word_errors": 65,
+              "skeleton_mismatch": 0
+            },
+            "noce_markedonly": {
+              "der": 4.095826893353942,
+              "wer": 9.859154929577464,
+              "positions": 1294,
+              "position_errors": 53,
+              "words": 497,
+              "word_errors": 49,
+              "skeleton_mismatch": 0
+            }
+          },
+          "references": 98,
+          "chunking": {
+            "chunked_items": 0,
+            "seams": 0
+          },
+          "diacritize_seconds": 0.3469754850084428
+        }
+      }
+    },
+    "catt-ed": {
+      "provenance": {
+        "tool": "catt",
+        "variant": "ed",
+        "package": "catt-tashkeel",
+        "version": "1.0.2"
+      },
+      "max_input_chars": 1022,
+      "sets": {
+        "corpus": {
+          "published_convention": {
+            "ce_der": 4.896984894332662,
+            "ce_wer": 21.60025706940874,
+            "noce_der": 3.039699092213288,
+            "noce_wer": 14.113110539845758,
+            "ce_positions": 414745
+          },
+          "our_convention": {
+            "ce_all": {
+              "der": 7.121366518600945,
+              "wer": 25.394601542416453,
+              "positions": 330709,
+              "position_errors": 23551,
+              "words": 77800,
+              "word_errors": 19757,
+              "skeleton_mismatch": 0
+            },
+            "noce_all": {
+              "der": 5.360030682972927,
+              "wer": 15.47617517384989,
+              "positions": 252909,
+              "position_errors": 13556,
+              "words": 77797,
+              "word_errors": 12040,
+              "skeleton_mismatch": 0
+            },
+            "ce_markedonly": {
+              "der": 6.16585273189226,
+              "wer": 17.553041018387553,
+              "positions": 252682,
+              "position_errors": 15580,
+              "words": 77770,
+              "word_errors": 13651,
+              "skeleton_mismatch": 0
+            },
+            "noce_markedonly": {
+              "der": 5.427029832941517,
+              "wer": 12.593411964448789,
+              "positions": 200349,
+              "position_errors": 10873,
+              "words": 77747,
+              "word_errors": 9791,
+              "skeleton_mismatch": 0
+            }
+          },
+          "references": 6236,
+          "chunking": {
+            "chunked_items": 0,
+            "seams": 0
+          },
+          "diacritize_seconds": 7513.463737551996
+        },
+        "corpus_no_dagger_alef": {
+          "published_convention": {
+            "ce_der": 4.896984894332662,
+            "ce_wer": 21.60025706940874,
+            "noce_der": 3.039699092213288,
+            "noce_wer": 14.113110539845758,
+            "ce_positions": 414745
+          },
+          "our_convention": {
+            "ce_all": {
+              "der": 6.152538939067277,
+              "wer": 21.60025706940874,
+              "positions": 330709,
+              "position_errors": 20347,
+              "words": 77800,
+              "word_errors": 16805,
+              "skeleton_mismatch": 0
+            },
+            "noce_all": {
+              "der": 4.847988802296478,
+              "wer": 13.843721480262735,
+              "positions": 252909,
+              "position_errors": 12261,
+              "words": 77797,
+              "word_errors": 10770,
+              "skeleton_mismatch": 0
+            },
+            "ce_markedonly": {
+              "der": 4.93400326992862,
+              "wer": 13.646650379323647,
+              "positions": 250770,
+              "position_errors": 12373,
+              "words": 77770,
+              "word_errors": 10613,
+              "skeleton_mismatch": 0
+            },
+            "noce_markedonly": {
+              "der": 4.780657752222372,
+              "wer": 10.957335974378433,
+              "positions": 200349,
+              "position_errors": 9578,
+              "words": 77747,
+              "word_errors": 8519,
+              "skeleton_mismatch": 0
+            }
+          },
+          "references": 6236,
+          "chunking": {
+            "chunked_items": 0,
+            "seams": 0
+          },
+          "diacritize_seconds": 7513.463737551996
+        },
+        "quranmb_subset": {
+          "published_convention": {
+            "ce_der": 4.676653270003654,
+            "ce_wer": 21.93158953722334,
+            "noce_der": 2.7767628790646692,
+            "noce_wer": 13.682092555331993,
+            "ce_positions": 2737
+          },
+          "our_convention": {
+            "ce_all": {
+              "der": 7.096171802054155,
+              "wer": 26.559356136820927,
+              "positions": 2142,
+              "position_errors": 152,
+              "words": 497,
+              "word_errors": 132,
+              "skeleton_mismatch": 0
+            },
+            "noce_all": {
+              "der": 4.86322188449848,
+              "wer": 14.688128772635816,
+              "positions": 1645,
+              "position_errors": 80,
+              "words": 497,
+              "word_errors": 73,
+              "skeleton_mismatch": 0
+            },
+            "ce_markedonly": {
+              "der": 7.194679564691657,
+              "wer": 20.925553319919516,
+              "positions": 1654,
+              "position_errors": 119,
+              "words": 497,
+              "word_errors": 104,
+              "skeleton_mismatch": 0
+            },
+            "noce_markedonly": {
+              "der": 5.486862442040185,
+              "wer": 13.279678068410464,
+              "positions": 1294,
+              "position_errors": 71,
+              "words": 497,
+              "word_errors": 66,
+              "skeleton_mismatch": 0
+            }
+          },
+          "references": 98,
+          "chunking": {
+            "chunked_items": 0,
+            "seams": 0
+          },
+          "diacritize_seconds": 6.998932000016794
+        },
+        "quranmb_subset_no_dagger_alef": {
+          "published_convention": {
+            "ce_der": 4.676653270003654,
+            "ce_wer": 21.93158953722334,
+            "noce_der": 2.7767628790646692,
+            "noce_wer": 13.682092555331993,
+            "ce_positions": 2737
+          },
+          "our_convention": {
+            "ce_all": {
+              "der": 5.975723622782446,
+              "wer": 21.93158953722334,
+              "positions": 2142,
+              "position_errors": 128,
+              "words": 497,
+              "word_errors": 109,
+              "skeleton_mismatch": 0
+            },
+            "noce_all": {
+              "der": 4.25531914893617,
+              "wer": 12.67605633802817,
+              "positions": 1645,
+              "position_errors": 70,
+              "words": 497,
+              "word_errors": 63,
+              "skeleton_mismatch": 0
+            },
+            "ce_markedonly": {
+              "der": 5.7926829268292686,
+              "wer": 16.29778672032193,
+              "positions": 1640,
+              "position_errors": 95,
+              "words": 497,
+              "word_errors": 81,
+              "skeleton_mismatch": 0
+            },
+            "noce_markedonly": {
+              "der": 4.714064914992272,
+              "wer": 11.267605633802816,
+              "positions": 1294,
+              "position_errors": 61,
+              "words": 497,
+              "word_errors": 56,
+              "skeleton_mismatch": 0
+            }
+          },
+          "references": 98,
+          "chunking": {
+            "chunked_items": 0,
+            "seams": 0
+          },
+          "diacritize_seconds": 6.998932000016794
+        }
+      }
+    },
+    "shakkala": {
+      "provenance": {
+        "tool": "shakkala",
+        "package": "shakkala",
+        "version": "1.7",
+        "worker_python": "3.10"
+      },
+      "max_input_chars": 314,
+      "sets": {
+        "corpus": {
+          "published_convention": {
+            "ce_der": 9.447732944339293,
+            "ce_wer": 37.07840616966581,
+            "noce_der": 6.289888967920048,
+            "noce_wer": 25.703084832904885,
+            "ce_positions": 414745
+          },
+          "our_convention": {
+            "ce_all": {
+              "der": 12.835151144964303,
+              "wer": 40.38946015424165,
+              "positions": 330709,
+              "position_errors": 42447,
+              "words": 77800,
+              "word_errors": 31423,
+              "skeleton_mismatch": 0
+            },
+            "noce_all": {
+              "der": 10.557552321190625,
+              "wer": 26.704114554545804,
+              "positions": 252909,
+              "position_errors": 26701,
+              "words": 77797,
+              "word_errors": 20775,
+              "skeleton_mismatch": 0
+            },
+            "ce_markedonly": {
+              "der": 13.520155768911122,
+              "wer": 33.08087951652308,
+              "positions": 252682,
+              "position_errors": 34163,
+              "words": 77770,
+              "word_errors": 25727,
+              "skeleton_mismatch": 0
+            },
+            "noce_markedonly": {
+              "der": 11.614233163130338,
+              "wer": 23.52116480378664,
+              "positions": 200349,
+              "position_errors": 23269,
+              "words": 77747,
+              "word_errors": 18287,
+              "skeleton_mismatch": 0
+            }
+          },
+          "references": 6236,
+          "chunking": {
+            "chunked_items": 24,
+            "seams": 25
+          },
+          "diacritize_seconds": 1818.5928821099806
+        },
+        "corpus_no_dagger_alef": {
+          "published_convention": {
+            "ce_der": 9.447732944339293,
+            "ce_wer": 37.07840616966581,
+            "noce_der": 6.289888967920048,
+            "noce_wer": 25.703084832904885,
+            "ce_positions": 414745
+          },
+          "our_convention": {
+            "ce_all": {
+              "der": 11.867230707359038,
+              "wer": 37.07840616966581,
+              "positions": 330709,
+              "position_errors": 39246,
+              "words": 77800,
+              "word_errors": 28847,
+              "skeleton_mismatch": 0
+            },
+            "noce_all": {
+              "der": 10.046301238785492,
+              "wer": 25.191202745607157,
+              "positions": 252909,
+              "position_errors": 25408,
+              "words": 77797,
+              "word_errors": 19598,
+              "skeleton_mismatch": 0
+            },
+            "ce_markedonly": {
+              "der": 12.34517685528572,
+              "wer": 29.66053748231966,
+              "positions": 250770,
+              "position_errors": 30958,
+              "words": 77770,
+              "word_errors": 23067,
+              "skeleton_mismatch": 0
+            },
+            "noce_markedonly": {
+              "der": 10.968859340450914,
+              "wer": 22.007280023666507,
+              "positions": 200349,
+              "position_errors": 21976,
+              "words": 77747,
+              "word_errors": 17110,
+              "skeleton_mismatch": 0
+            }
+          },
+          "references": 6236,
+          "chunking": {
+            "chunked_items": 24,
+            "seams": 25
+          },
+          "diacritize_seconds": 1818.5928821099806
+        },
+        "quranmb_subset": {
+          "published_convention": {
+            "ce_der": 9.207161125319693,
+            "ce_wer": 39.03420523138833,
+            "noce_der": 5.882352941176471,
+            "noce_wer": 25.150905432595575,
+            "ce_positions": 2737
+          },
+          "our_convention": {
+            "ce_all": {
+              "der": 12.88515406162465,
+              "wer": 43.05835010060362,
+              "positions": 2142,
+              "position_errors": 276,
+              "words": 497,
+              "word_errors": 214,
+              "skeleton_mismatch": 0
+            },
+            "noce_all": {
+              "der": 9.483282674772036,
+              "wer": 24.748490945674043,
+              "positions": 1645,
+              "position_errors": 156,
+              "words": 497,
+              "word_errors": 123,
+              "skeleton_mismatch": 0
+            },
+            "ce_markedonly": {
+              "der": 14.389359129383314,
+              "wer": 37.42454728370221,
+              "positions": 1654,
+              "position_errors": 238,
+              "words": 497,
+              "word_errors": 186,
+              "skeleton_mismatch": 0
+            },
+            "noce_markedonly": {
+              "der": 11.128284389489954,
+              "wer": 23.541247484909455,
+              "positions": 1294,
+              "position_errors": 144,
+              "words": 497,
+              "word_errors": 117,
+              "skeleton_mismatch": 0
+            }
+          },
+          "references": 98,
+          "chunking": {
+            "chunked_items": 0,
+            "seams": 0
+          },
+          "diacritize_seconds": 39.83307296800194
+        },
+        "quranmb_subset_no_dagger_alef": {
+          "published_convention": {
+            "ce_der": 9.207161125319693,
+            "ce_wer": 39.03420523138833,
+            "noce_der": 5.882352941176471,
+            "noce_wer": 25.150905432595575,
+            "ce_positions": 2737
+          },
+          "our_convention": {
+            "ce_all": {
+              "der": 11.764705882352942,
+              "wer": 39.03420523138833,
+              "positions": 2142,
+              "position_errors": 252,
+              "words": 497,
+              "word_errors": 194,
+              "skeleton_mismatch": 0
+            },
+            "noce_all": {
+              "der": 8.875379939209726,
+              "wer": 22.736418511066397,
+              "positions": 1645,
+              "position_errors": 146,
+              "words": 497,
+              "word_errors": 113,
+              "skeleton_mismatch": 0
+            },
+            "ce_markedonly": {
+              "der": 13.048780487804878,
+              "wer": 33.40040241448692,
+              "positions": 1640,
+              "position_errors": 214,
+              "words": 497,
+              "word_errors": 166,
+              "skeleton_mismatch": 0
+            },
+            "noce_markedonly": {
+              "der": 10.35548686244204,
+              "wer": 21.52917505030181,
+              "positions": 1294,
+              "position_errors": 134,
+              "words": 497,
+              "word_errors": 107,
+              "skeleton_mismatch": 0
+            }
+          },
+          "references": 98,
+          "chunking": {
+            "chunked_items": 0,
+            "seams": 0
+          },
+          "diacritize_seconds": 39.83307296800194
+        }
+      }
+    },
+    "mishkal": {
+      "provenance": {
+        "tool": "mishkal",
+        "package": "mishkal",
+        "version": "0.4.1"
+      },
+      "max_input_chars": null,
+      "sets": {
+        "corpus": {
+          "published_convention": {
+            "ce_der": 18.49931885857575,
+            "ce_wer": 63.01928020565553,
+            "noce_der": 12.193275386080604,
+            "noce_wer": 44.15681233933162,
+            "ce_positions": 414745
+          },
+          "our_convention": {
+            "ce_all": {
+              "der": 24.236375311992635,
+              "wer": 65.2665464846768,
+              "positions": 330136,
+              "position_errors": 80013,
+              "words": 77660,
+              "word_errors": 50686,
+              "skeleton_mismatch": 4
+            },
+            "noce_all": {
+              "der": 19.90129754907397,
+              "wer": 44.240699486202146,
+              "positions": 252476,
+              "position_errors": 50246,
+              "words": 77657,
+              "word_errors": 34356,
+              "skeleton_mismatch": 4
+            },
+            "ce_markedonly": {
+              "der": 28.809023510288227,
+              "wer": 61.46206363519258,
+              "positions": 252230,
+              "position_errors": 72665,
+              "words": 77630,
+              "word_errors": 47713,
+              "skeleton_mismatch": 4
+            },
+            "noce_markedonly": {
+              "der": 22.390335855037826,
+              "wer": 40.783692192714575,
+              "positions": 199997,
+              "position_errors": 44780,
+              "words": 77607,
+              "word_errors": 31651,
+              "skeleton_mismatch": 4
+            }
+          },
+          "references": 6236,
+          "chunking": {
+            "chunked_items": 0,
+            "seams": 0
+          },
+          "diacritize_seconds": 3969.8083394239948
+        },
+        "corpus_no_dagger_alef": {
+          "published_convention": {
+            "ce_der": 18.49931885857575,
+            "ce_wer": 63.01928020565553,
+            "noce_der": 12.193275386080604,
+            "noce_wer": 44.15681233933162,
+            "ce_positions": 414745
+          },
+          "our_convention": {
+            "ce_all": {
+              "der": 23.269803959580294,
+              "wer": 63.004120525366986,
+              "positions": 330136,
+              "position_errors": 76822,
+              "words": 77660,
+              "word_errors": 48929,
+              "skeleton_mismatch": 4
+            },
+            "noce_all": {
+              "der": 19.39194220440755,
+              "wer": 43.21954234647231,
+              "positions": 252476,
+              "position_errors": 48960,
+              "words": 77657,
+              "word_errors": 33563,
+              "skeleton_mismatch": 4
+            },
+            "ce_markedonly": {
+              "der": 27.753520423449515,
+              "wer": 59.09184593584954,
+              "positions": 250325,
+              "position_errors": 69474,
+              "words": 77630,
+              "word_errors": 45873,
+              "skeleton_mismatch": 4
+            },
+            "noce_markedonly": {
+              "der": 21.74732620989315,
+              "wer": 39.761877150257064,
+              "positions": 199997,
+              "position_errors": 43494,
+              "words": 77607,
+              "word_errors": 30858,
+              "skeleton_mismatch": 4
+            }
+          },
+          "references": 6236,
+          "chunking": {
+            "chunked_items": 0,
+            "seams": 0
+          },
+          "diacritize_seconds": 3969.8083394239948
+        },
+        "quranmb_subset": {
+          "published_convention": {
+            "ce_der": 18.195104128607966,
+            "ce_wer": 59.95975855130785,
+            "noce_der": 12.495432955791012,
+            "noce_wer": 43.46076458752515,
+            "ce_positions": 2737
+          },
+          "our_convention": {
+            "ce_all": {
+              "der": 24.649859943977592,
+              "wer": 62.776659959758554,
+              "positions": 2142,
+              "position_errors": 528,
+              "words": 497,
+              "word_errors": 312,
+              "skeleton_mismatch": 0
+            },
+            "noce_all": {
+              "der": 20.060790273556233,
+              "wer": 42.65593561368209,
+              "positions": 1645,
+              "position_errors": 330,
+              "words": 497,
+              "word_errors": 212,
+              "skeleton_mismatch": 0
+            },
+            "ce_markedonly": {
+              "der": 29.564691656590085,
+              "wer": 59.356136820925556,
+              "positions": 1654,
+              "position_errors": 489,
+              "words": 497,
+              "word_errors": 295,
+              "skeleton_mismatch": 0
+            },
+            "noce_markedonly": {
+              "der": 23.183925811437405,
+              "wer": 39.63782696177062,
+              "positions": 1294,
+              "position_errors": 300,
+              "words": 497,
+              "word_errors": 197,
+              "skeleton_mismatch": 0
+            }
+          },
+          "references": 98,
+          "chunking": {
+            "chunked_items": 0,
+            "seams": 0
+          },
+          "diacritize_seconds": 21.199653315998148
+        },
+        "quranmb_subset_no_dagger_alef": {
+          "published_convention": {
+            "ce_der": 18.195104128607966,
+            "ce_wer": 59.95975855130785,
+            "noce_der": 12.495432955791012,
+            "noce_wer": 43.46076458752515,
+            "ce_positions": 2737
+          },
+          "our_convention": {
+            "ce_all": {
+              "der": 23.529411764705884,
+              "wer": 59.95975855130785,
+              "positions": 2142,
+              "position_errors": 504,
+              "words": 497,
+              "word_errors": 298,
+              "skeleton_mismatch": 0
+            },
+            "noce_all": {
+              "der": 19.45288753799392,
+              "wer": 41.24748490945674,
+              "positions": 1645,
+              "position_errors": 320,
+              "words": 497,
+              "word_errors": 205,
+              "skeleton_mismatch": 0
+            },
+            "ce_markedonly": {
+              "der": 28.353658536585368,
+              "wer": 56.33802816901409,
+              "positions": 1640,
+              "position_errors": 465,
+              "words": 497,
+              "word_errors": 280,
+              "skeleton_mismatch": 0
+            },
+            "noce_markedonly": {
+              "der": 22.41112828438949,
+              "wer": 38.22937625754527,
+              "positions": 1294,
+              "position_errors": 290,
+              "words": 497,
+              "word_errors": 190,
+              "skeleton_mismatch": 0
+            }
+          },
+          "references": 98,
+          "chunking": {
+            "chunked_items": 0,
+            "seams": 0
+          },
+          "diacritize_seconds": 21.199653315998148
+        }
+      }
+    }
+  }
+}

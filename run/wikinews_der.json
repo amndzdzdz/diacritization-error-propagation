@@ -1,0 +1,552 @@
+{
+  "purpose": "docs/weeks/week-05.md exit criterion 2, calibration clause",
+  "generated_by": "scripts/calibrate_der.py",
+  "published_source": "CATT (Abjad AI, 2024) Table 5; docs/novelty-check.md",
+  "leg_a_metric": {
+    "gold_file": "WikiNews_data_gt.txt",
+    "gold_sha256": "7639173c6e92365e9b0f623e813ecd793ca0dfc9c59c8480e64b0dcff6797711",
+    "lines": 400,
+    "source": "https://raw.githubusercontent.com/abjadai/catt/main/benchmarking/all_models_WikiNews_data",
+    "convention": {
+      "name": "catt/fadel",
+      "source": "abjadai/catt compute_der.py + xer.py; docs/novelty-check.md Table 5",
+      "tokenizer": "catt_tashkeel.TashkeelTokenizer",
+      "tokenizer_version": "1.0.2",
+      "note": "spaces and <BOS>/<EOS> are scored positions; without-case-endings masks the pre-space letter rather than dropping it; dagger alef U+0670 is deleted before scoring; distance is an edit distance over labels"
+    },
+    "exact_tolerance": 0.0005,
+    "reproduced_exactly": true,
+    "tools": {
+      "catt-eo": {
+        "source_file": "WikiNews_data_eo_mlm_ns_epoch_193.txt",
+        "source_sha256": "b8c1e0eeb52a55f2542efefa078d6e4e8617dff77406475f323e8fdd29d3d7a0",
+        "published": {
+          "ce_der": 5.425,
+          "ce_wer": 22.132,
+          "noce_der": 3.105,
+          "noce_wer": 12.679
+        },
+        "published_convention": {
+          "ce_der": 5.4253385583560085,
+          "ce_wer": 22.132461766156883,
+          "noce_der": 3.104545979849343,
+          "noce_wer": 12.678835717809571,
+          "ce_positions": 95183,
+          "ce_words": 16216
+        },
+        "reproduced_exactly": true,
+        "our_convention": {
+          "ce_all": {
+            "der": 6.466549365648441,
+            "wer": 21.856,
+            "positions": 75589,
+            "position_errors": 4888,
+            "words": 15625,
+            "word_errors": 3415,
+            "skeleton_mismatch": 9
+          },
+          "noce_all": {
+            "der": 4.534387299046094,
+            "wer": 12.154023577652486,
+            "positions": 59964,
+            "position_errors": 2719,
+            "words": 15608,
+            "word_errors": 1897,
+            "skeleton_mismatch": 9
+          },
+          "ce_markedonly": {
+            "der": 8.000826247116741,
+            "wer": 21.358601703053974,
+            "positions": 58094,
+            "position_errors": 4648,
+            "words": 15619,
+            "word_errors": 3336,
+            "skeleton_mismatch": 9
+          },
+          "noce_markedonly": {
+            "der": 5.611160997831753,
+            "wer": 11.934552454282965,
+            "positions": 45659,
+            "position_errors": 2562,
+            "words": 15585,
+            "word_errors": 1860,
+            "skeleton_mismatch": 9
+          }
+        },
+        "convention_offset": {
+          "ce_der": 1.0412108072924324,
+          "noce_der": 1.4298413191967514,
+          "ce_wer": -0.27646176615688134
+        }
+      },
+      "catt-ed": {
+        "source_file": "WikiNews_data_ed_mlm_ns_epoch_178.txt",
+        "source_sha256": "7af94ac72705c1337a83fc76817df854fd567b2ee625ecac79a4f565fe673157",
+        "published": {
+          "ce_der": 5.963,
+          "ce_wer": 20.06,
+          "noce_der": 3.631,
+          "noce_wer": 11.31
+        },
+        "published_convention": {
+          "ce_der": 5.963249739974575,
+          "ce_wer": 20.060434139121856,
+          "noce_der": 3.6309004759253227,
+          "noce_wer": 11.309817464232857,
+          "ce_positions": 95183,
+          "ce_words": 16216
+        },
+        "reproduced_exactly": true,
+        "our_convention": {
+          "ce_all": {
+            "der": 7.032769318287053,
+            "wer": 19.744,
+            "positions": 75589,
+            "position_errors": 5316,
+            "words": 15625,
+            "word_errors": 3085,
+            "skeleton_mismatch": 9
+          },
+          "noce_all": {
+            "der": 5.2264692148622505,
+            "wer": 10.725269092772937,
+            "positions": 59964,
+            "position_errors": 3134,
+            "words": 15608,
+            "word_errors": 1674,
+            "skeleton_mismatch": 9
+          },
+          "ce_markedonly": {
+            "der": 8.648053155231176,
+            "wer": 19.34822972021256,
+            "positions": 58094,
+            "position_errors": 5024,
+            "words": 15619,
+            "word_errors": 3022,
+            "skeleton_mismatch": 9
+          },
+          "noce_markedonly": {
+            "der": 6.403994831249042,
+            "wer": 10.69618222649984,
+            "positions": 45659,
+            "position_errors": 2924,
+            "words": 15585,
+            "word_errors": 1667,
+            "skeleton_mismatch": 9
+          }
+        },
+        "convention_offset": {
+          "ce_der": 1.0695195783124776,
+          "noce_der": 1.5955687389369277,
+          "ce_wer": -0.31643413912185636
+        }
+      },
+      "shakkala": {
+        "source_file": "WikiNews_data_Shakkala_output.txt",
+        "source_sha256": "a1fcb1ec45f8a611587e7fb66ce1ef14d7c0613168bc1d4d9d0b07892f311e3b",
+        "published": {
+          "ce_der": 9.978,
+          "ce_wer": 37.241,
+          "noce_der": 6.593,
+          "noce_wer": 24.988
+        },
+        "published_convention": {
+          "ce_der": 9.977622054358447,
+          "ce_wer": 37.24099654662062,
+          "noce_der": 6.592563798157234,
+          "noce_wer": 24.98766650222003,
+          "ce_positions": 95183,
+          "ce_words": 16216
+        },
+        "reproduced_exactly": true,
+        "our_convention": {
+          "ce_all": {
+            "der": 12.156144234928876,
+            "wer": 37.24099654662062,
+            "positions": 78594,
+            "position_errors": 9554,
+            "words": 16216,
+            "word_errors": 6039,
+            "skeleton_mismatch": 0
+          },
+          "noce_all": {
+            "der": 9.979479944852352,
+            "wer": 24.753025438379847,
+            "positions": 62378,
+            "position_errors": 6225,
+            "words": 16196,
+            "word_errors": 4009,
+            "skeleton_mismatch": 0
+          },
+          "ce_markedonly": {
+            "der": 14.721283223967655,
+            "wer": 36.73041332510796,
+            "positions": 60348,
+            "position_errors": 8884,
+            "words": 16210,
+            "word_errors": 5954,
+            "skeleton_mismatch": 0
+          },
+          "noce_markedonly": {
+            "der": 11.92532973747419,
+            "wer": 24.36928023744744,
+            "positions": 47462,
+            "position_errors": 5660,
+            "words": 16172,
+            "word_errors": 3941,
+            "skeleton_mismatch": 0
+          }
+        },
+        "convention_offset": {
+          "ce_der": 2.178522180570429,
+          "noce_der": 3.3869161466951185,
+          "ce_wer": 0.0
+        }
+      },
+      "mishkal": {
+        "source_file": "WikiNews_data_Mishkal_output.txt",
+        "source_sha256": "842e6f4da95c68d6fb307aa22a6c3014bc95b349fed35ebf54b3c58ba93e800e",
+        "published": {
+          "ce_der": 15.246,
+          "ce_wer": 54.187,
+          "noce_der": 8.558,
+          "noce_wer": 27.337
+        },
+        "published_convention": {
+          "ce_der": 15.24642005400124,
+          "ce_wer": 54.18722249629995,
+          "noce_der": 8.558250948173518,
+          "noce_wer": 27.33719782930439,
+          "ce_positions": 95183,
+          "ce_words": 16216
+        },
+        "reproduced_exactly": true,
+        "our_convention": {
+          "ce_all": {
+            "der": 19.90382359840488,
+            "wer": 57.31428571428572,
+            "positions": 8526,
+            "position_errors": 1697,
+            "words": 1750,
+            "word_errors": 1003,
+            "skeleton_mismatch": 290
+          },
+          "noce_all": {
+            "der": 13.621605667060212,
+            "wer": 28.006872852233677,
+            "positions": 6776,
+            "position_errors": 923,
+            "words": 1746,
+            "word_errors": 489,
+            "skeleton_mismatch": 290
+          },
+          "ce_markedonly": {
+            "der": 23.954663807627508,
+            "wer": 54.34285714285714,
+            "positions": 6529,
+            "position_errors": 1564,
+            "words": 1750,
+            "word_errors": 951,
+            "skeleton_mismatch": 290
+          },
+          "noce_markedonly": {
+            "der": 15.982003129890455,
+            "wer": 25.6601607347876,
+            "positions": 5112,
+            "position_errors": 817,
+            "words": 1742,
+            "word_errors": 447,
+            "skeleton_mismatch": 290
+          }
+        },
+        "convention_offset": {
+          "ce_der": 4.657403544403641,
+          "noce_der": 5.0633547188866945,
+          "ce_wer": 3.1270632179857643
+        }
+      }
+    }
+  },
+  "leg_b_pipeline": {
+    "source": "CAMeL-Lab/wild_diacritics data/WikiNewsMax.tsv",
+    "source_sha256": "a9cc8f7725aa88529a582bbe655a522b384cbbd6b257fb8d72986d17edfdbeb2",
+    "licence": "CC-BY-SA-4.0; cite Darwish et al. 2017 additionally",
+    "gold_column": "original_gold",
+    "gold_column_note": "the Darwish et al. 2017 reference the published machine DER figures were measured on; max_gold differs on 3.72% of Arabic words",
+    "reference_is_gold": true,
+    "input": "strip_diacritics(original_gold)",
+    "segments": 558,
+    "word_rows": 16125,
+    "skeleton_mismatch_rows": 0,
+    "tolerance": 0.5,
+    "decisive_tools": [
+      "catt-eo",
+      "catt-ed"
+    ],
+    "tools": {
+      "catt-eo": {
+        "provenance": {
+          "tool": "catt",
+          "variant": "eo",
+          "package": "catt-tashkeel",
+          "version": "1.0.2"
+        },
+        "segments": 558,
+        "max_input_chars": 1024,
+        "chunking": {
+          "chunked_items": 2,
+          "seams": 2
+        },
+        "published": {
+          "ce_der": 5.425,
+          "ce_wer": 22.132,
+          "noce_der": 3.105,
+          "noce_wer": 12.679,
+          "decisive": true
+        },
+        "published_convention": {
+          "ce_der": 5.203606781863968,
+          "ce_wer": 21.843563949907615,
+          "noce_der": 3.0323426674867413,
+          "noce_wer": 12.769451857934715,
+          "ce_positions": 86171
+        },
+        "our_convention": {
+          "ce_all": {
+            "der": 6.346478873239437,
+            "wer": 21.843563949907615,
+            "positions": 71000,
+            "position_errors": 4506,
+            "words": 14613,
+            "word_errors": 3192,
+            "skeleton_mismatch": 0
+          },
+          "noce_all": {
+            "der": 4.430099136325749,
+            "wer": 12.123705684701365,
+            "positions": 56387,
+            "position_errors": 2498,
+            "words": 14583,
+            "word_errors": 1768,
+            "skeleton_mismatch": 0
+          },
+          "ce_markedonly": {
+            "der": 7.8396828892314465,
+            "wer": 21.34593003354556,
+            "positions": 54492,
+            "position_errors": 4272,
+            "words": 14607,
+            "word_errors": 3118,
+            "skeleton_mismatch": 0
+          },
+          "noce_markedonly": {
+            "der": 5.475329522920798,
+            "wer": 11.935483870967742,
+            "positions": 42865,
+            "position_errors": 2347,
+            "words": 14570,
+            "word_errors": 1739,
+            "skeleton_mismatch": 0
+          }
+        }
+      },
+      "catt-ed": {
+        "provenance": {
+          "tool": "catt",
+          "variant": "ed",
+          "package": "catt-tashkeel",
+          "version": "1.0.2"
+        },
+        "segments": 558,
+        "max_input_chars": 1022,
+        "chunking": {
+          "chunked_items": 2,
+          "seams": 2
+        },
+        "published": {
+          "ce_der": 5.963,
+          "ce_wer": 20.06,
+          "noce_der": 3.631,
+          "noce_wer": 11.31,
+          "decisive": true
+        },
+        "published_convention": {
+          "ce_der": 5.440345359807824,
+          "ce_wer": 19.54424142886471,
+          "noce_der": 3.2934513931601117,
+          "noce_wer": 11.1065489632519,
+          "ce_positions": 86171
+        },
+        "our_convention": {
+          "ce_all": {
+            "der": 6.649295774647888,
+            "wer": 19.54424142886471,
+            "positions": 71000,
+            "position_errors": 4721,
+            "words": 14613,
+            "word_errors": 2856,
+            "skeleton_mismatch": 0
+          },
+          "noce_all": {
+            "der": 4.857502615851171,
+            "wer": 10.519097579373243,
+            "positions": 56387,
+            "position_errors": 2739,
+            "words": 14583,
+            "word_errors": 1534,
+            "skeleton_mismatch": 0
+          },
+          "ce_markedonly": {
+            "der": 8.129633707700213,
+            "wer": 19.134661463681795,
+            "positions": 54492,
+            "position_errors": 4430,
+            "words": 14607,
+            "word_errors": 2795,
+            "skeleton_mismatch": 0
+          },
+          "noce_markedonly": {
+            "der": 5.895252537034877,
+            "wer": 10.459849004804392,
+            "positions": 42865,
+            "position_errors": 2527,
+            "words": 14570,
+            "word_errors": 1524,
+            "skeleton_mismatch": 0
+          }
+        }
+      },
+      "shakkala": {
+        "provenance": {
+          "tool": "shakkala",
+          "package": "shakkala",
+          "version": "1.7",
+          "worker_python": "3.10"
+        },
+        "segments": 558,
+        "max_input_chars": 314,
+        "chunking": {
+          "chunked_items": 69,
+          "seams": 82
+        },
+        "published": {
+          "ce_der": 9.978,
+          "ce_wer": 37.241,
+          "noce_der": 6.593,
+          "noce_wer": 24.988,
+          "decisive": false
+        },
+        "published_convention": {
+          "ce_der": 9.916329159462,
+          "ce_wer": 37.220283309382054,
+          "noce_der": 6.682062410787852,
+          "noce_wer": 25.374666392937794,
+          "ce_positions": 86171
+        },
+        "our_convention": {
+          "ce_all": {
+            "der": 12.109859154929577,
+            "wer": 37.220283309382054,
+            "positions": 71000,
+            "position_errors": 8598,
+            "words": 14613,
+            "word_errors": 5439,
+            "skeleton_mismatch": 0
+          },
+          "noce_all": {
+            "der": 9.977477078049905,
+            "wer": 24.782280737845436,
+            "positions": 56387,
+            "position_errors": 5626,
+            "words": 14583,
+            "word_errors": 3614,
+            "skeleton_mismatch": 0
+          },
+          "ce_markedonly": {
+            "der": 14.660867650297291,
+            "wer": 36.7289655644554,
+            "positions": 54492,
+            "position_errors": 7989,
+            "words": 14607,
+            "word_errors": 5365,
+            "skeleton_mismatch": 0
+          },
+          "noce_markedonly": {
+            "der": 11.916481978303977,
+            "wer": 24.38572409059712,
+            "positions": 42865,
+            "position_errors": 5108,
+            "words": 14570,
+            "word_errors": 3553,
+            "skeleton_mismatch": 0
+          }
+        }
+      },
+      "mishkal": {
+        "provenance": {
+          "tool": "mishkal",
+          "package": "mishkal",
+          "version": "0.4.1"
+        },
+        "segments": 558,
+        "max_input_chars": null,
+        "chunking": {
+          "chunked_items": 0,
+          "seams": 0
+        },
+        "published": {
+          "ce_der": 15.246,
+          "ce_wer": 54.187,
+          "noce_der": 8.558,
+          "noce_wer": 27.337,
+          "decisive": false
+        },
+        "published_convention": {
+          "ce_der": 15.06655371296608,
+          "ce_wer": 53.60295627181277,
+          "noce_der": 8.652562927202887,
+          "noce_wer": 27.804010127968247,
+          "ce_positions": 86171
+        },
+        "our_convention": {
+          "ce_all": {
+            "der": 18.30267297825902,
+            "wer": 53.626978664831384,
+            "positions": 70558,
+            "position_errors": 12914,
+            "words": 14530,
+            "word_errors": 7792,
+            "skeleton_mismatch": 3
+          },
+          "noce_all": {
+            "der": 12.791818376526022,
+            "wer": 26.82758620689655,
+            "positions": 56028,
+            "position_errors": 7167,
+            "words": 14500,
+            "word_errors": 3890,
+            "skeleton_mismatch": 3
+          },
+          "ce_markedonly": {
+            "der": 22.048232817520404,
+            "wer": 51.1980170751859,
+            "positions": 54154,
+            "position_errors": 11940,
+            "words": 14524,
+            "word_errors": 7436,
+            "skeleton_mismatch": 3
+          },
+          "noce_markedonly": {
+            "der": 14.898462260828735,
+            "wer": 24.33906260785532,
+            "positions": 42595,
+            "position_errors": 6346,
+            "words": 14487,
+            "word_errors": 3526,
+            "skeleton_mismatch": 3
+          }
+        }
+      }
+    }
+  }
+}

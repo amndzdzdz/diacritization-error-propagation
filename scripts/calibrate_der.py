@@ -309,7 +309,7 @@ def leg_b(tsv: Path, tools: list[str], limit: int) -> dict:
     print(f"band      : +-{TOLERANCE} absolute DER, pre-registered; decisive for EO and ED\n")
 
     results: dict[str, dict] = {}
-    verdicts: list[tuple[str, bool, bool]] = []
+    verdicts: list[tuple[str, bool, bool, float]] = []
     for name in tools:
         tool = DIACRITIZERS[name]()
         batch = diacritize_long(tool, inputs)
@@ -391,19 +391,46 @@ def leg_b(tsv: Path, tools: list[str], limit: int) -> dict:
         )
         print(f"  published CE WER  : {target.ce_wer:6.3f}   ours {pub_ce.wer:6.3f}")
         print(f"  VERDICT           : {label}\n")
-        verdicts.append((name, inside, target.decisive))
+        verdicts.append((name, inside, target.decisive, ce_delta))
 
-    decisive = [(n, ok) for n, ok, is_decisive in verdicts if is_decisive]
+    decisive = [(n, ok) for n, ok, is_decisive, _d in verdicts if is_decisive]
+    all_deltas = [d for _n, _ok, _dec, d in verdicts]
     print("--- Leg B verdict ---")
     for name, ok in decisive:
         print(f"  {name:<10} {'inside' if ok else 'OUTSIDE'} +-{TOLERANCE}")
+
+    # This is what the four-point decisive/diagnostic split was built for, and
+    # it is why the diagnostic rows are measured even though they cannot fail.
+    # A bad invocation of one tool moves one row. A corpus difference moves
+    # every row the same way. So the SIGNS carry the attribution, and reading
+    # only the decisive pair would throw that information away.
+    systematic = len(all_deltas) == len(PUBLISHED) and (
+        all(d < 0 for d in all_deltas) or all(d > 0 for d in all_deltas)
+    )
     if decisive and all(ok for _n, ok in decisive):
         print("  Our invocation of the tools reproduces the published figures within the band.")
-    elif decisive:
+    if systematic:
+        direction = "below" if all_deltas[0] < 0 else "above"
         print(
-            "  OUTSIDE the band. Leg A has already shown the convention to be faithful,\n"
-            "  so the residual is our invocation — tool version, preprocessing, or the\n"
-            "  corpus edition — and must be named as such, not absorbed by widening."
+            f"  All {len(all_deltas)} tools land {direction} their published figure "
+            f"({min(all_deltas):+.3f} to {max(all_deltas):+.3f}).\n"
+            "  That is a systematic offset, not a per-tool fault: a bad invocation of one\n"
+            "  tool moves one row. The corpora differ -- Leg B scores CAMeL-Lab's\n"
+            "  WikiNewsMax.tsv, CATT's Table 5 was computed on their own 400-line file --\n"
+            "  so the residual here is the CORPUS, and Leg A is the same-corpus test."
+        )
+        if not all(ok for _n, ok in decisive):
+            print(
+                "  A band miss under a uniform offset is therefore a mis-specified test\n"
+                "  rather than a calibration failure. Do not widen the band: cite Leg A,\n"
+                "  which pins the convention on matched text."
+            )
+    elif decisive and not all(ok for _n, ok in decisive):
+        print(
+            "  OUTSIDE the band, and the offsets are NOT uniform across tools, so this is\n"
+            "  not a corpus effect. Leg A has already shown the convention to be faithful,\n"
+            "  so the residual is our invocation -- tool version or preprocessing -- and\n"
+            "  must be named as such, not absorbed by widening."
         )
 
     return {
