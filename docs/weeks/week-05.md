@@ -586,6 +586,44 @@ Ordered by what blocks what, not by size.
    as a numbered decision, whichever way it goes, so a reviewer question has
    an answer with a date on it.
 
+   **STATUS 2026-10-14 — DONE. No frontier fifth condition; the evaluated set
+   stays at four. Recorded as D8 in [docs/msa-arm.md](../msa-arm.md).** The
+   three criteria were applied in the order of weight stated there, and the
+   **RQ4 incompatibility is the disqualifying one**: a frontier API exposes no
+   per-position confidence, so the condition could serve RQ1/RQ2 but could not
+   appear in RQ4's abstention curve — the paper's remedy and contribution 4.
+
+   **The sequencing above could not be executed as written, and the
+   substitution is recorded rather than quietly taken.** It assumes our
+   domains can support an interpretable frontier DER. Task 3 measured them and
+   they cannot, yet:
+
+   - **Qur'anic** is gold and available, but the Qur'an is in any web-scale
+     pretraining corpus *with its diacritics*, so a frontier DER there
+     substantially measures memorization. Not speculation — it is the extreme
+     of a gradient this week measured on our own four tools, where the three
+     trained models all **improve** on the Qur'an relative to their published
+     WikiNews figures (−0.530 to −1.066) and only rule-based Mishkal degrades
+     (+3.253). That is prediction 1's falsification pointing at a second
+     consequence.
+   - **MSA** has no gold until the 500-row block is annotated, and its only
+     diacritized column is `tashkeel_sentence` — which task 8's amendment
+     shows is very likely `catt-eo`-derived. A frontier tool scored against it
+     would yield agreement with a competitor's output.
+
+   So the decision is **declined as a condition, scheduled as a measurement**:
+   one RQ1 row on the MSA pool against `C_gold` once annotation closes, which
+   lands *before* the weeks-10–12 2×2. That timing is what makes declining
+   cheap rather than final, and D8 carries three declared re-opening
+   conditions.
+
+   One week-4 claim is retired in passing. Claude-3-7-Sonnet's **1.39** against
+   CATT EO's **5.425** is a 4.04 absolute gap measured on a different corpus in
+   a third convention, and our own WikiNews → Qur'an movement for a *fixed*
+   tool spans −1.066 to +3.253. It is not safely a tool-quality gap — which is
+   an argument for measuring it on a corpus we control, and against citing it
+   as established.
+
 6. **▲ Select the MSA evaluation pool for §5.2.** CV-Ar rows disjoint from
    `Iqra_train`, deduped **by consonantal skeleton, not raw string** — §3.3b
    D4 is the cautionary case: raw-string dedup reports `Iqra_train` dev as

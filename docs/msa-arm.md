@@ -318,6 +318,102 @@ caution that "a result near 2% indicts the measurement" is about **D5's**
 tool-vs-vowelizer agreement rate on text. Flagged here so the 1.3 is not
 later quoted as if it had cleared that check.
 
+#### D8 — DECIDED (14 Oct 2026): **no frontier fifth condition.** The evaluated set stays at four. The question gets a scheduled measurement instead. **[DECIDED on measured evidence about the corpora; the frontier tool itself is unmeasured, and that is the point]**
+
+Handed from week-4 task 6 to week-5 task 5. The question: add one frontier
+system so the 2×2 brackets the frontier rather than only the deployed range,
+answering "frontier diacritizers are at ~1.4% DER, is the premise obsolete?"
+with a measurement instead of an argument.
+
+**The pre-registered sequencing could not be executed as written, and the
+substitution is recorded rather than quietly taken.** Week-5 task 5 said:
+"run it through task 3's RQ1 corpora first — that is a small number of API
+calls — and decide on its measured DER on *our* domains rather than on
+WikiNews." Task 3 then measured those domains, and the result is that neither
+of them can currently support an interpretable frontier DER:
+
+- **Qur'anic (gold, available now) — contaminated, in the flattering
+  direction, by an unbounded amount.** The Qur'an is plausibly the largest
+  body of fully-diacritized Arabic text in existence and is reproduced
+  verbatim across the web, so it is in any web-scale pretraining corpus with
+  its diacritics attached. A frontier LLM's Qur'anic DER would substantially
+  measure recall of memorized text. This is not speculation about LLMs; it is
+  the extreme of a gradient **we measured on our own four tools**, where the
+  three *trained* models all improve on the Qur'an relative to their published
+  WikiNews figures (−0.530 to −1.066 absolute) and the one *rule-based* tool
+  degrades (+3.253). That split falsified week-5 prediction 1 and the
+  mechanism it exposed is exactly the one that disqualifies this corpus for a
+  model trained on everything.
+- **MSA — no gold until the 500-row block is annotated (weeks 7–9).** Its only
+  diacritized column is `tashkeel_sentence`, which D7's amendment shows is
+  very likely **`catt-eo`-derived** (agreement-rate inflation 5.00× for EO
+  against 1.05–1.22× for the other three). Scoring a frontier tool against it
+  would yield its agreement with a competitor's output, not its accuracy.
+
+So the measurement the sequencing asked for does not exist yet. It becomes
+available, on gold, the moment annotation closes — which is **before** the
+weeks-10–12 2×2 runs. That timing is what makes declining cheap.
+
+**Decision on the three criteria fixed in week-5 task 5, in order of weight.**
+
+1. **RQ4 compatibility — disqualifying for the design, not just awkward.**
+   Frontier APIs expose no per-position confidence over diacritic tokens, so
+   such a condition can serve RQ1/RQ2 but **cannot** appear in RQ4's
+   abstention curve, which is the paper's remedy and contribution 4. A tool
+   present in two RQs and absent from a third makes the design ragged in a way
+   a reviewer will ask about, and the answer ("it cannot support the
+   mitigation") is better given as a limitation than as a hole in a table.
+2. **Reproducibility.** §5.1 sha-pins every model, dataset and tool across both
+   arms. An API model cannot be pinned, so this would be the single
+   unreproducible element in the design — and it would sit in the condition
+   axis, where it contaminates comparability rather than just provenance.
+3. **Cost, in schedule rather than money.** The label-path column (week 6) and
+   the full 2×2 (weeks 10–12) both multiply by the number of conditions.
+
+**What is being given up, stated honestly.** The reviewer question is real and
+the four-tool curve does not reach the frontier. The paper therefore carries
+the limitation explicitly rather than pretending the range is complete.
+
+**Why the cited threat does not survive its own numbers.** Sadeed's table puts
+Claude-3-7-Sonnet at **1.39** DER against CATT EO's **5.425** — a 4.04
+absolute gap, measured on **SadeedDiac-25** in a **third convention**, neither
+ours nor the one we calibrated to. Our own measurements show how far corpus
+choice alone moves a fixed tool: across WikiNews → Qur'an the same four tools
+move **−1.066 to +3.253** absolute. So a 4.04 gap across a corpus *and* a
+convention boundary is not safely a tool-quality gap. (The convention axis is
+a weaker objection here and should not be oversold: the our-vs-published
+offset scales with error rate — +1.04 for `catt-eo`, +4.66 for `mishkal` — so
+a tool at ~1.4 would carry a small offset, not a large one.) This is an
+argument for *measuring* it on a corpus we control, which is what is
+scheduled, and against *citing* it as an established 4× gap, which is what
+week-4's summary did.
+
+**Scheduled instead: one RQ1 row, not a condition.** When the MSA block is
+annotated, score one frontier LLM against `C_gold` on the MSA evaluation pool,
+in both conventions, alongside the existing four. Cost is a handful of API
+calls. Deliverable is a single row in RQ1's compact table plus a sentence in
+the limitations. A dated snapshot of inputs and outputs is committed as the
+artifact, since nothing else about it can be pinned.
+
+**Re-opening conditions, declared now so this is not re-litigated on appeal.**
+
+- The scheduled MSA-gold measurement puts a frontier tool **clearly below
+  `catt-eo`'s MSA gold DER in our convention**. Then the deployed range
+  genuinely excludes the frontier, and the condition is reconsidered for the
+  weeks-10–12 2×2 — as an RQ1/RQ2 row only, never in RQ4.
+- A frontier API exposes per-position logprobs over diacritic tokens before
+  week 10. That dissolves criterion 1 and this decision is re-taken.
+- A frontier-quality diacritizer ships *downloadable weights*. That dissolves
+  criteria 1 and 2 together and makes it a straightforward fifth tool. Sadeed
+  is the live candidate and has no located weight release; re-check once.
+
+**What this decision does not rest on.** Not on the magnitude of the paper's
+effect. Plan §0 and §5 pre-commit that the contribution is the decomposition,
+the metric and the bias direction, and that a small measured degradation is
+reported as a small measured degradation. A better diacritizer shrinks the
+magnitude and leaves the decomposition intact, so "a frontier tool might make
+the effect small" is not a reason to include or exclude it.
+
 ### 3.3 `A` — the verbatim-production annotation, and the base-rate problem **[MEASURED, partly]**
 
 This is the part the plan does not spell out and it is the largest open
