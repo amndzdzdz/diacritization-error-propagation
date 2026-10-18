@@ -37,6 +37,23 @@ interrupted partway through. The manual steps below are the same
 pipeline, kept for reference/debugging if something in the automated path
 needs inspecting.
 
+**Running `prepare_baseline.sh` by hand needs `APPLY_HOLDOUT`.** The
+script refuses to start without it, because it controls whether the
+evaluation-pool overlap found in week 6 is dropped from the training
+manifest and there is no answer that is safe for both callers. For *this*
+reproduction it is always `0` — the whole point is to train on the
+organizers' set exactly as published — and `train_baseline.slurm` sets
+that itself, so the `sbatch` path above is unaffected. Pre-staging from a
+login node therefore reads:
+
+```bash
+APPLY_HOLDOUT=0 bash run/prepare_baseline.sh
+```
+
+Our own models use `APPLY_HOLDOUT=1`; see
+[docs/weeks/week-07.md](../../docs/weeks/week-07.md) task 4 and
+[run/training_holdout.json](../../run/training_holdout.json).
+
 **S3PRL requires Python 3.8, not this project's own Python 3.12/`uv`
 stack.** Do not `uv add` anything from this directory. It runs in its own
 plain `venv` (stdlib, no conda and no uv — neither is assumed to be

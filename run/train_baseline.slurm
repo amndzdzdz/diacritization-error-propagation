@@ -30,8 +30,10 @@
 # finished steps (e.g. a completed download) are skipped rather than redone.
 # This does assume the compute node has internet access (to clone S3PRL and
 # pull the HF datasets); if your cluster's compute nodes are offline, run
-# `bash run/prepare_baseline.sh` once from a login node first, then submit
-# this job -- it will skip everything already done.
+# `APPLY_HOLDOUT=0 bash run/prepare_baseline.sh` once from a login node
+# first, then submit this job -- it will skip everything already done.
+# (`APPLY_HOLDOUT` is mandatory and has no default; see the block below for
+# why, and why this job's value is 0.)
 
 set -euo pipefail
 cd "${SLURM_SUBMIT_DIR:-$(pwd)}"
@@ -54,6 +56,24 @@ mkdir -p "$TMPDIR"
 export HF_HOME="${HF_HOME:-$TMPDIR/hf_cache}"
 mkdir -p "$HF_HOME"
 
+# Hardcoded, not inherited from the environment, and this is the one knob this
+# job must not expose. prepare_baseline.sh refuses to start with APPLY_HOLDOUT
+# unset because neither answer is safe as a default; here the answer is settled.
+# This job reproduces a *published* number against the organizers' training set,
+# so it has to train on exactly that set -- the evaluation-pool overlap
+# included. Holding rows out would change the inputs to the one figure that
+# certifies the whole pipeline, and an F1 that no longer matches 0.4414
+# certifies nothing. Our own models get APPLY_HOLDOUT=1; docs/weeks/week-07.md
+# task 4.
+export APPLY_HOLDOUT=0
+
+# Also hardcoded, and for the same reason the `-u` below is: this job
+# reproduces the organizers' checkpoint, whose own `Args.upstream` reads
+# `hf_hubert_custom` / `utter-project/mHuBERT-147`. Naming the pin explicitly
+# means a preceding XLS-R prepare cannot leave this job pointing at the wrong
+# weights.
+export UPSTREAM_PIN=mhubert147
+
 bash run/prepare_baseline.sh
 
 S3PRL_VENV="${S3PRL_VENV:-$(pwd)/run/s3prl_venv}"
@@ -61,16 +81,20 @@ S3PRL_VENV="${S3PRL_VENV:-$(pwd)/run/s3prl_venv}"
 source "$S3PRL_VENV/bin/activate"
 
 # The sha-pinned upstream directory, materialized by prepare_baseline.sh
-# step 7. Read from the file it writes, since prepare runs in a child shell.
-UPSTREAM_DIR="${UPSTREAM_DIR:-$(cat "$(pwd)/run/.upstream_dir" 2>/dev/null || true)}"
-if [ -z "$UPSTREAM_DIR" ] || [ ! -d "$UPSTREAM_DIR" ]; then
+# step 8. Read from the per-pin env file it writes, since prepare runs in a
+# child shell. Per-pin, not the legacy single `.upstream_dir`: since week 7
+# there are two registered upstreams, and "whatever ran last" is not a pin.
+UPSTREAM_ENV="$(pwd)/run/.upstream_$UPSTREAM_PIN.env"
+# shellcheck source=/dev/null
+[ -f "$UPSTREAM_ENV" ] && source "$UPSTREAM_ENV"
+if [ -z "${UPSTREAM_DIR:-}" ] || [ ! -d "$UPSTREAM_DIR" ]; then
     echo "ERROR: no pinned upstream at '${UPSTREAM_DIR:-<unset>}'." >&2
-    echo "Expected run/prepare_baseline.sh step 7 to create it." >&2
+    echo "Expected run/prepare_baseline.sh step 8 to write $UPSTREAM_ENV." >&2
     echo "Do NOT work around this by passing -k utter-project/mHuBERT-147:" >&2
     echo "that silently un-pins the upstream (see pin_upstream.py)." >&2
     exit 1
 fi
-echo "pinned upstream: $UPSTREAM_DIR"
+echo "pinned upstream: ${S3PRL_UPSTREAM:-hf_hubert_custom} -k $UPSTREAM_DIR"
 
 S3PRL_DIR="${S3PRL_DIR:-$(pwd)/run/s3prl_checkout}"
 cd "$S3PRL_DIR/s3prl"
