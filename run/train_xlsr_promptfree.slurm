@@ -4,20 +4,28 @@
 #SBATCH --error=run/logs/error_logs/error_xlsr_promptfree_%j.log
 #SBATCH -J xlsr_promptfree
 #SBATCH -p NvidiaAll
-#SBATCH -t 48:00:00
+# `NvidiaAll` imposes no maximum walltime (confirmed 18 Oct 2026), and 0 means
+# "no limit" to SLURM. Stated explicitly rather than omitted: if an admin ever
+# sets a partition DefaultTime, a missing -t silently reintroduces a cap, and
+# the symptom would be a run killed somewhere past step 100k.
+#SBATCH -t 0
 
 # Week-07 task 6: the modern prompt-free arm. XLS-R-300m (frozen) + s3prl's
 # learned layer-weighted sum + BiLSTM + CTC, trained on the contamination-held-
 # out Iqra_train manifest.
 #
 #   sbatch run/train_xlsr_promptfree.slurm
-#   STEPS=50000 sbatch run/train_xlsr_promptfree.slurm       # shorter, if the
-#                                                            # step rate forces it
 #   BATCH_SIZE=8 ACCUM=2 sbatch run/train_xlsr_promptfree.slurm   # OOM fallback
+#   STEPS=50000 sbatch run/train_xlsr_promptfree.slurm            # shorter, if ever wanted
 #
-# **Run `UPSTREAM_PIN=xlsr300m STEPS=200 sbatch run/smoke_train.slurm` first.**
-# That is week-07 task 3 and it is what establishes the step rate this job's
-# 48-hour limit is a guess about, and whether batch_size 16 fits.
+# The step-rate smoke run (week-07 task 3,
+# `UPSTREAM_PIN=xlsr300m STEPS=200 sbatch run/smoke_train.slurm`) is **optional
+# now that walltime is unlimited** -- it existed to size a limit that no longer
+# exists. What it also measured, and what is therefore still unverified here, is
+# whether `batch_size: 16` fits in this GPU's memory. That failure is loud and
+# arrives in the first minutes, so it costs a resubmission rather than a run;
+# `BATCH_SIZE`/`ACCUM` above are the fallback, and they must be changed together
+# or the recipe changes rather than only its memory footprint.
 #
 # ---------------------------------------------------------------------------
 # Two things this job deliberately does NOT change, and one it does.

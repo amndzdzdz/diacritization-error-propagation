@@ -4,7 +4,13 @@
 #SBATCH --error=run/logs/error_logs/error_mdd_arm_%j.log
 #SBATCH -J mdd_arm
 #SBATCH -p NvidiaAll
-#SBATCH -t 48:00:00
+# `NvidiaAll` imposes no maximum walltime (confirmed 18 Oct 2026), and 0 means
+# "no limit" to SLURM. Stated explicitly rather than omitted: if an admin ever
+# sets a partition DefaultTime, a missing -t silently reintroduces a cap, and
+# the symptom would be a run killed somewhere past step 100k. Both arms must
+# carry the same value -- a limit that truncates one arm and not the other is a
+# difference between them that no result would reveal as such.
+#SBATCH -t 0
 
 # Week-07 task 7: both arms of the 2x2, from one module and one config.
 #

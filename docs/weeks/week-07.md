@@ -157,10 +157,15 @@ written in has no GPU at all, so nothing here can be dry-run at scale before
 it is submitted.
 The mHuBERT baseline took **24h** for 200k steps at batch 16. XLS-R-300m with
 layer fusion and a TCN is a bigger upstream, a fused featurizer and a
-different head — estimated 2–2.5× → **48–60h**, against `-t 48:00:00`. Two
-runs, serial, is therefore **4–5 days minimum and possibly over the per-job
-limit**. The arithmetic is an estimate; task 3 replaces it with a
-measurement, and it has to happen on day one.
+different head — estimated 2–2.5× → **48–60h**. Three runs, serial, is
+therefore **6–7.5 days minimum**, which does not fit the week: the exit
+criterion asks for "trained or training" for exactly this reason.
+
+**Superseded in part (18 Oct 2026): `NvidiaAll` has no walltime cap**, so the
+"possibly over the per-job limit" half of this risk is gone and both training
+jobs carry `-t 0`. Queue time remains the critical path; only the per-job wall
+has been removed. Task 3's measurement is consequently optional and is not
+being run — see the exit criterion's failure branch.
 
 | what | blocks | blocked on |
 |---|---|---|
@@ -212,6 +217,27 @@ back), (c) a smaller upstream, stated as a limitation. Taking (c) silently is
 the one unacceptable outcome, because plan §3's argument is that the effect is
 architecture-independent and that argument needs a second architecture that is
 genuinely strong.
+
+**This branch is dead as of 18 Oct 2026: `NvidiaAll` has no maximum
+walltime.** Both training slurm files now carry `-t 0` explicitly rather than
+`48:00:00`. Three consequences, because the branch was load-bearing in more
+than one place:
+
+- **Task 3's measurement becomes optional** and is not being run. It existed to
+  size a limit that does not exist. What it *also* measured is now unverified:
+  whether `batch_size: 16` fits this GPU. That failure is loud and arrives in
+  the first minutes, so it costs a resubmission rather than a run.
+- **Feature caching stays declined.** Its one re-opening condition was (b)
+  above, and that condition can no longer fire. Week-6 task 6's refusal to
+  build it now stands for the rest of the project rather than provisionally.
+- **"Fewer steps" is no longer a fallback, so 200k is the number for every
+  arm.** This matters for the comparison and not just the schedule: the arms
+  are only comparable at equal steps, and the limit was the one thing that
+  might have truncated one arm and not the other.
+
+The cost of unlimited walltime is that a wedged job no longer dies on its own.
+`save_step: 200` bounds the loss from a manual kill to 200 steps, which is the
+reason that is tolerable.
 
 ---
 
@@ -324,7 +350,12 @@ genuinely strong.
    steps. Then decide the time limit, the step count, or the fallback — see
    the exit criterion's failure branch.
 
-   **Machinery DONE (16 Oct 2026); the measurement is yours to run.** Submit:
+   **Machinery DONE (16 Oct 2026); the measurement is DECLINED (18 Oct 2026)
+   and the task is closed unmeasured.** `NvidiaAll` turns out to have no
+   walltime cap, so the limit this was sizing does not exist. The machinery
+   below is kept — it is the only cheap way to check that `batch_size: 16`
+   fits before committing a long run, and the pin-pairing bug it found was
+   worth the task on its own. Submit if you ever want the rate:
 
    ```bash
    UPSTREAM_PIN=xlsr300m STEPS=200 sbatch run/smoke_train.slurm
