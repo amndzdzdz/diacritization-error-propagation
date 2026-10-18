@@ -252,6 +252,26 @@ PINS = [
     ("safetensors", "PIN_SAFETENSORS", False),
 ]
 
+def matches(got, want):
+    """Compare PEP 440 release versions, not raw strings.
+
+    `torch.__version__` on a CUDA wheel is `2.4.1+cu121`: `2.4.1` is the
+    release and `cu121` is the *local version label* identifying the build.
+    A raw `==` reads that label as drift and refuses to start, which is a
+    false positive -- it is the same torch release.
+
+    The label still matters for reproducibility, so it is not discarded: the
+    per-package report prints the full version, including the build, and a pin
+    that *names* a label is honoured exactly. So `PIN_TORCH=2.4.1` accepts any
+    build of 2.4.1 and records which one, while `PIN_TORCH=2.4.1+cu121`
+    demands that build and fails on `+cpu`. Use the second form if a result
+    ever turns out to depend on the CUDA build.
+    """
+    if "+" in want:
+        return got == want
+    return got.partition("+")[0] == want
+
+
 bad = []
 for name, env, fatal in PINS:
     want = os.environ.get(env, "")
@@ -263,7 +283,7 @@ for name, env, fatal in PINS:
         print("  %-13s MISSING (%s)" % (name, type(exc).__name__))
         bad.append((name, want, "missing", fatal))
         continue
-    if got == want:
+    if matches(got, want):
         print("  %-13s %s" % (name, got))
     else:
         print("  %-13s %s  != pin %s" % (name, got, want))
@@ -288,6 +308,14 @@ if fatal:
         "  pip install " + " ".join("%s==%s" % (n, w) for n, w, _, f in fatal if f),
         file=sys.stderr,
     )
+    if any(n in ("torch", "torchaudio") for n, _, _, f in fatal if f):
+        print("", file=sys.stderr)
+        print("Careful with that command on a GPU node: a bare", file=sys.stderr)
+        print("`pip install torch==X` may fetch a different CUDA build, or a", file=sys.stderr)
+        print("CPU-only wheel, and a CPU wheel trains but at a speed that", file=sys.stderr)
+        print("looks like a hung job. Install from the index that matches", file=sys.stderr)
+        print("this node's CUDA, and note that a build-label difference", file=sys.stderr)
+        print("alone is NOT what this check fires on.", file=sys.stderr)
     print("", file=sys.stderr)
     print("If the move was deliberate, change the PIN_* values in", file=sys.stderr)
     print("run/prepare_baseline.sh and record it in insights/ -- do not just", file=sys.stderr)
