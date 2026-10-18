@@ -204,7 +204,7 @@ def main() -> None:
 
     manifest_path = REPO_ROOT / args.manifest
     manifest_path.parent.mkdir(parents=True, exist_ok=True)
-    manifest_path.write_text(json.dumps(manifest, ensure_ascii=False, indent=2))
+    manifest_path.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n")
     print(f"\n  wrote {len(manifest)} sampled utterances to {args.manifest}")
     print(
         "  strata: "

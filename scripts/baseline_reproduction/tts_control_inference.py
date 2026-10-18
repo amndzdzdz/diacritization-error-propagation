@@ -159,7 +159,7 @@ def run(
     speakers = Counter(rec["speaker"] for rec in records.values())
     print("  speaker mix:", dict(speakers.most_common()))
 
-    Path(output_json).write_text(json.dumps(records, ensure_ascii=False, indent=2))
+    Path(output_json).write_text(json.dumps(records, ensure_ascii=False, indent=2) + "\n")
     print(f"Wrote {len(records)} records to {output_json}")
     for example_id, rec in list(records.items())[:3]:
         print(f"  {example_id}: ref={rec['phoneme_ref'][:60]!r}")

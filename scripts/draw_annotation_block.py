@@ -123,7 +123,7 @@ def main() -> None:
             for rank, c in enumerate(block)
         ],
     }
-    OUT.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+    OUT.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(f"\nwrote {OUT.relative_to(REPO_ROOT)}")
 
 

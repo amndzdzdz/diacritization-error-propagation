@@ -104,7 +104,7 @@ def run(
     if audio_dir:
         print(f"Saved per-utterance wavs to {audio_dir}")
 
-    Path(output_json).write_text(json.dumps(predictions, ensure_ascii=False, indent=2))
+    Path(output_json).write_text(json.dumps(predictions, ensure_ascii=False, indent=2) + "\n")
     print(f"Wrote {len(predictions)} predictions to {output_json}")
     for example_id, predicted in list(predictions.items())[:3]:
         print(f"  {example_id!r}: {predicted!r}")

@@ -73,7 +73,7 @@ def run(ckpt: str, dict_path: str, output_json: str) -> None:
 
     tmp_wav.unlink(missing_ok=True)
 
-    Path(output_json).write_text(json.dumps(predictions, ensure_ascii=False, indent=2))
+    Path(output_json).write_text(json.dumps(predictions, ensure_ascii=False, indent=2) + "\n")
     print(f"Wrote {len(predictions)} predictions to {output_json}")
     # Sanity check: print a couple of examples so a human can eyeball that
     # the predicted strings look like whitespace-separated phonemes, not
