@@ -111,6 +111,28 @@ def main() -> None:
     # Flush first, or an interactive run prints the remedy before the problem.
     sys.stdout.flush()
 
+    if build.empty_transcript:
+        # Loud but not fatal. There is no remedy to offer -- a blank `sentence`
+        # is a blank CTC target, so the row is unusable by either arm and
+        # dropping it is the only option rather than a choice. It still gets a
+        # WARNING, because it changes the training set relative to the
+        # two-column manifest task 6's s3prl run reads, and that difference has
+        # to be a known quantity rather than a surprise.
+        print(
+            f"WARNING: dropped {len(build.empty_transcript)} rows whose `sentence` is "
+            f"blank, e.g. {build.empty_transcript[0]!r}.",
+            file=sys.stderr,
+        )
+        print(
+            "`sentence` is the CTC target, so such a row is unusable by the\n"
+            "prompt-free arm too: this is a defect in the source manifest, not\n"
+            "something the conditioning introduced. Worth a line in insights/ --\n"
+            "it is the one respect in which these arms' training set differs from\n"
+            "the two-column manifest that task 6's run reads.",
+            file=sys.stderr,
+        )
+        sys.stderr.flush()
+
     if build.missing_canonical:
         print(
             f"ERROR: {len(build.missing_canonical)} rows have no canonical on disk, "

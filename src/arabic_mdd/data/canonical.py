@@ -94,6 +94,15 @@ class CanonicalBuild:
     derivations so a rerun's report cannot be mistaken for a fresh build's."""
     missing_canonical: list[str] = field(default_factory=list)
     """TTS paths with no canonical on disk. Fatal; see the module docstring."""
+    empty_transcript: list[str] = field(default_factory=list)
+    """Paths whose `sentence` is blank in the source manifest.
+
+    Dropped rather than refused, and the distinction from `missing_canonical`
+    is the point: a missing canonical has a remedy (run the TTS dumper), while
+    a blank transcript has none -- there is nothing on disk to recover. Such a
+    row is also unusable by the **prompt-free** arm, since `sentence` is the
+    CTC target, so dropping it is not a conditioning-specific judgment.
+    """
 
     def report(self) -> dict[str, object]:
         return {
@@ -101,6 +110,13 @@ class CanonicalBuild:
             "canonical_from_sentence": self.from_sentence,
             "canonical_from_file": self.from_file,
             "canonical_passed_through": self.passed_through,
+            "empty_transcript": len(self.empty_transcript),
+            "empty_transcript_paths": self.empty_transcript[:20],
+            "empty_transcript_note": (
+                "rows with a blank `sentence` in the source manifest, dropped: the "
+                "CTC target and the canonical would both be empty, and an empty "
+                "canonical is an all-masked attention row that returns NaN"
+            ),
             "canonical_from_sentence_note": (
                 "Iqra_train rows, whose inlined transcript is phoneme_ref -- the "
                 "canonical and the CTC target coincide"
@@ -132,11 +148,28 @@ def build_canonical_rows(
     for row in rows:
         full_row = list(row)
         path, sentence = full_row[0], full_row[1]
+        # Checked first, and for every row shape. `sentence` is the CTC target
+        # *and* -- for Iqra_train -- the canonical, so a blank one yields an
+        # empty target and an all-masked attention row at once. Found the hard
+        # way: this guard existed on the read-from-file branch below and not on
+        # the copy-from-sentence branch, so row 2654 of the real 131 h manifest
+        # reached training as ('audio_56306.wav', '', '') and the dataset had
+        # to refuse it after the queue wait.
+        if not sentence.strip():
+            build.empty_transcript.append(path)
+            continue
         if len(full_row) >= 3 and full_row[2].strip():
             build.rows.append(full_row[:3])
             build.passed_through += 1
             continue
         if is_iqra_train_path(path):
+            # No re-check after normalization: `normalize_transcript` is
+            # `" ".join(text.split())`, so it empties exactly the strings the
+            # `.strip()` above already caught. A second guard here would be
+            # unreachable -- untested surface that looks tested. A `sentence` of
+            # non-whitespace junk survives on purpose and is caught downstream
+            # by `count_unknown_tokens`, which is the check that owns "the
+            # canonical is non-empty but not made of phonemes".
             build.rows.append([path, sentence, normalize_transcript(sentence)])
             build.from_sentence += 1
             continue

@@ -148,3 +148,104 @@ def test_the_target_column_is_not_checked() -> None:
     # target and changing what we accept there would change the comparison.
     count, _ = count_unknown_tokens([["a.wav", "zzz qqq", REF]], frozenset(REF.split()))
     assert count == 0
+
+
+# --- blank transcripts -------------------------------------------------------
+#
+# Regression tests for the real failure: row 2654 of the 131 h manifest was
+# ('train/wav/audio_56306.wav', '', ''), because the emptiness guard existed on
+# the read-from-file branch and not on the copy-from-sentence branch. It reached
+# training and `ConditionedCommonVoiceDataset` had to refuse it, one queue wait
+# later than this.
+
+
+def test_blank_sentence_is_dropped_and_reported_separately() -> None:
+    build = build_canonical_rows([["train/wav/audio_56306.wav", ""]], _no_files)
+    assert build.rows == []
+    assert build.empty_transcript == ["train/wav/audio_56306.wav"]
+    # Not a missing canonical: that category promises a remedy (run the TTS
+    # dumper) and there is none for a blank transcript.
+    assert build.missing_canonical == []
+    assert build.from_sentence == 0
+
+
+def test_whitespace_only_sentence_counts_as_blank() -> None:
+    build = build_canonical_rows([["train/wav/audio_7.wav", "   \t "]], _no_files)
+    assert build.rows == []
+    assert build.empty_transcript == ["train/wav/audio_7.wav"]
+
+
+def test_a_blank_sentence_is_dropped_for_tts_rows_too() -> None:
+    """The CTC target is blank whatever the canonical says, so the row is unusable."""
+    build = build_canonical_rows([["train/wav/audio_Amer_3.wav", ""]], lambda _relative: REF)
+    assert build.rows == []
+    assert build.empty_transcript == ["train/wav/audio_Amer_3.wav"]
+    assert build.from_file == 0
+
+
+def test_a_blank_sentence_is_dropped_even_with_a_canonical_already_present() -> None:
+    build = build_canonical_rows([["train/wav/audio_9.wav", "", REF]], _no_files)
+    assert build.rows == []
+    assert build.empty_transcript == ["train/wav/audio_9.wav"]
+    assert build.passed_through == 0
+
+
+def test_non_whitespace_junk_survives_here_and_is_caught_by_the_vocabulary() -> None:
+    """Pins the division of labour between the two checks.
+
+    `normalize_transcript` only collapses whitespace, so emptiness is fully
+    decided by the `.strip()` guard; a second post-normalization guard would be
+    unreachable. A canonical that is non-empty but not made of phonemes is a
+    different defect, and `count_unknown_tokens` is what owns it.
+    """
+    build = build_canonical_rows([["train/wav/audio_11.wav", "\u200f \u200e"]], _no_files)
+    assert build.empty_transcript == []
+    assert build.rows == [["train/wav/audio_11.wav", "\u200f \u200e", "\u200f \u200e"]]
+
+    count, examples = count_unknown_tokens(build.rows, frozenset(REF.split()))
+    assert count == 2, "the vocabulary check is the one that must refuse this"
+    assert examples == ["\u200e", "\u200f"]
+
+
+def test_good_rows_survive_alongside_a_blank_one() -> None:
+    build = build_canonical_rows(
+        [
+            ["train/wav/audio_1.wav", REF],
+            ["train/wav/audio_56306.wav", ""],
+            ["train/wav/audio_2.wav", REF],
+        ],
+        _no_files,
+    )
+    assert [row[0] for row in build.rows] == [
+        "train/wav/audio_1.wav",
+        "train/wav/audio_2.wav",
+    ]
+    assert build.from_sentence == 2
+    assert len(build.empty_transcript) == 1
+
+
+def test_the_report_counts_blank_transcripts() -> None:
+    build = build_canonical_rows(
+        [["train/wav/audio_1.wav", REF], ["train/wav/audio_56306.wav", ""]], _no_files
+    )
+    report = build.report()
+    assert report["empty_transcript"] == 1
+    assert report["empty_transcript_paths"] == ["train/wav/audio_56306.wav"]
+    assert report["rows"] == 1
+
+
+def test_no_row_in_the_output_ever_has_an_empty_canonical() -> None:
+    """The invariant the dataset asserts at training time, asserted at build time."""
+    build = build_canonical_rows(
+        [
+            ["train/wav/audio_1.wav", REF],
+            ["train/wav/audio_56306.wav", ""],
+            ["train/wav/audio_Amer_3.wav", "b i s m i"],
+            ["train/wav/audio_4.wav", "   "],
+        ],
+        lambda _relative: REF,
+    )
+    assert build.rows, "the fixture should leave some usable rows"
+    for row in build.rows:
+        assert row[1].strip(), row
+        assert row[2].strip(), row
