@@ -1,0 +1,123 @@
+# sws.yaml with four lines changed. Diff it against the organizers' file --
+# everything the training regime consists of (total_steps, optimizer, lr,
+# specaug, batch_size, bucketing, the BiLSTM's own shape, the metric and the
+# checkpoint-selection rule) is byte-identical on purpose, because that is the
+# part the arms must hold fixed for a difference in F1 to be attributable to
+# the conditioning.
+#
+# The four differences, and why each exists:
+#
+#   1. `corpus.train` / `corpus.dev` point at the *three-column* manifests
+#      (`*.cond.tsv`), built by scripts/build_canonical_manifest.py. The
+#      third column is the canonical phoneme sequence.
+#   2. `model.use_canonical` is the arm switch, and the only line that differs
+#      between the two runs being *compared*. See run/train_mdd_arm.slurm.
+#   3. `model.conditioner_heads` / `conditioner_dropout` have no counterpart
+#      in sws.yaml; they configure the cross-attention block that sws.yaml's
+#      architecture does not have.
+#   4. `-d ctc_cond` rather than `-d ctc` on the command line (not in this
+#      file): the downstream directory is the fork that reads column three.
+#
+# `model.select` is gone. ctc_cond/expert.py builds `MddModel` directly rather
+# than reaching a head by `eval(model_select)` over its import namespace, so
+# there is no Wav2Letter branch to leave dangling here.
+#
+# Two keys are retained but unread, and kept only so this file stays a readable
+# diff against sws.yaml: `RNNs.sample_rate` and `RNNs.sample_style`. Our head
+# derives its (always-1) downsampling factor from `total_rate / upstream_rate`
+# and implements no other case, so editing them here would change nothing --
+# which is worse than their absence. `src/arabic_mdd/models/mdd.py` explains
+# why the downsampling paths were not ported.
+#
+# `text.vocab_file` still points into `downstream/ctc/`, not `ctc_cond/`. That
+# is deliberate: one vocabulary file serves both downstreams, so "class 37"
+# cannot come to mean different phonemes in the baseline and in our arms.
+
+runner:
+  total_steps: 200000
+  gradient_clipping: 1
+  gradient_accumulate_steps: 1
+
+  log_step: 200
+  eval_step: 5000
+  save_step: 200
+  max_keep: 1
+  eval_dataloaders:
+    - dev
+
+optimizer:
+  name: TorchOptim
+  torch_optim_name: Adam
+  lr: 1.0e-4
+
+# comment the whole scheduler config block
+# to disable learning rate scheduling
+# scheduler:
+#   name: linear_schedule_with_warmup
+#   num_warmup_steps: 1400
+
+# Left on, and identical to sws.yaml's. Worth stating because specaug is
+# applied by runner.py to the *upstream representation* (runner.py:253-256,
+# 303-304) and therefore to the conditioner's queries but never to its
+# keys: the canonical sequence is not augmented. That asymmetry is a mild
+# push toward trusting the canonical over the audio, i.e. toward the
+# collapse that arabic_mdd.models.collapse measures. Changing it would also
+# change the regime relative to the baseline, so it stays, and the
+# diagnostic is how we find out whether it mattered.
+specaug:
+  apply_time_warp: true
+  apply_time_mask: true
+  apply_freq_mask: true
+  time_warp_window: 5
+  time_mask_width_range: [0, 40]
+  freq_mask_width_range: [0, 50]
+  num_freq_mask: 4
+  num_time_mask: 2
+
+downstream_expert:
+  corpus:
+    name: 'common_voice'                   # Specify corpus
+    path: './sws_data/' # path to data
+
+    train: ['path_to_tsv_file/train/train.tsv']
+    dev: ['path_to_tsv_file/dev/dev.tsv']
+    test: ['path_to_tsv_file/dev/dev.tsv'] # This will tread dev set as test set as well, change accordingly
+
+    bucketing: True                       # Enable/Disable bucketing
+    batch_size: 16
+    num_workers: 16  # 16 original
+
+  text:
+    mode: 'word'                       # 'character'/'word'/'subword', here we treat each phone similar to a separate word, hence wer is per
+    vocab_file: 'downstream/ctc/cv_vocab/sws_arabic.txt'
+
+  model:
+    project_dim: 1024
+    zero_infinity: True
+
+    # The arm switch. Overridden on the command line by
+    # run/train_mdd_arm.slurm, which is what makes the two runs one config.
+    # Defaulted to False so a config error produces the ablated arm -- the one
+    # that is also independently anchored by task 6's s3prl run, and therefore
+    # the one whose being wrong is detectable.
+    use_canonical: False
+    conditioner_heads: 8
+    conditioner_dropout: 0.0
+
+    RNNs:
+      total_rate: 320
+      module: 'LSTM'                        # 'LSTM'/'GRU'
+      bidirection: True
+      dim: [1024, 1024]
+      dropout: [0.2, 0.2]
+      layer_norm: [False, False]
+      proj: [True, True]              # Linear projection + Tanh after each rnn layer
+      sample_rate: [1, 1]
+      sample_style: 'drop'                  # 'drop'/'concat'
+
+  save_best_on:
+    - dev
+
+  metric_higher_better: False
+  metric:  # The first metric will be used to save checkpoint
+    - wer
