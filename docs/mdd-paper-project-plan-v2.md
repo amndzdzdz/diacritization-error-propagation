@@ -59,9 +59,58 @@ Here is the part that is only possible with a text front-end. A reference text i
 
 Four cells, each answering a distinct question. The top-left is what published numbers mean. The bottom-left is the honest deployment number: the system operates as it would in production while truth is held fixed, which answers *is the feedback on the learner's screen correct*. The top-right isolates measurement corruption with the model unimpaired. And the bottom-right is what a group would report if they evaluated on MSA with an automatic diacritizer and did not think about any of this.
 
-The bottom-right cell yields what may be the most citable single number in the paper: **the direction and size of the bias in a naive automatic-reference evaluation.** Nobody knows the sign. Label corruption could inflate apparent F1 (the system's own errors coincide with reference errors and cancel) or deflate it. Every group that moves from Qur'anic to MSA evaluation will produce that number without knowing it is biased. Telling them which way, and by how much, is cheap for us and immediately useful to them.
+The bottom-right cell yields what may be the most citable single number in the paper: **the direction and size of the bias in a naive automatic-reference evaluation.** ~~Nobody knows the sign.~~ Label corruption could inflate apparent F1 (the system's own errors coincide with reference errors and cancel) or deflate it. Every group that moves from Qur'anic to MSA evaluation will produce that number without knowing it is biased. Telling them which way, and by how much, is cheap for us and immediately useful to them.
+
+**[14 Oct 2026 — the sign is now known for the label path, and the mechanism in parentheses above is not the one that produced it.]** Week 6 measured the top-right cell on the Qur'anic prompt-free arm (`run/quranic_label_path.json`, `insights/week-06.md`): label corruption **inflates** F1, monotonically in DER, on all four tools with every 95% CI excluding zero — **+0.0265** (`catt-eo`) to **+0.2818** (`mishkal`), against a gold-`C` F1 of 0.4824.
+
+The mechanism is *not* error cancellation. In the hierarchical metric TR counts positions where `C ≠ A` and the system's output matches `A`, so corrupting `C` **enlarges the apparent mispronunciation set**, and every position where the diacritizer errs *and the model correctly predicted what the speaker said* converts TA → TR: a true rejection, with correct diagnosis. Corrupting the reference manufactures apparent detections out of accurate model outputs. For `mishkal`: TA −5,122, TR +6,986, precision 0.38 → 0.72. The deflation mechanism (FA inflation, the system blamed for the reference's error) is real but an order of magnitude smaller and nearly constant across tools.
+
+This matters for the sentence above it: **the bias in a naive evaluation runs in the direction nobody checks.** A group evaluating against an automatic reference reports a score that is too *good*, so the error does not announce itself as a disappointing result. Two scope limits: this is the **label path on the prompt-free arm** (the top-right cell), not yet the bottom-right naive-MSA cell, which needs the MSA arm; and no requirement that the model consumed `C` was needed to get inflation — see §6's corrected note.
 
 Prompt-free systems never consume `C`, so for them the rows collapse and only the scoring column exists. That makes the prompt-free arm a clean corroborating control on label-path corruption rather than the bolt-on architectural comparison it was in v1. The old RQ4 gets absorbed into the identification strategy and becomes load-bearing instead of optional.
+
+#### D10 — DECIDED (16 Oct 2026): the **rows are an inference-time swap**, not separate training runs. **[DECIDED on design grounds, pre-registered before any text-dependent model is trained]**
+
+The table above says "model given `C_auto`" without saying *when* the model is given it. Two readings, and until now the ambiguity was free because no model consumed `C`. Week 7 builds the first one, so it has to be settled before training rather than after — which is also the only way the answer cannot be chosen to suit a result.
+
+**The two readings.** Either the text-dependent model is trained once on gold canonicals and handed a corrupted `C_auto` at inference (**1 run**), or a separate model is trained per diacritizer on its corrupted canonicals (**1 clean + 4 tool runs = 5**). At week-7 rates that difference is roughly **nine GPU-days**, which is why this is a decision and not a footnote.
+
+**Decided: inference-time swap, as the primary measurement.** Three reasons, in order of weight.
+
+1. **It is what isolates the input path.** The identification strategy for the whole 2×2 is that exactly one thing changes between adjacent cells. Retraining changes the model *and* its input, so the bottom-left cell would read "a model trained on corrupted canonicals, scored against gold" against "a model trained on clean ones" — a confounded contrast that no longer decomposes the F1 loss into the two paths §1 claims it decomposes into. The swap keeps the weights fixed and varies only the conditioning signal, which is the definition of the input path.
+2. **It is the deployment story, exactly.** A deployed text-dependent MDD system was trained by its builders on whatever canonicals they had, and then meets a corrupted canonical for the learner in front of it. The bottom-left cell is labelled "deployment-facing primary metric"; an inference-time swap is what deployment *is*.
+3. **It is the cheap one**, and the expensive alternative answers a question the paper does not ask.
+
+**The caveat, declared here rather than discovered in review.** A model trained only on clean `C` may be brittle to corrupted `C` in a way that **overstates** the input-path effect — a train/test mismatch masquerading as a corruption effect. The direction of the bias is named: it inflates |ΔF1| on the input path. Two mitigations, in preference order:
+
+- One **training-time run on `mishkal` only** — the worst tool, hence the largest available discrepancy — as a robustness check. If the input-path effect survives training-time exposure, the mismatch explanation is dead. Scheduled only if the step-rate measurement leaves budget.
+- If it does not fit, the caveat goes in §9 as a limitation with the direction stated, which is strictly better than a reviewer finding it.
+
+**Falsifier for the decision itself.** If the `mishkal` robustness run ever happens and shows the input-path effect **vanishing** under training-time exposure, then the primary measurement was measuring brittleness rather than corruption, and the bottom-left cell has to be re-reported as a training-time contrast with the row count and cost that implies.
+
+**Expected signature, recorded as a bug guard.** Week 6 found the *label* path **inflates** F1. There is no mechanical reason for the *input* path to inflate — corrupting what the model is told the learner should say degrades its predictions, it does not manufacture true rejections — so the expected signature of a correct implementation is a **positive top-right and a negative bottom-left**. If the input-path row also comes back positive, that is a bug hypothesis before it is a finding, and week-6 task 2's alignment-artifact check is the first thing to re-run.
+
+#### D11 — DECIDED (17 Oct 2026): the canonical-copy shortcut is **measured, not mitigated**. **[DECIDED on design grounds, pre-registered before any text-dependent model is trained]**
+
+D10 settled *when* the model is given `C`. This settles what to do about the fact that, on most of the available training data, reading `C` is a strictly easier way to minimize the loss than reading the audio.
+
+**The shortcut, concretely.** The text-dependent arm's CTC target comes from the training manifest's `sentence` column and its conditioning signal from the new `canonical` column. On **Iqra_train** — 79 of the 131 h — those two columns are *the same string*: `download_hugg_data.py` writes `phoneme_ref` as the transcript, and `phoneme_ref` is also the canonical. For 60% of the training set, "copy column three" is not an approximation of the right answer, it **is** the right answer, available with no acoustic modelling at all. The only rows that punish copying are the **52 h of Iqra_TTS**, whose target is `phoneme_mis` (a synthesized mispronunciation) against a canonical of `phoneme_ref`. That asymmetry is a property of the corpus, not of our architecture, and no choice of model removes it.
+
+**Why it is a paper-level risk and not an engineering detail.** A conditioned arm that has collapsed into an echo of its canonical is, at the bottom-left cell, a machine that reports the difference between `C_auto` and `C_gold`. Its |ΔF1| would be large, would scale with DER, and would look exactly like a strong input-path effect — while being a restatement of RQ1's measurement with extra steps. This is the single most plausible way for the paper's headline number to be impressive and wrong.
+
+**Decided: a diagnostic, run on both arms, with no training-time intervention.** `src/arabic_mdd/models/collapse.py` reports two numbers — `copy_rate` (how often the prediction equals the canonical) and `canonical_preference` (on utterances where the canonical and the CTC target *disagree*, how often the prediction follows the canonical). Neither is interpretable alone, which is why the **prompt-free arm is measured on the same inputs**: its copy rate, against a canonical it never saw, is the null distribution. A conditioned `copy_rate` of 0.30 means nothing until the ablated arm's number on the same data is known.
+
+**The three mitigations considered and rejected.**
+
+1. **Canonical dropout or random substitution during training.** It would suppress collapse, and it would do so by *training the model to distrust its canonical* — which deflates the input-path effect, the opposite bias to the one it fixes. Worse, the dropout rate is a free parameter with monotone influence on the headline number, and there is no principled way to set it. A knob that tunes the result is not a mitigation.
+2. **Dropping Iqra_train from the conditioned arm's training set.** It makes the two arms differ in their training data as well as in the conditioning, which voids the one-property contrast the 2×2's identification rests on.
+3. **Training both arms on Iqra_TTS alone.** Preserves the contrast, but on 52 h, and it throws away the data the week-3 gate is calibrated against.
+
+**Bias direction, named.** Collapse **inflates** |ΔF1| on the input path — the *same direction* as D10's train/test-mismatch caveat. Two independent named biases pushing the same way is worth stating in one place: §9's limitation is not "there is a caveat", it is "both known biases inflate the number we report as our main effect, and here is the measurement that bounds them".
+
+**Where it is actually decided.** Not on the dev split. Dev is held-out Iqra_train, where canonical and target never disagree, so `canonical_preference` is NaN *by construction* and `copy_rate` degenerates into exact-match accuracy. The discriminating data is **QuranMB.v2**, whose human annotation disagrees with the canonical on ~12.4% of phonemes and whose `(canonical, annotation, prediction)` triple is already what the diagnostic consumes — no new dataloader, week 8's evaluation.
+
+**Falsifier.** If the conditioned arm's `canonical_preference` on QuranMB.v2 is high — above ~0.5, i.e. it predominantly sides with the canonical on exactly the phonemes where the speaker demonstrably deviated — then the bottom-left cell is a collapse artifact and must not be reported as an input-path effect. In that case mitigation 1 is promoted from rejected to required, run at a single pre-declared rate, and the cell is reported from that run with the knob's value stated.
 
 ### The empirical result to hunt for
 

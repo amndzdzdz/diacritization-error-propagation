@@ -28,7 +28,7 @@ rather than the original assumption.
 | 3c. Case-ending impact on QuranMB | The pausal/prescriptive mismatch is **in the published benchmark**: `C` 72.0% vowel-final vs `P` 32.7%, on both checkpoints; worth 5–10% of its FR. **§3.4.1 decided: option 4** (§3.4.1) |
 | 4. 50-utterance listening pilot | Base rate **2.3%** lenient / **4.7%** counting case (CI spans the 3% boundary, **unresolved**). The dominant finding is elsewhere: the **vowelizer is wrong on 43.6% of usable utterances**, ~10:1 against speaker error. Corpus contamination found: 10% Qur'anic, 20% pre-vowelized, 22% unusable (§3.3a) |
 | 5. Phonetizer round-trip | **PASS at 99.85%** on `Iqra_train` dev (2584/2588, TER 0.000048, **0** out-of-inventory tokens) — the week-4 exit criterion, met on the MSA arm. **[3 Oct 2026] Also PASS on the full train split at 99.93%** (71,344/71,391, TER 0.0000), closing week 4's declared caveat; all 47 mismatches are one upstream phenomenon (shadda on a long-vowel carrier), 2 of which land in the drawn block. The Qur'anic arm's is **unscoreable**: its Arabic text was recovered *from* its own phoneme string, so the metric returns the uploader's residual. Consequence for §3.3b D1 |
-| 6. Scope decision | **D1: the arm drops `A`** — label-path only, text-only annotation. **D3: two annotators, qualified against gold** rather than by credential. **D4: 500 utterances, seeded draw from a 2,092/2,588-row pool** (80.8%), three exclusion predicates and five flag-only ones. D2/D5/D6 open (§3.3b) |
+| 6. Scope decision | **D1: the arm drops `A`** — label-path only, text-only annotation. **D3: two annotators, qualified against gold** rather than by credential. **D4: 500 utterances, seeded draw from a 2,092/2,588-row pool** (80.8%), three exclusion predicates and five flag-only ones. ~~D2~~/D5/D6 open (§3.3b). **[14 Oct 2026] D2 decided: the residual interaction term is bounded**, by re-scoring the Qur'anic label-path conditions with `A := C_gold`, with the 2.3%/19.8% row kept as a cross-check — taken against the week-6 power estimate, `run/rq5_power.json`. D5/D6 remain open |
 | 7. RQ1 sweep on the MSA deployment corpus **[3 Oct 2026]** | Four tools × four DER variants, 2,588 rows: `catt-eo` **1.346**, `catt-ed` 5.902, `shakkala` 10.486, `mishkal` 23.035 (`ce_all`). **D7 decided: the anchor is `catt-eo`**, by a 4.556 margin, so the pre-committed 0.3 tie-break never applied (§3.2). Ordering reproduces §4's conservation tail exactly — a third independent instrument. **These are agreement rates, not accuracy**: the reference is the vowelizer's output. And `catt-eo` agreeing with it at 98.65% of positions while §3.3a found it wrong on 43.6% of utterances implies **the anchor and `C_auto` share error modes** — a new constraint on D5 (§3.3b) |
 | 6b. Sampling frame | The 8.4% "vowelizer dropped a word" rate was **punctuation**, not loss — the real rate is **3 rows (0.1%)**. The split is **not** duplicate-free: 2,588 rows → 2,542 skeletons, and 33 of 44 duplicate groups are the same verse bare *and* pre-vowelized, which made filter order worth 16 rows (§3.3b D4) |
 
@@ -943,14 +943,52 @@ fatha rather than after alef maqsura, part 2's 14-vs-10 split inverts and the
 rule is re-taken for that corpus; a domain-parameterized rule is acceptable, a
 globally changed one is not.
 
+#### D2 — DECIDED (14 Oct 2026): the residual interaction term is **bounded**, and the sensitivity row is kept beside it as a cross-check. **[MEASURED]**
+
+Week 5 task 7 deferred this to "the week-6 power estimate rather than in the
+abstract". The estimate now exists (`run/rq5_power.json`,
+`scripts/power_rq5.py`), so the decision is taken on numbers.
+
+**The question.** `A := C_gold` — treating the annotation as equal to the gold
+canonical, i.e. assuming the speaker said what the reference says — is either
+an assumption carried with the pilot's 2.3%/19.8% deviation band as a
+sensitivity row, or the residual interaction term it hides is bounded
+explicitly. Week 6's rule: bound it if the MDE is comfortably below the effects
+of interest, otherwise take the sensitivity row as the cheaper honest option.
+
+**Decided: bound it — but not on the branch the rule anticipated.** The MDE is
+0.0907 F1 at the most adversarial corner of the sensitivity design (mishkal's
+per-prompt variance, `k = 2`, `ρ = 0`, prompt-clustered), against a 0.1635
+threshold. A factor of 1.80 is a pass and not much more, so "comfortably below"
+is not what carries it.
+
+What carries it is that **the sensitivity row would be uninformative**. The
+pilot's deviation base rate spans 2.3%–19.8% across its four definitions (§3.3a,
+an 8.6× spread), and a row carrying that spread would be several times wider
+than the 0.0907 MDE it is meant to qualify. It would swallow the interaction
+whole and leave the paper unable to say anything in either direction. A bound is
+the only option that keeps RQ5 readable, so the rule's first branch is taken on
+informativeness rather than on margin.
+
+**How the bound is obtained, and why it is cheap.** On the *Qur'anic* arm both
+quantities exist: the real `A` (`annotation_phoneme_string`) and `C_gold`.
+Re-scoring the four label-path conditions a second time with `A := C_gold`
+substituted gives ΔF1 under the assumption directly, and the difference against
+the measured ΔF1 **is** the residual term. That is one extra scoring condition
+per tool on the existing harness — no new instrument, no new annotation, no
+re-running of diacritizers if `C_auto` is cached. The MSA arm then inherits that
+bound, scaled by the ratio of its deviation base rate to the Qur'anic arm's.
+
+**Scheduled for weeks 10–11**, with the MSA label-path column it qualifies — not
+week 6, which has nothing to use it for yet.
+
+**The first-order argument is retained, not replaced.** The measurement is a
+delta (same `P`, same `A`, only `C` swapped), so genuine mispronunciations enter
+both terms and cancel to first order. The bound prices the second order; it does
+not substitute for that cancellation.
+
 #### Still open
 
-- **D2** — whether `A := C_gold` is stated as an assumption with the
-  2.3%/19.8% band as a sensitivity row, or whether the residual
-  interaction term is bounded explicitly. The measurement is a *delta*
-  (FR under `C_auto` − FR under `C_gold`, same `P`), so real
-  mispronunciations appear in both terms and cancel to first order; this is
-  about how much rigour to spend on the residual.
 - **D5** — whether the 43.6% vowelizer error rate is promoted from a
   single-annotator listening judgment to an objective `tashkeel_sentence`
   vs `C_gold` DER/WER over the whole annotated set. Recommended yes; the
@@ -1625,6 +1663,71 @@ splits. An utterance-id-disjoint set can still be text-overlapping with
 training, which for a text-conditioned system is leakage of exactly the
 wrong kind.
 
+#### 5.2.1 — DECIDED (16 Oct 2026): the pool is D4's annotated block, and the contamination is fixed on the *training* side. **[MEASURED]**
+
+Week-6 task 7. ~~The cleanest fix above~~ is foreclosed, and by a decision
+taken after §5.2 was written: **D4 decided "annotate dev, not fresh Common
+Voice"**, because `tashkeel_sentence` exists only in `Iqra_train` and D5's
+whole measurement is `tashkeel_sentence` vs `C_gold`. Fresh Common Voice text
+has no `C_auto` to compare against without re-running a vowelizer we do not
+have. The 500-row block is drawn, its drafts are committed, and the protocol
+is pre-registered, so this is settled, not open.
+
+What *is* available is that §5.2 was written when the only model was the
+organizers' `dev-best.ckpt`. From week 7 we train our own, so we choose the
+splits. **The evaluation pool is therefore the 500 annotated rows, and the
+contamination is removed by holding their sentences out of our own training
+and model selection** — `run/msa_eval_pool.json`, produced by
+`scripts/select_msa_eval_pool.py`, which carries `holdout_train_ids`.
+`dev-best.ckpt` keeps the declared limitation for any number computed with it.
+
+**The measurement, and it is not small.** On the consonantal skeleton:
+
+| Set | Sentences also in train | Train rows | Raw-string match finds |
+|---|---|---|---|
+| The annotated block (500) | **140 = 28.0%** | 319 | **0** |
+| Eligible pool (2,092) | 510 = 24.4% | 1,157 | 0 |
+| Whole dev split (2,542 skeletons) | 836 = **32.9%** | 2,075 | 0 |
+
+The holdout is 319 rows, **0.45% of train** — so the fix costs essentially
+nothing, which is the whole argument for doing it.
+
+**The usual check passes.** `Iqra_train`'s train and dev splits have **zero**
+id overlap. An id-disjointness check — the one most papers run — certifies
+this split as clean while 28% of the evaluation text sits in training.
+
+**Raw-string matching finds zero of the 319, and for two different reasons.**
+D4's reason is the first: the dev copy is bare and the train copy is
+pre-vowelized (the holdout's median diacritization rate is 0.571 against
+train's 0.000, and 180 of 319 are pre-vowelized against a 32.3% base rate).
+The second is pettier and more alarming — among the bare/bare pairs the
+strings differ only in punctuation placement:
+
+| | |
+|---|---|
+| train `01237` | `أحضرها لي.` |
+| dev `67397` | `.أحضرها لي` |
+
+Same six characters; the full stop moved. Also `ثمين ، لهذا` vs `ثمين، لهذا`
+and `تفعله؟` vs `تفعله ؟`. `skeleton` folds punctuation and collapses
+whitespace (§4.1), so it sees through both; raw-string equality sees through
+neither. This is the strongest available argument for the week-4 decision to
+pin one normalization contract and route every consumer through it.
+
+**Sadeed's precedent, and it is close to ours.** Sadeed reports 34.6% of the
+Fadel test set fully present in the Abbad training set (68.12% above 0.5
+similarity). Our 32.9% on the whole dev split is nearly the same figure on a
+different corpus. The discipline is standard practice the field frequently
+skips, so the paper states the number and the key it was measured with —
+one sentence, and it is the difference between a contaminated benchmark and a
+declared one.
+
+**What this does not fix.** Skeleton identity is exact-match; near-duplicates
+(Sadeed's 68.12% band) are not counted and are not held out. Flagged, not
+pursued: at 0.45% holdout cost the exact-match tier is already cheap
+insurance, and a similarity threshold is a parameter to defend rather than a
+fact to report.
+
 ### 5.3 Record provenance from the checkpoint, not the submission script
 
 For every MSA-arm training or inference run, capture `Args`/`Config` with
@@ -1695,7 +1798,7 @@ silently corrupt everything after them if skipped.
 | **now** | ▲▲ 50-utterance listening pilot from `run/msa_pilot_sample.json` (step 4) — **the only remaining way to settle the base rate.** Originally scheduled Wk 5; pulled forward to *now* because both cheap proxies came back non-binding, and because its outcome decides what the MSA arm can claim (§9). Not a week-4 dependency, but the longest pole in the project — start it in parallel with week 4's text work. | §3.3 |
 | **now** | MSA detection metric on real positives — `run/tts_detection.slurm` (option 3, existing data) | §3.3 |
 | ✅ | ~~▲ Resolve the cross-arm case-ending convention~~ — **option 4 decided**; MSA `C_gold` stays pausal | §3.4.1 |
-| Wk 5 | ▲ Select the MSA evaluation pool: CV-Ar rows disjoint from Iqra_train, deduped **by consonantal skeleton, not raw string** — raw-string dedup reports `Iqra_train` dev as duplicate-free and misses 46 rows (§3.3b D4) | §5.2 |
+| ✅ | ~~▲ Select the MSA evaluation pool: CV-Ar rows disjoint from Iqra_train, deduped **by consonantal skeleton, not raw string**~~ — **decided §5.2.1**: the pool is D4's annotated 500 (disjointness from fresh CV was foreclosed by D4), and the contamination is held out of *our* training instead. 140/500 = 28.0% of the block's sentences are in train, 319 rows, 0.45% holdout cost; raw-string matching finds 0 of them and id-disjointness is 0 | §5.2 |
 | ✅ | ~~▲ Fix the annotation sampling frame and draw the block~~ — **D4 decided**: 500 from a 2,092-row pool, seed 20261001, in `run/msa_annotation_block.json` | §3.3b D4 |
 | Wk 5 | ▲ Pre-register the annotation protocol in writing — pausal-form convention included | §3.2, §3.4 |
 | ~~Wk 5~~ | ~~▲ 50-utterance pilot: measure the real mispronunciation base rate~~ — **duplicate of the "now" row above**, kept struck rather than deleted so the schedule change is visible: this moved from Wk 5 to now. | §3.3 |

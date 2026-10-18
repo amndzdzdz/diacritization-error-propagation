@@ -47,6 +47,18 @@ extend-exclude = [
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP", "B", "SIM", "N"]
 
+[tool.ruff.lint.per-file-ignores]
+# B905 (`zip(..., strict=True)`) is a Python 3.10+ keyword, and these modules
+# have to stay importable under Python **3.8**: S3PRL requires 3.8, and
+# `scripts/baseline_reproduction/ctc_cond/expert.py` imports `MddModel` from
+# here inside that venv on the cluster so the two arms are one tested
+# implementation rather than two. Every `zip` in these files either follows an
+# explicit length check or iterates lists built in lockstep in `__init__`, so
+# `strict=` was redundant belt-and-braces, not a guard being dropped.
+# Nothing enforces the 3.8 ceiling automatically; `prepare_baseline.sh` fails
+# loudly on import if it is ever broken.
+"src/arabic_mdd/models/*.py" = ["B905"]
+
 [tool.pytest.ini_options]
 addopts = "--strict-markers --strict-config"
 testpaths = ["tests"]

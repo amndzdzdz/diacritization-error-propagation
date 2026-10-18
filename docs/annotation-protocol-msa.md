@@ -362,13 +362,59 @@ label path only.
 
 ## Open, and deliberately not decided here
 
-- **The annotation tool.** `scripts/pilot_annotate.py` is a listening
+- ~~**The annotation tool.** `scripts/pilot_annotate.py` is a listening
   interface and cannot be reused. The schema above is fixed; the thing that
-  writes it is not built. This is the next piece of code the block needs.
+  writes it is not built. This is the next piece of code the block needs.~~
+  **[BUILT 14 Oct 2026]** `scripts/annotate_msa.py` writes §6's schema;
+  §§3–6's rules and the four ingest checks live in
+  `src/arabic_mdd/data/annotation.py` (in `src`, not the script, because
+  ingest recurs in weeks 7–9 long after the tool stops running) and are
+  tested in `tests/data/test_annotation.py`. Two things the build settled
+  that this document had left implicit:
+    - **The drafts are a committed artifact**, not a model call per session:
+      `scripts/prepare_annotation_drafts.py` → `run/msa_annotation_drafts.json`.
+      §6 logs the `catt-tashkeel` version that produced `suggested`, which can
+      only be a fact about the artifact; and §8's Δ is a within-utterance
+      contrast, so the draft for a crossover row must be byte-identical
+      whenever it is shown. 3.8s for all 500 rows, so there was nothing to
+      trade away.
+    - **`catt-eo` strips punctuation from every row that has any** — 299 of
+      500. §6's skeleton check does not fire on it (`skeleton()` ignores
+      punctuation), which is why it would have gone unnoticed, but §7 says
+      punctuation is left untouched, and a punctuation-free draft makes that
+      instruction unfollowable without retyping on 299 rows *and* would have
+      made the anchored arm's `final` strings differ from the blank arm's on
+      something that is not diacritization. The draft generator splices it
+      back exactly — the draft is the source's letters plus inserted marks, so
+      the merge is well-defined — on 299 rows. Rank 380 is the one row it
+      cannot align, for the reason two bullets down.
+    - **§6's four ingest checks are blind to diacritics**, and that is worth
+      recording against the document rather than only against the code. All
+      four compare consonantal skeletons or word counts, so a draft with two
+      short vowels on one letter passes every check this protocol specifies.
+      The first version of the punctuation splice above produced exactly that
+      on 8 rows — it restored source *marks* on the 71 rows that already carry
+      them (§7's 59, plus 12 under the flag's 0.05 threshold), stacking them on
+      the model's own. §7 resolves the rule — the source's "existing marks have
+      no authority", so the draft's mark stands and the annotator corrects it —
+      but no clause here would have detected the breach. The generator now
+      fails hard on stacked marks. If a fifth ingest check is ever added to §6,
+      this is the one.
+    - Rank 380 (id 64376, the Latin row) is the only row whose draft **fails
+      §6's own ingest check as handed over**: `catt-eo` deletes `Eddie`, both
+      occurrences, exactly as the organizers' vowelizer does. §7 says leave
+      Latin untouched, so on this row the annotator must put it back. Carried
+      in the artifact's `skeleton_differs_from_frame` and warned at that row,
+      rather than left to fire mysteriously.
 - **Farasa.** Plan line 119 lists it in the evaluated set; it is not yet
   wrapped, so D7's table has four tools and not five. Does not block
   annotation — the anchor is decided — but it blocks the RQ1 table.
 - **Which `C_gold` is released.** Pre- or post-adjudication, and under which
   licence. §7 of `msa-arm.md` owns this.
-- **D2** — whether `A := C_gold` is an assumption or a measurement — remains
-  open and is untouched by this document.
+- ~~**D2** — whether `A := C_gold` is an assumption or a measurement — remains
+  open and is untouched by this document.~~ **[DECIDED 14 Oct 2026]** D2 is
+  closed in `docs/msa-arm.md`: the residual interaction term is **bounded**,
+  by re-scoring the Qur'anic label-path conditions with `A := C_gold`, and the
+  2.3%/19.8% sensitivity row is kept beside it as a cross-check. Still
+  untouched by *this* document — nothing in §§1–8 changes — but the sentence
+  above is no longer true.
