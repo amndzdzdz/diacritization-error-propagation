@@ -1,0 +1,4905 @@
+{
+  "purpose": "docs/weeks/week-06.md exit criterion, clause 1 — the label-path column",
+  "generated_by": "scripts/measure_label_path.py",
+  "git_sha": "ccc1e7d558597b664848ed1a72c1d641d6440812",
+  "design": {
+    "fixed": {
+      "A": "QuranMB.v2 annotation_phoneme_string",
+      "P": "run/quranmb_predictions_official_ckpt.json",
+      "P_note": "official organizers' checkpoint, reproduces published F1 to +-0.0001"
+    },
+    "varying": "C only",
+    "join": "prompt_index, from id.split('_')[1][:5]",
+    "pooling": "counts summed, compute_metrics applied once (never averaged ratios)",
+    "cell": "top-right against top-left of plan section 1's 2x2: label-path corruption alone, model unimpaired. The input-path row needs the text-dependent arm and is weeks 7-9, so only the scoring column exists here."
+  },
+  "c_gold": {
+    "decision": "D9, docs/msa-arm.md section 3.3b, 14 Oct 2026",
+    "rule": "phonetize(normalize(recovered_text)), U+0670 deleted",
+    "phonetizer": {
+      "phonetiser": "nawarhalabi/Arabic-Phonetiser",
+      "commit": "e75e06bdb8069153251adc08fb81f5bdd31ab953",
+      "paper": "Halabi & Wald, LREC 2016, https://aclanthology.org/L16-1116/",
+      "licence": "CC BY-NC 4.0 (non-commercial)",
+      "vendored_at": "src/arabic_mdd/data/_halabi_phonetiser.py",
+      "convention": "prescriptive"
+    },
+    "dagger_alef_rule": "delete (54/98 phoneme_exact, vs 48/98 for U+0670 -> alef)",
+    "source": "run/quranmb_verse_map.json"
+  },
+  "leg_b_anchor": {
+    "c": "QuranMB.v2 reference_phoneme_string (the benchmark's own canonical)",
+    "f1": 0.4415253562614442,
+    "f1_clips": 1642,
+    "published_f1": 0.4415,
+    "reproduces": true,
+    "metrics": {
+      "counts": {
+        "ta": 43606,
+        "fr": 6207,
+        "fa": 808,
+        "tr": 2773,
+        "correct_diagnosis": 1692,
+        "error_diagnosis": 1081
+      },
+      "precision": 0.30879732739420934,
+      "recall": 0.7743647025970399,
+      "f1": 0.4415253562614442,
+      "far": 0.22563529740296007,
+      "frr": 0.12460602653925681,
+      "diagnostic_error_rate": 0.3898305084745763,
+      "detection_accuracy": 0.8686181968011387
+    },
+    "f1_on_scored_clips": 0.4415253562614442,
+    "leg_b_minus_leg_a_f1": -0.04084230920273896,
+    "note": "The gap is our phonetizer's disagreement with the uploader's (44/98 prompts, tajwid conventions), reported separately so it is not inside any dF1. Belongs in the limitations."
+  },
+  "c_gold_cell": {
+    "metrics": {
+      "counts": {
+        "ta": 43444,
+        "fr": 5298,
+        "fa": 1733,
+        "tr": 3276,
+        "correct_diagnosis": 2018,
+        "error_diagnosis": 1258
+      },
+      "precision": 0.3820853743876837,
+      "recall": 0.6540227590337393,
+      "f1": 0.48236766546418314,
+      "far": 0.3459772409662607,
+      "frr": 0.10869476016577079,
+      "diagnostic_error_rate": 0.38400488400488403,
+      "detection_accuracy": 0.8691931312905806
+    },
+    "per_prompt_counts": {
+      "00000": {
+        "ta": 539,
+        "fr": 9,
+        "fa": 4,
+        "tr": 18,
+        "correct_diagnosis": 7,
+        "error_diagnosis": 11
+      },
+      "00001": {
+        "ta": 352,
+        "fr": 43,
+        "fa": 15,
+        "tr": 13,
+        "correct_diagnosis": 12,
+        "error_diagnosis": 1
+      },
+      "00002": {
+        "ta": 505,
+        "fr": 65,
+        "fa": 1,
+        "tr": 14,
+        "correct_diagnosis": 0,
+        "error_diagnosis": 14
+      },
+      "00003": {
+        "ta": 478,
+        "fr": 44,
+        "fa": 2,
+        "tr": 23,
+        "correct_diagnosis": 21,
+        "error_diagnosis": 2
+      },
+      "00004": {
+        "ta": 172,
+        "fr": 44,
+        "fa": 0,
+        "tr": 36,
+        "correct_diagnosis": 30,
+        "error_diagnosis": 6
+      },
+      "00005": {
+        "ta": 309,
+        "fr": 140,
+        "fa": 13,
+        "tr": 49,
+        "correct_diagnosis": 42,
+        "error_diagnosis": 7
+      },
+      "00006": {
+        "ta": 435,
+        "fr": 60,
+        "fa": 22,
+        "tr": 38,
+        "correct_diagnosis": 36,
+        "error_diagnosis": 2
+      },
+      "00007": {
+        "ta": 387,
+        "fr": 46,
+        "fa": 20,
+        "tr": 69,
+        "correct_diagnosis": 49,
+        "error_diagnosis": 20
+      },
+      "00008": {
+        "ta": 1647,
+        "fr": 109,
+        "fa": 63,
+        "tr": 29,
+        "correct_diagnosis": 19,
+        "error_diagnosis": 10
+      },
+      "00009": {
+        "ta": 220,
+        "fr": 42,
+        "fa": 15,
+        "tr": 4,
+        "correct_diagnosis": 1,
+        "error_diagnosis": 3
+      },
+      "00010": {
+        "ta": 393,
+        "fr": 18,
+        "fa": 37,
+        "tr": 2,
+        "correct_diagnosis": 2,
+        "error_diagnosis": 0
+      },
+      "00011": {
+        "ta": 467,
+        "fr": 57,
+        "fa": 32,
+        "tr": 71,
+        "correct_diagnosis": 53,
+        "error_diagnosis": 18
+      },
+      "00012": {
+        "ta": 456,
+        "fr": 46,
+        "fa": 4,
+        "tr": 16,
+        "correct_diagnosis": 15,
+        "error_diagnosis": 1
+      },
+      "00013": {
+        "ta": 916,
+        "fr": 141,
+        "fa": 32,
+        "tr": 13,
+        "correct_diagnosis": 2,
+        "error_diagnosis": 11
+      },
+      "00014": {
+        "ta": 536,
+        "fr": 118,
+        "fa": 0,
+        "tr": 18,
+        "correct_diagnosis": 9,
+        "error_diagnosis": 9
+      },
+      "00015": {
+        "ta": 941,
+        "fr": 122,
+        "fa": 23,
+        "tr": 32,
+        "correct_diagnosis": 15,
+        "error_diagnosis": 17
+      },
+      "00016": {
+        "ta": 406,
+        "fr": 100,
+        "fa": 20,
+        "tr": 29,
+        "correct_diagnosis": 4,
+        "error_diagnosis": 25
+      },
+      "00017": {
+        "ta": 444,
+        "fr": 66,
+        "fa": 9,
+        "tr": 107,
+        "correct_diagnosis": 65,
+        "error_diagnosis": 42
+      },
+      "00018": {
+        "ta": 676,
+        "fr": 93,
+        "fa": 15,
+        "tr": 21,
+        "correct_diagnosis": 19,
+        "error_diagnosis": 2
+      },
+      "00019": {
+        "ta": 374,
+        "fr": 18,
+        "fa": 16,
+        "tr": 12,
+        "correct_diagnosis": 9,
+        "error_diagnosis": 3
+      },
+      "00020": {
+        "ta": 165,
+        "fr": 40,
+        "fa": 21,
+        "tr": 29,
+        "correct_diagnosis": 27,
+        "error_diagnosis": 2
+      },
+      "00021": {
+        "ta": 649,
+        "fr": 51,
+        "fa": 2,
+        "tr": 36,
+        "correct_diagnosis": 8,
+        "error_diagnosis": 28
+      },
+      "00022": {
+        "ta": 618,
+        "fr": 101,
+        "fa": 0,
+        "tr": 29,
+        "correct_diagnosis": 28,
+        "error_diagnosis": 1
+      },
+      "00023": {
+        "ta": 450,
+        "fr": 39,
+        "fa": 5,
+        "tr": 31,
+        "correct_diagnosis": 12,
+        "error_diagnosis": 19
+      },
+      "00024": {
+        "ta": 419,
+        "fr": 33,
+        "fa": 21,
+        "tr": 54,
+        "correct_diagnosis": 48,
+        "error_diagnosis": 6
+      },
+      "00025": {
+        "ta": 259,
+        "fr": 47,
+        "fa": 13,
+        "tr": 25,
+        "correct_diagnosis": 18,
+        "error_diagnosis": 7
+      },
+      "00026": {
+        "ta": 278,
+        "fr": 41,
+        "fa": 0,
+        "tr": 33,
+        "correct_diagnosis": 16,
+        "error_diagnosis": 17
+      },
+      "00027": {
+        "ta": 356,
+        "fr": 45,
+        "fa": 16,
+        "tr": 32,
+        "correct_diagnosis": 3,
+        "error_diagnosis": 29
+      },
+      "00028": {
+        "ta": 443,
+        "fr": 32,
+        "fa": 11,
+        "tr": 60,
+        "correct_diagnosis": 52,
+        "error_diagnosis": 8
+      },
+      "00029": {
+        "ta": 536,
+        "fr": 41,
+        "fa": 0,
+        "tr": 23,
+        "correct_diagnosis": 23,
+        "error_diagnosis": 0
+      },
+      "00030": {
+        "ta": 343,
+        "fr": 24,
+        "fa": 9,
+        "tr": 14,
+        "correct_diagnosis": 14,
+        "error_diagnosis": 0
+      },
+      "00031": {
+        "ta": 335,
+        "fr": 162,
+        "fa": 1,
+        "tr": 22,
+        "correct_diagnosis": 19,
+        "error_diagnosis": 3
+      },
+      "00032": {
+        "ta": 281,
+        "fr": 18,
+        "fa": 9,
+        "tr": 18,
+        "correct_diagnosis": 14,
+        "error_diagnosis": 4
+      },
+      "00033": {
+        "ta": 360,
+        "fr": 46,
+        "fa": 12,
+        "tr": 20,
+        "correct_diagnosis": 16,
+        "error_diagnosis": 4
+      },
+      "00034": {
+        "ta": 212,
+        "fr": 25,
+        "fa": 14,
+        "tr": 9,
+        "correct_diagnosis": 6,
+        "error_diagnosis": 3
+      },
+      "00035": {
+        "ta": 341,
+        "fr": 24,
+        "fa": 32,
+        "tr": 51,
+        "correct_diagnosis": 23,
+        "error_diagnosis": 28
+      },
+      "00036": {
+        "ta": 495,
+        "fr": 81,
+        "fa": 3,
+        "tr": 52,
+        "correct_diagnosis": 46,
+        "error_diagnosis": 6
+      },
+      "00037": {
+        "ta": 422,
+        "fr": 29,
+        "fa": 23,
+        "tr": 39,
+        "correct_diagnosis": 12,
+        "error_diagnosis": 27
+      },
+      "00038": {
+        "ta": 1018,
+        "fr": 86,
+        "fa": 7,
+        "tr": 121,
+        "correct_diagnosis": 95,
+        "error_diagnosis": 26
+      },
+      "00039": {
+        "ta": 281,
+        "fr": 33,
+        "fa": 6,
+        "tr": 21,
+        "correct_diagnosis": 0,
+        "error_diagnosis": 21
+      },
+      "00040": {
+        "ta": 434,
+        "fr": 33,
+        "fa": 19,
+        "tr": 33,
+        "correct_diagnosis": 30,
+        "error_diagnosis": 3
+      },
+      "00041": {
+        "ta": 370,
+        "fr": 59,
+        "fa": 7,
+        "tr": 22,
+        "correct_diagnosis": 3,
+        "error_diagnosis": 19
+      },
+      "00042": {
+        "ta": 514,
+        "fr": 81,
+        "fa": 2,
+        "tr": 35,
+        "correct_diagnosis": 14,
+        "error_diagnosis": 21
+      },
+      "00043": {
+        "ta": 526,
+        "fr": 48,
+        "fa": 44,
+        "tr": 21,
+        "correct_diagnosis": 20,
+        "error_diagnosis": 1
+      },
+      "00044": {
+        "ta": 385,
+        "fr": 11,
+        "fa": 3,
+        "tr": 28,
+        "correct_diagnosis": 13,
+        "error_diagnosis": 15
+      },
+      "00045": {
+        "ta": 350,
+        "fr": 23,
+        "fa": 7,
+        "tr": 59,
+        "correct_diagnosis": 53,
+        "error_diagnosis": 6
+      },
+      "00046": {
+        "ta": 493,
+        "fr": 27,
+        "fa": 5,
+        "tr": 50,
+        "correct_diagnosis": 45,
+        "error_diagnosis": 5
+      },
+      "00047": {
+        "ta": 380,
+        "fr": 34,
+        "fa": 3,
+        "tr": 12,
+        "correct_diagnosis": 6,
+        "error_diagnosis": 6
+      },
+      "00048": {
+        "ta": 276,
+        "fr": 8,
+        "fa": 2,
+        "tr": 13,
+        "correct_diagnosis": 1,
+        "error_diagnosis": 12
+      },
+      "00049": {
+        "ta": 303,
+        "fr": 19,
+        "fa": 21,
+        "tr": 7,
+        "correct_diagnosis": 4,
+        "error_diagnosis": 3
+      },
+      "00050": {
+        "ta": 217,
+        "fr": 30,
+        "fa": 28,
+        "tr": 40,
+        "correct_diagnosis": 1,
+        "error_diagnosis": 39
+      },
+      "00051": {
+        "ta": 358,
+        "fr": 19,
+        "fa": 10,
+        "tr": 3,
+        "correct_diagnosis": 2,
+        "error_diagnosis": 1
+      },
+      "00052": {
+        "ta": 438,
+        "fr": 65,
+        "fa": 4,
+        "tr": 34,
+        "correct_diagnosis": 13,
+        "error_diagnosis": 21
+      },
+      "00053": {
+        "ta": 484,
+        "fr": 46,
+        "fa": 12,
+        "tr": 17,
+        "correct_diagnosis": 11,
+        "error_diagnosis": 6
+      },
+      "00054": {
+        "ta": 297,
+        "fr": 64,
+        "fa": 74,
+        "tr": 109,
+        "correct_diagnosis": 57,
+        "error_diagnosis": 52
+      },
+      "00055": {
+        "ta": 261,
+        "fr": 79,
+        "fa": 6,
+        "tr": 32,
+        "correct_diagnosis": 6,
+        "error_diagnosis": 26
+      },
+      "00056": {
+        "ta": 591,
+        "fr": 104,
+        "fa": 24,
+        "tr": 74,
+        "correct_diagnosis": 19,
+        "error_diagnosis": 55
+      },
+      "00057": {
+        "ta": 533,
+        "fr": 34,
+        "fa": 3,
+        "tr": 16,
+        "correct_diagnosis": 14,
+        "error_diagnosis": 2
+      },
+      "00058": {
+        "ta": 400,
+        "fr": 53,
+        "fa": 30,
+        "tr": 26,
+        "correct_diagnosis": 17,
+        "error_diagnosis": 9
+      },
+      "00059": {
+        "ta": 723,
+        "fr": 26,
+        "fa": 58,
+        "tr": 27,
+        "correct_diagnosis": 22,
+        "error_diagnosis": 5
+      },
+      "00060": {
+        "ta": 470,
+        "fr": 78,
+        "fa": 66,
+        "tr": 82,
+        "correct_diagnosis": 34,
+        "error_diagnosis": 48
+      },
+      "00061": {
+        "ta": 943,
+        "fr": 86,
+        "fa": 83,
+        "tr": 32,
+        "correct_diagnosis": 1,
+        "error_diagnosis": 31
+      },
+      "00062": {
+        "ta": 502,
+        "fr": 137,
+        "fa": 31,
+        "tr": 20,
+        "correct_diagnosis": 9,
+        "error_diagnosis": 11
+      },
+      "00063": {
+        "ta": 616,
+        "fr": 10,
+        "fa": 71,
+        "tr": 16,
+        "correct_diagnosis": 13,
+        "error_diagnosis": 3
+      },
+      "00064": {
+        "ta": 181,
+        "fr": 30,
+        "fa": 11,
+        "tr": 85,
+        "correct_diagnosis": 67,
+        "error_diagnosis": 18
+      },
+      "00065": {
+        "ta": 296,
+        "fr": 35,
+        "fa": 4,
+        "tr": 49,
+        "correct_diagnosis": 35,
+        "error_diagnosis": 14
+      },
+      "00066": {
+        "ta": 703,
+        "fr": 23,
+        "fa": 33,
+        "tr": 20,
+        "correct_diagnosis": 10,
+        "error_diagnosis": 10
+      },
+      "00067": {
+        "ta": 343,
+        "fr": 50,
+        "fa": 0,
+        "tr": 13,
+        "correct_diagnosis": 13,
+        "error_diagnosis": 0
+      },
+      "00068": {
+        "ta": 299,
+        "fr": 21,
+        "fa": 24,
+        "tr": 30,
+        "correct_diagnosis": 12,
+        "error_diagnosis": 18
+      },
+      "00069": {
+        "ta": 633,
+        "fr": 111,
+        "fa": 28,
+        "tr": 27,
+        "correct_diagnosis": 9,
+        "error_diagnosis": 18
+      },
+      "00070": {
+        "ta": 581,
+        "fr": 89,
+        "fa": 17,
+        "tr": 29,
+        "correct_diagnosis": 20,
+        "error_diagnosis": 9
+      },
+      "00071": {
+        "ta": 314,
+        "fr": 17,
+        "fa": 15,
+        "tr": 28,
+        "correct_diagnosis": 17,
+        "error_diagnosis": 11
+      },
+      "00072": {
+        "ta": 334,
+        "fr": 55,
+        "fa": 3,
+        "tr": 14,
+        "correct_diagnosis": 8,
+        "error_diagnosis": 6
+      },
+      "00073": {
+        "ta": 464,
+        "fr": 43,
+        "fa": 14,
+        "tr": 47,
+        "correct_diagnosis": 32,
+        "error_diagnosis": 15
+      },
+      "00074": {
+        "ta": 211,
+        "fr": 7,
+        "fa": 16,
+        "tr": 29,
+        "correct_diagnosis": 26,
+        "error_diagnosis": 3
+      },
+      "00075": {
+        "ta": 391,
+        "fr": 58,
+        "fa": 37,
+        "tr": 44,
+        "correct_diagnosis": 22,
+        "error_diagnosis": 22
+      },
+      "00076": {
+        "ta": 248,
+        "fr": 23,
+        "fa": 0,
+        "tr": 9,
+        "correct_diagnosis": 8,
+        "error_diagnosis": 1
+      },
+      "00077": {
+        "ta": 443,
+        "fr": 86,
+        "fa": 16,
+        "tr": 43,
+        "correct_diagnosis": 42,
+        "error_diagnosis": 1
+      },
+      "00078": {
+        "ta": 499,
+        "fr": 46,
+        "fa": 0,
+        "tr": 15,
+        "correct_diagnosis": 14,
+        "error_diagnosis": 1
+      },
+      "00079": {
+        "ta": 160,
+        "fr": 48,
+        "fa": 13,
+        "tr": 38,
+        "correct_diagnosis": 27,
+        "error_diagnosis": 11
+      },
+      "00080": {
+        "ta": 389,
+        "fr": 91,
+        "fa": 7,
+        "tr": 53,
+        "correct_diagnosis": 38,
+        "error_diagnosis": 15
+      },
+      "00081": {
+        "ta": 212,
+        "fr": 3,
+        "fa": 4,
+        "tr": 21,
+        "correct_diagnosis": 13,
+        "error_diagnosis": 8
+      },
+      "00082": {
+        "ta": 352,
+        "fr": 41,
+        "fa": 23,
+        "tr": 40,
+        "correct_diagnosis": 17,
+        "error_diagnosis": 23
+      },
+      "00083": {
+        "ta": 279,
+        "fr": 36,
+        "fa": 4,
+        "tr": 67,
+        "correct_diagnosis": 38,
+        "error_diagnosis": 29
+      },
+      "00084": {
+        "ta": 359,
+        "fr": 29,
+        "fa": 17,
+        "tr": 11,
+        "correct_diagnosis": 1,
+        "error_diagnosis": 10
+      },
+      "00085": {
+        "ta": 215,
+        "fr": 17,
+        "fa": 8,
+        "tr": 15,
+        "correct_diagnosis": 11,
+        "error_diagnosis": 4
+      },
+      "00086": {
+        "ta": 365,
+        "fr": 89,
+        "fa": 11,
+        "tr": 55,
+        "correct_diagnosis": 34,
+        "error_diagnosis": 21
+      },
+      "00087": {
+        "ta": 41,
+        "fr": 24,
+        "fa": 8,
+        "tr": 5,
+        "correct_diagnosis": 3,
+        "error_diagnosis": 2
+      },
+      "00088": {
+        "ta": 237,
+        "fr": 63,
+        "fa": 27,
+        "tr": 24,
+        "correct_diagnosis": 13,
+        "error_diagnosis": 11
+      },
+      "00089": {
+        "ta": 916,
+        "fr": 130,
+        "fa": 8,
+        "tr": 4,
+        "correct_diagnosis": 3,
+        "error_diagnosis": 1
+      },
+      "00090": {
+        "ta": 230,
+        "fr": 11,
+        "fa": 0,
+        "tr": 48,
+        "correct_diagnosis": 32,
+        "error_diagnosis": 16
+      },
+      "00091": {
+        "ta": 423,
+        "fr": 36,
+        "fa": 12,
+        "tr": 24,
+        "correct_diagnosis": 8,
+        "error_diagnosis": 16
+      },
+      "00092": {
+        "ta": 976,
+        "fr": 53,
+        "fa": 104,
+        "tr": 67,
+        "correct_diagnosis": 30,
+        "error_diagnosis": 37
+      },
+      "00093": {
+        "ta": 911,
+        "fr": 105,
+        "fa": 2,
+        "tr": 64,
+        "correct_diagnosis": 58,
+        "error_diagnosis": 6
+      },
+      "00094": {
+        "ta": 509,
+        "fr": 100,
+        "fa": 66,
+        "tr": 46,
+        "correct_diagnosis": 21,
+        "error_diagnosis": 25
+      },
+      "00095": {
+        "ta": 500,
+        "fr": 99,
+        "fa": 3,
+        "tr": 27,
+        "correct_diagnosis": 12,
+        "error_diagnosis": 15
+      },
+      "00096": {
+        "ta": 546,
+        "fr": 45,
+        "fa": 8,
+        "tr": 30,
+        "correct_diagnosis": 21,
+        "error_diagnosis": 9
+      },
+      "00097": {
+        "ta": 106,
+        "fr": 31,
+        "fa": 29,
+        "tr": 14,
+        "correct_diagnosis": 5,
+        "error_diagnosis": 9
+      }
+    }
+  },
+  "prompts": 98,
+  "clips_scored": 1642,
+  "clips_per_prompt": {
+    "00001": 12,
+    "00002": 15,
+    "00003": 21,
+    "00004": 13,
+    "00005": 17,
+    "00006": 15,
+    "00007": 18,
+    "00011": 19,
+    "00012": 18,
+    "00013": 22,
+    "00015": 19,
+    "00017": 22,
+    "00018": 23,
+    "00020": 15,
+    "00021": 18,
+    "00022": 17,
+    "00024": 17,
+    "00025": 19,
+    "00026": 16,
+    "00027": 14,
+    "00029": 24,
+    "00030": 15,
+    "00031": 20,
+    "00032": 13,
+    "00033": 19,
+    "00034": 20,
+    "00037": 19,
+    "00038": 27,
+    "00039": 14,
+    "00040": 21,
+    "00041": 19,
+    "00044": 17,
+    "00048": 13,
+    "00052": 18,
+    "00053": 13,
+    "00056": 18,
+    "00058": 13,
+    "00059": 17,
+    "00060": 24,
+    "00061": 19,
+    "00062": 15,
+    "00066": 19,
+    "00069": 14,
+    "00072": 15,
+    "00073": 17,
+    "00075": 22,
+    "00076": 10,
+    "00080": 18,
+    "00081": 12,
+    "00082": 19,
+    "00083": 17,
+    "00084": 16,
+    "00085": 13,
+    "00086": 20,
+    "00087": 7,
+    "00089": 23,
+    "00090": 17,
+    "00092": 20,
+    "00093": 27,
+    "00095": 17,
+    "00096": 17,
+    "00097": 18,
+    "00000": 15,
+    "00008": 22,
+    "00014": 14,
+    "00016": 12,
+    "00019": 15,
+    "00023": 15,
+    "00028": 17,
+    "00035": 16,
+    "00036": 20,
+    "00042": 18,
+    "00045": 19,
+    "00047": 13,
+    "00049": 14,
+    "00050": 15,
+    "00051": 10,
+    "00054": 14,
+    "00055": 18,
+    "00057": 15,
+    "00065": 13,
+    "00068": 17,
+    "00070": 21,
+    "00071": 14,
+    "00077": 21,
+    "00078": 16,
+    "00009": 8,
+    "00010": 15,
+    "00043": 22,
+    "00046": 14,
+    "00063": 14,
+    "00064": 14,
+    "00067": 14,
+    "00074": 14,
+    "00088": 13,
+    "00091": 15,
+    "00094": 15,
+    "00079": 14
+  },
+  "limited": false,
+  "expected_order": [
+    "catt-eo",
+    "catt-ed",
+    "shakkala",
+    "mishkal"
+  ],
+  "predictions_registered": {
+    "1": "dF1 is negative and the mechanism is FA inflation",
+    "2": "|dF1| is monotone in CE DER: catt-eo < catt-ed < shakkala < mishkal",
+    "3": "the case-ending share of label damage is high on this arm — a caveat, not a finding; Qur'anic recitation pronounces case endings, so plan section 1's MSA pausal argument does not transfer. Measured at text level only; see results.*.case_ending_share.phoneme_level"
+  },
+  "clause_1": {
+    "worst_tool": "mishkal",
+    "worst_tool_ci_excludes_zero": true,
+    "monotone_in_der": true,
+    "passed": true,
+    "criteria": "CI excludes zero for at least the worst diacritizer, and the per-tool point estimates are monotone in DER. Two-sided: plan section 1 says nobody knows the sign."
+  },
+  "results": {
+    "catt-eo": {
+      "provenance": {
+        "tool": "catt",
+        "variant": "eo",
+        "package": "catt-tashkeel",
+        "version": "1.0.2"
+      },
+      "max_input_chars": 1024,
+      "chunking": {
+        "chunked_items": 0,
+        "seams": 0
+      },
+      "diacritize_seconds": 0.9115154789978988,
+      "der": {
+        "reference_is_gold": true,
+        "published_convention": {
+          "ce_der": 3.982462550237486,
+          "ce_wer": 19.517102615694164,
+          "noce_der": 2.4479356960175376,
+          "noce_wer": 12.072434607645874
+        },
+        "our_convention": {
+          "ce_all": {
+            "der": 6.209150326797386,
+            "wer": 23.943661971830984
+          },
+          "noce_all": {
+            "der": 4.437689969604863,
+            "wer": 13.480885311871228
+          },
+          "ce_markedonly": {
+            "der": 5.8645707376058045,
+            "wer": 17.505030181086518
+          },
+          "noce_markedonly": {
+            "der": 4.868624420401854,
+            "wer": 11.87122736418511
+          }
+        }
+      },
+      "case_ending_share": {
+        "text_level_ce_minus_noce_der": 1.5345268542199486,
+        "text_level_ratio": 1.6268656716417909,
+        "phoneme_level": null,
+        "phoneme_level_note": "not measured: needs word boundaries inside the phoneme sequence, and per-word phonetization diverges from whole-utterance phonetization (section 4.1.1). Deferred rather than approximated."
+      },
+      "metrics": {
+        "counts": {
+          "ta": 43218,
+          "fr": 4782,
+          "fa": 2232,
+          "tr": 3633,
+          "correct_diagnosis": 2333,
+          "error_diagnosis": 1300
+        },
+        "precision": 0.431729055258467,
+        "recall": 0.6194373401534526,
+        "f1": 0.5088235294117647,
+        "far": 0.38056265984654736,
+        "frr": 0.099625,
+        "diagnostic_error_rate": 0.35783099366914395,
+        "detection_accuracy": 0.869785575048733
+      },
+      "delta_vs_gold": {
+        "f1": 0.026455863947581537,
+        "ci95": [
+          0.004046895021861452,
+          0.04672936555147239
+        ],
+        "excludes_zero": true,
+        "bootstrap_sd": 0.01081021335857394,
+        "ta": -226,
+        "fr": -516,
+        "fa": 499,
+        "tr": 357
+      },
+      "bootstrap": {
+        "replicates": 10000,
+        "seed": 20261014,
+        "clusters": 98,
+        "cluster_unit": "prompt"
+      },
+      "attribution": {
+        "corrupted_sites": 1308,
+        "corrupted_sites_unit": "canonical disagreement positions x clips reading that prompt",
+        "abs_fr_fa_delta": 227,
+        "damage_per_corrupted_site": 0.1735474006116208,
+        "prompts_over_bound": [
+          "00056",
+          "00060"
+        ],
+        "prompts_damaged_with_zero_corruption": [],
+        "per_prompt_corrupted_sites": {
+          "00000": 0,
+          "00001": 0,
+          "00002": 1,
+          "00003": 1,
+          "00004": 0,
+          "00005": 2,
+          "00006": 1,
+          "00007": 1,
+          "00008": 0,
+          "00009": 0,
+          "00010": 0,
+          "00011": 3,
+          "00012": 0,
+          "00013": 0,
+          "00014": 2,
+          "00015": 2,
+          "00016": 3,
+          "00017": 0,
+          "00018": 1,
+          "00019": 0,
+          "00020": 1,
+          "00021": 2,
+          "00022": 3,
+          "00023": 0,
+          "00024": 0,
+          "00025": 2,
+          "00026": 0,
+          "00027": 2,
+          "00028": 1,
+          "00029": 0,
+          "00030": 0,
+          "00031": 1,
+          "00032": 1,
+          "00033": 2,
+          "00034": 0,
+          "00035": 0,
+          "00036": 0,
+          "00037": 0,
+          "00038": 0,
+          "00039": 1,
+          "00040": 0,
+          "00041": 0,
+          "00042": 0,
+          "00043": 1,
+          "00044": 0,
+          "00045": 2,
+          "00046": 2,
+          "00047": 0,
+          "00048": 0,
+          "00049": 0,
+          "00050": 0,
+          "00051": 0,
+          "00052": 0,
+          "00053": 0,
+          "00054": 2,
+          "00055": 1,
+          "00056": 2,
+          "00057": 0,
+          "00058": 2,
+          "00059": 0,
+          "00060": 1,
+          "00061": 0,
+          "00062": 1,
+          "00063": 0,
+          "00064": 2,
+          "00065": 0,
+          "00066": 0,
+          "00067": 0,
+          "00068": 0,
+          "00069": 3,
+          "00070": 4,
+          "00071": 0,
+          "00072": 0,
+          "00073": 0,
+          "00074": 0,
+          "00075": 0,
+          "00076": 5,
+          "00077": 5,
+          "00078": 0,
+          "00079": 1,
+          "00080": 0,
+          "00081": 0,
+          "00082": 1,
+          "00083": 0,
+          "00084": 0,
+          "00085": 1,
+          "00086": 3,
+          "00087": 0,
+          "00088": 0,
+          "00089": 0,
+          "00090": 0,
+          "00091": 0,
+          "00092": 0,
+          "00093": 2,
+          "00094": 1,
+          "00095": 1,
+          "00096": 1,
+          "00097": 0
+        },
+        "note": "A ratio <= 1 means label corruption is transmitted, not amplified, by three-way Needleman-Wunsch. A nonzero delta on a prompt whose C_auto equals C_gold would be a pure alignment artifact. Diagnostic for the gate only -- not plan section 4.2's corruption-attributable FR rate, which is a weeks-10-12 deliverable."
+      },
+      "per_prompt_counts": {
+        "00000": {
+          "ta": 539,
+          "fr": 9,
+          "fa": 4,
+          "tr": 18,
+          "correct_diagnosis": 7,
+          "error_diagnosis": 11
+        },
+        "00001": {
+          "ta": 352,
+          "fr": 43,
+          "fa": 15,
+          "tr": 13,
+          "correct_diagnosis": 12,
+          "error_diagnosis": 1
+        },
+        "00002": {
+          "ta": 505,
+          "fr": 50,
+          "fa": 16,
+          "tr": 14,
+          "correct_diagnosis": 0,
+          "error_diagnosis": 14
+        },
+        "00003": {
+          "ta": 491,
+          "fr": 45,
+          "fa": 1,
+          "tr": 10,
+          "correct_diagnosis": 8,
+          "error_diagnosis": 2
+        },
+        "00004": {
+          "ta": 172,
+          "fr": 44,
+          "fa": 0,
+          "tr": 36,
+          "correct_diagnosis": 30,
+          "error_diagnosis": 6
+        },
+        "00005": {
+          "ta": 305,
+          "fr": 110,
+          "fa": 41,
+          "tr": 55,
+          "correct_diagnosis": 46,
+          "error_diagnosis": 9
+        },
+        "00006": {
+          "ta": 435,
+          "fr": 60,
+          "fa": 21,
+          "tr": 24,
+          "correct_diagnosis": 15,
+          "error_diagnosis": 9
+        },
+        "00007": {
+          "ta": 404,
+          "fr": 47,
+          "fa": 20,
+          "tr": 51,
+          "correct_diagnosis": 32,
+          "error_diagnosis": 19
+        },
+        "00008": {
+          "ta": 1647,
+          "fr": 109,
+          "fa": 63,
+          "tr": 29,
+          "correct_diagnosis": 19,
+          "error_diagnosis": 10
+        },
+        "00009": {
+          "ta": 220,
+          "fr": 42,
+          "fa": 15,
+          "tr": 4,
+          "correct_diagnosis": 1,
+          "error_diagnosis": 3
+        },
+        "00010": {
+          "ta": 393,
+          "fr": 18,
+          "fa": 37,
+          "tr": 2,
+          "correct_diagnosis": 2,
+          "error_diagnosis": 0
+        },
+        "00011": {
+          "ta": 451,
+          "fr": 73,
+          "fa": 9,
+          "tr": 75,
+          "correct_diagnosis": 65,
+          "error_diagnosis": 10
+        },
+        "00012": {
+          "ta": 456,
+          "fr": 46,
+          "fa": 4,
+          "tr": 16,
+          "correct_diagnosis": 15,
+          "error_diagnosis": 1
+        },
+        "00013": {
+          "ta": 916,
+          "fr": 141,
+          "fa": 32,
+          "tr": 13,
+          "correct_diagnosis": 2,
+          "error_diagnosis": 11
+        },
+        "00014": {
+          "ta": 536,
+          "fr": 90,
+          "fa": 26,
+          "tr": 20,
+          "correct_diagnosis": 9,
+          "error_diagnosis": 11
+        },
+        "00015": {
+          "ta": 927,
+          "fr": 98,
+          "fa": 47,
+          "tr": 46,
+          "correct_diagnosis": 29,
+          "error_diagnosis": 17
+        },
+        "00016": {
+          "ta": 406,
+          "fr": 64,
+          "fa": 56,
+          "tr": 29,
+          "correct_diagnosis": 4,
+          "error_diagnosis": 25
+        },
+        "00017": {
+          "ta": 444,
+          "fr": 66,
+          "fa": 9,
+          "tr": 107,
+          "correct_diagnosis": 65,
+          "error_diagnosis": 42
+        },
+        "00018": {
+          "ta": 676,
+          "fr": 70,
+          "fa": 36,
+          "tr": 23,
+          "correct_diagnosis": 19,
+          "error_diagnosis": 4
+        },
+        "00019": {
+          "ta": 374,
+          "fr": 18,
+          "fa": 16,
+          "tr": 12,
+          "correct_diagnosis": 9,
+          "error_diagnosis": 3
+        },
+        "00020": {
+          "ta": 165,
+          "fr": 40,
+          "fa": 14,
+          "tr": 51,
+          "correct_diagnosis": 49,
+          "error_diagnosis": 2
+        },
+        "00021": {
+          "ta": 634,
+          "fr": 30,
+          "fa": 23,
+          "tr": 51,
+          "correct_diagnosis": 23,
+          "error_diagnosis": 28
+        },
+        "00022": {
+          "ta": 601,
+          "fr": 84,
+          "fa": 17,
+          "tr": 63,
+          "correct_diagnosis": 62,
+          "error_diagnosis": 1
+        },
+        "00023": {
+          "ta": 450,
+          "fr": 39,
+          "fa": 5,
+          "tr": 31,
+          "correct_diagnosis": 12,
+          "error_diagnosis": 19
+        },
+        "00024": {
+          "ta": 419,
+          "fr": 33,
+          "fa": 21,
+          "tr": 54,
+          "correct_diagnosis": 48,
+          "error_diagnosis": 6
+        },
+        "00025": {
+          "ta": 246,
+          "fr": 45,
+          "fa": 13,
+          "tr": 57,
+          "correct_diagnosis": 38,
+          "error_diagnosis": 19
+        },
+        "00026": {
+          "ta": 278,
+          "fr": 41,
+          "fa": 0,
+          "tr": 33,
+          "correct_diagnosis": 16,
+          "error_diagnosis": 17
+        },
+        "00027": {
+          "ta": 346,
+          "fr": 29,
+          "fa": 31,
+          "tr": 43,
+          "correct_diagnosis": 13,
+          "error_diagnosis": 30
+        },
+        "00028": {
+          "ta": 435,
+          "fr": 27,
+          "fa": 17,
+          "tr": 70,
+          "correct_diagnosis": 61,
+          "error_diagnosis": 9
+        },
+        "00029": {
+          "ta": 536,
+          "fr": 41,
+          "fa": 0,
+          "tr": 23,
+          "correct_diagnosis": 23,
+          "error_diagnosis": 0
+        },
+        "00030": {
+          "ta": 343,
+          "fr": 24,
+          "fa": 9,
+          "tr": 14,
+          "correct_diagnosis": 14,
+          "error_diagnosis": 0
+        },
+        "00031": {
+          "ta": 335,
+          "fr": 142,
+          "fa": 19,
+          "tr": 24,
+          "correct_diagnosis": 19,
+          "error_diagnosis": 5
+        },
+        "00032": {
+          "ta": 281,
+          "fr": 5,
+          "fa": 15,
+          "tr": 25,
+          "correct_diagnosis": 14,
+          "error_diagnosis": 11
+        },
+        "00033": {
+          "ta": 349,
+          "fr": 39,
+          "fa": 16,
+          "tr": 53,
+          "correct_diagnosis": 45,
+          "error_diagnosis": 8
+        },
+        "00034": {
+          "ta": 212,
+          "fr": 25,
+          "fa": 14,
+          "tr": 9,
+          "correct_diagnosis": 6,
+          "error_diagnosis": 3
+        },
+        "00035": {
+          "ta": 341,
+          "fr": 24,
+          "fa": 32,
+          "tr": 51,
+          "correct_diagnosis": 23,
+          "error_diagnosis": 28
+        },
+        "00036": {
+          "ta": 495,
+          "fr": 81,
+          "fa": 3,
+          "tr": 52,
+          "correct_diagnosis": 46,
+          "error_diagnosis": 6
+        },
+        "00037": {
+          "ta": 422,
+          "fr": 29,
+          "fa": 23,
+          "tr": 39,
+          "correct_diagnosis": 12,
+          "error_diagnosis": 27
+        },
+        "00038": {
+          "ta": 1018,
+          "fr": 86,
+          "fa": 7,
+          "tr": 121,
+          "correct_diagnosis": 95,
+          "error_diagnosis": 26
+        },
+        "00039": {
+          "ta": 275,
+          "fr": 25,
+          "fa": 12,
+          "tr": 29,
+          "correct_diagnosis": 6,
+          "error_diagnosis": 23
+        },
+        "00040": {
+          "ta": 434,
+          "fr": 33,
+          "fa": 19,
+          "tr": 33,
+          "correct_diagnosis": 30,
+          "error_diagnosis": 3
+        },
+        "00041": {
+          "ta": 370,
+          "fr": 59,
+          "fa": 7,
+          "tr": 22,
+          "correct_diagnosis": 3,
+          "error_diagnosis": 19
+        },
+        "00042": {
+          "ta": 514,
+          "fr": 81,
+          "fa": 2,
+          "tr": 35,
+          "correct_diagnosis": 14,
+          "error_diagnosis": 21
+        },
+        "00043": {
+          "ta": 510,
+          "fr": 42,
+          "fa": 48,
+          "tr": 39,
+          "correct_diagnosis": 36,
+          "error_diagnosis": 3
+        },
+        "00044": {
+          "ta": 385,
+          "fr": 11,
+          "fa": 3,
+          "tr": 28,
+          "correct_diagnosis": 13,
+          "error_diagnosis": 15
+        },
+        "00045": {
+          "ta": 350,
+          "fr": 23,
+          "fa": 2,
+          "tr": 64,
+          "correct_diagnosis": 54,
+          "error_diagnosis": 10
+        },
+        "00046": {
+          "ta": 479,
+          "fr": 27,
+          "fa": 5,
+          "tr": 78,
+          "correct_diagnosis": 73,
+          "error_diagnosis": 5
+        },
+        "00047": {
+          "ta": 380,
+          "fr": 34,
+          "fa": 3,
+          "tr": 12,
+          "correct_diagnosis": 6,
+          "error_diagnosis": 6
+        },
+        "00048": {
+          "ta": 276,
+          "fr": 8,
+          "fa": 2,
+          "tr": 13,
+          "correct_diagnosis": 1,
+          "error_diagnosis": 12
+        },
+        "00049": {
+          "ta": 303,
+          "fr": 19,
+          "fa": 21,
+          "tr": 7,
+          "correct_diagnosis": 4,
+          "error_diagnosis": 3
+        },
+        "00050": {
+          "ta": 217,
+          "fr": 30,
+          "fa": 28,
+          "tr": 40,
+          "correct_diagnosis": 1,
+          "error_diagnosis": 39
+        },
+        "00051": {
+          "ta": 358,
+          "fr": 19,
+          "fa": 10,
+          "tr": 3,
+          "correct_diagnosis": 2,
+          "error_diagnosis": 1
+        },
+        "00052": {
+          "ta": 438,
+          "fr": 65,
+          "fa": 4,
+          "tr": 34,
+          "correct_diagnosis": 13,
+          "error_diagnosis": 21
+        },
+        "00053": {
+          "ta": 484,
+          "fr": 46,
+          "fa": 12,
+          "tr": 17,
+          "correct_diagnosis": 11,
+          "error_diagnosis": 6
+        },
+        "00054": {
+          "ta": 284,
+          "fr": 63,
+          "fa": 74,
+          "tr": 136,
+          "correct_diagnosis": 81,
+          "error_diagnosis": 55
+        },
+        "00055": {
+          "ta": 260,
+          "fr": 62,
+          "fa": 10,
+          "tr": 33,
+          "correct_diagnosis": 1,
+          "error_diagnosis": 32
+        },
+        "00056": {
+          "ta": 591,
+          "fr": 104,
+          "fa": 78,
+          "tr": 20,
+          "correct_diagnosis": 19,
+          "error_diagnosis": 1
+        },
+        "00057": {
+          "ta": 533,
+          "fr": 34,
+          "fa": 3,
+          "tr": 16,
+          "correct_diagnosis": 14,
+          "error_diagnosis": 2
+        },
+        "00058": {
+          "ta": 391,
+          "fr": 49,
+          "fa": 24,
+          "tr": 45,
+          "correct_diagnosis": 26,
+          "error_diagnosis": 19
+        },
+        "00059": {
+          "ta": 723,
+          "fr": 26,
+          "fa": 58,
+          "tr": 27,
+          "correct_diagnosis": 22,
+          "error_diagnosis": 5
+        },
+        "00060": {
+          "ta": 470,
+          "fr": 78,
+          "fa": 106,
+          "tr": 66,
+          "correct_diagnosis": 34,
+          "error_diagnosis": 32
+        },
+        "00061": {
+          "ta": 943,
+          "fr": 86,
+          "fa": 83,
+          "tr": 32,
+          "correct_diagnosis": 1,
+          "error_diagnosis": 31
+        },
+        "00062": {
+          "ta": 493,
+          "fr": 131,
+          "fa": 30,
+          "tr": 36,
+          "correct_diagnosis": 21,
+          "error_diagnosis": 15
+        },
+        "00063": {
+          "ta": 616,
+          "fr": 10,
+          "fa": 71,
+          "tr": 16,
+          "correct_diagnosis": 13,
+          "error_diagnosis": 3
+        },
+        "00064": {
+          "ta": 170,
+          "fr": 28,
+          "fa": 13,
+          "tr": 107,
+          "correct_diagnosis": 88,
+          "error_diagnosis": 19
+        },
+        "00065": {
+          "ta": 296,
+          "fr": 35,
+          "fa": 4,
+          "tr": 49,
+          "correct_diagnosis": 35,
+          "error_diagnosis": 14
+        },
+        "00066": {
+          "ta": 703,
+          "fr": 23,
+          "fa": 33,
+          "tr": 20,
+          "correct_diagnosis": 10,
+          "error_diagnosis": 10
+        },
+        "00067": {
+          "ta": 343,
+          "fr": 50,
+          "fa": 0,
+          "tr": 13,
+          "correct_diagnosis": 13,
+          "error_diagnosis": 0
+        },
+        "00068": {
+          "ta": 299,
+          "fr": 21,
+          "fa": 24,
+          "tr": 30,
+          "correct_diagnosis": 12,
+          "error_diagnosis": 18
+        },
+        "00069": {
+          "ta": 632,
+          "fr": 72,
+          "fa": 64,
+          "tr": 17,
+          "correct_diagnosis": 10,
+          "error_diagnosis": 7
+        },
+        "00070": {
+          "ta": 562,
+          "fr": 57,
+          "fa": 50,
+          "tr": 70,
+          "correct_diagnosis": 47,
+          "error_diagnosis": 23
+        },
+        "00071": {
+          "ta": 314,
+          "fr": 17,
+          "fa": 15,
+          "tr": 28,
+          "correct_diagnosis": 17,
+          "error_diagnosis": 11
+        },
+        "00072": {
+          "ta": 334,
+          "fr": 55,
+          "fa": 3,
+          "tr": 14,
+          "correct_diagnosis": 8,
+          "error_diagnosis": 6
+        },
+        "00073": {
+          "ta": 464,
+          "fr": 43,
+          "fa": 14,
+          "tr": 47,
+          "correct_diagnosis": 32,
+          "error_diagnosis": 15
+        },
+        "00074": {
+          "ta": 211,
+          "fr": 7,
+          "fa": 16,
+          "tr": 29,
+          "correct_diagnosis": 26,
+          "error_diagnosis": 3
+        },
+        "00075": {
+          "ta": 391,
+          "fr": 58,
+          "fa": 37,
+          "tr": 44,
+          "correct_diagnosis": 22,
+          "error_diagnosis": 22
+        },
+        "00076": {
+          "ta": 213,
+          "fr": 8,
+          "fa": 7,
+          "tr": 52,
+          "correct_diagnosis": 43,
+          "error_diagnosis": 9
+        },
+        "00077": {
+          "ta": 448,
+          "fr": 30,
+          "fa": 47,
+          "tr": 62,
+          "correct_diagnosis": 37,
+          "error_diagnosis": 25
+        },
+        "00078": {
+          "ta": 499,
+          "fr": 46,
+          "fa": 0,
+          "tr": 15,
+          "correct_diagnosis": 14,
+          "error_diagnosis": 1
+        },
+        "00079": {
+          "ta": 160,
+          "fr": 35,
+          "fa": 26,
+          "tr": 38,
+          "correct_diagnosis": 27,
+          "error_diagnosis": 11
+        },
+        "00080": {
+          "ta": 389,
+          "fr": 91,
+          "fa": 7,
+          "tr": 53,
+          "correct_diagnosis": 38,
+          "error_diagnosis": 15
+        },
+        "00081": {
+          "ta": 212,
+          "fr": 3,
+          "fa": 4,
+          "tr": 21,
+          "correct_diagnosis": 13,
+          "error_diagnosis": 8
+        },
+        "00082": {
+          "ta": 349,
+          "fr": 26,
+          "fa": 37,
+          "tr": 44,
+          "correct_diagnosis": 20,
+          "error_diagnosis": 24
+        },
+        "00083": {
+          "ta": 279,
+          "fr": 36,
+          "fa": 4,
+          "tr": 67,
+          "correct_diagnosis": 38,
+          "error_diagnosis": 29
+        },
+        "00084": {
+          "ta": 359,
+          "fr": 29,
+          "fa": 17,
+          "tr": 11,
+          "correct_diagnosis": 1,
+          "error_diagnosis": 10
+        },
+        "00085": {
+          "ta": 219,
+          "fr": 22,
+          "fa": 4,
+          "tr": 10,
+          "correct_diagnosis": 7,
+          "error_diagnosis": 3
+        },
+        "00086": {
+          "ta": 347,
+          "fr": 68,
+          "fa": 39,
+          "tr": 86,
+          "correct_diagnosis": 59,
+          "error_diagnosis": 27
+        },
+        "00087": {
+          "ta": 41,
+          "fr": 24,
+          "fa": 8,
+          "tr": 5,
+          "correct_diagnosis": 3,
+          "error_diagnosis": 2
+        },
+        "00088": {
+          "ta": 237,
+          "fr": 63,
+          "fa": 27,
+          "tr": 24,
+          "correct_diagnosis": 13,
+          "error_diagnosis": 11
+        },
+        "00089": {
+          "ta": 916,
+          "fr": 130,
+          "fa": 8,
+          "tr": 4,
+          "correct_diagnosis": 3,
+          "error_diagnosis": 1
+        },
+        "00090": {
+          "ta": 230,
+          "fr": 11,
+          "fa": 0,
+          "tr": 48,
+          "correct_diagnosis": 32,
+          "error_diagnosis": 16
+        },
+        "00091": {
+          "ta": 423,
+          "fr": 36,
+          "fa": 12,
+          "tr": 24,
+          "correct_diagnosis": 8,
+          "error_diagnosis": 16
+        },
+        "00092": {
+          "ta": 976,
+          "fr": 53,
+          "fa": 104,
+          "tr": 67,
+          "correct_diagnosis": 30,
+          "error_diagnosis": 37
+        },
+        "00093": {
+          "ta": 931,
+          "fr": 85,
+          "fa": 21,
+          "tr": 45,
+          "correct_diagnosis": 38,
+          "error_diagnosis": 7
+        },
+        "00094": {
+          "ta": 500,
+          "fr": 94,
+          "fa": 68,
+          "tr": 59,
+          "correct_diagnosis": 30,
+          "error_diagnosis": 29
+        },
+        "00095": {
+          "ta": 500,
+          "fr": 82,
+          "fa": 19,
+          "tr": 28,
+          "correct_diagnosis": 12,
+          "error_diagnosis": 16
+        },
+        "00096": {
+          "ta": 533,
+          "fr": 41,
+          "fa": 9,
+          "tr": 46,
+          "correct_diagnosis": 35,
+          "error_diagnosis": 11
+        },
+        "00097": {
+          "ta": 106,
+          "fr": 31,
+          "fa": 29,
+          "tr": 14,
+          "correct_diagnosis": 5,
+          "error_diagnosis": 9
+        }
+      }
+    },
+    "catt-ed": {
+      "provenance": {
+        "tool": "catt",
+        "variant": "ed",
+        "package": "catt-tashkeel",
+        "version": "1.0.2"
+      },
+      "max_input_chars": 1022,
+      "chunking": {
+        "chunked_items": 0,
+        "seams": 0
+      },
+      "diacritize_seconds": 14.33605971900397,
+      "der": {
+        "reference_is_gold": true,
+        "published_convention": {
+          "ce_der": 4.676653270003654,
+          "ce_wer": 21.93158953722334,
+          "noce_der": 2.7767628790646692,
+          "noce_wer": 13.682092555331993
+        },
+        "our_convention": {
+          "ce_all": {
+            "der": 7.096171802054155,
+            "wer": 26.559356136820927
+          },
+          "noce_all": {
+            "der": 4.86322188449848,
+            "wer": 14.688128772635816
+          },
+          "ce_markedonly": {
+            "der": 7.194679564691657,
+            "wer": 20.925553319919516
+          },
+          "noce_markedonly": {
+            "der": 5.486862442040185,
+            "wer": 13.279678068410464
+          }
+        }
+      },
+      "case_ending_share": {
+        "text_level_ce_minus_noce_der": 1.8998903909389848,
+        "text_level_ratio": 1.6842105263157896,
+        "phoneme_level": null,
+        "phoneme_level_note": "not measured: needs word boundaries inside the phoneme sequence, and per-word phonetization diverges from whole-utterance phonetization (section 4.1.1). Deferred rather than approximated."
+      },
+      "metrics": {
+        "counts": {
+          "ta": 42969,
+          "fr": 4696,
+          "fa": 2215,
+          "tr": 3902,
+          "correct_diagnosis": 2525,
+          "error_diagnosis": 1377
+        },
+        "precision": 0.45382647127238895,
+        "recall": 0.6378943926761484,
+        "f1": 0.5303431872239212,
+        "far": 0.36210560732385155,
+        "frr": 0.09852092730515052,
+        "diagnostic_error_rate": 0.3528959507944644,
+        "detection_accuracy": 0.8714997582834405
+      },
+      "delta_vs_gold": {
+        "f1": 0.047975521759738016,
+        "ci95": [
+          0.022543036452464082,
+          0.07348929051662362
+        ],
+        "excludes_zero": true,
+        "bootstrap_sd": 0.013037055816274427,
+        "ta": -475,
+        "fr": -602,
+        "fa": 482,
+        "tr": 626
+      },
+      "bootstrap": {
+        "replicates": 10000,
+        "seed": 20261014,
+        "clusters": 98,
+        "cluster_unit": "prompt"
+      },
+      "attribution": {
+        "corrupted_sites": 1587,
+        "corrupted_sites_unit": "canonical disagreement positions x clips reading that prompt",
+        "abs_fr_fa_delta": 346,
+        "damage_per_corrupted_site": 0.2180214240705734,
+        "prompts_over_bound": [
+          "00056",
+          "00060",
+          "00063"
+        ],
+        "prompts_damaged_with_zero_corruption": [],
+        "per_prompt_corrupted_sites": {
+          "00000": 0,
+          "00001": 0,
+          "00002": 2,
+          "00003": 0,
+          "00004": 3,
+          "00005": 3,
+          "00006": 1,
+          "00007": 2,
+          "00008": 0,
+          "00009": 0,
+          "00010": 0,
+          "00011": 2,
+          "00012": 1,
+          "00013": 1,
+          "00014": 1,
+          "00015": 1,
+          "00016": 3,
+          "00017": 0,
+          "00018": 2,
+          "00019": 0,
+          "00020": 0,
+          "00021": 2,
+          "00022": 1,
+          "00023": 0,
+          "00024": 0,
+          "00025": 1,
+          "00026": 0,
+          "00027": 1,
+          "00028": 1,
+          "00029": 1,
+          "00030": 0,
+          "00031": 1,
+          "00032": 1,
+          "00033": 1,
+          "00034": 0,
+          "00035": 0,
+          "00036": 0,
+          "00037": 0,
+          "00038": 0,
+          "00039": 1,
+          "00040": 0,
+          "00041": 0,
+          "00042": 0,
+          "00043": 1,
+          "00044": 1,
+          "00045": 3,
+          "00046": 2,
+          "00047": 0,
+          "00048": 0,
+          "00049": 1,
+          "00050": 0,
+          "00051": 0,
+          "00052": 0,
+          "00053": 4,
+          "00054": 5,
+          "00055": 1,
+          "00056": 2,
+          "00057": 0,
+          "00058": 2,
+          "00059": 0,
+          "00060": 1,
+          "00061": 0,
+          "00062": 1,
+          "00063": 2,
+          "00064": 1,
+          "00065": 0,
+          "00066": 0,
+          "00067": 7,
+          "00068": 0,
+          "00069": 6,
+          "00070": 1,
+          "00071": 0,
+          "00072": 0,
+          "00073": 1,
+          "00074": 0,
+          "00075": 0,
+          "00076": 4,
+          "00077": 4,
+          "00078": 0,
+          "00079": 1,
+          "00080": 0,
+          "00081": 0,
+          "00082": 1,
+          "00083": 0,
+          "00084": 2,
+          "00085": 1,
+          "00086": 3,
+          "00087": 0,
+          "00088": 2,
+          "00089": 0,
+          "00090": 0,
+          "00091": 1,
+          "00092": 0,
+          "00093": 2,
+          "00094": 1,
+          "00095": 1,
+          "00096": 0,
+          "00097": 0
+        },
+        "note": "A ratio <= 1 means label corruption is transmitted, not amplified, by three-way Needleman-Wunsch. A nonzero delta on a prompt whose C_auto equals C_gold would be a pure alignment artifact. Diagnostic for the gate only -- not plan section 4.2's corruption-attributable FR rate, which is a weeks-10-12 deliverable."
+      },
+      "per_prompt_counts": {
+        "00000": {
+          "ta": 539,
+          "fr": 9,
+          "fa": 4,
+          "tr": 18,
+          "correct_diagnosis": 7,
+          "error_diagnosis": 11
+        },
+        "00001": {
+          "ta": 352,
+          "fr": 43,
+          "fa": 15,
+          "tr": 13,
+          "correct_diagnosis": 12,
+          "error_diagnosis": 1
+        },
+        "00002": {
+          "ta": 496,
+          "fr": 44,
+          "fa": 22,
+          "tr": 23,
+          "correct_diagnosis": 9,
+          "error_diagnosis": 14
+        },
+        "00003": {
+          "ta": 478,
+          "fr": 44,
+          "fa": 2,
+          "tr": 23,
+          "correct_diagnosis": 21,
+          "error_diagnosis": 2
+        },
+        "00004": {
+          "ta": 164,
+          "fr": 18,
+          "fa": 24,
+          "tr": 42,
+          "correct_diagnosis": 34,
+          "error_diagnosis": 8
+        },
+        "00005": {
+          "ta": 290,
+          "fr": 108,
+          "fa": 41,
+          "tr": 72,
+          "correct_diagnosis": 61,
+          "error_diagnosis": 11
+        },
+        "00006": {
+          "ta": 435,
+          "fr": 60,
+          "fa": 21,
+          "tr": 24,
+          "correct_diagnosis": 15,
+          "error_diagnosis": 9
+        },
+        "00007": {
+          "ta": 387,
+          "fr": 46,
+          "fa": 21,
+          "tr": 68,
+          "correct_diagnosis": 49,
+          "error_diagnosis": 19
+        },
+        "00008": {
+          "ta": 1647,
+          "fr": 109,
+          "fa": 63,
+          "tr": 29,
+          "correct_diagnosis": 19,
+          "error_diagnosis": 10
+        },
+        "00009": {
+          "ta": 220,
+          "fr": 42,
+          "fa": 15,
+          "tr": 4,
+          "correct_diagnosis": 1,
+          "error_diagnosis": 3
+        },
+        "00010": {
+          "ta": 393,
+          "fr": 18,
+          "fa": 37,
+          "tr": 2,
+          "correct_diagnosis": 2,
+          "error_diagnosis": 0
+        },
+        "00011": {
+          "ta": 470,
+          "fr": 73,
+          "fa": 9,
+          "tr": 56,
+          "correct_diagnosis": 46,
+          "error_diagnosis": 10
+        },
+        "00012": {
+          "ta": 443,
+          "fr": 41,
+          "fa": 8,
+          "tr": 29,
+          "correct_diagnosis": 28,
+          "error_diagnosis": 1
+        },
+        "00013": {
+          "ta": 896,
+          "fr": 139,
+          "fa": 32,
+          "tr": 35,
+          "correct_diagnosis": 22,
+          "error_diagnosis": 13
+        },
+        "00014": {
+          "ta": 536,
+          "fr": 104,
+          "fa": 12,
+          "tr": 20,
+          "correct_diagnosis": 9,
+          "error_diagnosis": 11
+        },
+        "00015": {
+          "ta": 941,
+          "fr": 103,
+          "fa": 42,
+          "tr": 32,
+          "correct_diagnosis": 15,
+          "error_diagnosis": 17
+        },
+        "00016": {
+          "ta": 406,
+          "fr": 64,
+          "fa": 56,
+          "tr": 29,
+          "correct_diagnosis": 4,
+          "error_diagnosis": 25
+        },
+        "00017": {
+          "ta": 444,
+          "fr": 66,
+          "fa": 9,
+          "tr": 107,
+          "correct_diagnosis": 65,
+          "error_diagnosis": 42
+        },
+        "00018": {
+          "ta": 654,
+          "fr": 69,
+          "fa": 37,
+          "tr": 45,
+          "correct_diagnosis": 41,
+          "error_diagnosis": 4
+        },
+        "00019": {
+          "ta": 374,
+          "fr": 18,
+          "fa": 16,
+          "tr": 12,
+          "correct_diagnosis": 9,
+          "error_diagnosis": 3
+        },
+        "00020": {
+          "ta": 165,
+          "fr": 40,
+          "fa": 21,
+          "tr": 29,
+          "correct_diagnosis": 27,
+          "error_diagnosis": 2
+        },
+        "00021": {
+          "ta": 634,
+          "fr": 30,
+          "fa": 23,
+          "tr": 51,
+          "correct_diagnosis": 23,
+          "error_diagnosis": 28
+        },
+        "00022": {
+          "ta": 618,
+          "fr": 84,
+          "fa": 17,
+          "tr": 29,
+          "correct_diagnosis": 28,
+          "error_diagnosis": 1
+        },
+        "00023": {
+          "ta": 450,
+          "fr": 39,
+          "fa": 5,
+          "tr": 31,
+          "correct_diagnosis": 12,
+          "error_diagnosis": 19
+        },
+        "00024": {
+          "ta": 419,
+          "fr": 33,
+          "fa": 21,
+          "tr": 54,
+          "correct_diagnosis": 48,
+          "error_diagnosis": 6
+        },
+        "00025": {
+          "ta": 249,
+          "fr": 39,
+          "fa": 20,
+          "tr": 37,
+          "correct_diagnosis": 28,
+          "error_diagnosis": 9
+        },
+        "00026": {
+          "ta": 278,
+          "fr": 41,
+          "fa": 0,
+          "tr": 33,
+          "correct_diagnosis": 16,
+          "error_diagnosis": 17
+        },
+        "00027": {
+          "ta": 357,
+          "fr": 32,
+          "fa": 30,
+          "tr": 30,
+          "correct_diagnosis": 2,
+          "error_diagnosis": 28
+        },
+        "00028": {
+          "ta": 435,
+          "fr": 27,
+          "fa": 17,
+          "tr": 70,
+          "correct_diagnosis": 61,
+          "error_diagnosis": 9
+        },
+        "00029": {
+          "ta": 518,
+          "fr": 35,
+          "fa": 2,
+          "tr": 45,
+          "correct_diagnosis": 41,
+          "error_diagnosis": 4
+        },
+        "00030": {
+          "ta": 343,
+          "fr": 24,
+          "fa": 9,
+          "tr": 14,
+          "correct_diagnosis": 14,
+          "error_diagnosis": 0
+        },
+        "00031": {
+          "ta": 335,
+          "fr": 142,
+          "fa": 19,
+          "tr": 24,
+          "correct_diagnosis": 19,
+          "error_diagnosis": 5
+        },
+        "00032": {
+          "ta": 268,
+          "fr": 18,
+          "fa": 9,
+          "tr": 31,
+          "correct_diagnosis": 27,
+          "error_diagnosis": 4
+        },
+        "00033": {
+          "ta": 353,
+          "fr": 35,
+          "fa": 16,
+          "tr": 33,
+          "correct_diagnosis": 23,
+          "error_diagnosis": 10
+        },
+        "00034": {
+          "ta": 212,
+          "fr": 25,
+          "fa": 14,
+          "tr": 9,
+          "correct_diagnosis": 6,
+          "error_diagnosis": 3
+        },
+        "00035": {
+          "ta": 341,
+          "fr": 24,
+          "fa": 32,
+          "tr": 51,
+          "correct_diagnosis": 23,
+          "error_diagnosis": 28
+        },
+        "00036": {
+          "ta": 495,
+          "fr": 81,
+          "fa": 3,
+          "tr": 52,
+          "correct_diagnosis": 46,
+          "error_diagnosis": 6
+        },
+        "00037": {
+          "ta": 422,
+          "fr": 29,
+          "fa": 23,
+          "tr": 39,
+          "correct_diagnosis": 12,
+          "error_diagnosis": 27
+        },
+        "00038": {
+          "ta": 1018,
+          "fr": 86,
+          "fa": 7,
+          "tr": 121,
+          "correct_diagnosis": 95,
+          "error_diagnosis": 26
+        },
+        "00039": {
+          "ta": 275,
+          "fr": 25,
+          "fa": 12,
+          "tr": 29,
+          "correct_diagnosis": 6,
+          "error_diagnosis": 23
+        },
+        "00040": {
+          "ta": 434,
+          "fr": 33,
+          "fa": 19,
+          "tr": 33,
+          "correct_diagnosis": 30,
+          "error_diagnosis": 3
+        },
+        "00041": {
+          "ta": 370,
+          "fr": 59,
+          "fa": 7,
+          "tr": 22,
+          "correct_diagnosis": 3,
+          "error_diagnosis": 19
+        },
+        "00042": {
+          "ta": 514,
+          "fr": 81,
+          "fa": 2,
+          "tr": 35,
+          "correct_diagnosis": 14,
+          "error_diagnosis": 21
+        },
+        "00043": {
+          "ta": 510,
+          "fr": 42,
+          "fa": 48,
+          "tr": 39,
+          "correct_diagnosis": 36,
+          "error_diagnosis": 3
+        },
+        "00044": {
+          "ta": 368,
+          "fr": 11,
+          "fa": 3,
+          "tr": 45,
+          "correct_diagnosis": 30,
+          "error_diagnosis": 15
+        },
+        "00045": {
+          "ta": 335,
+          "fr": 25,
+          "fa": 8,
+          "tr": 107,
+          "correct_diagnosis": 101,
+          "error_diagnosis": 6
+        },
+        "00046": {
+          "ta": 483,
+          "fr": 24,
+          "fa": 10,
+          "tr": 72,
+          "correct_diagnosis": 66,
+          "error_diagnosis": 6
+        },
+        "00047": {
+          "ta": 380,
+          "fr": 34,
+          "fa": 3,
+          "tr": 12,
+          "correct_diagnosis": 6,
+          "error_diagnosis": 6
+        },
+        "00048": {
+          "ta": 276,
+          "fr": 8,
+          "fa": 2,
+          "tr": 13,
+          "correct_diagnosis": 1,
+          "error_diagnosis": 12
+        },
+        "00049": {
+          "ta": 289,
+          "fr": 19,
+          "fa": 21,
+          "tr": 21,
+          "correct_diagnosis": 18,
+          "error_diagnosis": 3
+        },
+        "00050": {
+          "ta": 217,
+          "fr": 30,
+          "fa": 28,
+          "tr": 40,
+          "correct_diagnosis": 1,
+          "error_diagnosis": 39
+        },
+        "00051": {
+          "ta": 358,
+          "fr": 19,
+          "fa": 10,
+          "tr": 3,
+          "correct_diagnosis": 2,
+          "error_diagnosis": 1
+        },
+        "00052": {
+          "ta": 438,
+          "fr": 65,
+          "fa": 4,
+          "tr": 34,
+          "correct_diagnosis": 13,
+          "error_diagnosis": 21
+        },
+        "00053": {
+          "ta": 433,
+          "fr": 45,
+          "fa": 12,
+          "tr": 69,
+          "correct_diagnosis": 62,
+          "error_diagnosis": 7
+        },
+        "00054": {
+          "ta": 286,
+          "fr": 62,
+          "fa": 34,
+          "tr": 159,
+          "correct_diagnosis": 67,
+          "error_diagnosis": 92
+        },
+        "00055": {
+          "ta": 260,
+          "fr": 62,
+          "fa": 10,
+          "tr": 33,
+          "correct_diagnosis": 1,
+          "error_diagnosis": 32
+        },
+        "00056": {
+          "ta": 591,
+          "fr": 104,
+          "fa": 78,
+          "tr": 20,
+          "correct_diagnosis": 19,
+          "error_diagnosis": 1
+        },
+        "00057": {
+          "ta": 533,
+          "fr": 34,
+          "fa": 3,
+          "tr": 16,
+          "correct_diagnosis": 14,
+          "error_diagnosis": 2
+        },
+        "00058": {
+          "ta": 380,
+          "fr": 47,
+          "fa": 32,
+          "tr": 50,
+          "correct_diagnosis": 37,
+          "error_diagnosis": 13
+        },
+        "00059": {
+          "ta": 723,
+          "fr": 26,
+          "fa": 58,
+          "tr": 27,
+          "correct_diagnosis": 22,
+          "error_diagnosis": 5
+        },
+        "00060": {
+          "ta": 470,
+          "fr": 78,
+          "fa": 106,
+          "tr": 66,
+          "correct_diagnosis": 34,
+          "error_diagnosis": 32
+        },
+        "00061": {
+          "ta": 943,
+          "fr": 86,
+          "fa": 83,
+          "tr": 32,
+          "correct_diagnosis": 1,
+          "error_diagnosis": 31
+        },
+        "00062": {
+          "ta": 493,
+          "fr": 131,
+          "fa": 30,
+          "tr": 36,
+          "correct_diagnosis": 21,
+          "error_diagnosis": 15
+        },
+        "00063": {
+          "ta": 616,
+          "fr": 10,
+          "fa": 15,
+          "tr": 72,
+          "correct_diagnosis": 13,
+          "error_diagnosis": 59
+        },
+        "00064": {
+          "ta": 178,
+          "fr": 24,
+          "fa": 13,
+          "tr": 93,
+          "correct_diagnosis": 74,
+          "error_diagnosis": 19
+        },
+        "00065": {
+          "ta": 296,
+          "fr": 35,
+          "fa": 4,
+          "tr": 49,
+          "correct_diagnosis": 35,
+          "error_diagnosis": 14
+        },
+        "00066": {
+          "ta": 703,
+          "fr": 23,
+          "fa": 33,
+          "tr": 20,
+          "correct_diagnosis": 10,
+          "error_diagnosis": 10
+        },
+        "00067": {
+          "ta": 301,
+          "fr": 8,
+          "fa": 40,
+          "tr": 71,
+          "correct_diagnosis": 66,
+          "error_diagnosis": 5
+        },
+        "00068": {
+          "ta": 299,
+          "fr": 21,
+          "fa": 24,
+          "tr": 30,
+          "correct_diagnosis": 12,
+          "error_diagnosis": 18
+        },
+        "00069": {
+          "ta": 593,
+          "fr": 71,
+          "fa": 55,
+          "tr": 64,
+          "correct_diagnosis": 48,
+          "error_diagnosis": 16
+        },
+        "00070": {
+          "ta": 581,
+          "fr": 71,
+          "fa": 38,
+          "tr": 28,
+          "correct_diagnosis": 19,
+          "error_diagnosis": 9
+        },
+        "00071": {
+          "ta": 314,
+          "fr": 17,
+          "fa": 15,
+          "tr": 28,
+          "correct_diagnosis": 17,
+          "error_diagnosis": 11
+        },
+        "00072": {
+          "ta": 334,
+          "fr": 55,
+          "fa": 3,
+          "tr": 14,
+          "correct_diagnosis": 8,
+          "error_diagnosis": 6
+        },
+        "00073": {
+          "ta": 456,
+          "fr": 35,
+          "fa": 22,
+          "tr": 55,
+          "correct_diagnosis": 40,
+          "error_diagnosis": 15
+        },
+        "00074": {
+          "ta": 211,
+          "fr": 7,
+          "fa": 16,
+          "tr": 29,
+          "correct_diagnosis": 26,
+          "error_diagnosis": 3
+        },
+        "00075": {
+          "ta": 391,
+          "fr": 58,
+          "fa": 37,
+          "tr": 44,
+          "correct_diagnosis": 22,
+          "error_diagnosis": 22
+        },
+        "00076": {
+          "ta": 223,
+          "fr": 8,
+          "fa": 7,
+          "tr": 42,
+          "correct_diagnosis": 33,
+          "error_diagnosis": 9
+        },
+        "00077": {
+          "ta": 454,
+          "fr": 33,
+          "fa": 47,
+          "tr": 41,
+          "correct_diagnosis": 31,
+          "error_diagnosis": 10
+        },
+        "00078": {
+          "ta": 499,
+          "fr": 46,
+          "fa": 0,
+          "tr": 15,
+          "correct_diagnosis": 14,
+          "error_diagnosis": 1
+        },
+        "00079": {
+          "ta": 160,
+          "fr": 35,
+          "fa": 26,
+          "tr": 38,
+          "correct_diagnosis": 27,
+          "error_diagnosis": 11
+        },
+        "00080": {
+          "ta": 389,
+          "fr": 91,
+          "fa": 7,
+          "tr": 53,
+          "correct_diagnosis": 38,
+          "error_diagnosis": 15
+        },
+        "00081": {
+          "ta": 212,
+          "fr": 3,
+          "fa": 4,
+          "tr": 21,
+          "correct_diagnosis": 13,
+          "error_diagnosis": 8
+        },
+        "00082": {
+          "ta": 349,
+          "fr": 26,
+          "fa": 37,
+          "tr": 44,
+          "correct_diagnosis": 20,
+          "error_diagnosis": 24
+        },
+        "00083": {
+          "ta": 279,
+          "fr": 36,
+          "fa": 4,
+          "tr": 67,
+          "correct_diagnosis": 38,
+          "error_diagnosis": 29
+        },
+        "00084": {
+          "ta": 348,
+          "fr": 24,
+          "fa": 8,
+          "tr": 36,
+          "correct_diagnosis": 12,
+          "error_diagnosis": 24
+        },
+        "00085": {
+          "ta": 219,
+          "fr": 22,
+          "fa": 4,
+          "tr": 10,
+          "correct_diagnosis": 7,
+          "error_diagnosis": 3
+        },
+        "00086": {
+          "ta": 347,
+          "fr": 68,
+          "fa": 39,
+          "tr": 86,
+          "correct_diagnosis": 59,
+          "error_diagnosis": 27
+        },
+        "00087": {
+          "ta": 41,
+          "fr": 24,
+          "fa": 8,
+          "tr": 5,
+          "correct_diagnosis": 3,
+          "error_diagnosis": 2
+        },
+        "00088": {
+          "ta": 226,
+          "fr": 49,
+          "fa": 39,
+          "tr": 38,
+          "correct_diagnosis": 24,
+          "error_diagnosis": 14
+        },
+        "00089": {
+          "ta": 916,
+          "fr": 130,
+          "fa": 8,
+          "tr": 4,
+          "correct_diagnosis": 3,
+          "error_diagnosis": 1
+        },
+        "00090": {
+          "ta": 230,
+          "fr": 11,
+          "fa": 0,
+          "tr": 48,
+          "correct_diagnosis": 32,
+          "error_diagnosis": 16
+        },
+        "00091": {
+          "ta": 411,
+          "fr": 33,
+          "fa": 15,
+          "tr": 36,
+          "correct_diagnosis": 20,
+          "error_diagnosis": 16
+        },
+        "00092": {
+          "ta": 976,
+          "fr": 53,
+          "fa": 104,
+          "tr": 67,
+          "correct_diagnosis": 30,
+          "error_diagnosis": 37
+        },
+        "00093": {
+          "ta": 931,
+          "fr": 85,
+          "fa": 21,
+          "tr": 45,
+          "correct_diagnosis": 38,
+          "error_diagnosis": 7
+        },
+        "00094": {
+          "ta": 500,
+          "fr": 94,
+          "fa": 69,
+          "tr": 58,
+          "correct_diagnosis": 30,
+          "error_diagnosis": 28
+        },
+        "00095": {
+          "ta": 500,
+          "fr": 82,
+          "fa": 19,
+          "tr": 28,
+          "correct_diagnosis": 12,
+          "error_diagnosis": 16
+        },
+        "00096": {
+          "ta": 546,
+          "fr": 45,
+          "fa": 8,
+          "tr": 30,
+          "correct_diagnosis": 21,
+          "error_diagnosis": 9
+        },
+        "00097": {
+          "ta": 106,
+          "fr": 31,
+          "fa": 29,
+          "tr": 14,
+          "correct_diagnosis": 5,
+          "error_diagnosis": 9
+        }
+      }
+    },
+    "shakkala": {
+      "provenance": {
+        "tool": "shakkala",
+        "package": "shakkala",
+        "version": "1.7",
+        "worker_python": "3.10"
+      },
+      "max_input_chars": 314,
+      "chunking": {
+        "chunked_items": 0,
+        "seams": 0
+      },
+      "diacritize_seconds": 30.934860328998184,
+      "der": {
+        "reference_is_gold": true,
+        "published_convention": {
+          "ce_der": 9.207161125319693,
+          "ce_wer": 39.03420523138833,
+          "noce_der": 5.882352941176471,
+          "noce_wer": 25.150905432595575
+        },
+        "our_convention": {
+          "ce_all": {
+            "der": 12.88515406162465,
+            "wer": 43.05835010060362
+          },
+          "noce_all": {
+            "der": 9.483282674772036,
+            "wer": 24.748490945674043
+          },
+          "ce_markedonly": {
+            "der": 14.389359129383314,
+            "wer": 37.42454728370221
+          },
+          "noce_markedonly": {
+            "der": 11.128284389489954,
+            "wer": 23.541247484909455
+          }
+        }
+      },
+      "case_ending_share": {
+        "text_level_ce_minus_noce_der": 3.3248081841432224,
+        "text_level_ratio": 1.5652173913043477,
+        "phoneme_level": null,
+        "phoneme_level_note": "not measured: needs word boundaries inside the phoneme sequence, and per-word phonetization diverges from whole-utterance phonetization (section 4.1.1). Deferred rather than approximated."
+      },
+      "metrics": {
+        "counts": {
+          "ta": 41867,
+          "fr": 4360,
+          "fa": 2285,
+          "tr": 5739,
+          "correct_diagnosis": 3982,
+          "error_diagnosis": 1757
+        },
+        "precision": 0.5682740865432221,
+        "recall": 0.7152293120638086,
+        "f1": 0.6333388511835789,
+        "far": 0.2847706879361914,
+        "frr": 0.09431717394596231,
+        "diagnostic_error_rate": 0.30615089736887957,
+        "detection_accuracy": 0.8775137785478608
+      },
+      "delta_vs_gold": {
+        "f1": 0.15097118571939577,
+        "ci95": [
+          0.11866182873216058,
+          0.18335015031200097
+        ],
+        "excludes_zero": true,
+        "bootstrap_sd": 0.016407741852834962,
+        "ta": -1577,
+        "fr": -938,
+        "fa": 552,
+        "tr": 2463
+      },
+      "bootstrap": {
+        "replicates": 10000,
+        "seed": 20261014,
+        "clusters": 98,
+        "cluster_unit": "prompt"
+      },
+      "attribution": {
+        "corrupted_sites": 3855,
+        "corrupted_sites_unit": "canonical disagreement positions x clips reading that prompt",
+        "abs_fr_fa_delta": 678,
+        "damage_per_corrupted_site": 0.17587548638132297,
+        "prompts_over_bound": [
+          "00056"
+        ],
+        "prompts_damaged_with_zero_corruption": [],
+        "per_prompt_corrupted_sites": {
+          "00000": 1,
+          "00001": 2,
+          "00002": 3,
+          "00003": 2,
+          "00004": 1,
+          "00005": 6,
+          "00006": 1,
+          "00007": 1,
+          "00008": 7,
+          "00009": 3,
+          "00010": 1,
+          "00011": 3,
+          "00012": 3,
+          "00013": 3,
+          "00014": 3,
+          "00015": 6,
+          "00016": 4,
+          "00017": 2,
+          "00018": 3,
+          "00019": 1,
+          "00020": 1,
+          "00021": 3,
+          "00022": 4,
+          "00023": 0,
+          "00024": 0,
+          "00025": 3,
+          "00026": 3,
+          "00027": 3,
+          "00028": 1,
+          "00029": 0,
+          "00030": 3,
+          "00031": 3,
+          "00032": 3,
+          "00033": 3,
+          "00034": 0,
+          "00035": 1,
+          "00036": 0,
+          "00037": 0,
+          "00038": 1,
+          "00039": 1,
+          "00040": 0,
+          "00041": 2,
+          "00042": 3,
+          "00043": 3,
+          "00044": 3,
+          "00045": 3,
+          "00046": 3,
+          "00047": 0,
+          "00048": 0,
+          "00049": 0,
+          "00050": 2,
+          "00051": 0,
+          "00052": 2,
+          "00053": 6,
+          "00054": 6,
+          "00055": 3,
+          "00056": 3,
+          "00057": 3,
+          "00058": 4,
+          "00059": 0,
+          "00060": 2,
+          "00061": 3,
+          "00062": 3,
+          "00063": 0,
+          "00064": 0,
+          "00065": 1,
+          "00066": 0,
+          "00067": 2,
+          "00068": 1,
+          "00069": 10,
+          "00070": 1,
+          "00071": 4,
+          "00072": 1,
+          "00073": 5,
+          "00074": 0,
+          "00075": 3,
+          "00076": 6,
+          "00077": 3,
+          "00078": 0,
+          "00079": 4,
+          "00080": 2,
+          "00081": 1,
+          "00082": 3,
+          "00083": 4,
+          "00084": 4,
+          "00085": 1,
+          "00086": 5,
+          "00087": 0,
+          "00088": 4,
+          "00089": 1,
+          "00090": 0,
+          "00091": 5,
+          "00092": 4,
+          "00093": 5,
+          "00094": 4,
+          "00095": 1,
+          "00096": 1,
+          "00097": 0
+        },
+        "note": "A ratio <= 1 means label corruption is transmitted, not amplified, by three-way Needleman-Wunsch. A nonzero delta on a prompt whose C_auto equals C_gold would be a pure alignment artifact. Diagnostic for the gate only -- not plan section 4.2's corruption-attributable FR rate, which is a weeks-10-12 deliverable."
+      },
+      "per_prompt_counts": {
+        "00000": {
+          "ta": 539,
+          "fr": 9,
+          "fa": 4,
+          "tr": 18,
+          "correct_diagnosis": 7,
+          "error_diagnosis": 11
+        },
+        "00001": {
+          "ta": 349,
+          "fr": 23,
+          "fa": 24,
+          "tr": 28,
+          "correct_diagnosis": 15,
+          "error_diagnosis": 13
+        },
+        "00002": {
+          "ta": 497,
+          "fr": 58,
+          "fa": 22,
+          "tr": 8,
+          "correct_diagnosis": 8,
+          "error_diagnosis": 0
+        },
+        "00003": {
+          "ta": 480,
+          "fr": 37,
+          "fa": 5,
+          "tr": 25,
+          "correct_diagnosis": 19,
+          "error_diagnosis": 6
+        },
+        "00004": {
+          "ta": 176,
+          "fr": 49,
+          "fa": 0,
+          "tr": 28,
+          "correct_diagnosis": 28,
+          "error_diagnosis": 0
+        },
+        "00005": {
+          "ta": 297,
+          "fr": 101,
+          "fa": 38,
+          "tr": 58,
+          "correct_diagnosis": 41,
+          "error_diagnosis": 17
+        },
+        "00006": {
+          "ta": 435,
+          "fr": 60,
+          "fa": 21,
+          "tr": 24,
+          "correct_diagnosis": 15,
+          "error_diagnosis": 9
+        },
+        "00007": {
+          "ta": 404,
+          "fr": 47,
+          "fa": 20,
+          "tr": 51,
+          "correct_diagnosis": 32,
+          "error_diagnosis": 19
+        },
+        "00008": {
+          "ta": 1557,
+          "fr": 135,
+          "fa": 51,
+          "tr": 172,
+          "correct_diagnosis": 134,
+          "error_diagnosis": 38
+        },
+        "00009": {
+          "ta": 197,
+          "fr": 41,
+          "fa": 6,
+          "tr": 35,
+          "correct_diagnosis": 24,
+          "error_diagnosis": 11
+        },
+        "00010": {
+          "ta": 379,
+          "fr": 17,
+          "fa": 38,
+          "tr": 16,
+          "correct_diagnosis": 16,
+          "error_diagnosis": 0
+        },
+        "00011": {
+          "ta": 451,
+          "fr": 73,
+          "fa": 9,
+          "tr": 75,
+          "correct_diagnosis": 65,
+          "error_diagnosis": 10
+        },
+        "00012": {
+          "ta": 414,
+          "fr": 34,
+          "fa": 11,
+          "tr": 63,
+          "correct_diagnosis": 57,
+          "error_diagnosis": 6
+        },
+        "00013": {
+          "ta": 855,
+          "fr": 136,
+          "fa": 34,
+          "tr": 77,
+          "correct_diagnosis": 63,
+          "error_diagnosis": 14
+        },
+        "00014": {
+          "ta": 525,
+          "fr": 87,
+          "fa": 26,
+          "tr": 34,
+          "correct_diagnosis": 20,
+          "error_diagnosis": 14
+        },
+        "00015": {
+          "ta": 869,
+          "fr": 83,
+          "fa": 58,
+          "tr": 107,
+          "correct_diagnosis": 86,
+          "error_diagnosis": 21
+        },
+        "00016": {
+          "ta": 405,
+          "fr": 53,
+          "fa": 56,
+          "tr": 41,
+          "correct_diagnosis": 5,
+          "error_diagnosis": 36
+        },
+        "00017": {
+          "ta": 434,
+          "fr": 55,
+          "fa": 9,
+          "tr": 144,
+          "correct_diagnosis": 84,
+          "error_diagnosis": 60
+        },
+        "00018": {
+          "ta": 645,
+          "fr": 55,
+          "fa": 39,
+          "tr": 66,
+          "correct_diagnosis": 50,
+          "error_diagnosis": 16
+        },
+        "00019": {
+          "ta": 361,
+          "fr": 16,
+          "fa": 17,
+          "tr": 26,
+          "correct_diagnosis": 22,
+          "error_diagnosis": 4
+        },
+        "00020": {
+          "ta": 165,
+          "fr": 40,
+          "fa": 14,
+          "tr": 51,
+          "correct_diagnosis": 49,
+          "error_diagnosis": 2
+        },
+        "00021": {
+          "ta": 634,
+          "fr": 30,
+          "fa": 23,
+          "tr": 69,
+          "correct_diagnosis": 41,
+          "error_diagnosis": 28
+        },
+        "00022": {
+          "ta": 600,
+          "fr": 68,
+          "fa": 17,
+          "tr": 80,
+          "correct_diagnosis": 57,
+          "error_diagnosis": 23
+        },
+        "00023": {
+          "ta": 450,
+          "fr": 39,
+          "fa": 5,
+          "tr": 31,
+          "correct_diagnosis": 12,
+          "error_diagnosis": 19
+        },
+        "00024": {
+          "ta": 419,
+          "fr": 33,
+          "fa": 21,
+          "tr": 54,
+          "correct_diagnosis": 48,
+          "error_diagnosis": 6
+        },
+        "00025": {
+          "ta": 246,
+          "fr": 45,
+          "fa": 20,
+          "tr": 67,
+          "correct_diagnosis": 49,
+          "error_diagnosis": 18
+        },
+        "00026": {
+          "ta": 249,
+          "fr": 39,
+          "fa": 1,
+          "tr": 79,
+          "correct_diagnosis": 60,
+          "error_diagnosis": 19
+        },
+        "00027": {
+          "ta": 333,
+          "fr": 28,
+          "fa": 31,
+          "tr": 57,
+          "correct_diagnosis": 26,
+          "error_diagnosis": 31
+        },
+        "00028": {
+          "ta": 435,
+          "fr": 27,
+          "fa": 17,
+          "tr": 70,
+          "correct_diagnosis": 61,
+          "error_diagnosis": 9
+        },
+        "00029": {
+          "ta": 536,
+          "fr": 41,
+          "fa": 0,
+          "tr": 23,
+          "correct_diagnosis": 23,
+          "error_diagnosis": 0
+        },
+        "00030": {
+          "ta": 328,
+          "fr": 9,
+          "fa": 9,
+          "tr": 59,
+          "correct_diagnosis": 44,
+          "error_diagnosis": 15
+        },
+        "00031": {
+          "ta": 316,
+          "fr": 123,
+          "fa": 19,
+          "tr": 64,
+          "correct_diagnosis": 38,
+          "error_diagnosis": 26
+        },
+        "00032": {
+          "ta": 268,
+          "fr": 5,
+          "fa": 10,
+          "tr": 43,
+          "correct_diagnosis": 27,
+          "error_diagnosis": 16
+        },
+        "00033": {
+          "ta": 339,
+          "fr": 13,
+          "fa": 20,
+          "tr": 66,
+          "correct_diagnosis": 37,
+          "error_diagnosis": 29
+        },
+        "00034": {
+          "ta": 212,
+          "fr": 25,
+          "fa": 14,
+          "tr": 9,
+          "correct_diagnosis": 6,
+          "error_diagnosis": 3
+        },
+        "00035": {
+          "ta": 330,
+          "fr": 19,
+          "fa": 35,
+          "tr": 64,
+          "correct_diagnosis": 34,
+          "error_diagnosis": 30
+        },
+        "00036": {
+          "ta": 495,
+          "fr": 81,
+          "fa": 3,
+          "tr": 52,
+          "correct_diagnosis": 46,
+          "error_diagnosis": 6
+        },
+        "00037": {
+          "ta": 422,
+          "fr": 29,
+          "fa": 23,
+          "tr": 39,
+          "correct_diagnosis": 12,
+          "error_diagnosis": 27
+        },
+        "00038": {
+          "ta": 1023,
+          "fr": 92,
+          "fa": 4,
+          "tr": 101,
+          "correct_diagnosis": 74,
+          "error_diagnosis": 27
+        },
+        "00039": {
+          "ta": 275,
+          "fr": 25,
+          "fa": 12,
+          "tr": 29,
+          "correct_diagnosis": 6,
+          "error_diagnosis": 23
+        },
+        "00040": {
+          "ta": 434,
+          "fr": 33,
+          "fa": 19,
+          "tr": 33,
+          "correct_diagnosis": 30,
+          "error_diagnosis": 3
+        },
+        "00041": {
+          "ta": 369,
+          "fr": 40,
+          "fa": 25,
+          "tr": 23,
+          "correct_diagnosis": 3,
+          "error_diagnosis": 20
+        },
+        "00042": {
+          "ta": 462,
+          "fr": 79,
+          "fa": 3,
+          "tr": 88,
+          "correct_diagnosis": 54,
+          "error_diagnosis": 34
+        },
+        "00043": {
+          "ta": 493,
+          "fr": 37,
+          "fa": 58,
+          "tr": 73,
+          "correct_diagnosis": 68,
+          "error_diagnosis": 5
+        },
+        "00044": {
+          "ta": 352,
+          "fr": 11,
+          "fa": 2,
+          "tr": 79,
+          "correct_diagnosis": 62,
+          "error_diagnosis": 17
+        },
+        "00045": {
+          "ta": 335,
+          "fr": 23,
+          "fa": 8,
+          "tr": 109,
+          "correct_diagnosis": 101,
+          "error_diagnosis": 8
+        },
+        "00046": {
+          "ta": 473,
+          "fr": 21,
+          "fa": 14,
+          "tr": 81,
+          "correct_diagnosis": 76,
+          "error_diagnosis": 5
+        },
+        "00047": {
+          "ta": 380,
+          "fr": 34,
+          "fa": 3,
+          "tr": 12,
+          "correct_diagnosis": 6,
+          "error_diagnosis": 6
+        },
+        "00048": {
+          "ta": 276,
+          "fr": 8,
+          "fa": 2,
+          "tr": 13,
+          "correct_diagnosis": 1,
+          "error_diagnosis": 12
+        },
+        "00049": {
+          "ta": 303,
+          "fr": 19,
+          "fa": 21,
+          "tr": 7,
+          "correct_diagnosis": 4,
+          "error_diagnosis": 3
+        },
+        "00050": {
+          "ta": 204,
+          "fr": 13,
+          "fa": 29,
+          "tr": 69,
+          "correct_diagnosis": 14,
+          "error_diagnosis": 55
+        },
+        "00051": {
+          "ta": 358,
+          "fr": 19,
+          "fa": 10,
+          "tr": 3,
+          "correct_diagnosis": 2,
+          "error_diagnosis": 1
+        },
+        "00052": {
+          "ta": 438,
+          "fr": 47,
+          "fa": 4,
+          "tr": 70,
+          "correct_diagnosis": 29,
+          "error_diagnosis": 41
+        },
+        "00053": {
+          "ta": 428,
+          "fr": 36,
+          "fa": 15,
+          "tr": 77,
+          "correct_diagnosis": 66,
+          "error_diagnosis": 11
+        },
+        "00054": {
+          "ta": 273,
+          "fr": 62,
+          "fa": 63,
+          "tr": 146,
+          "correct_diagnosis": 80,
+          "error_diagnosis": 66
+        },
+        "00055": {
+          "ta": 249,
+          "fr": 55,
+          "fa": 10,
+          "tr": 69,
+          "correct_diagnosis": 30,
+          "error_diagnosis": 39
+        },
+        "00056": {
+          "ta": 591,
+          "fr": 104,
+          "fa": 79,
+          "tr": 37,
+          "correct_diagnosis": 36,
+          "error_diagnosis": 1
+        },
+        "00057": {
+          "ta": 493,
+          "fr": 29,
+          "fa": 5,
+          "tr": 59,
+          "correct_diagnosis": 54,
+          "error_diagnosis": 5
+        },
+        "00058": {
+          "ta": 369,
+          "fr": 47,
+          "fa": 32,
+          "tr": 74,
+          "correct_diagnosis": 59,
+          "error_diagnosis": 15
+        },
+        "00059": {
+          "ta": 723,
+          "fr": 26,
+          "fa": 58,
+          "tr": 27,
+          "correct_diagnosis": 22,
+          "error_diagnosis": 5
+        },
+        "00060": {
+          "ta": 457,
+          "fr": 68,
+          "fa": 108,
+          "tr": 87,
+          "correct_diagnosis": 47,
+          "error_diagnosis": 40
+        },
+        "00061": {
+          "ta": 898,
+          "fr": 74,
+          "fa": 88,
+          "tr": 84,
+          "correct_diagnosis": 46,
+          "error_diagnosis": 38
+        },
+        "00062": {
+          "ta": 493,
+          "fr": 101,
+          "fa": 45,
+          "tr": 51,
+          "correct_diagnosis": 21,
+          "error_diagnosis": 30
+        },
+        "00063": {
+          "ta": 616,
+          "fr": 10,
+          "fa": 71,
+          "tr": 16,
+          "correct_diagnosis": 13,
+          "error_diagnosis": 3
+        },
+        "00064": {
+          "ta": 181,
+          "fr": 30,
+          "fa": 11,
+          "tr": 85,
+          "correct_diagnosis": 67,
+          "error_diagnosis": 18
+        },
+        "00065": {
+          "ta": 284,
+          "fr": 35,
+          "fa": 4,
+          "tr": 60,
+          "correct_diagnosis": 46,
+          "error_diagnosis": 14
+        },
+        "00066": {
+          "ta": 703,
+          "fr": 23,
+          "fa": 33,
+          "tr": 20,
+          "correct_diagnosis": 10,
+          "error_diagnosis": 10
+        },
+        "00067": {
+          "ta": 329,
+          "fr": 50,
+          "fa": 1,
+          "tr": 40,
+          "correct_diagnosis": 40,
+          "error_diagnosis": 0
+        },
+        "00068": {
+          "ta": 282,
+          "fr": 21,
+          "fa": 24,
+          "tr": 47,
+          "correct_diagnosis": 29,
+          "error_diagnosis": 18
+        },
+        "00069": {
+          "ta": 587,
+          "fr": 88,
+          "fa": 28,
+          "tr": 149,
+          "correct_diagnosis": 98,
+          "error_diagnosis": 51
+        },
+        "00070": {
+          "ta": 581,
+          "fr": 71,
+          "fa": 38,
+          "tr": 28,
+          "correct_diagnosis": 19,
+          "error_diagnosis": 9
+        },
+        "00071": {
+          "ta": 259,
+          "fr": 16,
+          "fa": 3,
+          "tr": 87,
+          "correct_diagnosis": 72,
+          "error_diagnosis": 15
+        },
+        "00072": {
+          "ta": 324,
+          "fr": 51,
+          "fa": 8,
+          "tr": 23,
+          "correct_diagnosis": 18,
+          "error_diagnosis": 5
+        },
+        "00073": {
+          "ta": 415,
+          "fr": 12,
+          "fa": 22,
+          "tr": 119,
+          "correct_diagnosis": 81,
+          "error_diagnosis": 38
+        },
+        "00074": {
+          "ta": 211,
+          "fr": 7,
+          "fa": 16,
+          "tr": 29,
+          "correct_diagnosis": 26,
+          "error_diagnosis": 3
+        },
+        "00075": {
+          "ta": 351,
+          "fr": 54,
+          "fa": 38,
+          "tr": 109,
+          "correct_diagnosis": 83,
+          "error_diagnosis": 26
+        },
+        "00076": {
+          "ta": 205,
+          "fr": 6,
+          "fa": 9,
+          "tr": 60,
+          "correct_diagnosis": 51,
+          "error_diagnosis": 9
+        },
+        "00077": {
+          "ta": 442,
+          "fr": 67,
+          "fa": 21,
+          "tr": 57,
+          "correct_diagnosis": 43,
+          "error_diagnosis": 14
+        },
+        "00078": {
+          "ta": 499,
+          "fr": 46,
+          "fa": 0,
+          "tr": 15,
+          "correct_diagnosis": 14,
+          "error_diagnosis": 1
+        },
+        "00079": {
+          "ta": 144,
+          "fr": 24,
+          "fa": 24,
+          "tr": 65,
+          "correct_diagnosis": 45,
+          "error_diagnosis": 20
+        },
+        "00080": {
+          "ta": 374,
+          "fr": 88,
+          "fa": 7,
+          "tr": 89,
+          "correct_diagnosis": 75,
+          "error_diagnosis": 14
+        },
+        "00081": {
+          "ta": 202,
+          "fr": 1,
+          "fa": 4,
+          "tr": 33,
+          "correct_diagnosis": 23,
+          "error_diagnosis": 10
+        },
+        "00082": {
+          "ta": 332,
+          "fr": 22,
+          "fa": 36,
+          "tr": 66,
+          "correct_diagnosis": 37,
+          "error_diagnosis": 29
+        },
+        "00083": {
+          "ta": 253,
+          "fr": 30,
+          "fa": 9,
+          "tr": 114,
+          "correct_diagnosis": 83,
+          "error_diagnosis": 31
+        },
+        "00084": {
+          "ta": 343,
+          "fr": 29,
+          "fa": 19,
+          "tr": 73,
+          "correct_diagnosis": 60,
+          "error_diagnosis": 13
+        },
+        "00085": {
+          "ta": 219,
+          "fr": 22,
+          "fa": 4,
+          "tr": 10,
+          "correct_diagnosis": 7,
+          "error_diagnosis": 3
+        },
+        "00086": {
+          "ta": 332,
+          "fr": 62,
+          "fa": 39,
+          "tr": 107,
+          "correct_diagnosis": 74,
+          "error_diagnosis": 33
+        },
+        "00087": {
+          "ta": 41,
+          "fr": 24,
+          "fa": 8,
+          "tr": 5,
+          "correct_diagnosis": 3,
+          "error_diagnosis": 2
+        },
+        "00088": {
+          "ta": 227,
+          "fr": 22,
+          "fa": 44,
+          "tr": 59,
+          "correct_diagnosis": 23,
+          "error_diagnosis": 36
+        },
+        "00089": {
+          "ta": 905,
+          "fr": 118,
+          "fa": 9,
+          "tr": 26,
+          "correct_diagnosis": 14,
+          "error_diagnosis": 12
+        },
+        "00090": {
+          "ta": 230,
+          "fr": 11,
+          "fa": 0,
+          "tr": 48,
+          "correct_diagnosis": 32,
+          "error_diagnosis": 16
+        },
+        "00091": {
+          "ta": 371,
+          "fr": 15,
+          "fa": 16,
+          "tr": 93,
+          "correct_diagnosis": 60,
+          "error_diagnosis": 33
+        },
+        "00092": {
+          "ta": 905,
+          "fr": 44,
+          "fa": 112,
+          "tr": 139,
+          "correct_diagnosis": 101,
+          "error_diagnosis": 38
+        },
+        "00093": {
+          "ta": 893,
+          "fr": 69,
+          "fa": 22,
+          "tr": 125,
+          "correct_diagnosis": 98,
+          "error_diagnosis": 27
+        },
+        "00094": {
+          "ta": 493,
+          "fr": 72,
+          "fa": 61,
+          "tr": 81,
+          "correct_diagnosis": 33,
+          "error_diagnosis": 48
+        },
+        "00095": {
+          "ta": 500,
+          "fr": 82,
+          "fa": 19,
+          "tr": 28,
+          "correct_diagnosis": 12,
+          "error_diagnosis": 16
+        },
+        "00096": {
+          "ta": 533,
+          "fr": 41,
+          "fa": 9,
+          "tr": 46,
+          "correct_diagnosis": 35,
+          "error_diagnosis": 11
+        },
+        "00097": {
+          "ta": 106,
+          "fr": 31,
+          "fa": 29,
+          "tr": 14,
+          "correct_diagnosis": 5,
+          "error_diagnosis": 9
+        }
+      }
+    },
+    "mishkal": {
+      "provenance": {
+        "tool": "mishkal",
+        "package": "mishkal",
+        "version": "0.4.1"
+      },
+      "max_input_chars": null,
+      "chunking": {
+        "chunked_items": 0,
+        "seams": 0
+      },
+      "diacritize_seconds": 1.6571025230005034,
+      "der": {
+        "reference_is_gold": true,
+        "published_convention": {
+          "ce_der": 18.195104128607966,
+          "ce_wer": 59.95975855130785,
+          "noce_der": 12.495432955791012,
+          "noce_wer": 43.46076458752515
+        },
+        "our_convention": {
+          "ce_all": {
+            "der": 24.649859943977592,
+            "wer": 62.776659959758554
+          },
+          "noce_all": {
+            "der": 20.060790273556233,
+            "wer": 42.65593561368209
+          },
+          "ce_markedonly": {
+            "der": 29.564691656590085,
+            "wer": 59.356136820925556
+          },
+          "noce_markedonly": {
+            "der": 23.183925811437405,
+            "wer": 39.63782696177062
+          }
+        }
+      },
+      "case_ending_share": {
+        "text_level_ce_minus_noce_der": 5.699671172816954,
+        "text_level_ratio": 1.456140350877193,
+        "phoneme_level": null,
+        "phoneme_level_note": "not measured: needs word boundaries inside the phoneme sequence, and per-word phonetization diverges from whole-utterance phonetization (section 4.1.1). Deferred rather than approximated."
+      },
+      "metrics": {
+        "counts": {
+          "ta": 38322,
+          "fr": 4067,
+          "fa": 2267,
+          "tr": 10262,
+          "correct_diagnosis": 8118,
+          "error_diagnosis": 2144
+        },
+        "precision": 0.7161700048851979,
+        "recall": 0.8190597813073669,
+        "f1": 0.7641671010499665,
+        "far": 0.1809402186926331,
+        "frr": 0.0959447026351176,
+        "diagnostic_error_rate": 0.2089261352562853,
+        "detection_accuracy": 0.8846644087548708
+      },
+      "delta_vs_gold": {
+        "f1": 0.2817994355857834,
+        "ci95": [
+          0.24457786445208918,
+          0.3185047719002265
+        ],
+        "excludes_zero": true,
+        "bootstrap_sd": 0.01897226873520688,
+        "ta": -5122,
+        "fr": -1231,
+        "fa": 534,
+        "tr": 6986
+      },
+      "bootstrap": {
+        "replicates": 10000,
+        "seed": 20261014,
+        "clusters": 98,
+        "cluster_unit": "prompt"
+      },
+      "attribution": {
+        "corrupted_sites": 9097,
+        "corrupted_sites_unit": "canonical disagreement positions x clips reading that prompt",
+        "abs_fr_fa_delta": 979,
+        "damage_per_corrupted_site": 0.10761789600967352,
+        "prompts_over_bound": [],
+        "prompts_damaged_with_zero_corruption": [],
+        "per_prompt_corrupted_sites": {
+          "00000": 9,
+          "00001": 3,
+          "00002": 10,
+          "00003": 5,
+          "00004": 1,
+          "00005": 7,
+          "00006": 3,
+          "00007": 6,
+          "00008": 17,
+          "00009": 1,
+          "00010": 9,
+          "00011": 5,
+          "00012": 5,
+          "00013": 8,
+          "00014": 14,
+          "00015": 8,
+          "00016": 13,
+          "00017": 5,
+          "00018": 5,
+          "00019": 2,
+          "00020": 0,
+          "00021": 5,
+          "00022": 12,
+          "00023": 5,
+          "00024": 1,
+          "00025": 7,
+          "00026": 6,
+          "00027": 8,
+          "00028": 4,
+          "00029": 4,
+          "00030": 2,
+          "00031": 8,
+          "00032": 3,
+          "00033": 4,
+          "00034": 5,
+          "00035": 8,
+          "00036": 10,
+          "00037": 0,
+          "00038": 6,
+          "00039": 2,
+          "00040": 4,
+          "00041": 4,
+          "00042": 1,
+          "00043": 11,
+          "00044": 4,
+          "00045": 6,
+          "00046": 11,
+          "00047": 6,
+          "00048": 4,
+          "00049": 3,
+          "00050": 2,
+          "00051": 5,
+          "00052": 8,
+          "00053": 3,
+          "00054": 2,
+          "00055": 3,
+          "00056": 5,
+          "00057": 6,
+          "00058": 7,
+          "00059": 9,
+          "00060": 7,
+          "00061": 9,
+          "00062": 10,
+          "00063": 6,
+          "00064": 4,
+          "00065": 4,
+          "00066": 5,
+          "00067": 8,
+          "00068": 7,
+          "00069": 10,
+          "00070": 5,
+          "00071": 4,
+          "00072": 6,
+          "00073": 7,
+          "00074": 5,
+          "00075": 6,
+          "00076": 4,
+          "00077": 2,
+          "00078": 10,
+          "00079": 2,
+          "00080": 1,
+          "00081": 1,
+          "00082": 5,
+          "00083": 4,
+          "00084": 1,
+          "00085": 7,
+          "00086": 5,
+          "00087": 5,
+          "00088": 5,
+          "00089": 3,
+          "00090": 0,
+          "00091": 7,
+          "00092": 1,
+          "00093": 4,
+          "00094": 15,
+          "00095": 7,
+          "00096": 5,
+          "00097": 1
+        },
+        "note": "A ratio <= 1 means label corruption is transmitted, not amplified, by three-way Needleman-Wunsch. A nonzero delta on a prompt whose C_auto equals C_gold would be a pure alignment artifact. Diagnostic for the gate only -- not plan section 4.2's corruption-attributable FR rate, which is a weeks-10-12 deliverable."
+      },
+      "per_prompt_counts": {
+        "00000": {
+          "ta": 438,
+          "fr": 7,
+          "fa": 3,
+          "tr": 151,
+          "correct_diagnosis": 136,
+          "error_diagnosis": 15
+        },
+        "00001": {
+          "ta": 326,
+          "fr": 34,
+          "fa": 23,
+          "tr": 41,
+          "correct_diagnosis": 38,
+          "error_diagnosis": 3
+        },
+        "00002": {
+          "ta": 426,
+          "fr": 24,
+          "fa": 42,
+          "tr": 93,
+          "correct_diagnosis": 79,
+          "error_diagnosis": 14
+        },
+        "00003": {
+          "ta": 417,
+          "fr": 19,
+          "fa": 2,
+          "tr": 109,
+          "correct_diagnosis": 82,
+          "error_diagnosis": 27
+        },
+        "00004": {
+          "ta": 176,
+          "fr": 49,
+          "fa": 0,
+          "tr": 28,
+          "correct_diagnosis": 28,
+          "error_diagnosis": 0
+        },
+        "00005": {
+          "ta": 280,
+          "fr": 102,
+          "fa": 41,
+          "tr": 70,
+          "correct_diagnosis": 58,
+          "error_diagnosis": 12
+        },
+        "00006": {
+          "ta": 420,
+          "fr": 60,
+          "fa": 21,
+          "tr": 54,
+          "correct_diagnosis": 43,
+          "error_diagnosis": 11
+        },
+        "00007": {
+          "ta": 365,
+          "fr": 47,
+          "fa": 5,
+          "tr": 89,
+          "correct_diagnosis": 70,
+          "error_diagnosis": 19
+        },
+        "00008": {
+          "ta": 1446,
+          "fr": 113,
+          "fa": 64,
+          "tr": 268,
+          "correct_diagnosis": 243,
+          "error_diagnosis": 25
+        },
+        "00009": {
+          "ta": 212,
+          "fr": 42,
+          "fa": 15,
+          "tr": 12,
+          "correct_diagnosis": 9,
+          "error_diagnosis": 3
+        },
+        "00010": {
+          "ta": 290,
+          "fr": 6,
+          "fa": 5,
+          "tr": 164,
+          "correct_diagnosis": 120,
+          "error_diagnosis": 44
+        },
+        "00011": {
+          "ta": 416,
+          "fr": 70,
+          "fa": 9,
+          "tr": 113,
+          "correct_diagnosis": 100,
+          "error_diagnosis": 13
+        },
+        "00012": {
+          "ta": 413,
+          "fr": 35,
+          "fa": 12,
+          "tr": 98,
+          "correct_diagnosis": 94,
+          "error_diagnosis": 4
+        },
+        "00013": {
+          "ta": 780,
+          "fr": 123,
+          "fa": 38,
+          "tr": 183,
+          "correct_diagnosis": 158,
+          "error_diagnosis": 25
+        },
+        "00014": {
+          "ta": 400,
+          "fr": 86,
+          "fa": 28,
+          "tr": 186,
+          "correct_diagnosis": 166,
+          "error_diagnosis": 20
+        },
+        "00015": {
+          "ta": 840,
+          "fr": 91,
+          "fa": 51,
+          "tr": 156,
+          "correct_diagnosis": 132,
+          "error_diagnosis": 24
+        },
+        "00016": {
+          "ta": 335,
+          "fr": 41,
+          "fa": 57,
+          "tr": 145,
+          "correct_diagnosis": 99,
+          "error_diagnosis": 46
+        },
+        "00017": {
+          "ta": 398,
+          "fr": 42,
+          "fa": 35,
+          "tr": 170,
+          "correct_diagnosis": 124,
+          "error_diagnosis": 46
+        },
+        "00018": {
+          "ta": 588,
+          "fr": 66,
+          "fa": 37,
+          "tr": 114,
+          "correct_diagnosis": 107,
+          "error_diagnosis": 7
+        },
+        "00019": {
+          "ta": 359,
+          "fr": 18,
+          "fa": 16,
+          "tr": 42,
+          "correct_diagnosis": 39,
+          "error_diagnosis": 3
+        },
+        "00020": {
+          "ta": 165,
+          "fr": 40,
+          "fa": 21,
+          "tr": 29,
+          "correct_diagnosis": 27,
+          "error_diagnosis": 2
+        },
+        "00021": {
+          "ta": 583,
+          "fr": 27,
+          "fa": 23,
+          "tr": 105,
+          "correct_diagnosis": 74,
+          "error_diagnosis": 31
+        },
+        "00022": {
+          "ta": 468,
+          "fr": 66,
+          "fa": 17,
+          "tr": 214,
+          "correct_diagnosis": 192,
+          "error_diagnosis": 22
+        },
+        "00023": {
+          "ta": 414,
+          "fr": 33,
+          "fa": 14,
+          "tr": 79,
+          "correct_diagnosis": 53,
+          "error_diagnosis": 26
+        },
+        "00024": {
+          "ta": 404,
+          "fr": 33,
+          "fa": 21,
+          "tr": 69,
+          "correct_diagnosis": 63,
+          "error_diagnosis": 6
+        },
+        "00025": {
+          "ta": 188,
+          "fr": 22,
+          "fa": 9,
+          "tr": 144,
+          "correct_diagnosis": 106,
+          "error_diagnosis": 38
+        },
+        "00026": {
+          "ta": 217,
+          "fr": 39,
+          "fa": 1,
+          "tr": 127,
+          "correct_diagnosis": 106,
+          "error_diagnosis": 21
+        },
+        "00027": {
+          "ta": 279,
+          "fr": 25,
+          "fa": 20,
+          "tr": 125,
+          "correct_diagnosis": 80,
+          "error_diagnosis": 45
+        },
+        "00028": {
+          "ta": 392,
+          "fr": 22,
+          "fa": 17,
+          "tr": 117,
+          "correct_diagnosis": 106,
+          "error_diagnosis": 11
+        },
+        "00029": {
+          "ta": 479,
+          "fr": 26,
+          "fa": 4,
+          "tr": 115,
+          "correct_diagnosis": 102,
+          "error_diagnosis": 13
+        },
+        "00030": {
+          "ta": 328,
+          "fr": 24,
+          "fa": 9,
+          "tr": 44,
+          "correct_diagnosis": 44,
+          "error_diagnosis": 0
+        },
+        "00031": {
+          "ta": 296,
+          "fr": 41,
+          "fa": 86,
+          "tr": 96,
+          "correct_diagnosis": 57,
+          "error_diagnosis": 39
+        },
+        "00032": {
+          "ta": 269,
+          "fr": 4,
+          "fa": 10,
+          "tr": 43,
+          "correct_diagnosis": 26,
+          "error_diagnosis": 17
+        },
+        "00033": {
+          "ta": 340,
+          "fr": 19,
+          "fa": 20,
+          "tr": 77,
+          "correct_diagnosis": 55,
+          "error_diagnosis": 22
+        },
+        "00034": {
+          "ta": 162,
+          "fr": 33,
+          "fa": 8,
+          "tr": 94,
+          "correct_diagnosis": 62,
+          "error_diagnosis": 32
+        },
+        "00035": {
+          "ta": 282,
+          "fr": 49,
+          "fa": 3,
+          "tr": 98,
+          "correct_diagnosis": 66,
+          "error_diagnosis": 32
+        },
+        "00036": {
+          "ta": 367,
+          "fr": 25,
+          "fa": 37,
+          "tr": 196,
+          "correct_diagnosis": 168,
+          "error_diagnosis": 28
+        },
+        "00037": {
+          "ta": 422,
+          "fr": 29,
+          "fa": 23,
+          "tr": 39,
+          "correct_diagnosis": 12,
+          "error_diagnosis": 27
+        },
+        "00038": {
+          "ta": 880,
+          "fr": 77,
+          "fa": 16,
+          "tr": 251,
+          "correct_diagnosis": 208,
+          "error_diagnosis": 43
+        },
+        "00039": {
+          "ta": 261,
+          "fr": 25,
+          "fa": 12,
+          "tr": 43,
+          "correct_diagnosis": 20,
+          "error_diagnosis": 23
+        },
+        "00040": {
+          "ta": 401,
+          "fr": 25,
+          "fa": 13,
+          "tr": 99,
+          "correct_diagnosis": 81,
+          "error_diagnosis": 18
+        },
+        "00041": {
+          "ta": 334,
+          "fr": 53,
+          "fa": 25,
+          "tr": 46,
+          "correct_diagnosis": 39,
+          "error_diagnosis": 7
+        },
+        "00042": {
+          "ta": 496,
+          "fr": 81,
+          "fa": 2,
+          "tr": 53,
+          "correct_diagnosis": 32,
+          "error_diagnosis": 21
+        },
+        "00043": {
+          "ta": 383,
+          "fr": 20,
+          "fa": 15,
+          "tr": 265,
+          "correct_diagnosis": 196,
+          "error_diagnosis": 69
+        },
+        "00044": {
+          "ta": 369,
+          "fr": 11,
+          "fa": 4,
+          "tr": 93,
+          "correct_diagnosis": 80,
+          "error_diagnosis": 13
+        },
+        "00045": {
+          "ta": 282,
+          "fr": 19,
+          "fa": 8,
+          "tr": 166,
+          "correct_diagnosis": 154,
+          "error_diagnosis": 12
+        },
+        "00046": {
+          "ta": 431,
+          "fr": 21,
+          "fa": 13,
+          "tr": 196,
+          "correct_diagnosis": 181,
+          "error_diagnosis": 15
+        },
+        "00047": {
+          "ta": 316,
+          "fr": 33,
+          "fa": 3,
+          "tr": 90,
+          "correct_diagnosis": 83,
+          "error_diagnosis": 7
+        },
+        "00048": {
+          "ta": 224,
+          "fr": 8,
+          "fa": 2,
+          "tr": 65,
+          "correct_diagnosis": 53,
+          "error_diagnosis": 12
+        },
+        "00049": {
+          "ta": 276,
+          "fr": 18,
+          "fa": 21,
+          "tr": 49,
+          "correct_diagnosis": 45,
+          "error_diagnosis": 4
+        },
+        "00050": {
+          "ta": 217,
+          "fr": 30,
+          "fa": 45,
+          "tr": 53,
+          "correct_diagnosis": 8,
+          "error_diagnosis": 45
+        },
+        "00051": {
+          "ta": 330,
+          "fr": 16,
+          "fa": 2,
+          "tr": 42,
+          "correct_diagnosis": 38,
+          "error_diagnosis": 4
+        },
+        "00052": {
+          "ta": 330,
+          "fr": 47,
+          "fa": 15,
+          "tr": 167,
+          "correct_diagnosis": 136,
+          "error_diagnosis": 31
+        },
+        "00053": {
+          "ta": 459,
+          "fr": 44,
+          "fa": 12,
+          "tr": 41,
+          "correct_diagnosis": 35,
+          "error_diagnosis": 6
+        },
+        "00054": {
+          "ta": 284,
+          "fr": 50,
+          "fa": 74,
+          "tr": 136,
+          "correct_diagnosis": 70,
+          "error_diagnosis": 66
+        },
+        "00055": {
+          "ta": 249,
+          "fr": 55,
+          "fa": 10,
+          "tr": 69,
+          "correct_diagnosis": 30,
+          "error_diagnosis": 39
+        },
+        "00056": {
+          "ta": 538,
+          "fr": 103,
+          "fa": 78,
+          "tr": 74,
+          "correct_diagnosis": 72,
+          "error_diagnosis": 2
+        },
+        "00057": {
+          "ta": 455,
+          "fr": 23,
+          "fa": 1,
+          "tr": 93,
+          "correct_diagnosis": 81,
+          "error_diagnosis": 12
+        },
+        "00058": {
+          "ta": 358,
+          "fr": 44,
+          "fa": 24,
+          "tr": 84,
+          "correct_diagnosis": 58,
+          "error_diagnosis": 26
+        },
+        "00059": {
+          "ta": 606,
+          "fr": 21,
+          "fa": 57,
+          "tr": 167,
+          "correct_diagnosis": 156,
+          "error_diagnosis": 11
+        },
+        "00060": {
+          "ta": 366,
+          "fr": 114,
+          "fa": 43,
+          "tr": 172,
+          "correct_diagnosis": 137,
+          "error_diagnosis": 35
+        },
+        "00061": {
+          "ta": 806,
+          "fr": 71,
+          "fa": 92,
+          "tr": 194,
+          "correct_diagnosis": 154,
+          "error_diagnosis": 40
+        },
+        "00062": {
+          "ta": 406,
+          "fr": 98,
+          "fa": 59,
+          "tr": 142,
+          "correct_diagnosis": 123,
+          "error_diagnosis": 19
+        },
+        "00063": {
+          "ta": 561,
+          "fr": 37,
+          "fa": 30,
+          "tr": 85,
+          "correct_diagnosis": 68,
+          "error_diagnosis": 17
+        },
+        "00064": {
+          "ta": 156,
+          "fr": 21,
+          "fa": 16,
+          "tr": 128,
+          "correct_diagnosis": 96,
+          "error_diagnosis": 32
+        },
+        "00065": {
+          "ta": 250,
+          "fr": 30,
+          "fa": 4,
+          "tr": 100,
+          "correct_diagnosis": 81,
+          "error_diagnosis": 19
+        },
+        "00066": {
+          "ta": 656,
+          "fr": 20,
+          "fa": 26,
+          "tr": 96,
+          "correct_diagnosis": 72,
+          "error_diagnosis": 24
+        },
+        "00067": {
+          "ta": 276,
+          "fr": 33,
+          "fa": 6,
+          "tr": 119,
+          "correct_diagnosis": 102,
+          "error_diagnosis": 17
+        },
+        "00068": {
+          "ta": 237,
+          "fr": 28,
+          "fa": 23,
+          "tr": 119,
+          "correct_diagnosis": 107,
+          "error_diagnosis": 12
+        },
+        "00069": {
+          "ta": 565,
+          "fr": 91,
+          "fa": 42,
+          "tr": 142,
+          "correct_diagnosis": 104,
+          "error_diagnosis": 38
+        },
+        "00070": {
+          "ta": 567,
+          "fr": 73,
+          "fa": 46,
+          "tr": 93,
+          "correct_diagnosis": 80,
+          "error_diagnosis": 13
+        },
+        "00071": {
+          "ta": 264,
+          "fr": 12,
+          "fa": 8,
+          "tr": 80,
+          "correct_diagnosis": 66,
+          "error_diagnosis": 14
+        },
+        "00072": {
+          "ta": 286,
+          "fr": 43,
+          "fa": 7,
+          "tr": 74,
+          "correct_diagnosis": 64,
+          "error_diagnosis": 10
+        },
+        "00073": {
+          "ta": 378,
+          "fr": 18,
+          "fa": 14,
+          "tr": 160,
+          "correct_diagnosis": 120,
+          "error_diagnosis": 40
+        },
+        "00074": {
+          "ta": 173,
+          "fr": 4,
+          "fa": 10,
+          "tr": 99,
+          "correct_diagnosis": 79,
+          "error_diagnosis": 20
+        },
+        "00075": {
+          "ta": 332,
+          "fr": 33,
+          "fa": 40,
+          "tr": 169,
+          "correct_diagnosis": 120,
+          "error_diagnosis": 49
+        },
+        "00076": {
+          "ta": 223,
+          "fr": 8,
+          "fa": 7,
+          "tr": 42,
+          "correct_diagnosis": 33,
+          "error_diagnosis": 9
+        },
+        "00077": {
+          "ta": 456,
+          "fr": 73,
+          "fa": 29,
+          "tr": 29,
+          "correct_diagnosis": 29,
+          "error_diagnosis": 0
+        },
+        "00078": {
+          "ta": 383,
+          "fr": 34,
+          "fa": 3,
+          "tr": 172,
+          "correct_diagnosis": 157,
+          "error_diagnosis": 15
+        },
+        "00079": {
+          "ta": 146,
+          "fr": 34,
+          "fa": 26,
+          "tr": 50,
+          "correct_diagnosis": 42,
+          "error_diagnosis": 8
+        },
+        "00080": {
+          "ta": 389,
+          "fr": 91,
+          "fa": 14,
+          "tr": 64,
+          "correct_diagnosis": 50,
+          "error_diagnosis": 14
+        },
+        "00081": {
+          "ta": 200,
+          "fr": 3,
+          "fa": 4,
+          "tr": 33,
+          "correct_diagnosis": 25,
+          "error_diagnosis": 8
+        },
+        "00082": {
+          "ta": 305,
+          "fr": 16,
+          "fa": 20,
+          "tr": 114,
+          "correct_diagnosis": 64,
+          "error_diagnosis": 50
+        },
+        "00083": {
+          "ta": 232,
+          "fr": 32,
+          "fa": 5,
+          "tr": 117,
+          "correct_diagnosis": 85,
+          "error_diagnosis": 32
+        },
+        "00084": {
+          "ta": 345,
+          "fr": 27,
+          "fa": 18,
+          "tr": 26,
+          "correct_diagnosis": 15,
+          "error_diagnosis": 11
+        },
+        "00085": {
+          "ta": 185,
+          "fr": 18,
+          "fa": 6,
+          "tr": 85,
+          "correct_diagnosis": 68,
+          "error_diagnosis": 17
+        },
+        "00086": {
+          "ta": 304,
+          "fr": 51,
+          "fa": 29,
+          "tr": 133,
+          "correct_diagnosis": 95,
+          "error_diagnosis": 38
+        },
+        "00087": {
+          "ta": 34,
+          "fr": 1,
+          "fa": 17,
+          "tr": 29,
+          "correct_diagnosis": 15,
+          "error_diagnosis": 14
+        },
+        "00088": {
+          "ta": 226,
+          "fr": 10,
+          "fa": 57,
+          "tr": 59,
+          "correct_diagnosis": 24,
+          "error_diagnosis": 35
+        },
+        "00089": {
+          "ta": 870,
+          "fr": 130,
+          "fa": 8,
+          "tr": 73,
+          "correct_diagnosis": 72,
+          "error_diagnosis": 1
+        },
+        "00090": {
+          "ta": 230,
+          "fr": 11,
+          "fa": 0,
+          "tr": 48,
+          "correct_diagnosis": 32,
+          "error_diagnosis": 16
+        },
+        "00091": {
+          "ta": 338,
+          "fr": 19,
+          "fa": 13,
+          "tr": 126,
+          "correct_diagnosis": 93,
+          "error_diagnosis": 33
+        },
+        "00092": {
+          "ta": 956,
+          "fr": 53,
+          "fa": 104,
+          "tr": 87,
+          "correct_diagnosis": 50,
+          "error_diagnosis": 37
+        },
+        "00093": {
+          "ta": 920,
+          "fr": 69,
+          "fa": 21,
+          "tr": 99,
+          "correct_diagnosis": 76,
+          "error_diagnosis": 23
+        },
+        "00094": {
+          "ta": 393,
+          "fr": 79,
+          "fa": 57,
+          "tr": 219,
+          "correct_diagnosis": 165,
+          "error_diagnosis": 54
+        },
+        "00095": {
+          "ta": 469,
+          "fr": 76,
+          "fa": 23,
+          "tr": 112,
+          "correct_diagnosis": 85,
+          "error_diagnosis": 27
+        },
+        "00096": {
+          "ta": 475,
+          "fr": 36,
+          "fa": 12,
+          "tr": 102,
+          "correct_diagnosis": 84,
+          "error_diagnosis": 18
+        },
+        "00097": {
+          "ta": 105,
+          "fr": 14,
+          "fa": 29,
+          "tr": 32,
+          "correct_diagnosis": 6,
+          "error_diagnosis": 26
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,385 @@
+{
+  "purpose": "minimum detectable difference-in-differences for RQ5, and the keep/cut recommendation against the pre-registered rule",
+  "generated_by": "scripts/power_rq5.py",
+  "source_artifact": "run/quranic_label_path.json",
+  "source_git_sha": "ccc1e7d558597b664848ed1a72c1d641d6440812",
+  "design": {
+    "estimand": "DiD = dF1(text-dependent arm) - dF1(prompt-free arm)",
+    "power": 0.8,
+    "alpha": 0.05,
+    "sided": 2,
+    "mde_multiplier": 2.801585218112969,
+    "se_did_formula": "SE_PF * sqrt(1 + k - 2*rho*sqrt(k))",
+    "variance_ratios_k": [
+      1.0,
+      1.5,
+      2.0
+    ],
+    "arm_correlations_rho": [
+      0.0,
+      0.5
+    ],
+    "headline_corner": "k=2, rho=0, prompt-clustered — the most adversarial cell of the sensitivity design",
+    "measured_term": "prompt-free arm, run/quranic_label_path.json",
+    "assumed_term": "text-dependent arm, weeks 7-9; its variance is `k`"
+  },
+  "samples": {
+    "quranic": {
+      "clips": 1642,
+      "clusters": 98,
+      "cluster_unit": "prompt",
+      "mean_clips_per_cluster": 16.755102040816325
+    },
+    "msa": {
+      "utterances": 500,
+      "clusters": 500,
+      "cluster_unit": "utterance",
+      "status": "projection — per-utterance spread assumed equal to the Qur'anic per-prompt dF1 sd, which averages ~16.8 clips and is therefore the optimistic side of that transfer"
+    }
+  },
+  "clustering": {
+    "cluster_se": "measured, 10,000-replicate paired bootstrap over prompts",
+    "naive_se": "bounded below by a clip-equivalent bootstrap; a true clip-level bootstrap needs per-clip counts the label-path artifact does not store",
+    "design_effect_direction": "reported figure is an upper bound",
+    "analytic_cross_check": 4.093299651969829,
+    "speaker": "18 speakers, crossed with the 98 prompts, NOT modelled — speaker variation is folded into the per-prompt spread, which inflates it, so the MDE is conservative in this respect too",
+    "kadambi_template": "the prompt bootstrap is the design-effect equivalent of a random intercept for utterance; the speaker intercept is the part not reproduced here"
+  },
+  "threshold": 0.16349999999999998,
+  "threshold_provenance": {
+    "quantity": "the input-path main effect: the same system scored with and without canonical conditioning",
+    "source": "arXiv:2604.22133 section 6.4.3, table 4(c); read 14 Oct 2026",
+    "non_conditioned_f1": 0.5687,
+    "non_conditioned_system": "CROTTC-LLaMA (56.87% F1)",
+    "conditioned_f1": 0.4052,
+    "conditioned_system": "CROTTC-LLaMA w/ canonical injection (40.52% F1)",
+    "dataset": "L2-ARCTIC, 900 test utterances, 6 speakers",
+    "main_effect_f1_points": 0.1635,
+    "why_this_pair": "a within-system ablation — one model, one corpus, one test set, the canonical conditioning switched on and off. The abstract's 71.77% CROTTC-IF headline is a different system (the implicit-fusion fix) and so prices the repair rather than the damage; it is the wrong shape of comparison to lend a threshold to our input-path row.",
+    "caveat": "different system (LLM-based), different corpus (L2-ARCTIC), different language (English L2). Used as an order-of-magnitude threshold for how large an input-path effect is in this literature, not as a prediction for the Arabic arms. The rule was pre-registered in these terms."
+  },
+  "bootstrap": {
+    "replicates": 10000,
+    "seed": 20261014
+  },
+  "tools": {
+    "catt-eo": {
+      "pooled_delta_f1": 0.026455863947581537,
+      "per_prompt_delta_f1": {
+        "mean": 0.02159362918190317,
+        "sd": 0.08868003763141319,
+        "n": 98,
+        "se_as_sd_over_sqrt_k": 0.008958036566435785
+      },
+      "se_prompt_free": {
+        "cluster_recomputed": 0.010684665903546497,
+        "cluster_as_measured": 0.01081021335857394,
+        "cluster_agreement_ratio": 0.9883862185820905,
+        "naive_clip_equivalent_lower_bound": 0.002601206887011865,
+        "msa_projection_n500": 0.003965891847821586
+      },
+      "design_effect": {
+        "empirical_upper_bound": 4.107580199366803,
+        "analytic_icc1": 4.093299651969829,
+        "note": "empirical figure is an upper bound because the naive SE it divides is a lower bound; see the module docstring"
+      },
+      "mde": {
+        "quranic_cluster_98": {
+          "k=1.0": {
+            "rho=0.0": 0.04233307168348933,
+            "rho=0.5": 0.029934002055851516
+          },
+          "k=1.5": {
+            "rho=0.0": 0.04732981299032679,
+            "rho=0.5": 0.033803628760943234
+          },
+          "k=2.0": {
+            "rho=0.0": 0.05184721243460604,
+            "rho=0.5": 0.037695293903020434
+          }
+        },
+        "quranic_naive_1642_lower_bound": {
+          "k=1.0": {
+            "rho=0.0": 0.010306085244547411,
+            "rho=0.5": 0.007287502763906092
+          },
+          "k=1.5": {
+            "rho=0.0": 0.011522553594357778,
+            "rho=0.5": 0.008229572429566725
+          },
+          "k=2.0": {
+            "rho=0.0": 0.01262232504738397,
+            "rho=0.5": 0.009177007404220928
+          }
+        },
+        "msa_projection_500": {
+          "k=1.0": {
+            "rho=0.0": 0.01571302138956642,
+            "rho=0.5": 0.011110783977491684
+          },
+          "k=1.5": {
+            "rho=0.0": 0.01756769197948936,
+            "rho=0.5": 0.012547096646729386
+          },
+          "k=2.0": {
+            "rho=0.0": 0.019244442360937815,
+            "rho=0.5": 0.013991589455464989
+          }
+        }
+      },
+      "headline_mde": 0.05184721243460604,
+      "realistic_mde": 0.033803628760943234,
+      "powered_at_threshold": true,
+      "mde_over_own_label_path_effect": {
+        "worst_corner": 1.959762589395447,
+        "k1.5_rho0.5": 1.2777367175730956,
+        "reading": "a ratio above 1 means the RQ5 interaction would have to be larger than the label-path main effect it modifies before this n could see it"
+      }
+    },
+    "catt-ed": {
+      "pooled_delta_f1": 0.047975521759738016,
+      "per_prompt_delta_f1": {
+        "mean": 0.047094797815079324,
+        "sd": 0.11695519805291517,
+        "n": 98,
+        "se_as_sd_over_sqrt_k": 0.011814259091176001
+      },
+      "se_prompt_free": {
+        "cluster_recomputed": 0.013144134409945633,
+        "cluster_as_measured": 0.013037055816274427,
+        "cluster_agreement_ratio": 1.0082134030244418,
+        "naive_clip_equivalent_lower_bound": 0.0032741930548706734,
+        "msa_projection_n500": 0.005230395463365387
+      },
+      "design_effect": {
+        "empirical_upper_bound": 4.0144653017306,
+        "analytic_icc1": 4.093299651969829,
+        "note": "empirical figure is an upper bound because the naive SE it divides is a lower bound; see the module docstring"
+      },
+      "mde": {
+        "quranic_cluster_98": {
+          "k=1.0": {
+            "rho=0.0": 0.05207758382121748,
+            "rho=0.5": 0.03682441266779372
+          },
+          "k=1.5": {
+            "rho=0.0": 0.05822450876409277,
+            "rho=0.5": 0.041584776163217374
+          },
+          "k=2.0": {
+            "rho=0.0": 0.06378175369950169,
+            "rho=0.5": 0.04637225105178493
+          }
+        },
+        "quranic_naive_1642_lower_bound": {
+          "k=1.0": {
+            "rho=0.0": 0.012972483234259691,
+            "rho=0.5": 0.009172930863773823
+          },
+          "k=1.5": {
+            "rho=0.0": 0.0145036771743905,
+            "rho=0.5": 0.010358733489436452
+          },
+          "k=2.0": {
+            "rho=0.0": 0.015887982310372927,
+            "rho=0.5": 0.011551289540799935
+          }
+        },
+        "msa_projection_500": {
+          "k=1.0": {
+            "rho=0.0": 0.020723035056262273,
+            "rho=0.5": 0.014653398615049601
+          },
+          "k=1.5": {
+            "rho=0.0": 0.02316905754295681,
+            "rho=0.5": 0.01654767197333133
+          },
+          "k=2.0": {
+            "rho=0.0": 0.025380430904825328,
+            "rho=0.5": 0.018452733665274498
+          }
+        }
+      },
+      "headline_mde": 0.06378175369950169,
+      "realistic_mde": 0.041584776163217374,
+      "powered_at_threshold": true,
+      "mde_over_own_label_path_effect": {
+        "worst_corner": 1.329464513568429,
+        "k1.5_rho0.5": 0.8667915353057426,
+        "reading": "a ratio above 1 means the RQ5 interaction would have to be larger than the label-path main effect it modifies before this n could see it"
+      }
+    },
+    "shakkala": {
+      "pooled_delta_f1": 0.15097118571939577,
+      "per_prompt_delta_f1": {
+        "mean": 0.1343851251863555,
+        "sd": 0.15059037017489824,
+        "n": 98,
+        "se_as_sd_over_sqrt_k": 0.01521192456172328
+      },
+      "se_prompt_free": {
+        "cluster_recomputed": 0.016187246887539534,
+        "cluster_as_measured": 0.016407741852834962,
+        "cluster_agreement_ratio": 0.9865615288640508,
+        "naive_clip_equivalent_lower_bound": 0.003971909216055791,
+        "msa_projection_n500": 0.006734606089358586
+      },
+      "design_effect": {
+        "empirical_upper_bound": 4.075432243543041,
+        "analytic_icc1": 4.093299651969829,
+        "note": "empirical figure is an upper bound because the naive SE it divides is a lower bound; see the module docstring"
+      },
+      "mde": {
+        "quranic_cluster_98": {
+          "k=1.0": {
+            "rho=0.0": 0.06413451660861924,
+            "rho=0.5": 0.04534995160207592
+          },
+          "k=1.5": {
+            "rho=0.0": 0.07170456942048095,
+            "rho=0.5": 0.05121242810844422
+          },
+          "k=2.0": {
+            "rho=0.0": 0.07854842029558509,
+            "rho=0.5": 0.05710829280155789
+          }
+        },
+        "quranic_naive_1642_lower_bound": {
+          "k=1.0": {
+            "rho=0.0": 0.015736862442071394,
+            "rho=0.5": 0.011127642147388575
+          },
+          "k=1.5": {
+            "rho=0.0": 0.01759434708651749,
+            "rho=0.5": 0.01256613410505922
+          },
+          "k=2.0": {
+            "rho=0.0": 0.019273641567721857,
+            "rho=0.5": 0.014012818613789514
+          }
+        },
+        "msa_projection_500": {
+          "k=1.0": {
+            "rho=0.0": 0.026682777441478105,
+            "rho=0.5": 0.018867572869760603
+          },
+          "k=1.5": {
+            "rho=0.0": 0.02983225209382148,
+            "rho=0.5": 0.021306620735824924
+          },
+          "k=2.0": {
+            "rho=0.0": 0.03267959482593349,
+            "rho=0.5": 0.023759559554892565
+          }
+        }
+      },
+      "headline_mde": 0.07854842029558509,
+      "realistic_mde": 0.05121242810844422,
+      "powered_at_threshold": true,
+      "mde_over_own_label_path_effect": {
+        "worst_corner": 0.5202874967252358,
+        "k1.5_rho0.5": 0.33921988400906355,
+        "reading": "a ratio above 1 means the RQ5 interaction would have to be larger than the label-path main effect it modifies before this n could see it"
+      }
+    },
+    "mishkal": {
+      "pooled_delta_f1": 0.2817994355857834,
+      "per_prompt_delta_f1": {
+        "mean": 0.2762457111839051,
+        "sd": 0.17967479169136427,
+        "n": 98,
+        "se_as_sd_over_sqrt_k": 0.018149894801892004
+      },
+      "se_prompt_free": {
+        "cluster_recomputed": 0.018686402866111045,
+        "cluster_as_measured": 0.01897226873520688,
+        "cluster_agreement_ratio": 0.9849324362264935,
+        "naive_clip_equivalent_lower_bound": 0.004529832121692598,
+        "msa_projection_n500": 0.008035300961300097
+      },
+      "design_effect": {
+        "empirical_upper_bound": 4.12518662151408,
+        "analytic_icc1": 4.093299651969829,
+        "note": "empirical figure is an upper bound because the naive SE it divides is a lower bound; see the module docstring"
+      },
+      "mde": {
+        "quranic_cluster_98": {
+          "k=1.0": {
+            "rho=0.0": 0.07403627209111609,
+            "rho=0.5": 0.052351550049400515
+          },
+          "k=1.5": {
+            "rho=0.0": 0.08277506859820305,
+            "rho=0.5": 0.059119136813981
+          },
+          "k=2.0": {
+            "rho=0.0": 0.09067554454054666,
+            "rho=0.5": 0.06592526658175576
+          }
+        },
+        "quranic_naive_1642_lower_bound": {
+          "k=1.0": {
+            "rho=0.0": 0.01794737520600761,
+            "rho=0.5": 0.012690710712667289
+          },
+          "k=1.5": {
+            "rho=0.0": 0.02006577548916365,
+            "rho=0.5": 0.014331263585908346
+          },
+          "k=2.0": {
+            "rho=0.0": 0.02198095573849838,
+            "rho=0.5": 0.01598115979479227
+          }
+        },
+        "msa_projection_500": {
+          "k=1.0": {
+            "rho=0.0": 0.031836182306853485,
+            "rho=0.5": 0.02251158039626728
+          },
+          "k=1.5": {
+            "rho=0.0": 0.03559393389110023,
+            "rho=0.5": 0.02542169620746689
+          },
+          "k=2.0": {
+            "rho=0.0": 0.03899120100500645,
+            "rho=0.5": 0.028348385814748994
+          }
+        }
+      },
+      "headline_mde": 0.09067554454054666,
+      "realistic_mde": 0.059119136813981,
+      "powered_at_threshold": true,
+      "mde_over_own_label_path_effect": {
+        "worst_corner": 0.3217733362455364,
+        "k1.5_rho0.5": 0.2097915373431767,
+        "reading": "a ratio above 1 means the RQ5 interaction would have to be larger than the label-path main effect it modifies before this n could see it"
+      }
+    }
+  },
+  "recommendation": {
+    "decision": "keep",
+    "evaluated_at": {
+      "tool": "mishkal",
+      "reason": "widest per-prompt dF1 spread of the four, so the most adversarial variance available",
+      "variance_ratio_k": 2.0,
+      "arm_correlation_rho": 0.0,
+      "clustering": "prompt (98 clusters)"
+    },
+    "mde": 0.09067554454054666,
+    "threshold": 0.16349999999999998,
+    "margin_factor": 1.80313226491724,
+    "rule": "docs/weeks/week-06.md clause 2, from plan section 6: if the MDE exceeds the input-path main effect CROTTC-IF reports, RQ5 is cut in November rather than discovered to be underpowered in December.",
+    "reading": "The worst-corner MDE is 0.0907 F1 against a 0.1635 threshold, a factor of 1.80. The rule is satisfied and RQ5 is kept — but 1.80x is a pass, not comfort, and the margin is worth stating as such. What makes the pass defensible is that every approximation in it points toward a *larger* MDE: the design effect is an upper bound, speaker variance is folded into the per-prompt spread rather than modelled, rho = 0 discards the pairing the design actually has, and k = 2 doubles a variance nobody has observed. At the corner the design more plausibly sits at (k = 1.5, rho = 0.5) the MDE is 0.0591, a factor of 2.77.",
+    "condition_on_keeping": "RQ5 is powered against the *threshold*, not against every tool's own label-path effect. The MDE/|dF1| column shows the split: for shakkala and mishkal the MDE is a third to a half of the main effect, so an interaction of plausible relative size is visible; for catt-eo and catt-ed the worst-corner MDE *exceeds* the tool's entire label-path effect, so an interaction there would have to be larger than the effect it modifies. The practical consequence is a scoping decision rather than a cut: RQ5 is answered on the high-corruption tools, and the low-DER tools are reported as not having the resolution to say. Writing that in now is cheaper than discovering it in December, which is the entire purpose of the clause.",
+    "what_this_does_not_say": "That RQ5's interaction is large, or that it exists. Only that an interaction of the size the input-path literature deals in would be detectable at this n. A null would be interpretable rather than uninformative, which is what clause 2 exists to establish."
+  },
+  "d2": {
+    "question": "is `A := C_gold` an assumption with the 2.3%/19.8% band as a sensitivity row, or is the residual interaction term bounded?",
+    "rule": "docs/weeks/week-06.md task 3: bound it if the MDE is comfortably below the effects of interest; otherwise the sensitivity row.",
+    "decision": "bound the term, and keep the sensitivity row as a cross-check",
+    "because": "not because the MDE is comfortable — it is a factor of 1.80 below the threshold, which is a pass and not much more. The decisive argument is the other one. The MSA deviation base rate spans 2.3%-19.8% across the pilot's four definitions, an 8.6x spread, and a sensitivity row carrying that spread would be several times wider than the 0.0907 MDE it is meant to qualify. It would swallow the interaction whole and the paper would be left unable to say anything in either direction. A bound is the only option that leaves RQ5 readable, so the rule's first branch is taken on informativeness rather than on margin.",
+    "how_the_bound_is_obtained": "On the Qur'anic arm both quantities exist: real `A` (annotation_phoneme_string) and `C_gold`. Re-scoring the four label-path conditions a second time with `A := C_gold` substituted gives dF1 under the assumption directly, and the difference against the measured dF1 *is* the residual term -- one extra scoring condition per tool on the existing harness, no new instrument and no new annotation. The MSA arm then inherits that bound scaled by the ratio of its deviation base rate to the Qur'anic arm's.",
+    "scheduled": "week 10-11, with the MSA label-path column it qualifies; not week 6, which has no use for it yet",
+    "first_order_argument_retained": "the measurement is a delta (same `P`, same `A`, only `C` swapped), so genuine mispronunciations enter both terms and cancel to first order. The bound prices the second order."
+  }
+}

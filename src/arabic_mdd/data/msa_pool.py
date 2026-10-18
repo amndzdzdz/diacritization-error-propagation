@@ -245,6 +245,30 @@ def build_pool(rows: Iterable[tuple[str, str, str]]) -> Pool:
     return Pool(candidates=candidates, total=len(candidates))
 
 
+def skeleton_overlap(
+    rows: Iterable[tuple[str, str]], *, against: Iterable[str]
+) -> dict[str, list[str]]:
+    """Which `(id, sentence)` rows share a consonantal skeleton with `against`.
+
+    The cross-split counterpart of `build_pool`'s dedup, and the same key, for
+    the same reason: `Iqra_train`'s train and dev splits are *id*-disjoint and
+    *raw-string*-disjoint, yet 28.0% of the annotated block's sentences also
+    occur in train — once bare in dev, once pre-vowelized in train. Only the
+    skeleton sees it (`docs/msa-arm.md` §5.2).
+
+    Returns shared skeleton -> ids of the matching `rows`, so a caller can both
+    count the contamination and drop exactly those rows. Ids come out in input
+    order; a skeleton absent from `against` is absent from the result.
+    """
+    keys = {skeleton(text) for text in against}
+    found: dict[str, list[str]] = {}
+    for row_id, sentence in rows:
+        key = skeleton(sentence)
+        if key in keys:
+            found.setdefault(key, []).append(row_id)
+    return found
+
+
 def draw_block(pool: Pool, size: int, *, seed: int) -> list[Candidate]:
     """Draw `size` eligible rows without replacement, reproducibly.
 

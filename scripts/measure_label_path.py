@@ -412,40 +412,57 @@ def attribution(
     auto_canonical: dict[str, list[str]],
     auto: dict[str, MDDCounts],
     gold: dict[str, MDDCounts],
+    clips_per_prompt: dict[str, int],
 ) -> dict[str, object]:
     """Is the damage bounded by the corruption that caused it?
 
     Per prompt: `d` = positions where `C_gold` and `C_auto` disagree under their
-    own alignment, scaled by the prompt's clip count because every clip is
-    scored against the same corrupted `C`. If realignment merely transmits
-    corruption, `|delta(FR+FA)| <= d`. Prompts above the bound are realignment
-    amplifying it, which is the artifact the gate is checking for.
+    own alignment, **times the prompt's clip count**, because one corrupted
+    canonical is re-used by every clip reading that prompt and can therefore do
+    damage once per clip. Without that scaling the ratio is inflated by ~16.8x
+    (the mean clips per prompt) and a well-behaved run looks like amplification.
+
+    If realignment merely transmits corruption, `|delta(FR+FA)| <= d`. A ratio
+    above 1 is realignment amplifying corruption; a prompt with damage but zero
+    corrupted sites is a pure alignment artifact, which is the stronger check
+    because it cannot be explained by scaling at all.
     """
     prompts = sorted(set(auto) & set(gold))
     total_damage = 0
     total_sites = 0
+    per_prompt_sites: dict[str, int] = {}
     over_bound: list[str] = []
+    artifact_prompts: list[str] = []
     for prompt in prompts:
         aligned_gold, aligned_auto = needleman_wunsch(
             gold_canonical[prompt], auto_canonical[prompt]
         )
         sites = sum(1 for g, a in zip(aligned_gold, aligned_auto, strict=True) if g != a)
+        per_prompt_sites[prompt] = sites
 
+        clips = clips_per_prompt.get(prompt, 0)
         damage = (auto[prompt].fr + auto[prompt].fa) - (gold[prompt].fr + gold[prompt].fa)
         total_damage += abs(damage)
-        total_sites += sites
+        total_sites += sites * clips
         if sites == 0 and damage != 0:
+            artifact_prompts.append(prompt)
+        elif abs(damage) > sites * clips:
             over_bound.append(prompt)
 
     return {
         "corrupted_sites": total_sites,
+        "corrupted_sites_unit": "canonical disagreement positions x clips reading that prompt",
         "abs_fr_fa_delta": total_damage,
         "damage_per_corrupted_site": (total_damage / total_sites) if total_sites else None,
-        "prompts_damaged_with_zero_corruption": over_bound,
+        "prompts_over_bound": over_bound,
+        "prompts_damaged_with_zero_corruption": artifact_prompts,
+        "per_prompt_corrupted_sites": per_prompt_sites,
         "note": (
-            "A nonzero delta on a prompt whose C_auto equals C_gold would be a "
-            "pure alignment artifact. The ratio is diagnostic, not plan section "
-            "4.2's corruption-attributable FR rate (weeks 10-12)."
+            "A ratio <= 1 means label corruption is transmitted, not amplified, "
+            "by three-way Needleman-Wunsch. A nonzero delta on a prompt whose "
+            "C_auto equals C_gold would be a pure alignment artifact. Diagnostic "
+            "for the gate only -- not plan section 4.2's "
+            "corruption-attributable FR rate, which is a weeks-10-12 deliverable."
         ),
     }
 
@@ -554,7 +571,11 @@ def main() -> None:
             },
             "bootstrap": {k: boot[k] for k in ("replicates", "seed", "clusters", "cluster_unit")},
             "attribution": attribution(
-                canonicals["gold"], canonicals[name], per_prompt, gold_per_prompt
+                canonicals["gold"],
+                canonicals[name],
+                per_prompt,
+                gold_per_prompt,
+                clips_per_prompt,
             ),
             "per_prompt_counts": {p: _counts_dict(c) for p, c in sorted(per_prompt.items())},
         }

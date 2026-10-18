@@ -15,6 +15,7 @@ from arabic_mdd.data.msa_pool import (
     diacritization_rate,
     draw_block,
     skeleton,
+    skeleton_overlap,
     strip_diacritics,
 )
 
@@ -140,3 +141,23 @@ def test_draw_block_refuses_to_overdraw() -> None:
 
     with pytest.raises(ValueError, match="only 1 are eligible"):
         draw_block(pool, 2, seed=1)
+
+
+def test_skeleton_overlap_catches_a_bare_against_pre_vowelized_pair() -> None:
+    """The §5.2 contamination: raw-string matching sees nothing here."""
+    train = [("t1", VOWELIZED), ("t2", "نص اخر تماما")]
+
+    found = skeleton_overlap(train, against=[BARE])
+
+    assert found == {skeleton(BARE): ["t1"]}
+
+
+def test_skeleton_overlap_collects_every_copy_in_input_order() -> None:
+    """Common Voice prompts are read by many speakers, so copies are the norm."""
+    train = [("t3", VOWELIZED), ("t1", BARE), ("t2", VOWELIZED)]
+
+    assert skeleton_overlap(train, against=[BARE]) == {skeleton(BARE): ["t3", "t1", "t2"]}
+
+
+def test_skeleton_overlap_is_empty_when_the_splits_are_really_disjoint() -> None:
+    assert skeleton_overlap([("t1", "نص اخر تماما")], against=[BARE]) == {}
