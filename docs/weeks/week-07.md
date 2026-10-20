@@ -209,6 +209,20 @@ time, the input-path measurement lands in week 8 and claiming it for week 7
 would be scheduling fiction. What week 7 must not do is reach Sunday with a
 model trained on un-held-out data, or with the row semantics still undecided.
 
+**MET, 20 Oct 2026, and not by the weaker reading.** The criterion would have
+been satisfied by "training"; all three runs instead *finished* 200k steps on
+the held-out manifests (jobs 224615, 224627, 224626 — see task 6 and task 7).
+Both failure modes the last sentence names were avoided: every job re-ran
+`prepare_baseline.sh` and echoed its own holdout counts, and D10 was closed
+before any arm trained.
+
+The distinction the criterion was drafted to protect turned out to matter more
+than expected. Three trained arms do **not** constitute an input-path
+measurement, and this week they do not constitute a conditioning measurement
+either: the only split available here hands the conditioned arm its own target
+(D11, and `insights/week-07.md`'s third entry for the evidence). Week 7 ends
+with a validated instrument and no reading from it.
+
 **The honest failure branch.** If task 3 says one XLS-R run exceeds the per-job
 limit and cannot be raised, the fallbacks in preference order are: (a) fewer
 steps with the step count reported, (b) feature caching (week-6 task 6 flagged
@@ -555,8 +569,27 @@ reason that is tolerable.
    `run/xlsr_promptfree_provenance.txt` (§5.3). `BATCH_SIZE`/`ACCUM` exist as
    an OOM fallback and are documented to be used *together*, since halving the
    batch without doubling accumulation changes the recipe rather than only its
-   memory footprint. The 48-hour limit is still a guess; task 3's 200-step
-   smoke run is what replaces it with a number.
+   memory footprint. ~~The 48-hour limit is still a guess; task 3's 200-step
+   smoke run is what replaces it with a number.~~ Superseded 18 Oct 2026: the
+   partition has no maximum walltime, so the file carries `-t 0` and the limit
+   needs no number. See the exit criterion.
+
+   **TRAINED (20 Oct 2026), job 224615.** 200k steps on the held-out manifests,
+   `batch_size: 16` fit without the fallback, best dev PER **0.07918** (flat
+   over the final 25k steps, so 200k is converged rather than truncated).
+
+   **The escalation trigger is not yet evaluable, and must not be read as
+   passed.** It is stated in *F1 on QuranMB.v2* against the mHuBERT baseline,
+   and nothing has been evaluated on QuranMB.v2 yet — dev PER on held-out
+   `Iqra_train` is a different quantity on a different corpus, and week 3
+   recorded no dev PER to compare against in any case. The trigger is carried
+   into week 8's evaluation unchanged.
+
+   This run's other purpose was served immediately: it is the fidelity control
+   for task 7's `ctc_cond` fork, which scores 0.07972 with conditioning off —
+   +0.68% relative, inside the band the last five evaluations of each run
+   oscillate in. See `insights/week-07.md`'s third entry, which also records
+   the two reasons that control is functional rather than bitwise.
 
 7. **Build the text-dependent arm.** `src/arabic_mdd/models/` is empty; this
    is the week's one genuinely new piece of modelling, and plan §3 calls it
@@ -586,11 +619,18 @@ reason that is tolerable.
    on a handful of utterances. Smoke-test end-to-end before it touches the
    queue — a 48h job that dies at hour 40 on a shape error costs two days.
 
-   **DONE (17 Oct 2026), queue-ready and unqueued.** Both arms are submittable
-   with `USE_CANONICAL=0/1 sbatch run/train_mdd_arm.slurm`; neither has run,
-   because the GPU is the user's and three jobs do not fit the week. What
-   follows is the model (built first), then the harness decision, then the
-   data-side work the harness turned out to require.
+   **DONE (17 Oct 2026); both arms TRAINED (20 Oct 2026).** Submitted with
+   `USE_CANONICAL=0/1 sbatch run/train_mdd_arm.slurm` (jobs 224627 / 224626),
+   alongside task 6's fidelity control (224615). All three reached 200k steps.
+   Results and their interpretation are in `insights/week-07.md`, "three arms
+   trained, and a dev split that cannot referee them"; the headline is that the
+   port is sound (0.07972 vs the organizers' 0.07918 dev PER with conditioning
+   off) and that the conditioned arm's 0.02703 is **a leak, not a finding** —
+   dev is held-out `Iqra_train`, so the canonical handed to that arm *is* the
+   CTC target on all 2069 rows. Per D11, the collapse question is therefore
+   still open and belongs to week 8's QuranMB.v2 evaluation. What follows is the
+   model (built first), then the harness decision, then the data-side work the
+   harness turned out to require.
 
    Three modules under `src/arabic_mdd/models/`, 51 tests, plus
    `scripts/smoke_mdd_arm.py`:

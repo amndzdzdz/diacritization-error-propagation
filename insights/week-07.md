@@ -672,3 +672,201 @@ would be faster. Treat any point where a missing value has a plausible
 substitute as the most dangerous line in a pipeline. And when a risk can be
 either measured or tuned away, measuring is the only option that cannot be
 accused of having been chosen to suit the result.
+
+---
+
+### Experiment: three arms trained, and a dev split that cannot referee them
+
+#### Hypothesis
+
+Two things were under test, and only one of them was about Arabic.
+
+First, **fidelity**: the `ctc_cond` fork with `use_canonical=False` should
+reproduce the organizers' verbatim `ctc` pipeline. If it does not, every number
+the conditioned arm ever produces is confounded with the port, and the
+two-arm comparison measures our plumbing rather than conditioning.
+
+Second, **D11's premise**: that the held-out `Iqra_train` dev split *cannot*
+answer whether the conditioned arm reads the audio or echoes the prompt, so the
+collapse question must defer to QuranMB.v2 in week 8. The prediction on record
+was that `informative_utterances` would be 0 and `canonical_preference` NaN by
+construction, because on dev the canonical and the CTC target are the same
+string for every row.
+
+The adversarial reading, which this entry is written to pre-empt: the
+conditioned arm will post a much better dev PER, and that number will look like
+the paper's result. The hypothesis is that it is **not a result at all**.
+
+#### Methodology
+
+Three 200k-step runs from one prepared data directory, submitted to the
+cluster by the user (no GPU in the authoring sandbox):
+
+```
+sbatch run/train_xlsr_promptfree.slurm                 # 224615
+USE_CANONICAL=0 sbatch run/train_mdd_arm.slurm         # 224627
+USE_CANONICAL=1 sbatch run/train_mdd_arm.slurm         # 224626
+```
+
+224615 is the fidelity control: the organizers' `ctc` downstream and `sws.yaml`
+with no overrides. 224627 is the same *function* reached through our fork.
+224626 differs from 224627 in exactly one config value. Each job runs
+`prepare_baseline.sh` first, so the reported holdout and canonical counts are a
+per-job assertion rather than a remembered fact; then `-m evaluate` on
+`dev-best.ckpt`, then `report_collapse.py` on the three `.ark` files.
+
+#### Configuration
+
+Identical across all three jobs, as echoed by each log's prepare stage:
+
+- S3PRL `ec8064b5` (upstream v0.4.18); Python 3.8.20 venv.
+- torch `2.4.1+cu121`, torchaudio `2.4.1+cu121`, transformers `4.46.3`,
+  numpy `1.24.4`, safetensors `0.5.3`.
+- `UPSTREAM_PIN=xlsr300m` → `wav2vec2-xls-r-300m-1a640f32ac3e`, frozen,
+  25 layers weighted-summed by the Featurizer, downsample rate 320.
+- Holdout, train: 118854 → 118450 rows (404 dropped = 0.34%; 379 by id,
+  25 by phoneme ref). Dev: 2588 → 2069 (519 dropped = 20.05%; 505 by id,
+  14 by phoneme ref).
+- Canonical, train: 118435 rows (70996 from sentence, 47439 **from file**,
+  0 passed through, 0 unknown tokens). Dev: 2069 rows (2069 from sentence,
+  **0 from file**, 0 unknown).
+- `-t 0` (no walltime cap), `save_step: 200`, `total_steps: 200000`, lr 1e-4.
+
+Per arm:
+
+| job | expdir | downstream | train rows |
+| --- | --- | --- | --- |
+| 224615 | `xlsr300m_promptfree_heldout` | `ctc`, verbatim | 118450 |
+| 224627 | `xlsr300m_mdd_promptfree` | `ctc_cond`, `use_canonical=False` | 118435 |
+| 224626 | `xlsr300m_mdd_conditioned` | `ctc_cond`, `use_canonical=True` | 118435 |
+
+#### Results
+
+All three reached `states-200000.ckpt`. No error log was produced by any of
+them. Dev PER (s3prl's `wer` on a phoneme vocabulary), best over 40 evaluations:
+
+| job | arm | best dev PER | final dev PER |
+| --- | --- | --- | --- |
+| 224615 | organizers' `ctc`, verbatim | **0.07918** | 0.07930 |
+| 224627 | ours, conditioning off | **0.07972** | 0.07972 |
+| 224626 | ours, conditioning on | **0.02703** | 0.02763 |
+
+- **Fidelity holds.** 0.07972 vs 0.07918 is +0.00054 absolute, +0.68%
+  relative — inside the ±0.001 band the last five evaluations of each run
+  oscillate in. The fork is not distorting the pipeline.
+- All three were flat at their floor over the final 25k steps, so 200k is a
+  converged number and not a budget cutoff.
+- `-m evaluate` reported `test wer` exactly equal to each arm's best dev PER
+  (`0.02703295417994678`, `0.07972455334951314`), confirming `dev-best.ckpt`
+  was the checkpoint actually scored.
+- Parameter counts as designed: 56,888,392 downstream params in 36 tensors for
+  both `ctc_cond` arms (conditioner constructed in both, for RNG parity) versus
+  51,563,592 in 25 tensors for the organizers' head.
+
+Collapse diagnostic, dev split, n = 2069:
+
+| | `copy_rate` | `informative_utterances` | `canonical_preference` |
+| --- | --- | --- | --- |
+| conditioned (224626) | 0.6245 | 3 | 1.0000 |
+| ablated (224627) | 0.2692 | 3 | 1.0000 |
+
+#### Observations
+
+1. **The conditioned arm's 0.02703 is not an improvement, and must never be
+   reported as one.** The configuration block says why in one line: dev is
+   `2069 canonical from sentence, 0 from file`. Every dev row is held-out
+   `Iqra_train`, where `sentence` *is* `phoneme_ref`, so the canonical handed to
+   the conditioned arm is character-for-character the CTC target it is being
+   scored against. The prompt contains the answer. A 2.9× PER reduction is the
+   expected size of that leak, not evidence about MDD.
+
+2. **`copy_rate` 0.6245 vs 0.2692 is not evidence of copying either**, for the
+   same reason, and `report_collapse.py`'s docstring predicted it: when
+   canonical == reference, "prediction equals the canonical" and "prediction is
+   correct" are the *same event*. Those two numbers are utterance-level exact-match
+   accuracy, and they track the PERs (0.027 → 62%, 0.080 → 27%). The diagnostic
+   is reporting honestly; the split is what is uninformative.
+
+3. **The prediction was right in substance and wrong in detail, and the error
+   made the case stronger.** I recorded that dev would yield
+   `informative_utterances = 0` and `canonical_preference = NaN` "by
+   construction". It yielded 3 and 1.0000. But 1.0000 appears in **both** arms —
+   including the arm that never saw a canonical and cannot, causally, prefer
+   one. An identical reading in treatment and null is a statistic with zero
+   discriminative power. That is a *stronger* demonstration of D11's premise
+   than the NaN would have been: NaN says "undefined here", whereas an observed
+   null equal to the observed treatment says "defined, and empty". D11's
+   deferral of the collapse measurement to QuranMB.v2 stands, now on evidence
+   rather than on an argument.
+
+4. **Those 3 rows are a named loose end, deliberately not chased.** Dev
+   canonicals are derived from `sentence`, so canonical ≠ decoded reference
+   should be impossible. `ctc_cond/data.py` has no label truncation and step 7b
+   reported 0 unknown tokens, which leaves a tokenizer round-trip artifact — the
+   canonical is decoded from the unpadded row list while the reference is
+   decoded from the padded batch tensor (`expert.py:196`). At 3/2069 = 0.145%,
+   on a split already established as unable to referee anything, the cost of
+   diagnosing it exceeds the value. It is logged here so that a *non-trivial*
+   `informative_utterances` deficit on QuranMB.v2 is recognized as a known
+   mechanism rather than a new surprise.
+
+5. **Step-0 parity is not verifiable from these logs, and the numbers in them
+   must not be read as a parity check.** `log_step: 200`, so each run's first
+   printed loss is a mean over 200 steps, by which point the zero-initialized
+   gate has taken 199 gradient steps. Hence 3.7476 (conditioned) vs 3.7236
+   (ablated) vs 3.8506 (organizers') — a spread that says nothing. The bitwise
+   identity claim rests on the previous entry's full-width smoke run
+   (`89.789306640625` in both arms) and on the unit tests. Writing this down
+   because the obvious place to look for parity is the training log, and the
+   obvious reading of it is wrong.
+
+6. **224627 is a functional control, not a bitwise one, and by two
+   mechanisms.** The training sets differ by 15 rows (118450 vs 118435 — the
+   blank-`sentence` rows the three-column build drops, 0.013%), and the extra
+   conditioner module shifts RNG consumption so the shared layers do not
+   initialize identically. Both were known and accepted in advance; the 0.68%
+   PER gap is the measured size of their combined effect, which is the number
+   that makes the port defensible.
+
+7. **47439 canonicals came from file, which is the number that decided whether
+   the conditioned arm measures anything.** Had `canonical_from_file` been 0,
+   the build would have silently set canonical == `phoneme_mis` on the 52 h of
+   Iqra_TTS — deleting exactly the rows that penalize copying — and the arm
+   would still have trained and converged. The refusal path in
+   `arabic_mdd.data.canonical` was built for this single number, and this is the
+   run that confirmed it fires correctly in the affirmative.
+
+8. **Three queue round-trips were spent on my own guards, not on the model.**
+   A PEP 440 false positive (`2.4.1+cu121` read as drift from `2.4.1`), a
+   missing walltime consideration, and a blank-transcript check present on one
+   branch of `build_canonical_rows` and absent from the other. Every one was a
+   guard that was right about *what* to check and wrong about *where*, and every
+   one was cheaply catchable by running `prepare_baseline.sh` standalone on a
+   login node before any `sbatch`. That is now the rule, not a lesson.
+
+#### Conclusion
+
+Both hypotheses resolved, in opposite directions, which is the useful outcome.
+
+Fidelity **holds**: 0.07972 vs 0.07918 on 200k steps from one data directory
+means the `ctc_cond` fork reproduces the organizers' pipeline when the
+conditioning is off, so the one remaining difference between 224626 and 224627
+is the conditioning. The two-arm comparison is sound as an instrument.
+
+D11's premise **also holds**, and therefore the instrument has nothing to
+measure yet. The conditioned arm's 0.02703 dev PER is a leak, not a finding:
+the dev split hands it the answer on all 2069 rows, and the collapse statistic
+reads identically in the treatment and the null. Week 7 ends with two trained
+arms and **no evidence whatsoever** about whether conditioning helps, which is
+exactly what D11 pre-registered — the decisive measurement is QuranMB.v2, where
+the human annotation disagrees with the canonical on ~12.4% of phonemes, and
+that is week 8's evaluation.
+
+The transferable observations are 1, 3 and 5. A metric computed on a split
+where the input contains the target is not a weak measurement but a
+non-measurement, and the time to say so is *before* the number exists. When a
+pre-registered prediction fails in detail, check whether the actual result
+supports the underlying claim more strongly — an observed empty null beats a
+predicted undefined one. And when a correctness claim rests on a smoke test,
+record where the claim lives, because the next reader will look in the
+training log and find a number that appears to refute it.
