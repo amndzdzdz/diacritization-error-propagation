@@ -1,0 +1,52 @@
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+=== the label-path column — week-06 exit criterion, clause 1 ===
+prompts     : 98 (C varies per prompt)
+clips       : 1642 predictions, 1642 ground truth
+fixed       : A = annotation_phoneme_string, P = official checkpoint
+varying     : C only
+C_gold rule : D9 — phonetize(recovered_text), U+0670 deleted
+order       : pre-declared catt-eo < catt-ed < shakkala < mishkal
+
+=== catt-eo ===
+✅ Loaded model successfully!
+  diacritized 98 prompts in 0.9s (0.009 s/prompt)
+  CE DER   3.982 (published)  noCE DER   2.448  chunked 0/98
+=== catt-ed ===
+✅ Loaded model successfully!
+  diacritized 98 prompts in 14.3s (0.146 s/prompt)
+  CE DER   4.677 (published)  noCE DER   2.777  chunked 0/98
+=== shakkala ===
+  diacritized 98 prompts in 30.9s (0.316 s/prompt)
+  CE DER   9.207 (published)  noCE DER   5.882  chunked 0/98
+=== mishkal ===
+  diacritized 98 prompts in 1.7s (0.017 s/prompt)
+  CE DER  18.195 (published)  noCE DER  12.495  chunked 0/98
+=== leg B: the anchor (C = reference_phoneme_string) ===
+  F1 0.4415 over all 1642 clips vs published 0.4415 -> OK
+
+=== leg A: C_gold (our phonetizer on gold Qur'anic text) ===
+  F1 0.4824   {'ta': 43444, 'fr': 5298, 'fa': 1733, 'tr': 3276, 'correct_diagnosis': 2018, 'error_diagnosis': 1258}
+  leg B minus leg A = -0.0408 (the phonetizer's own price, same 1642 clips both sides)
+
+=== leg A: per tool ===
+  catt-eo    F1 0.5088  dF1 +0.0265  95% CI [+0.0040, +0.0467]  excludes 0
+  catt-ed    F1 0.5303  dF1 +0.0480  95% CI [+0.0225, +0.0735]  excludes 0
+  shakkala   F1 0.6333  dF1 +0.1510  95% CI [+0.1187, +0.1834]  excludes 0
+  mishkal    F1 0.7642  dF1 +0.2818  95% CI [+0.2446, +0.3185]  excludes 0
+
+=== clause 1, against the criteria fixed before the run ===
+  CI excludes zero for mishkal: YES
+    catt-eo    |dF1| 0.0265
+    catt-ed    |dF1| 0.0480
+    shakkala   |dF1| 0.1510
+    mishkal    |dF1| 0.2818
+  monotone in the pre-declared DER order: YES
+  CLAUSE 1: PASS
+
+  prediction 1 (dF1 negative, FA-driven): FALSIFIED — signs {'catt-eo': 0.0265, 'catt-ed': 0.048, 'shakkala': 0.151, 'mishkal': 0.2818}
+    catt-eo    dominant moving cell: fr (-516) {'ta': -226, 'fr': -516, 'fa': 499, 'tr': 357}
+    catt-ed    dominant moving cell: tr (+626) {'ta': -475, 'fr': -602, 'fa': 482, 'tr': 626}
+    shakkala   dominant moving cell: tr (+2463) {'ta': -1577, 'fr': -938, 'fa': 552, 'tr': 2463}
+    mishkal    dominant moving cell: tr (+6986) {'ta': -5122, 'fr': -1231, 'fa': 534, 'tr': 6986}
+
+wrote run/quranic_label_path.json

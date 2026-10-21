@@ -42,11 +42,28 @@ from collections.abc import Sequence
 from dataclasses import dataclass
 
 __all__ = [
+    "D12_MIN_INFORMATIVE",
+    "D12_THRESHOLD",
     "CollapseReport",
-    "collapse_report",
+    "D12Verdict",
     "canonical_copy_rate",
+    "collapse_report",
+    "d12_verdict",
     "token_edit_distance",
 ]
+
+#: D12's falsifier, pre-registered in `docs/weeks/week-08.md` before any arm was
+#: evaluated on QuranMB.v2. A **difference** from the ablated arm rather than an
+#: absolute level, because week 7 falsified the absolute form: on the dev split
+#: both the conditioned arm and the `use_canonical=False` arm -- which cannot
+#: causally prefer a canonical -- reported `canonical_preference = 1.0000`. The
+#: statistic has a scale only relative to a model that cannot copy.
+D12_THRESHOLD = 0.15
+#: Below this many informative utterances the comparison is declared
+#: underpowered and the cell is reported with the count rather than a verdict.
+#: Week 7's dev run had 3, which is where the absolute threshold "fired" on a
+#: model that provably was not copying.
+D12_MIN_INFORMATIVE = 200
 
 
 def token_edit_distance(first: Sequence[str], second: Sequence[str]) -> int:
@@ -126,6 +143,22 @@ class CollapseReport:
             "canonical_preference": self.canonical_preference,
         }
 
+    @classmethod
+    def from_dict(cls, payload: dict[str, float | int]) -> CollapseReport:
+        """Rebuild from `as_dict()`, so a stored report can be a D12 argument.
+
+        The ablated arm is evaluated in its own pass and its numbers reach the
+        conditioned arm's verdict as JSON. Parsing that back into the dataclass
+        keeps `d12_verdict` a function of two reports rather than of one report
+        and a dict whose keys are checked nowhere.
+        """
+        return cls(
+            utterances=int(payload["utterances"]),
+            copy_rate=float(payload["copy_rate"]),
+            informative_utterances=int(payload["informative_utterances"]),
+            canonical_preference=float(payload["canonical_preference"]),
+        )
+
 
 def collapse_report(
     hypotheses: Sequence[Sequence[str]],
@@ -171,4 +204,66 @@ def collapse_report(
         # canonical/target disagreements cannot measure this, and reporting 0.0
         # would read as "no collapse detected".
         canonical_preference=(prefers_canonical / informative if informative else float("nan")),
+    )
+
+
+@dataclass(frozen=True)
+class D12Verdict:
+    """Which of D12's three branches the numbers selected."""
+
+    delta: float
+    """`canonical_preference(conditioned) - canonical_preference(ablated)`.
+
+    NaN if either arm had no informative utterances, in which case the verdict
+    is `underpowered` on the count anyway.
+    """
+    informative_utterances: int
+    """The **smaller** of the two arms' counts. Both arms are evaluated on the
+    same manifest so the counts should agree; taking the minimum means a
+    disagreement makes the comparison weaker rather than stronger."""
+    powered: bool
+    fires: bool
+    verdict: str
+    """One of `underpowered`, `fires`, `does_not_fire`."""
+
+    def as_dict(self) -> dict[str, float | int | bool | str]:
+        return {
+            "delta": self.delta,
+            "informative_utterances": self.informative_utterances,
+            "powered": self.powered,
+            "fires": self.fires,
+            "verdict": self.verdict,
+        }
+
+
+def d12_verdict(conditioned: CollapseReport, ablated: CollapseReport) -> D12Verdict:
+    """Apply D12's pre-registered falsifier to a conditioned/ablated pair.
+
+    The rule, in one line: the falsifier fires when the conditioned arm prefers
+    the canonical more than the ablated arm does by more than
+    `D12_THRESHOLD`, and only when at least `D12_MIN_INFORMATIVE` utterances
+    could have shown the difference.
+
+    Order matters and is not symmetric -- `d12_verdict(ablated, conditioned)`
+    asks a different and meaningless question -- which is why this is a tested
+    function and not a comparison written inline at each call site.
+
+    The power test is checked **before** the threshold, so an underpowered run
+    never reports a firing falsifier. That is the direction week 7 needed: a
+    delta of +1.0 over 3 informative utterances is noise, and the absolute form
+    of this rule did "fire" there on a model that provably cannot copy.
+    """
+    delta = conditioned.canonical_preference - ablated.canonical_preference
+    informative = min(conditioned.informative_utterances, ablated.informative_utterances)
+    powered = informative >= D12_MIN_INFORMATIVE
+    # NaN > threshold is False, so an undefined delta cannot fire. Stated
+    # rather than relied upon: the `powered` gate already excludes it, since a
+    # NaN preference means zero informative utterances.
+    fires = bool(powered and delta > D12_THRESHOLD)
+    return D12Verdict(
+        delta=delta,
+        informative_utterances=informative,
+        powered=powered,
+        fires=fires,
+        verdict="underpowered" if not powered else "fires" if fires else "does_not_fire",
     )

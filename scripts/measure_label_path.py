@@ -88,10 +88,31 @@ ratio per tool, which the existing variants already give for free. The artifact
 records `case_ending_share.phoneme_level: null` with this reason, so the gap is
 visible at the point of use.
 
+## Week 8 reuses this file rather than forking it
+
+Plan section 1's 2x2 has rows that cost GPU passes and columns that are free,
+and this script *is* the free part. Week 8 points `--predictions` at one of our
+own arms' hypotheses (via `scripts/ark_to_predictions.py`) and reads off that
+arm's whole scoring column. Three flags exist for that and for nothing else:
+
+- `--output`, because `--write` used to target a hardcoded path. Week 8 produces
+  one artifact per arm per denominator and must not overwrite week 6's.
+- `--clean-prompts-only`, which restricts the run to the 82 prompts the
+  organizers' training set did not contain (`run/quranmb_clean_prompts.json`).
+  Our own arms are honest on all 98 -- week 7's holdout removed those prompts
+  from *their* training -- so the subset is for comparisons against the official
+  checkpoint and the published 0.4414, which saw the 16.
+- nothing else: the leg-B anchor check now reports a verdict only when
+  `--predictions` is the official checkpoint's file, because a different arm has
+  no reason to reproduce 0.4415 and a spurious "DRIFT" would read as a defect.
+
 Run with:
     uv run python scripts/measure_label_path.py --limit 10          # smoke
     uv run python scripts/measure_label_path.py --tools catt-eo     # one tool
     uv run python scripts/measure_label_path.py --write
+    uv run python scripts/measure_label_path.py \
+        --predictions run/quranmb_predictions_conditioned_gold.json \
+        --output run/quranmb_2x2_conditioned_gold.json --write
 """
 
 from __future__ import annotations
@@ -132,6 +153,9 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 DEFAULT_MAP = REPO_ROOT / "run" / "quranmb_verse_map.json"
 DEFAULT_PREDICTIONS = REPO_ROOT / "run" / "quranmb_predictions_official_ckpt.json"
 OUT = REPO_ROOT / "run" / "quranic_label_path.json"
+#: `scripts/build_clean_prompt_subset.py`'s artifact — the 82 prompts the
+#: organizers' training set did not contain. See `--clean-prompts-only`.
+CLEAN_PROMPTS = REPO_ROOT / "run" / "quranmb_clean_prompts.json"
 
 VARIANTS = (
     CATT_WITH_CASE_ENDINGS,
@@ -475,7 +499,17 @@ def main() -> None:
     parser.add_argument("--limit", type=int, default=0, help="first N prompts only (smoke run)")
     parser.add_argument("--bootstrap", type=int, default=BOOTSTRAP_REPLICATES)
     parser.add_argument("--seed", type=int, default=BOOTSTRAP_SEED)
-    parser.add_argument("--write", action="store_true", help=f"write {OUT.name}")
+    parser.add_argument(
+        "--clean-prompts-only",
+        action="store_true",
+        help=(
+            f"restrict to the 82 prompts listed in {CLEAN_PROMPTS.name}, i.e. those the "
+            "organizers' training set did not contain. For comparisons against the "
+            "official checkpoint or the published F1 — our own arms are clean on all 98."
+        ),
+    )
+    parser.add_argument("--output", type=Path, default=OUT, help="where --write writes")
+    parser.add_argument("--write", action="store_true", help="write the JSON artifact")
     args = parser.parse_args()
 
     for path in (args.verse_map, args.predictions):
@@ -487,14 +521,40 @@ def main() -> None:
         raise SystemExit(f"unknown tools {unknown}; registered: {sorted(DIACRITIZERS)}")
 
     prompt_text = load_prompt_text(args.verse_map)
+    if args.clean_prompts_only:
+        if not CLEAN_PROMPTS.exists():
+            raise SystemExit(
+                f"{CLEAN_PROMPTS} not found; run scripts/build_clean_prompt_subset.py --write"
+            )
+        keep = set(json.loads(CLEAN_PROMPTS.read_text(encoding="utf-8"))["clean_prompts"])
+        unlisted = keep - set(prompt_text)
+        if unlisted:
+            raise SystemExit(
+                f"{CLEAN_PROMPTS.name} names prompts {sorted(unlisted)} that "
+                f"{args.verse_map.name} does not carry; the two artifacts disagree about "
+                "which 98 prompts exist and the denominator cannot be trusted."
+            )
+        prompt_text = {k: v for k, v in prompt_text.items() if k in keep}
     if args.limit:
         prompt_text = {k: prompt_text[k] for k in sorted(prompt_text)[: args.limit]}
+    # Named after the surviving prompt count, not the flag, so a `--limit` smoke
+    # run cannot label itself `clean_82` while scoring two prompts.
+    denominator = f"{'clean' if args.clean_prompts_only else 'all'}_{len(prompt_text)}"
 
     raw_predictions = json.loads(args.predictions.read_text(encoding="utf-8"))
     predictions = {k: parse_phoneme_sequence(v) for k, v in raw_predictions.items()}
     ground_truth = load_ground_truth()
 
+    # The anchor is week 6's harness check: the official checkpoint's hypotheses
+    # scored against the benchmark's own canonical must reproduce the published
+    # 0.4415. Any other `--predictions` file is a different model, which has no
+    # reason to land there -- so the number is still printed (it is that arm's
+    # published-convention cell) and the verdict is withheld. A "DRIFT" warning
+    # on week 8's conditioned arm would read as a defect in the instrument.
+    anchor_is_official = args.predictions.resolve() == DEFAULT_PREDICTIONS.resolve()
+
     print("=== the label-path column — week-06 exit criterion, clause 1 ===")
+    print(f"denominator : {denominator}")
     print(f"prompts     : {len(prompt_text)} (C varies per prompt)")
     print(f"clips       : {len(predictions)} predictions, {len(ground_truth)} ground truth")
     print("fixed       : A = annotation_phoneme_string, P = official checkpoint")
@@ -521,18 +581,20 @@ def main() -> None:
     all_clips = sorted(c for c in ground_truth if c in predictions)
     anchor_counts = _anchor(all_clips)
     anchor_f1 = _f1(anchor_counts)
-    anchor_ok = abs(anchor_f1 - ANCHOR_F1) <= ANCHOR_TOLERANCE
+    anchor_ok = abs(anchor_f1 - ANCHOR_F1) <= ANCHOR_TOLERANCE if anchor_is_official else None
     subset_counts = anchor_counts if len(clips) == len(all_clips) else _anchor(clips)
     subset_f1 = _f1(subset_counts)
 
     print("=== leg B: the anchor (C = reference_phoneme_string) ===")
-    print(
-        f"  F1 {anchor_f1:.4f} over all {len(all_clips)} clips "
+    verdict = (
         f"vs published {ANCHOR_F1:.4f} -> {'OK' if anchor_ok else 'DRIFT'}"
+        if anchor_is_official
+        else f"(not the official checkpoint — {args.predictions.name} — so no anchor verdict)"
     )
+    print(f"  F1 {anchor_f1:.4f} over all {len(all_clips)} clips {verdict}")
     if len(clips) != len(all_clips):
-        print(f"  F1 {subset_f1:.4f} over the {len(clips)} clips leg A scores (--limit active)")
-    if not anchor_ok:
+        print(f"  F1 {subset_f1:.4f} over the {len(clips)} clips leg A scores")
+    if anchor_ok is False:
         print(
             "  WARNING: the harness no longer reproduces the published condition, "
             "so no delta below should be reported until that is explained.",
@@ -639,8 +701,13 @@ def main() -> None:
         "design": {
             "fixed": {
                 "A": "QuranMB.v2 annotation_phoneme_string",
-                "P": str(args.predictions.relative_to(REPO_ROOT)),
-                "P_note": "official organizers' checkpoint, reproduces published F1 to +-0.0001",
+                "P": str(args.predictions),
+                "P_note": (
+                    "official organizers' checkpoint, reproduces published F1 to +-0.0001"
+                    if anchor_is_official
+                    else "not the official checkpoint; the leg-B anchor is reported "
+                    "without a reproduction verdict"
+                ),
             },
             "varying": "C only",
             "join": "prompt_index, from id.split('_')[1][:5]",
@@ -665,6 +732,12 @@ def main() -> None:
             "f1_clips": len(all_clips),
             "published_f1": ANCHOR_F1,
             "reproduces": anchor_ok,
+            "reproduces_note": (
+                None
+                if anchor_is_official
+                else "null because --predictions is not the official checkpoint's file; "
+                "only that one is expected to reproduce the published F1"
+            ),
             "metrics": _metrics_dict(anchor_counts),
             "f1_on_scored_clips": subset_f1,
             "leg_b_minus_leg_a_f1": subset_f1 - _f1(gold_total),
@@ -682,6 +755,14 @@ def main() -> None:
         "clips_scored": len(clips),
         "clips_per_prompt": clips_per_prompt,
         "limited": bool(args.limit),
+        "denominator": denominator,
+        "denominator_note": (
+            "all_98: every QuranMB.v2 prompt. Honest for our week-7 arms, which were "
+            "trained on holdout-filtered manifests. clean_82: the prompts the "
+            "organizers' training set did not contain — the footing for any comparison "
+            "against the official checkpoint or the published 0.4414. "
+            "See run/quranmb_clean_prompts.json and docs/weeks/week-08.md task 7."
+        ),
         "expected_order": list(EXPECTED_ORDER),
         "predictions_registered": {
             "1": "dF1 is negative and the mechanism is FA inflation",
@@ -709,10 +790,13 @@ def main() -> None:
     }
 
     if args.write:
-        OUT.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-        print(f"\nwrote {OUT.relative_to(REPO_ROOT)}")
+        args.output.parent.mkdir(parents=True, exist_ok=True)
+        args.output.write_text(
+            json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+        )
+        print(f"\nwrote {args.output}")
     else:
-        print(f"\n(dry run — pass --write to produce {OUT.name})")
+        print(f"\n(dry run — pass --write to produce {args.output.name})")
 
 
 if __name__ == "__main__":

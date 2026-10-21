@@ -296,15 +296,18 @@ Ordered by what blocks what.
 
    **Decision this implies: keep the deletion rule**, now resting on Qur'anic
    evidence (54 vs 48 on gold prompt text) and not only on the MSA 177/177.
-   That also means **`data/normalize.py` is not touched**, so the
-   byte-identical regeneration guard below has nothing to catch — which is
-   the cheapest possible outcome and the reason this was worth measuring
-   before writing any code. Still record it as a numbered decision in
-   `docs/msa-arm.md`; the measurement is what makes it a decision rather than
-   a default.
+   The rule lives at **`src/arabic_mdd/data/phonetizer.py:179`**, downstream of
+   normalization, so `data/normalize.py` is not touched and the byte-identical
+   regeneration guard below has nothing to catch — which is the cheapest
+   possible outcome and the reason this was worth measuring before writing any
+   code. Still record it as a numbered decision in `docs/msa-arm.md`; the
+   measurement is what makes it a decision rather than a default.
 
-   **If the rule changes `data/normalize.py`, the MSA artifacts must
-   regenerate byte-identically.** `run/msa_annotation_block.json` and
+   **If a later rule change reaches the text normalization the MSA artifacts
+   were drawn through, they must regenerate byte-identically.** That is
+   `data/normalize.py` (and `data/msa_pool.py`'s `skeleton`, which is the key
+   the block was sampled on) — *not* `phonetizer.py`, whose output no committed
+   MSA artifact contains. `run/msa_annotation_block.json` and
    `run/qualification/blank.txt` are the regression check — the same guard
    that protected D4's block through the week-5 refactors, and the reason the
    `tanzil`/`wikinews` loader promotions were safe. A domain-parameterized

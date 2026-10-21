@@ -7,8 +7,12 @@ import math
 import pytest
 
 from arabic_mdd.models.collapse import (
+    D12_MIN_INFORMATIVE,
+    D12_THRESHOLD,
+    CollapseReport,
     canonical_copy_rate,
     collapse_report,
+    d12_verdict,
     token_edit_distance,
 )
 
@@ -114,4 +118,98 @@ def test_report_serializes_for_a_json_artifact() -> None:
         "copy_rate": 1.0,
         "informative_utterances": 1,
         "canonical_preference": 1.0,
+    }
+
+
+def test_report_round_trips_through_its_dict() -> None:
+    # The ablated arm reaches D12 as JSON written by a different process.
+    report = collapse_report([CANON, SAID], [CANON, CANON], [SAID, SAID])
+    assert CollapseReport.from_dict(report.as_dict()) == report
+
+
+def _report(preference: float, informative: int) -> CollapseReport:
+    """A report with only the two fields D12 reads set meaningfully."""
+    return CollapseReport(
+        utterances=informative,
+        copy_rate=0.0,
+        informative_utterances=informative,
+        canonical_preference=preference,
+    )
+
+
+def test_d12_fires_on_a_powered_difference_above_the_threshold() -> None:
+    verdict = d12_verdict(_report(0.90, 1642), _report(0.60, 1642))
+    assert verdict.delta == pytest.approx(0.30)
+    assert verdict.powered
+    assert verdict.fires
+    assert verdict.verdict == "fires"
+
+
+def test_d12_does_not_fire_on_a_small_difference() -> None:
+    verdict = d12_verdict(_report(0.70, 1642), _report(0.60, 1642))
+    assert verdict.powered
+    assert not verdict.fires
+    assert verdict.verdict == "does_not_fire"
+
+
+def test_d12_threshold_is_exclusive() -> None:
+    # Exactly at the threshold is not "more than" the threshold. Subtracting
+    # from zero so the delta is the threshold bit-for-bit -- `0.60 + 0.15` is
+    # 0.15000000000000002 away from 0.60 and would fire on rounding alone.
+    verdict = d12_verdict(_report(D12_THRESHOLD, 1642), _report(0.0, 1642))
+    assert verdict.delta == D12_THRESHOLD
+    assert not verdict.fires
+
+
+def test_d12_power_test_beats_a_firing_delta() -> None:
+    # Week 7's exact trap: a huge delta over 3 informative utterances is noise,
+    # and the absolute form of this rule "fired" there on a model that cannot
+    # consume a canonical at all.
+    verdict = d12_verdict(_report(1.0, 3), _report(0.0, 3))
+    assert verdict.delta == pytest.approx(1.0)
+    assert not verdict.powered
+    assert not verdict.fires
+    assert verdict.verdict == "underpowered"
+
+
+def test_d12_power_test_takes_the_smaller_arm() -> None:
+    # Disagreeing counts mean the two passes did not see the same clips; the
+    # comparison must get weaker, not stronger.
+    verdict = d12_verdict(_report(0.9, 10_000), _report(0.1, 7))
+    assert verdict.informative_utterances == 7
+    assert not verdict.powered
+
+
+def test_d12_is_powered_exactly_at_the_minimum() -> None:
+    verdict = d12_verdict(_report(0.9, D12_MIN_INFORMATIVE), _report(0.1, D12_MIN_INFORMATIVE))
+    assert verdict.powered
+    assert verdict.fires
+
+
+def test_d12_cannot_fire_on_an_undefined_preference() -> None:
+    # No informative utterances means no measurement, and NaN must not become a
+    # verdict by sneaking through the comparison.
+    verdict = d12_verdict(_report(float("nan"), 0), _report(float("nan"), 0))
+    assert math.isnan(verdict.delta)
+    assert not verdict.fires
+    assert verdict.verdict == "underpowered"
+
+
+def test_d12_direction_is_not_symmetric() -> None:
+    # Swapping the arms asks a different question, and the rule must not answer
+    # the same way: an off-by-one in the argument order would be invisible if it
+    # did.
+    conditioned, ablated = _report(0.90, 1642), _report(0.60, 1642)
+    assert d12_verdict(conditioned, ablated).fires
+    assert not d12_verdict(ablated, conditioned).fires
+
+
+def test_d12_serializes_for_a_json_artifact() -> None:
+    verdict = d12_verdict(_report(0.90, 1642), _report(0.60, 1642))
+    assert verdict.as_dict() == {
+        "delta": pytest.approx(0.30),
+        "informative_utterances": 1642,
+        "powered": True,
+        "fires": True,
+        "verdict": "fires",
     }

@@ -1,0 +1,36 @@
+=== the label-path column — MSA arm (week-08 task 8) ===
+frame       : 499 rows scored, 1 excluded unfair ['64376']
+P           : cv_dev_predictions.json
+A           : := C_gold (D2) — no annotation of A on this arm (D1)
+convention  : pausal, both sides (protocol section 3, R1-R4)
+cluster     : utterance (one clip, one sentence, one C)
+
+=== catt-eo ===
+✅ Loaded model successfully!
+  diacritized 499 rows in 6.3s (0.013 s/row), chunked 0
+=== catt-ed ===
+✅ Loaded model successfully!
+  diacritized 499 rows in 80.1s (0.161 s/row), chunked 0
+=== shakkala ===
+  diacritized 499 rows in 117.4s (0.235 s/row), chunked 0
+=== mishkal ===
+  diacritized 499 rows in 6.8s (0.014 s/row), chunked 0
+
+wrote /home/amin-dziri/Documents/projects/diacritization-error-propagation/run/msa_c_auto.json
+
+=== C_auto, phonetized (pausal) ===
+  organizers-vowelizer    14679 phonemes, mean 29.4
+  catt-eo                 14677 phonemes, mean 29.4
+  catt-ed                 14585 phonemes, mean 29.2
+  shakkala                14653 phonemes, mean 29.4
+  mishkal                 14571 phonemes, mean 29.2
+
+=== phase 2 not run: C_gold is the only remaining input ===
+  The 500 rows are annotated by scripts/annotate_msa.py, which writes
+  run/msa_c_gold_{a1,a2}.json. Validate with --validate, adjudicate the
+  50 crossover rows, then re-run this with --c-gold for each file.
+  Nothing else is missing: P joins 1:1, C_auto is cached above, and the
+  scoring path below it is implemented.
+  Note before the numbers exist: under A := C_gold the gold cell has no
+  positives, so this arm's quantities are ΔFRR and manufactured TR, not
+  ΔF1. See the module docstring.
